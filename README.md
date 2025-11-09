@@ -46,46 +46,14 @@ cmake .. \
     -DBUILD_RpmOstreeBackend=OFF \
     -DBUILD_SteamOSBackend=OFF \
     -DBUILD_WITH_QT6=ON
-make -j32
+make -j$(nproc)
 ```
 
 ### Установка
 
 ```bash
-sudo make install -j32
+sudo make install
 ```
-
-### Настройка библиотек
-
-После установки необходимо добавить путь к библиотекам:
-
-```bash
-echo "/usr/lib64/plasma-discover" | sudo tee /etc/ld.so.conf.d/plasma-discover.conf
-sudo ldconfig
-```
-
-## Технические детали
-
-### Измененные файлы
-
-1. **libdiscover/backends/PackageKitBackend/PackageKitBackend.cpp**
-   - Добавлены флаги AppStream Pool для загрузки метаданных RPM Fusion
-   - Реализован fallback поиск через PackageKit для пакетов без AppStream
-
-2. **libdiscover/backends/PackageKitBackend/PackageKitNotifier.cpp**
-   - Добавлены флаги AppStream Pool для консистентности
-
-3. **libdiscover/backends/PackageKitBackend/PackageKitResource.cpp**
-   - Изменена логика получения иконок (используется имя пакета)
-   - Добавлено определение источника из packageId с маппингом репозиториев
-
-4. **discover/qml/ApplicationDelegate.qml**
-   - Упрощена структура layout для корректного позиционирования кнопки установки
-   - Изменено отображение источника пакета (показывается для всех пакетов)
-
-5. **CMakeLists.txt**
-   - Закомментирована генерация случайного IID для совместимости с системным Discover
-
 ## Особенности работы
 
 ### Маппинг репозиториев
