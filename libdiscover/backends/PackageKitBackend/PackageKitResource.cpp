@@ -102,6 +102,12 @@ QUrl PackageKitResource::homepage()
 
 QVariant PackageKitResource::icon() const
 {
+    // Try to use package name as icon (e.g., "google-chrome" -> google-chrome icon)
+    // Falls back to generic icon if package-specific icon doesn't exist
+    const QString packageName = name();
+    if (!packageName.isEmpty()) {
+        return packageName;
+    }
     return QStringLiteral("applications-other");
 }
 
@@ -193,13 +199,40 @@ QString PackageKitResource::origin() const
         }
     }
 
-    // PackageKit doesn't give us enough information to be able to distinguish
-    // between 3rd-party repos (which generally have human-readable names) and
-    // 1st-party distro repos (which generally name nonsense jargon names) which
-    // would allow us to substitute the distro name for only the nonsense repos;
-    // see https://github.com/PackageKit/PackageKit/issues/607 and
-    // https://bugs.kde.org/show_bug.cgi?id=465204.
-    // So for now always show the distro name.
+    // Extract repository name from package ID
+    // PackageID format: name;version;arch;data where data is the repository name
+    QString pkgid = availablePackageId().isEmpty() ? installedPackageId() : availablePackageId();
+    if (!pkgid.isEmpty()) {
+        QString repoName = PackageKit::Daemon::packageData(pkgid);
+        if (!repoName.isEmpty()) {
+            // Clean up repo name - remove "installed:" prefix if present
+            if (repoName.startsWith(QStringLiteral("installed:"))) {
+                repoName = repoName.mid(10);
+            }
+
+            // Skip if repo name is just "installed" or empty after cleanup
+            if (repoName.isEmpty() || repoName == QStringLiteral("installed")) {
+                return osRelease->name();
+            }
+
+            // Map common repository names to friendly names
+            if (repoName == QStringLiteral("fedora")) {
+                return osRelease->name(); // Show "Fedora Linux" for main repo
+            } else if (repoName.startsWith(QStringLiteral("rpmfusion-"))) {
+                return QStringLiteral("RPM Fusion");
+            } else if (repoName.startsWith(QStringLiteral("@copr:")) || repoName.startsWith(QStringLiteral("copr:"))) {
+                // COPR repos format: @copr:owner:project or copr:owner:project
+                return QStringLiteral("COPR");
+            } else if (repoName == QStringLiteral("updates") || repoName == QStringLiteral("updates-testing")) {
+                return osRelease->name(); // Fedora updates
+            } else {
+                // Return repository name as-is for other repos (google-chrome, etc.)
+                return repoName;
+            }
+        }
+    }
+
+    // Fallback to distro name
     return osRelease->name();
 }
 

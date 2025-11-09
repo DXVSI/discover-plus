@@ -323,7 +323,11 @@ void PackageKitBackend::reloadPackageList()
 {
     acquireFetching(true);
 
-    m_appdata->reset(new AppStream::Pool, &m_threadPool);
+    auto *pool = new AppStream::Pool;
+    pool->setFlags(AppStream::Pool::Flags(AppStream::Pool::Flag::FlagLoadOsCatalog
+                                          | AppStream::Pool::Flag::FlagLoadOsDesktopFiles
+                                          | AppStream::Pool::Flag::FlagLoadOsMetainfo));
+    m_appdata->reset(pool, &m_threadPool);
 
     const auto loadDone = [this](bool correct) {
         if (!correct && m_packages.packages.isEmpty()) {
@@ -782,6 +786,7 @@ ResultsStream *PackageKitBackend::search(const AbstractResourcesBackend::Filters
         });
     } else {
         return deferredResultStream(u"PackageKitStream-search"_s, [this, filter = filter](PKResultsStream *stream) {
+            qDebug() << "PackageKitBackend search called with query:" << filter.search;
             auto loadComponents = [](const auto &filter, const auto &appdata) -> QFuture<AppStream::ComponentBox> {
                 QFuture<AppStream::ComponentBox> components;
                 if (!filter.search.isEmpty()) {
@@ -798,7 +803,7 @@ ResultsStream *PackageKitBackend::search(const AbstractResourcesBackend::Filters
             auto futureComponents = loadComponents(filter, m_appdata);
             watcher->setFuture(futureComponents);
             connect(watcher, &QFutureWatcher<AppStream::ComponentBox>::finished, watcher, &QObject::deleteLater);
-            connect(watcher, &QFutureWatcher<AppStream::ComponentBox>::finished, stream, [this, stream, filter, futureComponents]() {
+            connect(watcher, &QFutureWatcher<AppStream::ComponentBox>::finished, this, [this, stream, filter, futureComponents]() {
                 QSet<QString> ids;
                 AppStream::ComponentBox components = futureComponents.result();
                 kFilterInPlace<AppStream::ComponentBox>(components, [&ids](const AppStream::Component &component) {
@@ -808,12 +813,64 @@ ResultsStream *PackageKitBackend::search(const AbstractResourcesBackend::Filters
                     ids.insert(component.id());
                     return true;
                 });
+
+                QVector<StreamResult> appstreamResults;
                 if (!ids.isEmpty()) {
-                    const auto resources = kFilter<QVector<StreamResult>>(resultsByComponents(components), [](const StreamResult &res) {
+                    appstreamResults = kFilter<QVector<StreamResult>>(resultsByComponents(components), [](const StreamResult &res) {
                         return !qobject_cast<PackageKitResource *>(res.resource)->extendsItself();
                     });
-                    stream->sendResources(resources, filter.state != AbstractResource::Broken);
+                }
+
+                // Always search via PackageKit for packages from all repositories
+                if (!filter.search.isEmpty()) {
+                    qDebug() << "Starting PackageKit searchNames for:" << filter.search;
+                    auto pkTransaction = PackageKit::Daemon::searchNames(filter.search, PackageKit::Transaction::FilterNotSource);
+                    qDebug() << "PackageKit transaction created:" << pkTransaction;
+                    QPointer<PKResultsStream> streamPtr(stream);
+                    connect(pkTransaction, &PackageKit::Transaction::package, this, [this](PackageKit::Transaction::Info info, const QString &packageId, const QString &summary) {
+                        qDebug() << "PackageKit found package:" << packageId;
+                        addPackageNotArch(info, packageId, summary);
+                    });
+                    connect(pkTransaction, &PackageKit::Transaction::errorCode, this, [](PackageKit::Transaction::Error error, const QString &details) {
+                        qDebug() << "PackageKit error:" << error << details;
+                    });
+                    connect(pkTransaction, &PackageKit::Transaction::finished, this, [this, streamPtr, filter, pkTransaction, appstreamResults]() {
+                        qDebug() << "PackageKit search finished, packagesToAdd count:" << m_packagesToAdd.size();
+                        Q_UNUSED(pkTransaction); // Keep transaction alive until finished
+
+                        if (!streamPtr) {
+                            qDebug() << "Stream was deleted, not sending PackageKit results";
+                            includePackagesToAdd();
+                            return;
+                        }
+
+                        // First send AppStream results
+                        if (!appstreamResults.isEmpty()) {
+                            streamPtr->sendResources(appstreamResults, false);
+                        }
+
+                        // Send PackageKit results to stream before adding to main packages
+                        QVector<StreamResult> pkResults;
+                        for (auto resource : std::as_const(m_packagesToAdd)) {
+                            auto pkResource = qobject_cast<PackageKitResource *>(resource);
+                            qDebug() << "PackageKit resource:" << pkResource->name() << "extends itself:" << pkResource->extendsItself();
+                            if (pkResource && !pkResource->extendsItself()) {
+                                pkResults << StreamResult(pkResource, 0);
+                            }
+                        }
+                        qDebug() << "PackageKit results to send:" << pkResults.size();
+                        if (!pkResults.isEmpty()) {
+                            streamPtr->sendResources(pkResults, false);
+                        }
+
+                        includePackagesToAdd();
+                        streamPtr->finish();
+                    });
                 } else {
+                    // No search, just send AppStream results
+                    if (!appstreamResults.isEmpty()) {
+                        stream->sendResources(appstreamResults, filter.state != AbstractResource::Broken);
+                    }
                     stream->finish();
                 }
             });
@@ -1154,7 +1211,8 @@ AbstractReviewsBackend *PackageKitBackend::reviewsBackend() const
 
 QString PackageKitBackend::displayName() const
 {
-    return AppStreamIntegration::global()->osRelease()->prettyName();
+    auto osRelease = AppStreamIntegration::global()->osRelease();
+    return osRelease->name();
 }
 
 int PackageKitBackend::fetchingUpdatesProgress() const

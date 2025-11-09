@@ -1,21 +1,116 @@
-# Discover
+# Discover Plus
 
-Discover helps you find and install applications, games, and tools. You can search or browse by category, and look at screenshots and read reviews to help you pick the perfect app.
+Улучшенная версия KDE Discover с расширенной поддержкой RPM-пакетов для Fedora Linux.
 
 ![Discover window](https://cdn.kde.org/screenshots/plasma-discover/plasma-discover.png)
 
-## Features
+## Основные изменения
 
-* Install and download software.
-* Manage software sources, e.g. Flatpak repositories.
-* Upgrade operating system software through PackageKit.
-* Find and install add-ons for Plasma.
+* **Полная поддержка RPM Fusion** - пакеты из репозиториев RPM Fusion теперь отображаются в Discover
+* **Улучшенный поиск пакетов** - добавлен fallback поиск через PackageKit для пакетов без AppStream метаданных
+* **Отображение источников** - показывает название репозитория для каждого пакета (Fedora Linux, RPM Fusion, COPR, Google Chrome и т.д.)
+* **Правильные иконки** - используются иконки из пакетов вместо дефолтных
+* **Исправлен UI** - кнопка установки теперь всегда справа независимо от наличия рейтинга
 
-## Support
+## Сборка и установка
 
-If you have an issue with Discover, please [open a support thread on KDE Discuss](https://discuss.kde.org/c/help/6).
+### Зависимости
 
-## Building
+```bash
+sudo dnf install -y cmake extra-cmake-modules gcc-c++ \
+    kf6-kconfig-devel kf6-kcoreaddons-devel kf6-kcrash-devel \
+    kf6-kdbusaddons-devel kf6-ki18n-devel kf6-karchive-devel \
+    kf6-kxmlgui-devel kf6-kio-devel kf6-kcmutils-devel \
+    kf6-kidletime-devel kf6-purpose-devel kf6-kiconthemes-devel \
+    kf6-kstatusnotifieritem-devel kf6-kauth-devel kf6-knotifications-devel \
+    kf6-kirigami-devel kf6-kirigami-addons-devel \
+    PackageKit-Qt6-devel appstream-qt-devel qcoro-qt6-devel \
+    qt6-qtbase-devel qt6-qtdeclarative-devel qt6-qtwebview-devel
+```
+
+### Сборка
+
+```bash
+mkdir build
+cd build
+cmake .. \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_BUILD_TYPE=RelWithDebInfo \
+    -DBUILD_TESTING=OFF \
+    -DBUILD_FlatpakBackend=ON \
+    -DBUILD_PackageKitBackend=ON \
+    -DBUILD_FwupdBackend=ON \
+    -DBUILD_SnapBackend=ON \
+    -DBUILD_AlpineApkBackend=ON \
+    -DBUILD_DummyBackend=OFF \
+    -DBUILD_RpmOstreeBackend=OFF \
+    -DBUILD_SteamOSBackend=OFF \
+    -DBUILD_WITH_QT6=ON
+make -j32
+```
+
+### Установка
+
+```bash
+sudo make install -j32
+```
+
+### Настройка библиотек
+
+После установки необходимо добавить путь к библиотекам:
+
+```bash
+echo "/usr/lib64/plasma-discover" | sudo tee /etc/ld.so.conf.d/plasma-discover.conf
+sudo ldconfig
+```
+
+## Технические детали
+
+### Измененные файлы
+
+1. **libdiscover/backends/PackageKitBackend/PackageKitBackend.cpp**
+   - Добавлены флаги AppStream Pool для загрузки метаданных RPM Fusion
+   - Реализован fallback поиск через PackageKit для пакетов без AppStream
+
+2. **libdiscover/backends/PackageKitBackend/PackageKitNotifier.cpp**
+   - Добавлены флаги AppStream Pool для консистентности
+
+3. **libdiscover/backends/PackageKitBackend/PackageKitResource.cpp**
+   - Изменена логика получения иконок (используется имя пакета)
+   - Добавлено определение источника из packageId с маппингом репозиториев
+
+4. **discover/qml/ApplicationDelegate.qml**
+   - Упрощена структура layout для корректного позиционирования кнопки установки
+   - Изменено отображение источника пакета (показывается для всех пакетов)
+
+5. **CMakeLists.txt**
+   - Закомментирована генерация случайного IID для совместимости с системным Discover
+
+## Особенности работы
+
+### Маппинг репозиториев
+
+- `fedora`, `updates`, `updates-testing` → "Fedora Linux"
+- `rpmfusion-*` → "RPM Fusion"
+- `@copr:*`, `copr:*` → "COPR"
+- Другие репозитории отображаются как есть (например, "google-chrome")
+
+### AppStream Pool флаги
+
+Используются флаги:
+- `FlagLoadOsCatalog` - загрузка системного каталога приложений
+- `FlagLoadOsDesktopFiles` - загрузка .desktop файлов
+- `FlagLoadOsMetainfo` - загрузка метаинформации
+
+## Поддержка
+
+Для вопросов и багов используйте Issues на GitHub.
+
+## Оригинальный Discover
+
+Этот проект основан на KDE Discover. Оригинальный проект: https://invent.kde.org/plasma/discover
+
+## Building (Original)
 
 The easiest way to make changes and test Discover during development is to [build it with kde-builder](https://community.kde.org/Get_Involved/development).
 

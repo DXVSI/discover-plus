@@ -42,6 +42,10 @@ PackageKitNotifier::PackageKitNotifier(QObject *parent)
     , m_hasDistUpgrade(false)
     , m_appdata(new AppStream::Pool)
 {
+    m_appdata->setFlags(AppStream::Pool::Flags(AppStream::Pool::Flag::FlagLoadOsCatalog
+                                               | AppStream::Pool::Flag::FlagLoadOsDesktopFiles
+                                               | AppStream::Pool::Flag::FlagLoadOsMetainfo));
+
     connect(PackageKit::Daemon::global(), &PackageKit::Daemon::updatesChanged, this, &PackageKitNotifier::recheckSystemUpdateNeeded);
     connect(PackageKit::Daemon::global(), &PackageKit::Daemon::transactionListChanged, this, &PackageKitNotifier::transactionListChanged);
     connect(PackageKit::Daemon::global(), &PackageKit::Daemon::restartScheduled, this, &PackageKitNotifier::nowNeedsReboot);

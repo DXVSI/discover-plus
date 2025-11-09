@@ -93,11 +93,10 @@ BasicAbstractCard {
                     }
                 }
 
-                // Backend name label (shown if app is from a non-default backend and
-                // we're not using the compact view, where there's no space for it)
+                // Backend name label (always shown except in compact view)
                 RowLayout {
                     Layout.alignment: Qt.AlignRight
-                    visible: root.appIsFromNonDefaultBackend && !root.compact
+                    visible: !root.compact
                     spacing: Kirigami.Units.smallSpacing
 
                     Kirigami.Icon {
@@ -106,7 +105,7 @@ BasicAbstractCard {
                         implicitHeight: Kirigami.Units.iconSizes.smallMedium
                     }
                     QQC2.Label {
-                        text: root.application.backend.displayName
+                        text: root.application.origin
                         font: Kirigami.Theme.smallFont
                     }
                 }
@@ -137,67 +136,51 @@ BasicAbstractCard {
                 // Combined condition of both children items
                 visible: root.showRating || (!root.compact && root.showSize) || !root.compact
 
-                // Container for rating and size labels
-                ColumnLayout {
-                    Layout.fillWidth: true
-                    // Include height of sizeInfo for full-sized view even when
-                    // the actual sizeInfo layout isn't visible. This tightens up
-                    // the layout and prevents the install button from appearing
-                    // at a different position based on whether or not the
-                    // sizeInfo text is visible, because the base layout is
-                    // vertically centered rather than filling a distinct space.
-                    Layout.preferredHeight: root.compact ? -1 : rating.implicitHeight + sizeInfo.implicitHeight
+                // Rating stars + label
+                RowLayout {
+                    id: rating
                     Layout.alignment: Qt.AlignBottom
-                    spacing: 0
+                    visible: root.showRating
+                    opacity: 0.6
+                    spacing: Kirigami.Units.largeSpacing
 
-                    // Combined condition of both children items
-                    visible: root.showRating || (!root.compact && root.showSize)
-
-                    // Rating stars + label
-                    RowLayout {
-                        id: rating
-                        Layout.fillWidth: true
-                        Layout.alignment: Qt.AlignBottom
-                        visible: root.showRating
-                        opacity: 0.6
-                        spacing: Kirigami.Units.largeSpacing
-
-                        Rating {
-                            Layout.alignment: Qt.AlignVCenter
-                            value: root.application.rating.sortableRating
-                            starSize: root.compact ? description.font.pointSize : head.font.pointSize
-                            precision: Rating.Precision.HalfStar
-                            padding: 0
-                        }
-                        QQC2.Label {
-                            Layout.fillWidth: true
-                            Layout.alignment: Qt.AlignVCenter
-                            topPadding: (ratingLabelMetrics.boundingRect.y - ratingLabelMetrics.tightBoundingRect.y)/2
-                            visible: root.application.backend.reviewsBackend?.isResourceSupported(root.application) ?? false
-                            text: root.application.rating.ratingCount > 0 ? i18np("%1 rating", "%1 ratings", root.application.rating.ratingCount) : i18n("No ratings yet")
-                            font: Kirigami.Theme.smallFont
-                            elide: Text.ElideRight
-                            TextMetrics {
-                                id: ratingLabelMetrics
-                                font: head.font
-                                text: head.text
-                            }
-                        }
+                    Rating {
+                        Layout.alignment: Qt.AlignVCenter
+                        value: root.application.rating.sortableRating
+                        starSize: root.compact ? description.font.pointSize : head.font.pointSize
+                        precision: Rating.Precision.HalfStar
+                        padding: 0
                     }
-
-                    // Size label
                     QQC2.Label {
-                        id: sizeInfo
-                        Layout.fillWidth: true
-                        Layout.alignment: Qt.AlignBottom
-                        visible: !root.compact && root.showSize
-                        text: visible ? root.application.sizeDescription : ""
-                        horizontalAlignment: Text.AlignRight
-                        opacity: 0.6;
+                        Layout.alignment: Qt.AlignVCenter
+                        topPadding: (ratingLabelMetrics.boundingRect.y - ratingLabelMetrics.tightBoundingRect.y)/2
+                        visible: root.application.backend.reviewsBackend?.isResourceSupported(root.application) ?? false
+                        text: root.application.rating.ratingCount > 0 ? i18np("%1 rating", "%1 ratings", root.application.rating.ratingCount) : i18n("No ratings yet")
                         font: Kirigami.Theme.smallFont
                         elide: Text.ElideRight
-                        maximumLineCount: 1
+                        TextMetrics {
+                            id: ratingLabelMetrics
+                            font: head.font
+                            text: head.text
+                        }
                     }
+                }
+
+                // Size label
+                QQC2.Label {
+                    id: sizeInfo
+                    Layout.alignment: Qt.AlignBottom
+                    visible: !root.compact && root.showSize
+                    text: visible ? root.application.sizeDescription : ""
+                    horizontalAlignment: Text.AlignRight
+                    opacity: 0.6;
+                    font: Kirigami.Theme.smallFont
+                    elide: Text.ElideRight
+                    maximumLineCount: 1
+                }
+
+                Item {
+                    Layout.fillWidth: true
                 }
 
                 // Install button
