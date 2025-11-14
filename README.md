@@ -2,7 +2,47 @@
 
 Enhanced KDE Discover with extended RPM package support and COPR integration for Fedora Linux.
 
-![Discover window](https://cdn.kde.org/screenshots/plasma-discover/plasma-discover.png)
+## Screenshots
+
+<details>
+<summary><b>Click to view UI Gallery</b></summary>
+
+### Main Interface
+<p align="center">
+  <img src="screen/image1.png" width="48%" alt="Main Window" />
+  <img src="screen/image2.png" width="48%" alt="Application Page" />
+</p>
+
+### Updates & Package Management
+<p align="center">
+  <img src="screen/image3.png" width="48%" alt="Updates Page" />
+  <img src="screen/image4.png" width="48%" alt="Package Details" />
+</p>
+
+### Settings & COPR Integration
+<p align="center">
+  <img src="screen/image5.png" width="48%" alt="Settings" />
+  <img src="screen/image6.png" width="48%" alt="COPR Packages" />
+</p>
+
+### Browse & Search
+<p align="center">
+  <img src="screen/image7.png" width="80%" alt="Browse Applications" />
+</p>
+
+</details>
+
+## Modern UI Redesign
+
+> **Note:** The modern UI redesign is available in the `ui-redesign` branch.
+> To use it: `git checkout ui-redesign`
+
+The redesigned interface features:
+- **Modern Cards** - Application cards with gradients, shadows, and smooth hover effects
+- **Enhanced Visual Feedback** - Animated transitions and interactive elements
+- **Clean Updates Page** - Simplified layout without cluttered section headers
+- **Styled Action Buttons** - Color-coded buttons with gradient backgrounds
+- **Improved Spacing** - Better content distribution and readability
 
 ## Key Features
 
