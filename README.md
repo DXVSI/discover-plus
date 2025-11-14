@@ -1,20 +1,33 @@
 # Discover Plus
 
-Улучшенная версия KDE Discover с расширенной поддержкой RPM-пакетов для Fedora Linux.
+Enhanced KDE Discover with extended RPM package support and COPR integration for Fedora Linux.
 
 ![Discover window](https://cdn.kde.org/screenshots/plasma-discover/plasma-discover.png)
 
-## Основные изменения
+## Key Features
 
-* **Полная поддержка RPM Fusion** - пакеты из репозиториев RPM Fusion теперь отображаются в Discover
-* **Улучшенный поиск пакетов** - добавлен fallback поиск через PackageKit для пакетов без AppStream метаданных
-* **Отображение источников** - показывает название репозитория для каждого пакета (Fedora Linux, RPM Fusion, COPR, Google Chrome и т.д.)
-* **Правильные иконки** - используются иконки из пакетов вместо дефолтных
-* **Исправлен UI** - кнопка установки теперь всегда справа независимо от наличия рейтинга
+* **COPR Repository Integration** - Browse and install packages from Fedora COPR (Community Projects)
+* **Full RPM Fusion Support** - All RPM Fusion packages are now visible in Discover
+* **Enhanced Package Search** - Fallback search via PackageKit for packages without AppStream metadata
+* **Repository Labels** - Shows repository source for each package (Fedora Linux, RPM Fusion, COPR, etc.)
+* **Proper Icons** - Uses package-specific icons instead of generic ones
+* **Fixed UI Layout** - Install button consistently positioned regardless of rating presence
 
-## Сборка и установка
+## What's New
 
-### Зависимости
+### COPR Integration
+* New COPR category in the sidebar
+* Search and browse COPR packages directly in Discover
+* Automatic pagination when scrolling
+* Smart relevance-based search results
+* Markdown to HTML description conversion
+* One-click install with automatic repository enabling
+* Clean uninstall with repository removal
+* Launch button for installed applications
+
+## Building and Installation
+
+### Dependencies
 
 ```bash
 sudo dnf install -y cmake extra-cmake-modules gcc-c++ \
@@ -28,7 +41,7 @@ sudo dnf install -y cmake extra-cmake-modules gcc-c++ \
     qt6-qtbase-devel qt6-qtdeclarative-devel qt6-qtwebview-devel
 ```
 
-### Сборка
+### Build
 
 ```bash
 mkdir build
@@ -49,34 +62,35 @@ cmake .. \
 make -j$(nproc)
 ```
 
-### Установка
+### Installation
 
 ```bash
 sudo make install
 ```
-## Особенности работы
 
-### Маппинг репозиториев
+## Technical Details
+
+### Repository Mapping
 
 - `fedora`, `updates`, `updates-testing` → "Fedora Linux"
 - `rpmfusion-*` → "RPM Fusion"
 - `@copr:*`, `copr:*` → "COPR"
-- Другие репозитории отображаются как есть (например, "google-chrome")
+- Other repositories displayed as-is (e.g., "google-chrome")
 
-### AppStream Pool флаги
+### AppStream Pool Flags
 
-Используются флаги:
-- `FlagLoadOsCatalog` - загрузка системного каталога приложений
-- `FlagLoadOsDesktopFiles` - загрузка .desktop файлов
-- `FlagLoadOsMetainfo` - загрузка метаинформации
+The following flags are used:
+- `FlagLoadOsCatalog` - Load system application catalog
+- `FlagLoadOsDesktopFiles` - Load .desktop files
+- `FlagLoadOsMetainfo` - Load meta information
 
-## Поддержка
+## Support
 
-Для вопросов и багов используйте Issues на GitHub.
+For questions and bug reports, please use GitHub Issues.
 
-## Оригинальный Discover
+## Original Discover
 
-Этот проект основан на KDE Discover. Оригинальный проект: https://invent.kde.org/plasma/discover
+This project is based on KDE Discover. Original project: https://invent.kde.org/plasma/discover
 
 ## Building (Original)
 
