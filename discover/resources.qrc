@@ -17,6 +17,7 @@
     <file>qml/ProgressView.qml</file>
     <file>qml/BrowsingPage.qml</file>
     <file>qml/InstalledPage.qml</file>
+    <file>qml/CoprPage.qml</file>
     <file>qml/SearchPage.qml</file>
     <file>qml/SourcesPage.qml</file>
     <file>qml/ReviewDelegate.qml</file>

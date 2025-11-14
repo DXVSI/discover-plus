@@ -16,6 +16,7 @@ Kirigami.ApplicationWindow {
 
     readonly property string topBrowsingComp: "BrowsingPage.qml"
     readonly property string topInstalledComp: "InstalledPage.qml"
+    readonly property string topCoprComp: "CoprPage.qml"
     readonly property string topSearchComp: "SearchPage.qml"
     readonly property string topUpdateComp: "UpdatesPage.qml"
     readonly property string topSourcesComp: "SourcesPage.qml"
@@ -85,6 +86,13 @@ Kirigami.ApplicationWindow {
         text: i18n("&Installed")
         component: topInstalledComp
         objectName: "installed"
+    }
+    TopLevelPageData {
+        id: coprAction
+        icon.name: "package"
+        text: i18n("&COPR")
+        component: topCoprComp
+        objectName: "copr"
     }
     TopLevelPageData {
         id: updateAction
@@ -193,6 +201,7 @@ Kirigami.ApplicationWindow {
                 featuredAction,
                 searchAction,
                 installedAction,
+                coprAction,
                 updateAction,
             ]
             Component.onCompleted: {

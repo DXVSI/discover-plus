@@ -108,11 +108,15 @@ bool AbstractResourcesBackend::Filters::shouldFilter(AbstractResource *resourse)
         return false;
     }
 
-    if (!origin.isEmpty() && resourse->origin() != origin) {
-        return false;
+    if (!origin.isEmpty()) {
+        // Special case for COPR: exact match (PackageKit returns "COPR" for copr repos)
+        if (resourse->origin() != origin) {
+            return false;
+        }
     }
 
-    if (filterMinimumState ? (resourse->state() < state) : (resourse->state() != state)) {
+    bool stateCheck = filterMinimumState ? (resourse->state() < state) : (resourse->state() != state);
+    if (stateCheck) {
         return false;
     }
 
@@ -120,7 +124,23 @@ bool AbstractResourcesBackend::Filters::shouldFilter(AbstractResource *resourse)
         return false;
     }
 
-    return !category || resourse->categoryMatches(category);
+    // Check category match if category filter is set
+    if (category) {
+        // For top-level categories (like "All Applications"),
+        // don't filter by category - show all resources from all backends
+        // This allows PackageKit packages without AppStream metadata to be visible
+        bool isTopLevelCategory = !category->parentCategory();
+        if (isTopLevelCategory) {
+            return true;
+        }
+
+        // For subcategories, apply category filter
+        if (!resourse->categoryMatches(category)) {
+            return false;
+        }
+    }
+
+    return true;
 }
 
 void AbstractResourcesBackend::Filters::filterJustInCase(QVector<AbstractResource *> &resources) const

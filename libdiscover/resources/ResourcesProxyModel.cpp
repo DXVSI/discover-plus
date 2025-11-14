@@ -259,7 +259,6 @@ void ResourcesProxyModel::addResources(const QVector<StreamResult> &results)
     if (resultsCopy.isEmpty()) {
         return;
     }
-
     std::sort(resultsCopy.begin(), resultsCopy.end(), [this](const auto &left, const auto &right) {
         return orderedLessThan(left, right);
     });
@@ -583,7 +582,9 @@ QVariant ResourcesProxyModel::roleToValue(const StreamResult &result, int role) 
         } else if (resource->name().contains(m_filters.search, Qt::CaseInsensitive)) {
             exactMatch = 5.0;
         }
-        return qreal(result.sortScore) / 100 + rating + reverseDistance + exactMatch;
+        // Increase weight of sortScore from backends to prioritize their relevance calculations
+        // sortScore typically ranges from 0-100, so we use it directly instead of dividing
+        return qreal(result.sortScore) + rating + reverseDistance + exactMatch;
     }
     case Qt::DecorationRole:
     case Qt::DisplayRole:

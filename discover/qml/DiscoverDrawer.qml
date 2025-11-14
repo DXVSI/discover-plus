@@ -31,6 +31,10 @@ Kirigami.GlobalDrawer {
 
     function createCategoryActions(categories /*list<Discover.Category>*/) /*list<Kirigami.Action>*/ {
         const ret = []
+
+        // Add COPR action at the top
+        ret.push(coprAction)
+
         for (const c of categories) {
             const category = Discover.CategoryModel.get(c)
             const categoryAction = categoryActionComponent.createObject(drawer, { category: category, categoryPtr: c })
