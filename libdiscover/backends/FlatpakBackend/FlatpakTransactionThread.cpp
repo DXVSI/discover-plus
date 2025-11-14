@@ -11,6 +11,7 @@
 #include "libdiscover_backend_flatpak_debug.h"
 
 #include <KLocalizedString>
+#include <KOSRelease>
 #include <QDesktopServices>
 
 #include <span>
@@ -332,6 +333,15 @@ void FlatpakTransactionThread::run()
             g_autoptr(GError) localError = nullptr;
             qCDebug(LIBDISCOVER_BACKEND_FLATPAK_LOG) << "found unused refs:" << refs->len;
             auto transaction = flatpak_transaction_new_for_installation(installation, m_cancellable, &localError);
+            if (!transaction) {
+                m_errorMessage = i18nc("@info:status",
+                                       "Cannot create transaction for '%1':<nl/>%2<nl/><nl/>Please report this to <a href='%3'>%3</a>",
+                                       QString::fromUtf8(flatpak_installation_get_display_name(installation)),
+                                       QString::fromUtf8(localError->message),
+                                       KOSRelease().bugReportUrl());
+                qCWarning(LIBDISCOVER_BACKEND_FLATPAK_LOG) << "could not create transaction" << localError->message;
+                return;
+            }
             for (uint i = 0; i < refs->len; i++) {
                 FlatpakRef *ref = FLATPAK_REF(g_ptr_array_index(refs, i));
                 const gchar *strRef = flatpak_ref_format_ref_cached(ref);

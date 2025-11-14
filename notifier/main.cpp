@@ -48,6 +48,8 @@ int main(int argc, char **argv)
 
         KAboutData::setApplicationData(about);
 
+        KCrash::initialize();
+
         QCommandLineParser parser;
         QCommandLineOption replaceOption({QStringLiteral("replace")}, i18n("Replace an existing instance"));
         parser.addOption(replaceOption);

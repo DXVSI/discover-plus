@@ -34,19 +34,20 @@ public:
     struct Installation {
         explicit Installation(FlatpakNotifier *notifier, FlatpakInstallation *installation);
         ~Installation();
+        Q_DISABLE_COPY(Installation);
 
         bool ensureInitialized(GCancellable *);
 
-        FlatpakNotifier *m_notifier;
+        FlatpakNotifier *const m_notifier;
         bool m_hasUpdates = false;
         GFileMonitor *m_monitor = nullptr;
-        FlatpakInstallation *m_installation = nullptr;
+        FlatpakInstallation *const m_installation;
     };
 
-    void onFetchUpdatesFinished(Installation *flatpakInstallation, bool hasUpdates);
-    void loadRemoteUpdates(Installation *installation);
+    void onFetchUpdatesFinished(const std::shared_ptr<Installation> &flatpakInstallation, bool hasUpdates);
+    void loadRemoteUpdates(const std::shared_ptr<Installation> &installation);
     void setupFlatpakInstallations();
-    QList<Installation> m_installations;
+    QList<std::shared_ptr<Installation>> m_installations;
     GCancellable *const m_cancellable;
     bool m_lastHasUpdates = false;
 };

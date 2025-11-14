@@ -69,6 +69,7 @@
   <summary xml:lang="bg">Инсталиране и премахване на приложения и приставки</summary>
   <summary xml:lang="ca">Instal·la i elimina aplicacions i complements</summary>
   <summary xml:lang="ca-valencia">Instal·la i elimina aplicacions i complements</summary>
+  <summary xml:lang="cs">Instaluje a odebírá aplikace či doplňky</summary>
   <summary xml:lang="da">Installér og fjern apps og udvidelser</summary>
   <summary xml:lang="de">Anwendungen und Erweiterungen installieren und entfernen</summary>
   <summary xml:lang="eo">Instalu kaj forigu apojn kaj kromaĵojn</summary>
@@ -108,6 +109,7 @@
     <p xml:lang="bg">Discover ви помага да намерите и инсталирате приложения, игри и инструменти. Можете да търсите или разглеждате по категории и да погледнете снимки на екрана и да прочетете ревютата, за да ви помогнат да изберете перфектното приложение.</p>
     <p xml:lang="ca">El Discover ajuda a instal·lar aplicacions, jocs i eines. Podeu cercar o explorar per categoria, i veure les captures de pantalla i llegir les ressenyes com a ajuda per a triar l'aplicació perfecta.</p>
     <p xml:lang="ca-valencia">Discover ajuda a instal·lar aplicacions, jocs i eines. Podeu buscar o explorar per categoria, i veure les captures de pantalla i llegir les ressenyes com a ajuda per a triar l'aplicació perfecta.</p>
+    <p xml:lang="cs">Discover vám pomáhá vyhledávat a instalovat aplikace, hry a nástroje. Můžete vyhledávat nebo procházet podle kategorií, prohlížet si náhledy a číst recenze, které vám pomohou vybrat tu správnou aplikaci.</p>
     <p xml:lang="da">Discover hjælper dig med at finde og installere programmer, spil og værktøjer. Du kan søge eller gennemse efter kategori og kigge på skærmbilleder og læse anmeldelser for at hjælpe dig med vælge det perfekte program.</p>
     <p xml:lang="de">Discover hilft Ihnen dabei, Anwendungen, Spiele und Werkzeuge zu finden und zu installieren. Sie können suchen oder durch Kategorien blättern sowie Bildschirmfotos ansehen und Rezensionen lesen, um die für Sie beste Anwendung zu finden.</p>
     <p xml:lang="el">Το Discover σας βοηθά να βρείτε και να εγκαταστήσετε εφαρμογές, παιχνίδια και εργαλεία. Μπορείτε να κάνετε αναζήτηση ή να περιηγηθείτε ανά κατηγορία και να δείτε στιγμιότυπα οθόνης και να διαβάσετε κριτικές για να σας βοηθήσουν να επιλέξετε την τέλεια εφαρμογή.</p>
@@ -158,6 +160,7 @@
     <p xml:lang="bg">С Discover можете да управлявате софтуер от множество източници, включващи хранилището на вашата дистрибуция, Flatpak, Snap, дори и от AppImages на store.kde.org.</p>
     <p xml:lang="ca">Amb el Discover podeu gestionar programari de diverses fonts, incloent-hi el repositori de programari del sistema operatiu, repositoris del Flatpak, la botiga de l'Snap, o també AppImages des de «store.kde.org».</p>
     <p xml:lang="ca-valencia">Amb Discover podeu gestionar programari de diverses fonts, incloent-hi el repositori de programari del sistema operatiu, repositoris de Flatpak, la botiga de Snap, o també les AppImage des de «store.kde.org».</p>
+    <p xml:lang="cs">S aplikací Discover můžete spravovat software z různých zdrojů, také repozitáře softwaru vašeho operačního systému či utility Flatpak, úložiště Snap, nebo dokonce AppImage z obchodu store.kde.org.</p>
     <p xml:lang="da">Med Discover kan du administrere software fra flere forskellige kilder, inklusiv dit styresystems softwarekilder, Flatpak-softwarekilder, Snap-butikken eller sågar AppImages fra store.kde.org.</p>
     <p xml:lang="de">Mit Discover können Sie Software von mehreren Quellen verwalten, einschließlich der Ihres Betriebssystems, Flatpak-Quellen, dem Snap-Store und sogar AppImages von store.kde.org.</p>
     <p xml:lang="el">Με το Discover, μπορείτε να διαχειριστείτε λογισμικό από πολλές πηγές, συμπεριλαμβανομένου του αποθετηρίου λογισμικού του λειτουργικού σας συστήματος, των αποθετηρίων Flatpak, του Snap store ή ακόμα και των AppImages από το store.kde.org.</p>
@@ -208,6 +211,7 @@
     <p xml:lang="bg">Накрая, Discover ви позволява също да намирате, инсталирате и управлявате разширения за Plasma и всички ваши любими приложения на KDE.</p>
     <p xml:lang="ca">Finalment, el Discover també permet cercar, instal·lar i gestionar complements per al Plasma i totes les aplicacions preferides del KDE!</p>
     <p xml:lang="ca-valencia">Finalment, Discover també permet buscar, instal·lar i gestionar complements per a Plasma i totes les aplicacions preferides de KDE!</p>
+    <p xml:lang="cs">Discover také umožňuje vyhledávat, instalovat a spravovat doplňky pro Plasma a všechny vaše oblíbené aplikace KDE!</p>
     <p xml:lang="da">Endelig lader Discover dig også finde, installere og administrere tilføjelser til Plasma og alle dine yndlings KDE-programmer!</p>
     <p xml:lang="de">Außerdem können Sie mit Discover Erweiterungen für Plasma und Ihre Lieblings-KDE-Anwendungen suchen, installieren und verwalten.</p>
     <p xml:lang="el">Τέλος, το Discover σας επιτρέπει επίσης να βρείτε, να εγκαταστήσετε και να διαχειριστείτε πρόσθετα για το Plasma και όλες τις αγαπημένες σας εφαρμογές KDE!</p>
@@ -319,10 +323,10 @@
   </provides>
   <compulsory_for_desktop>KDE</compulsory_for_desktop>
   <releases>
+    <release version="6.4.6" date="2025-11-11"/>
     <release version="6.5.2" date="2025-11-04"/>
     <release version="6.5.1" date="2025-10-28"/>
     <release version="6.5.0" date="2025-10-21"/>
-    <release version="6.4.5" date="2025-09-09"/>
   </releases>
   <custom>
     <value key="KDE::supporters">.</value>

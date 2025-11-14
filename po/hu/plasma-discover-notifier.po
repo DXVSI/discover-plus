@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-09-28 00:45+0000\n"
+"POT-Creation-Date: 2025-11-11 00:43+0000\n"
 "PO-Revision-Date: 2025-05-18 20:14+0200\n"
 "Last-Translator: Kristof Kiszel <ulysses@fsf.hu>\n"
 "Language-Team: Hungarian <kde-l10n-hu@kde.org>\n"
@@ -120,17 +120,17 @@ msgctxt "EMAIL OF TRANSLATORS"
 msgid "Your emails"
 msgstr "ulysses@kubuntu.org"
 
-#: notifier/main.cpp:52
+#: notifier/main.cpp:54
 #, kde-format
 msgid "Replace an existing instance"
 msgstr "Meglévő példány cseréje"
 
-#: notifier/main.cpp:56
+#: notifier/main.cpp:58
 #, kde-format
 msgid "Do not show the notifier"
 msgstr "Ne mutassa az értesítőt"
 
-#: notifier/main.cpp:56
+#: notifier/main.cpp:58
 #, kde-format
 msgid "hidden"
 msgstr "rejtett"

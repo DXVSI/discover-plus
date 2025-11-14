@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: discover\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-09-28 00:45+0000\n"
+"POT-Creation-Date: 2025-11-11 00:43+0000\n"
 "PO-Revision-Date: 2025-04-14 22:51+0200\n"
 "Last-Translator: Iñigo Salvador Azurmendi <xalba@ni.eus>\n"
 "Language-Team: Basque <kde-i18n-eu@kde.org>\n"
@@ -121,17 +121,17 @@ msgctxt "EMAIL OF TRANSLATORS"
 msgid "Your emails"
 msgstr "xalba@ni.eus"
 
-#: notifier/main.cpp:52
+#: notifier/main.cpp:54
 #, kde-format
 msgid "Replace an existing instance"
 msgstr "Ordezkatu dagoen instantzia bat"
 
-#: notifier/main.cpp:56
+#: notifier/main.cpp:58
 #, kde-format
 msgid "Do not show the notifier"
 msgstr "Ez erakutsi jakinarazlea"
 
-#: notifier/main.cpp:56
+#: notifier/main.cpp:58
 #, kde-format
 msgid "hidden"
 msgstr "ezkutuan"

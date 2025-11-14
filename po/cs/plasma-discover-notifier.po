@@ -1,14 +1,14 @@
 # Copyright (C) YEAR This_file_is_part_of_KDE
 # This file is distributed under the same license as the PACKAGE package.
-# SPDX-FileCopyrightText: 2015, 2018, 2019, 2020, 2024 Vít Pelčák <vit@pelcak.org>
-# SPDX-FileCopyrightText: 2021, 2023, 2024 Vit Pelcak <vit@pelcak.org>
+# SPDX-FileCopyrightText: 2015, 2018, 2019, 2020, 2024, 2025 Vít Pelčák <vit@pelcak.org>
+# SPDX-FileCopyrightText: 2021, 2023, 2024, 2025 Vit Pelcak <vit@pelcak.org>
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-09-28 00:45+0000\n"
-"PO-Revision-Date: 2024-08-20 08:34+0200\n"
+"POT-Creation-Date: 2025-11-11 00:43+0000\n"
+"PO-Revision-Date: 2025-11-10 11:49+0100\n"
 "Last-Translator: Vit Pelcak <vit@pelcak.org>\n"
 "Language-Team: Czech <kde-i18n-doc@kde.org>\n"
 "Language: cs\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Lokalize 24.05.2\n"
+"X-Generator: Lokalize 25.08.2\n"
 
 #: notifier/DiscoverNotifier.cpp:218
 #, kde-format
@@ -51,7 +51,7 @@ msgstr "Odpojen"
 #: notifier/DiscoverNotifier.cpp:375
 #, kde-format
 msgid "Applying unattended updates…"
-msgstr ""
+msgstr "Provádění automatických aktualizací…"
 
 #: notifier/DiscoverNotifier.cpp:400
 #, kde-format
@@ -107,7 +107,7 @@ msgstr "Upozornění na stav aktualizace systému"
 #: notifier/main.cpp:43
 #, kde-format
 msgid "© 2010-2025 Plasma Development Team"
-msgstr ""
+msgstr "© 2010-2025 Vývojový tým Plasma"
 
 #: notifier/main.cpp:47
 #, kde-format
@@ -121,17 +121,17 @@ msgctxt "EMAIL OF TRANSLATORS"
 msgid "Your emails"
 msgstr "vit@pelcak.org"
 
-#: notifier/main.cpp:52
+#: notifier/main.cpp:54
 #, kde-format
 msgid "Replace an existing instance"
 msgstr "Nahradit existující instanci"
 
-#: notifier/main.cpp:56
+#: notifier/main.cpp:58
 #, kde-format
 msgid "Do not show the notifier"
 msgstr "Nezobrazovat upozornění"
 
-#: notifier/main.cpp:56
+#: notifier/main.cpp:58
 #, kde-format
 msgid "hidden"
 msgstr "skryté"
@@ -145,13 +145,13 @@ msgstr "Aktualizace"
 #, kde-format
 msgctxt "@action:button Opens Discover's main UI to analyze the updates"
 msgid "Open Discover…"
-msgstr ""
+msgstr "Otevřít Discover…"
 
 #: notifier/NotifierItem.cpp:47
 #, kde-format
 msgctxt "@action:button Starts an update in the background"
 msgid "Start Update"
-msgstr ""
+msgstr "Spustit aktualizace"
 
 #: notifier/NotifierItem.cpp:50
 #, kde-format

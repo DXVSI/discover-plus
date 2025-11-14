@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-09-28 00:45+0000\n"
+"POT-Creation-Date: 2025-11-11 00:43+0000\n"
 "PO-Revision-Date: 2022-11-15 20:51+0100\n"
 "Last-Translator: Mihkel Tõnnov <mihhkel@gmail.com>\n"
 "Language-Team: Estonian <>\n"
@@ -121,17 +121,17 @@ msgctxt "EMAIL OF TRANSLATORS"
 msgid "Your emails"
 msgstr "qiilaq69@gmail.com"
 
-#: notifier/main.cpp:52
+#: notifier/main.cpp:54
 #, kde-format
 msgid "Replace an existing instance"
 msgstr "Töötava isendi asendamine"
 
-#: notifier/main.cpp:56
+#: notifier/main.cpp:58
 #, kde-format
 msgid "Do not show the notifier"
 msgstr "Teadustajat ei näidata"
 
-#: notifier/main.cpp:56
+#: notifier/main.cpp:58
 #, kde-format
 msgid "hidden"
 msgstr "peidetud"

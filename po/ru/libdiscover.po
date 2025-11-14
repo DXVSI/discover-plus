@@ -1,7 +1,7 @@
 # Copyright (C) YEAR This_file_is_part_of_KDE
 # This file is distributed under the same license as the PACKAGE package.
 #
-# SPDX-FileCopyrightText: 2018, 2019, 2020, 2021, 2022, 2023, 2024 Alexander Yavorsky <kekcuha@gmail.com>
+# SPDX-FileCopyrightText: 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025 Alexander Yavorsky <kekcuha@gmail.com>
 # Yuri Efremov <yur.arh@gmail.com>, 2010, 2011, 2012, 2013, 2014.
 # Alexander Potashev <aspotashev@gmail.com>, 2010, 2011, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021.
 # Alexander Lakhin <exclusion@gmail.com>, 2013.
@@ -12,17 +12,17 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-04 00:43+0000\n"
-"PO-Revision-Date: 2025-06-23 16:21+0300\n"
-"Last-Translator: Olesya Gerasimenko <translation-team@basealt.ru>\n"
-"Language-Team: Basealt Translation Team\n"
+"POT-Creation-Date: 2025-11-11 00:43+0000\n"
+"PO-Revision-Date: 2025-11-05 17:22+0300\n"
+"Last-Translator: Alexander Yavorsky <kekcuha@gmail.com>\n"
+"Language-Team: Russian <kde-russian@lists.kde.ru>\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=n==1 ? 3 : n%10==1 && n%100!=11 ? 0 : n"
 "%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
-"X-Generator: Lokalize 23.08.5\n"
+"X-Generator: Lokalize 25.08.2\n"
 "X-Environment: kde\n"
 "X-Accelerator-Marker: &\n"
 "X-Text-Markup: kde4\n"
@@ -983,12 +983,20 @@ msgstr "%1 (пользователь)"
 msgid "Enter a Flatpak repository URI (*.flatpakrepo):"
 msgstr "Введите адрес репозитория Flatpak (*.flatpakrepo):"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakTransactionThread.cpp:34
+#: libdiscover/backends/FlatpakBackend/FlatpakTransactionThread.cpp:35
 #, kde-format
 msgid "Adding remote '%1' in %2 from %3"
 msgstr "Добавление «%1» (%2) из %3"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakTransactionThread.cpp:414
+#: libdiscover/backends/FlatpakBackend/FlatpakTransactionThread.cpp:338
+#, kde-format
+msgctxt "@info:status"
+msgid ""
+"Cannot create transaction for '%1':<nl/>%2<nl/><nl/>Please report this to <a "
+"href='%3'>%3</a>"
+msgstr ""
+
+#: libdiscover/backends/FlatpakBackend/FlatpakTransactionThread.cpp:424
 #, kde-format
 msgctxt "fallback error message"
 msgid ""
@@ -998,13 +1006,13 @@ msgstr ""
 "Внутренняя ошибка. Отправьте сообщение об ошибке на https://bugs.kde.org/"
 "enter_bug.cgi?product=Discover"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakTransactionThread.cpp:452
+#: libdiscover/backends/FlatpakBackend/FlatpakTransactionThread.cpp:462
 #, kde-format
 msgctxt "@title"
 msgid "Replacement Available"
 msgstr "Замена пакета"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakTransactionThread.cpp:454
+#: libdiscover/backends/FlatpakBackend/FlatpakTransactionThread.cpp:464
 #, kde-kuit-format
 msgctxt ""
 "@info %1 and 2 are flatpak ids e.g. org.kde.krita (can be rather lengthy "
@@ -1017,13 +1025,13 @@ msgstr ""
 "Заменить его пакетом <resource>%2</resource>, который продолжает "
 "поддерживаться?"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakTransactionThread.cpp:460
+#: libdiscover/backends/FlatpakBackend/FlatpakTransactionThread.cpp:470
 #, kde-format
 msgctxt "@title"
 msgid "Automatic Removal"
 msgstr "Автоматическое удаление"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakTransactionThread.cpp:462
+#: libdiscover/backends/FlatpakBackend/FlatpakTransactionThread.cpp:472
 #, kde-kuit-format
 msgctxt ""
 "@info %1 is a flatpak id e.g. org.kde.krita (can be rather lengthy though)"
@@ -1211,7 +1219,7 @@ msgstr "Не удалось запустить %1"
 #, kde-format
 msgctxt "Category"
 msgid "Hardware Drivers"
-msgstr ""
+msgstr "Драйверы оборудования"
 
 #: libdiscover/backends/PackageKitBackend/packagekit-backend-categories.xml:568
 #, kde-format
@@ -1284,6 +1292,8 @@ msgid ""
 "The PackageKit background service stopped unexpectedly.<nl/></nl/>Please "
 "<link url='%1'>report this issue to %2</link>"
 msgstr ""
+"Работа фоновая службы PackageKit была неожиданно завершена.<nl/></nl/> <link "
+"url='%1'>Сообщите %2 об этой ситуации</link>."
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:18
 #, kde-format
@@ -2099,14 +2109,11 @@ msgid "Repair Failed"
 msgstr "Восстановление неудачно"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitNotifier.cpp:155
-#, fuzzy, kde-kuit-format
-#| msgctxt "@info"
-#| msgid "%1<nl/>Please report this error to your distribution."
+#, kde-kuit-format
 msgctxt ""
 "@info %1 is an error message and %3 is the name of the operating system"
 msgid "%1<nl/>Please <link url='%2'>report this error to %3</link>."
-msgstr ""
-"%1<nl/>Сообщите об этой ситуации разработчикам используемого дистрибутива."
+msgstr "%1<nl/><link url='%2'>Сообщите об этой ситуации %3</link>."
 
 #: libdiscover/backends/PackageKitBackend/PackageKitNotifier.cpp:168
 #, kde-format
@@ -2388,18 +2395,19 @@ msgid "Operating System"
 msgstr "Операционная система"
 
 #: libdiscover/backends/RpmOstreeBackend/RpmOstreeBackend.cpp:172
-#, fuzzy, kde-format
+#, kde-format
 msgid ""
 "rpm-ostree backend: Multiple booted deployments found. Please file a bug."
 msgstr ""
-"rpm-ostree: Обнаружена загрузка множества развёртываний. Сообщите об этой "
-"ошибке."
+"rpm-ostree backend: Обнаружена загрузка множества развёртываний. Сообщите об "
+"этой ошибке."
 
 #: libdiscover/backends/RpmOstreeBackend/RpmOstreeBackend.cpp:184
-#, fuzzy, kde-format
+#, kde-format
 msgid "rpm-ostree backend: No booted deployment found. Please file a bug."
 msgstr ""
-"rpm-ostree: Не обнаружена загрузка развёртывания. Сообщите об этой ошибке."
+"rpm-ostree backend: Не обнаружена загрузка развёртывания. Сообщите об этой "
+"ошибке."
 
 #: libdiscover/backends/RpmOstreeBackend/RpmOstreeBackend.cpp:373
 #, kde-format
@@ -2483,7 +2491,7 @@ msgid "Fallback version"
 msgstr "Резервная версия"
 
 #: libdiscover/backends/RpmOstreeBackend/RpmOstreeTransaction.cpp:40
-#, fuzzy, kde-format
+#, kde-format
 msgid ""
 "rpm-ostree backend: Error: No DBus interface provided. Please file a bug."
 msgstr ""
@@ -2491,7 +2499,7 @@ msgstr ""
 "ошибке."
 
 #: libdiscover/backends/RpmOstreeBackend/RpmOstreeTransaction.cpp:60
-#, fuzzy, kde-format
+#, kde-format
 msgid ""
 "rpm-ostree backend: Error: Can not start a transaction for resource with an "
 "invalid format. Please file a bug."
@@ -2500,7 +2508,7 @@ msgstr ""
 "Сообщите об этой ошибке."
 
 #: libdiscover/backends/RpmOstreeBackend/RpmOstreeTransaction.cpp:80
-#, fuzzy, kde-format
+#, kde-format
 msgid ""
 "rpm-ostree backend: Error: Can not rebase to an empty ref. Please file a bug."
 msgstr ""
@@ -2508,7 +2516,7 @@ msgstr ""
 "об этой ошибке."
 
 #: libdiscover/backends/RpmOstreeBackend/RpmOstreeTransaction.cpp:98
-#, fuzzy, kde-format
+#, kde-format
 msgid ""
 "rpm-ostree backend: Error: Unknown operation requested. Please file a bug."
 msgstr ""
@@ -2520,10 +2528,12 @@ msgstr ""
 msgid ""
 "rpm-ostree transaction failed with:\n"
 "%1"
-msgstr "Операция rpm-ostree завершилась ошибкой:%1"
+msgstr ""
+"Операция rpm-ostree завершилась ошибкой:\n"
+"%1"
 
 #: libdiscover/backends/RpmOstreeBackend/RpmOstreeTransaction.cpp:244
-#, fuzzy, kde-format
+#, kde-format
 msgid "rpm-ostree backend: Error: Unknown resource format. Please file a bug."
 msgstr ""
 "rpm-ostree-backend: Неизвестный формат ресурса. Сообщите об этой ошибке."
@@ -2720,13 +2730,10 @@ msgid "Refresh"
 msgstr "Обновить список"
 
 #: libdiscover/resources/ResourcesModel.cpp:406
-#, fuzzy, kde-format
-#| msgctxt ""
-#| "@info 'Refresh' is used as a noun here, and %1 is an app's version number"
-#| msgid "Refresh of version %1"
+#, kde-format
 msgctxt "@info:status %1 is the name of a source of updates"
 msgid "Refreshing %1"
-msgstr "Обновление версии %1"
+msgstr "Обновление %1"
 
 #: libdiscover/resources/ResourcesProxyModel.cpp:787
 #, kde-format

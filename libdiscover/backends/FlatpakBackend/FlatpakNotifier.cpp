@@ -16,19 +16,22 @@
 
 using namespace std::chrono_literals;
 
-static void installationChanged(GFileMonitor *monitor, GFile *child, GFile *other_file, GFileMonitorEvent event_type, gpointer self)
+static void installationChanged(GFileMonitor *monitor, GFile *child, GFile *other_file, GFileMonitorEvent event_type, gpointer data)
 {
     Q_UNUSED(monitor);
     Q_UNUSED(child);
     Q_UNUSED(other_file);
     Q_UNUSED(event_type);
 
-    FlatpakNotifier::Installation *installation = (FlatpakNotifier::Installation *)self;
-    if (!installation)
+    FlatpakNotifier *notifier = (FlatpakNotifier *)data;
+    if (!notifier)
         return;
 
-    FlatpakNotifier *notifier = installation->m_notifier;
-    notifier->loadRemoteUpdates(installation);
+    for (const auto &installation : notifier->m_installations) {
+        if (installation->m_monitor == monitor) {
+            notifier->loadRemoteUpdates(installation);
+        }
+    }
 }
 
 FlatpakNotifier::FlatpakNotifier(QObject *parent)
@@ -46,16 +49,17 @@ FlatpakNotifier::FlatpakNotifier(QObject *parent)
     }
     for (uint i = 0; installations && i < installations->len; i++) {
         auto installation = FLATPAK_INSTALLATION(g_ptr_array_index(installations, i));
-        m_installations << Installation(this, installation);
+        m_installations << std::make_shared<Installation>(this, installation);
     }
 
     if (auto user = flatpak_installation_new_user(m_cancellable, &error)) {
-        m_installations << Installation(this, user);
+        m_installations << std::make_shared<Installation>(this, user);
     }
 }
 
 FlatpakNotifier::Installation::Installation(FlatpakNotifier *notifier, FlatpakInstallation *installation)
     : m_notifier(notifier)
+    , m_installation(installation)
 {
     g_object_ref(installation);
 }
@@ -78,12 +82,12 @@ void FlatpakNotifier::recheckSystemUpdateNeeded()
     setupFlatpakInstallations();
 
     // Load updates from remote repositories
-    for (auto &installation : m_installations) {
-        loadRemoteUpdates(&installation);
+    for (auto &installation : std::as_const(m_installations)) {
+        loadRemoteUpdates(installation);
     }
 }
 
-void FlatpakNotifier::onFetchUpdatesFinished(Installation *installation, bool hasUpdates)
+void FlatpakNotifier::onFetchUpdatesFinished(const std::shared_ptr<Installation> &installation, bool hasUpdates)
 {
     if (installation->m_hasUpdates == hasUpdates) {
         return;
@@ -96,8 +100,9 @@ void FlatpakNotifier::onFetchUpdatesFinished(Installation *installation, bool ha
     }
 }
 
-void FlatpakNotifier::loadRemoteUpdates(Installation *installation)
+void FlatpakNotifier::loadRemoteUpdates(const std::shared_ptr<Installation> &installation)
 {
+    Q_ASSERT(installation->m_installation);
     auto fw = new QFutureWatcher<bool>(this);
     connect(fw, &QFutureWatcher<bool>::finished, this, [this, installation, fw]() {
         onFetchUpdatesFinished(installation, fw->result());
@@ -131,7 +136,7 @@ void FlatpakNotifier::loadRemoteUpdates(Installation *installation)
 bool FlatpakNotifier::hasUpdates()
 {
     return std::ranges::any_of(m_installations, [](const auto &installation) {
-        return installation.m_hasUpdates;
+        return installation->m_hasUpdates;
     });
 }
 
@@ -141,7 +146,7 @@ bool FlatpakNotifier::Installation::ensureInitialized(GCancellable *cancellable)
         g_autoptr(GError) error = nullptr;
         m_monitor = flatpak_installation_create_monitor(m_installation, cancellable, &error);
         if (m_monitor) {
-            g_signal_connect(m_monitor, "changed", G_CALLBACK(installationChanged), this);
+            g_signal_connect(m_monitor, "changed", G_CALLBACK(installationChanged), m_notifier);
         } else {
             qCWarning(LIBDISCOVER_BACKEND_FLATPAK_LOG) << "Failed to setup flatpak installation: " << error->message;
         }
@@ -152,7 +157,7 @@ bool FlatpakNotifier::Installation::ensureInitialized(GCancellable *cancellable)
 void FlatpakNotifier::setupFlatpakInstallations()
 {
     for (auto &installation : m_installations) {
-        installation.ensureInitialized(m_cancellable);
+        installation->ensureInitialized(m_cancellable);
     }
 }
 

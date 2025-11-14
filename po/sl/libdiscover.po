@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-04 00:43+0000\n"
-"PO-Revision-Date: 2025-10-14 07:49+0200\n"
+"POT-Creation-Date: 2025-11-11 00:43+0000\n"
+"PO-Revision-Date: 2025-11-11 07:23+0100\n"
 "Last-Translator: Matjaž Jeran <matjaz.jeran@amis.net>\n"
 "Language-Team: Slovenian <lugos-slo@lugos.si>\n"
 "Language: sl\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || n"
 "%100==4 ? 3 : 0);\n"
 "Translator: Andrej Mernik <andrejm@ubuntu.si>\n"
-"X-Generator: Poedit 3.7\n"
+"X-Generator: Poedit 3.8\n"
 
 #, kde-format
 msgctxt "NAME OF TRANSLATORS"
@@ -966,12 +966,22 @@ msgstr "%1 (uporabnik)"
 msgid "Enter a Flatpak repository URI (*.flatpakrepo):"
 msgstr "Vnesite URI skladišča Flatpak (*.flatpakrepo):"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakTransactionThread.cpp:34
+#: libdiscover/backends/FlatpakBackend/FlatpakTransactionThread.cpp:35
 #, kde-format
 msgid "Adding remote '%1' in %2 from %3"
 msgstr "Dodajanje oddaljenega »%1« v %2 iz %3"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakTransactionThread.cpp:414
+#: libdiscover/backends/FlatpakBackend/FlatpakTransactionThread.cpp:338
+#, kde-format
+msgctxt "@info:status"
+msgid ""
+"Cannot create transaction for '%1':<nl/>%2<nl/><nl/>Please report this to <a "
+"href='%3'>%3</a>"
+msgstr ""
+"Ni mogoče ustvariti transakcije za '%1': <nl/>%2<nl/><nl/>Prosimo, prijavite "
+"to <a href='%3'>%3</a>"
+
+#: libdiscover/backends/FlatpakBackend/FlatpakTransactionThread.cpp:424
 #, kde-format
 msgctxt "fallback error message"
 msgid ""
@@ -981,13 +991,13 @@ msgstr ""
 "Prišlo je do notranje napake. Prosimo izpolnite poročilo na https://bugs.kde."
 "org/enter_bug.cgi?product=Discover"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakTransactionThread.cpp:452
+#: libdiscover/backends/FlatpakBackend/FlatpakTransactionThread.cpp:462
 #, kde-format
 msgctxt "@title"
 msgid "Replacement Available"
 msgstr "Nadomestek na voljo"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakTransactionThread.cpp:454
+#: libdiscover/backends/FlatpakBackend/FlatpakTransactionThread.cpp:464
 #, kde-kuit-format
 msgctxt ""
 "@info %1 and 2 are flatpak ids e.g. org.kde.krita (can be rather lengthy "
@@ -999,13 +1009,13 @@ msgstr ""
 "<resource>%1</resource> več ne dobiva posodobitev.<nl/><nl/>Naj ga "
 "nadomestim s podprto različico, ki ga zagotavlja <resource>%2</resource>?"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakTransactionThread.cpp:460
+#: libdiscover/backends/FlatpakBackend/FlatpakTransactionThread.cpp:470
 #, kde-format
 msgctxt "@title"
 msgid "Automatic Removal"
 msgstr "Samodejno odstranitev"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakTransactionThread.cpp:462
+#: libdiscover/backends/FlatpakBackend/FlatpakTransactionThread.cpp:472
 #, kde-kuit-format
 msgctxt ""
 "@info %1 is a flatpak id e.g. org.kde.krita (can be rather lengthy though)"

@@ -1,6 +1,6 @@
 # Copyright (C) YEAR This_file_is_part_of_KDE
 # This file is distributed under the same license as the PACKAGE package.
-# SPDX-FileCopyrightText: 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2023, 2024 Vít Pelčák <vit@pelcak.org>
+# SPDX-FileCopyrightText: 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2023, 2024, 2025 Vít Pelčák <vit@pelcak.org>
 # Tomáš Chvátal <tomas.chvatal@gmail.com>, 2012, 2013.
 # SPDX-FileCopyrightText: 2017, 2018, 2019, 2020, 2021, 2023, 2024, 2025 Vit Pelcak <vit@pelcak.org>
 #
@@ -8,9 +8,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-04 00:43+0000\n"
-"PO-Revision-Date: 2025-10-24 16:50+0200\n"
-"Last-Translator: Vit Pelcak <vpelcak@suse.cz>\n"
+"POT-Creation-Date: 2025-11-11 00:43+0000\n"
+"PO-Revision-Date: 2025-11-10 11:50+0100\n"
+"Last-Translator: Vit Pelcak <vit@pelcak.org>\n"
 "Language-Team: Czech <kde-i18n-doc@kde.org>\n"
 "Language: cs\n"
 "MIME-Version: 1.0\n"
@@ -963,12 +963,20 @@ msgstr "%1 (uživatel)"
 msgid "Enter a Flatpak repository URI (*.flatpakrepo):"
 msgstr "Zadejte URI Flatpak repozitáře (*.flatpakrepo):"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakTransactionThread.cpp:34
+#: libdiscover/backends/FlatpakBackend/FlatpakTransactionThread.cpp:35
 #, kde-format
 msgid "Adding remote '%1' in %2 from %3"
 msgstr "Přidává se zdroj balíčků '%1' v %2 z %3"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakTransactionThread.cpp:414
+#: libdiscover/backends/FlatpakBackend/FlatpakTransactionThread.cpp:338
+#, kde-format
+msgctxt "@info:status"
+msgid ""
+"Cannot create transaction for '%1':<nl/>%2<nl/><nl/>Please report this to <a "
+"href='%3'>%3</a>"
+msgstr ""
+
+#: libdiscover/backends/FlatpakBackend/FlatpakTransactionThread.cpp:424
 #, kde-format
 msgctxt "fallback error message"
 msgid ""
@@ -978,13 +986,13 @@ msgstr ""
 "Nastala vnitřní chyba. Prosím, nahlašte chybu na https://bugs.kde.org/"
 "enter_bug.cgi?product=Discover"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakTransactionThread.cpp:452
+#: libdiscover/backends/FlatpakBackend/FlatpakTransactionThread.cpp:462
 #, kde-format
 msgctxt "@title"
 msgid "Replacement Available"
 msgstr "Je dostupná náhrada"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakTransactionThread.cpp:454
+#: libdiscover/backends/FlatpakBackend/FlatpakTransactionThread.cpp:464
 #, kde-kuit-format
 msgctxt ""
 "@info %1 and 2 are flatpak ids e.g. org.kde.krita (can be rather lengthy "
@@ -993,14 +1001,16 @@ msgid ""
 "<resource>%1</resource> is no longer receiving updates.<nl/><nl/>Replace it "
 "with the supported version provided by <resource>%2</resource>?"
 msgstr ""
+"<resource>%1</resource> již nedostává aktualizace.<nl/><nl/>Chcete jej "
+"nahradit podporovanou verzí <resource>%2</resource>?"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakTransactionThread.cpp:460
+#: libdiscover/backends/FlatpakBackend/FlatpakTransactionThread.cpp:470
 #, kde-format
 msgctxt "@title"
 msgid "Automatic Removal"
 msgstr "Automatické odstranění"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakTransactionThread.cpp:462
+#: libdiscover/backends/FlatpakBackend/FlatpakTransactionThread.cpp:472
 #, kde-kuit-format
 msgctxt ""
 "@info %1 is a flatpak id e.g. org.kde.krita (can be rather lengthy though)"
@@ -1008,6 +1018,8 @@ msgid ""
 "<resource>%1</resource> is no longer receiving updates.<nl/><p>The reason "
 "given is: <message>%2</message></p><nl/><p>Automatically remove it?</p>"
 msgstr ""
+"<resource>%1</resource> již nedostává aktualizace.<nl/><p>Uvedený důvod je: "
+"<message>%2</message></p><nl/><p>Odebrat jej automaticky?</p>"
 
 #: libdiscover/backends/FlatpakBackend/qml/FlatpakOldBeta.qml:30
 #, kde-format
@@ -1016,28 +1028,30 @@ msgid ""
 "This development version of %1 is outdated. Using the stable version is "
 "highly recommended."
 msgstr ""
+"Tato vývojová verze aplikace %1 je zastaralá. Důrazně doporučujeme používat "
+"stabilní verzi."
 
 #: libdiscover/backends/FlatpakBackend/qml/FlatpakOldBeta.qml:31
 #, kde-format
 msgctxt "@label %1 is the name of an application"
 msgid "A more stable version of %1 is available."
-msgstr ""
+msgstr "K dispozici je stabilní verze aplikace %1."
 
 #: libdiscover/backends/FlatpakBackend/qml/FlatpakOldBeta.qml:50
 #, kde-format
 msgctxt "@action: button %1 is the name of a Flatpak repo"
 msgid "View Stable Version on %1"
-msgstr ""
+msgstr "Zobrazit stabilní verzi v repozitáři %1"
 
 #: libdiscover/backends/FlatpakBackend/qml/FlatpakRemoveData.qml:19
 #, kde-format
 msgid "%1 is not installed but it still has data present."
-msgstr ""
+msgstr "Aplikace %1 není nainstalována, ale její data jsou stále přítomná."
 
 #: libdiscover/backends/FlatpakBackend/qml/FlatpakRemoveData.qml:45
 #, kde-format
 msgid "Delete settings and user data"
-msgstr ""
+msgstr "Smazat nastavení a uživatelská data"
 
 #: libdiscover/backends/FlatpakBackend/qml/FlatpakRemoveData.qml:48
 #, kde-format
@@ -1055,7 +1069,7 @@ msgstr "Oprávnění"
 #: libdiscover/backends/SnapBackend/qml/PermissionsButton.qml:20
 #, kde-format
 msgid "Configure permissions…"
-msgstr "Nastavit oprávnění..."
+msgstr "Nastavit oprávnění…"
 
 #: libdiscover/backends/FwupdBackend/FwupdBackend.cpp:486
 #: libdiscover/backends/FwupdBackend/FwupdResource.cpp:116
@@ -1069,6 +1083,8 @@ msgid ""
 "The remote %1 require that you accept their license:\n"
 " %2"
 msgstr ""
+"Vzdálený zdroj %1 vyžaduje abyste schválili jeho licenci:\n"
+" %2"
 
 #: libdiscover/backends/FwupdBackend/FwupdSourcesBackend.cpp:41
 #, kde-format
@@ -1078,7 +1094,7 @@ msgstr "Projít si EULA"
 #: libdiscover/backends/FwupdBackend/FwupdSourcesBackend.cpp:137
 #, kde-format
 msgid "Could not enable remote %1: %2"
-msgstr ""
+msgstr "Nelze aktivovat vzdálený zdroj %1: %2"
 
 #: libdiscover/backends/KNSBackend/KNSBackend.cpp:64
 #, kde-format
@@ -1086,11 +1102,13 @@ msgid ""
 "Unsupported question:\n"
 "%1"
 msgstr ""
+"Nepodporovaný dotaz:\n"
+"%1"
 
 #: libdiscover/backends/KNSBackend/KNSBackend.cpp:210
 #, kde-format
 msgid "Backend %1 took too long to initialize"
-msgstr ""
+msgstr "Inicializace podpůrné vrstvy %1 trvala příliš dlouho"
 
 #: libdiscover/backends/KNSBackend/KNSBackend.cpp:276
 #, kde-format
@@ -1110,7 +1128,7 @@ msgstr "Doplňky aplikací"
 #: libdiscover/backends/KNSBackend/KNSBackend.cpp:392
 #, kde-format
 msgid "Network error in backend %1: %2"
-msgstr ""
+msgstr "Chyba sítě v podpůrné vrstvě %1: %2"
 
 #: libdiscover/backends/KNSBackend/KNSBackend.cpp:399
 #, kde-format
@@ -1118,13 +1136,15 @@ msgid ""
 "Too many requests sent to the server for backend %1. Please try again in a "
 "few minutes."
 msgstr ""
+"Příliš mnoho požadavků na server podpůrné vrstvy %1. Prosím, zkuste to znovu "
+"za několik minut."
 
 #: libdiscover/backends/KNSBackend/KNSBackend.cpp:402
 #: libdiscover/backends/KNSBackend/KNSBackend.cpp:408
 #: libdiscover/backends/KNSBackend/KNSBackend.cpp:413
 #, kde-format
 msgid "Invalid %1 backend, contact your distributor."
-msgstr ""
+msgstr "Neplatná podpůrná vrstva %1, kontaktujte distributora."
 
 #: libdiscover/backends/KNSBackend/KNSBackend.cpp:432
 #, kde-format
@@ -1134,16 +1154,20 @@ msgid ""
 "reported error was:\n"
 "%2"
 msgstr ""
+"Aktualizaci %1 nelze dokončit. Můžete zkusit provést tuto akci v dialogovém "
+"okně „Získejte žhavé novinky”, které umožňuje přesnější kontrolu. Uvedená "
+"chyba:\n"
+"%2"
 
 #: libdiscover/backends/KNSBackend/KNSBackend.cpp:442
 #, kde-format
 msgid "Could not fetch screenshot for the entry %1 in backend %2"
-msgstr ""
+msgstr "Nelze načíst snímek obrazovky pro položku %1 v podpůrné vrstvě %2"
 
 #: libdiscover/backends/KNSBackend/KNSBackend.cpp:446
 #, kde-format
 msgid "Unhandled error in %1 backend. Contact your distributor."
-msgstr ""
+msgstr "Neošetřená chyba v podpůrné vrstvě %1. Kontaktujte distributora."
 
 #: libdiscover/backends/KNSBackend/KNSBackend.cpp:570
 #, kde-format
@@ -1159,18 +1183,18 @@ msgstr "Obchod KDE"
 #: libdiscover/backends/KNSBackend/KNSReviews.cpp:146
 #, kde-format
 msgid "Log in information for %1"
-msgstr ""
+msgstr "Přihlašovací údaje pro %1"
 
 #: libdiscover/backends/PackageKitBackend/AppPackageKitResource.cpp:266
 #, kde-format
 msgid "Cannot launch %1"
-msgstr ""
+msgstr "Nelze spustit %1"
 
 #: libdiscover/backends/PackageKitBackend/packagekit-backend-categories.xml:557
 #, kde-format
 msgctxt "Category"
 msgid "Hardware Drivers"
-msgstr ""
+msgstr "Ovladače hardwaru"
 
 #: libdiscover/backends/PackageKitBackend/packagekit-backend-categories.xml:568
 #, kde-format
@@ -1202,6 +1226,8 @@ msgid ""
 "Your operating system ended support on %1. Consider upgrading to a supported "
 "version."
 msgstr ""
+"Váš operační systém ukončil podporu dne %1. Zvažte aktualizaci na "
+"podporovanou verzi."
 
 #: libdiscover/backends/PackageKitBackend/PackageKitBackend.cpp:945
 #, kde-format
@@ -1217,6 +1243,9 @@ msgid ""
 "To be able to upgrade to this new version, first apply all available "
 "updates, and then restart the system."
 msgstr ""
+"<b>%1 je nyní dostupný.</b>\n"
+"Pro aktualizaci na tuto novou verzi musíte prvně aplikovat všechny dostupné "
+"aktualizace a poté restartovat systém."
 
 #: libdiscover/backends/PackageKitBackend/PackageKitBackend.cpp:1040
 #, kde-format
@@ -1238,6 +1267,8 @@ msgid ""
 "The PackageKit background service stopped unexpectedly.<nl/></nl/>Please "
 "<link url='%1'>report this issue to %2</link>"
 msgstr ""
+"Služba na pozadí PackageKit byla neočekávaně zastavena.<nl/></nl/>Prosím, "
+"<link url='%1'>nahlaste tento problém %2.</link>"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:18
 #, kde-format
@@ -1332,7 +1363,7 @@ msgstr "Přenos byl zrušen"
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:57
 #, kde-format
 msgid "No Cache available"
-msgstr ""
+msgstr "Žádná dostupná mezipaměť"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:59
 #, kde-format
@@ -1342,7 +1373,7 @@ msgstr "Repozitář nelze najít"
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:61
 #, kde-format
 msgid "Cannot remove system package"
-msgstr ""
+msgstr "Nelze odstranit systémový balíček"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:63
 #, kde-format
@@ -1357,17 +1388,17 @@ msgstr "Chyba inicializace"
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:67
 #, kde-format
 msgid "Failed to finalize transaction"
-msgstr ""
+msgstr "Přenos nelze dokončit"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:69
 #, kde-format
 msgid "Config parsing failed"
-msgstr ""
+msgstr "Načtení nastavení se nezdařilo"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:71
 #, kde-format
 msgid "Cannot cancel transaction"
-msgstr ""
+msgstr "Přenos nelze zrušit"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:73
 #, kde-format
@@ -1482,7 +1513,7 @@ msgstr "Je vyžadována změna média"
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:117
 #, kde-format
 msgid "You have no authorization to execute this operation"
-msgstr ""
+msgstr "Nemáte oprávnění k provedení této operace"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:119
 #, kde-format
@@ -1517,7 +1548,7 @@ msgstr "Repozitář nelze vypnout"
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:131
 #, kde-format
 msgid "Restricted download detected"
-msgstr ""
+msgstr "Bylo zjištěno omezené stahování"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:133
 #, kde-format
@@ -1569,12 +1600,12 @@ msgstr "Nelze stáhnout zdroje"
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:151
 #, kde-format
 msgid "Canceled priority"
-msgstr ""
+msgstr "Priorita zrušena"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:153
 #, kde-format
 msgid "Unfinished transaction"
-msgstr "Nedokončená transakce"
+msgstr "Nedokončený přenos"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:155
 #, kde-format
@@ -1602,6 +1633,8 @@ msgid ""
 "'%1' was updated for security reasons, a restart of the session is "
 "recommended."
 msgstr ""
+"'%1' byl z bezpečnostních důvodů aktualizován, je doporučeno restartovat "
+"sezení."
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:175
 #, kde-format
@@ -1609,36 +1642,38 @@ msgid ""
 "'%1' was updated for security reasons, a restart of the system is "
 "recommended."
 msgstr ""
+"'%1' byl z bezpečnostních důvodů aktualizován, je doporučeno restartovat "
+"systém."
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:180
 #, kde-format
 msgid "A change by '%1' suggests your system to be restarted."
-msgstr ""
+msgstr "Změna provedená '%1' doporučuje restart počítače."
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:188
 #, kde-format
 msgid "The application will have to be restarted."
-msgstr ""
+msgstr "Aplikace musí být restartována."
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:190
 #, kde-format
 msgid "The session will have to be restarted"
-msgstr ""
+msgstr "Sezení musí být restartováno"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:192
 #, kde-format
 msgid "The system will have to be restarted."
-msgstr ""
+msgstr "Systém musí bít restartován."
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:194
 #, kde-format
 msgid "For security, the session will have to be restarted."
-msgstr ""
+msgstr "Z bezpečnostních důvodů je nutné restartovat sezení."
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:196
 #, kde-format
 msgid "For security, the system will have to be restarted."
-msgstr ""
+msgstr "Z bezpečnostních důvodů je nutné restartovat systém."
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:208
 #, kde-format
@@ -1698,7 +1733,7 @@ msgstr "Kontrolují se podpisy…"
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:231
 #, kde-format
 msgid "Test committing…"
-msgstr ""
+msgstr "Testování zasílání…"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:233
 #, kde-format
@@ -1739,95 +1774,95 @@ msgstr "Neznámý stav"
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:258
 #, kde-format
 msgid "We are waiting for something."
-msgstr ""
+msgstr "Čeká se na něco."
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:260
 #, kde-format
 msgid "Setting up transaction…"
-msgstr ""
+msgstr "Nastavování přenosu…"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:262
 #, kde-format
 msgid "The transaction is currently working…"
-msgstr "Transakce právě pracuje…"
+msgstr "Přenos právě pracuje…"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:264
 #, kde-format
 msgid "The transaction is currently removing packages…"
-msgstr "Transakce právě odstraňuje balíčky…"
+msgstr "Přenos právě odstraňuje balíčky…"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:266
 #, kde-format
 msgid "The transaction is currently downloading packages…"
-msgstr "Transakce právě stahuje balíčky…"
+msgstr "Přenos právě stahuje balíčky…"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:268
 #, kde-format
 msgid "The transactions is currently installing packages…"
-msgstr "Transakce právě instaluje balíčky…"
+msgstr "Přenos právě instaluje balíčky…"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:270
 #, kde-format
 msgid "The transaction is currently updating packages…"
-msgstr "Transakce právě aktualizuje balíčky…"
+msgstr "Přenos právě aktualizuje balíčky…"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:272
 #, kde-format
 msgid "The transaction is currently cleaning up…"
-msgstr "Transakce právě uklízí…"
+msgstr "Přenos právě uklízí…"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:275
 #, kde-format
 msgid ""
 "The transaction is currently resolving the dependencies of the packages it "
 "will install…"
-msgstr ""
+msgstr "Přenos právě řeší závislosti balíčků, které se budou instalovat…"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:277
 #, kde-format
 msgid "The transaction is currently checking the signatures of the packages…"
-msgstr ""
+msgstr "Přenos právě kontroluje podpisy balíčků…"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:279
 #, kde-format
 msgid ""
 "The transaction is currently testing the commit of this set of packages…"
-msgstr ""
+msgstr "Přenos právě testuje zasílání této skupiny balíčků…"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:281
 #, kde-format
 msgid "The transaction is currently committing its set of packages…"
-msgstr ""
+msgstr "Přenos právě zasílá svojí skupinu balíčků…"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:284
 #, kde-format
 msgid "The transaction has finished!"
-msgstr ""
+msgstr "Přenos dokončen!"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:286
 #, kde-format
 msgid "The transaction was canceled"
-msgstr ""
+msgstr "Přenos byl zrušen"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:288
 #, kde-format
 msgid "The transaction is currently waiting for the lock…"
-msgstr ""
+msgstr "Přenos právě čeká na zámek…"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:290
 #, kde-format
 msgid "Waiting for the user to authorize the transaction…"
-msgstr ""
+msgstr "Čeká se na autorizaci přenosu uživatelem…"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:295
 #, kde-format
 msgid "The transaction is currently copying files…"
-msgstr ""
+msgstr "Přenos právě kopíruje soubory…"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:297
 #, kde-format
 msgid "Currently refreshing the repository cache…"
-msgstr ""
+msgstr "Právě se aktualizuje mezipaměť zdrojů balíčků…"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:302
 #, kde-format
@@ -1931,12 +1966,12 @@ msgstr "Zastarává se"
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:358
 #, kde-format
 msgid "Collection Installed"
-msgstr ""
+msgstr "Sbírka je nainstalována"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:360
 #, kde-format
 msgid "Collection Available"
-msgstr ""
+msgstr "Sbírka je k dispozici"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:364
 #, kde-format
@@ -2012,8 +2047,14 @@ msgid_plural ""
 "Failed to update %1 packages\n"
 "%2"
 msgstr[0] ""
+"Selhala aktualizace %1 balíčku\n"
+"%2"
 msgstr[1] ""
+"Selhala aktualizace %1 balíčků\n"
+"%2"
 msgstr[2] ""
+"Selhala aktualizace %1 balíčků\n"
+"%2"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitNotifier.cpp:136
 #: libdiscover/backends/PackageKitBackend/PackageKitNotifier.cpp:187
@@ -2031,7 +2072,7 @@ msgstr "Opravit systém"
 #: libdiscover/backends/PackageKitBackend/PackageKitNotifier.cpp:146
 #, kde-format
 msgid "Repairing failed offline update"
-msgstr ""
+msgstr "Opravuje se neúspěšná offline aktualizace"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitNotifier.cpp:153
 #, kde-format
@@ -2043,7 +2084,7 @@ msgstr "Oprava selhala"
 msgctxt ""
 "@info %1 is an error message and %3 is the name of the operating system"
 msgid "%1<nl/>Please <link url='%2'>report this error to %3</link>."
-msgstr ""
+msgstr "%1<nl/>Prosím <link url='%2'>nahlaste tuto chybu %3</link>."
 
 #: libdiscover/backends/PackageKitBackend/PackageKitNotifier.cpp:168
 #, kde-format
@@ -2146,6 +2187,8 @@ msgstr[2] "%1 balíčků bude aktualizováno"
 #, kde-format
 msgid "<h3>%1</h3>Upgrade to new version %2<br/>No release notes provided"
 msgstr ""
+"<h3>%1</h3>Aktualizace na novou verzi %2<br/>K dispozici nejsou žádné "
+"informace o vydání."
 
 #: libdiscover/backends/PackageKitBackend/PackageKitUpdater.cpp:205
 #, kde-format
@@ -2153,6 +2196,8 @@ msgid ""
 "<h3>%1</h3>Upgrade to new version %2<br/>Release notes:<blockquote>%3</"
 "blockquote>"
 msgstr ""
+"<h3>%1</h3>Aktualizace na novou verzi %2<br/>Informace o vydání:<blockquote>"
+"%3</blockquote>"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitUpdater.cpp:231
 #, kde-format
@@ -2168,7 +2213,7 @@ msgstr "Budoucí"
 #, kde-format
 msgctxt "@info:status %1 is a formatted disk space string e.g. '240 MiB'"
 msgid "Not enough space to perform the update; only %1 of space are available."
-msgstr ""
+msgstr "Nedostatek volného místa pro aktualizaci; jen %1 je k dispozici."
 
 #: libdiscover/backends/PackageKitBackend/PackageKitUpdater.cpp:602
 #, kde-format
@@ -2178,6 +2223,10 @@ msgid ""
 "you believe this is an error, please report it as a bug to the packagers of "
 "your distribution."
 msgstr ""
+"Tuto aktualizaci nelze dokončit, protože by došlo k odstranění následujícího "
+"softwaru, který je nezbytný pro fungování systému:<nl/><ul><li>%1</li></"
+"ul><nl/>Pokud se domníváte, že se jedná o chybu, obraťte se na vydavatele "
+"vaší distribuce."
 
 #: libdiscover/backends/PackageKitBackend/PackageKitUpdater.cpp:609
 #, kde-format
@@ -2206,6 +2255,8 @@ msgid ""
 "Media Change of type '%1' is requested.\n"
 "%2"
 msgstr ""
+"Je nutná výměna média typu '%1'.\n"
+"%2"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitUpdater.cpp:777
 #: libdiscover/backends/PackageKitBackend/PKTransaction.cpp:304
@@ -2220,6 +2271,8 @@ msgid ""
 "The package %1 and its vendor %2 require that you accept their license:\n"
 " %3"
 msgstr ""
+"Balíček %1 a jeho poskytovatel %2 vyžadují, abyste přijali licenci:\n"
+" %3"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitUpdater.cpp:895
 #: libdiscover/backends/PackageKitBackend/PKTransaction.cpp:344
@@ -2239,6 +2292,13 @@ msgid ""
 "Fingerprint: %4\n"
 "Timestamp: %4\n"
 msgstr ""
+"Důvěřujete následujícímu klíči?\n"
+"\n"
+"URL: %1\n"
+"Uživatel: %2\n"
+"Klíč: %3\n"
+"Otisk: %4\n"
+"Časové razítko: %4\n"
 
 #: libdiscover/backends/PackageKitBackend/PKTransaction.cpp:201
 #, kde-format
@@ -2248,6 +2308,10 @@ msgid ""
 "you believe this is an error, please report it as a bug to the packagers of "
 "your distribution."
 msgstr ""
+"Tuto akci nelze dokončit, protože by došlo k odstranění následujícího "
+"softwaru, který je nezbytný pro fungování systému:<nl/><ul><li>%1</li></"
+"ul><nl/>Pokud se domníváte, že se jedná o chybu, obraťte se na vydavatele "
+"vaší distribuce."
 
 #: libdiscover/backends/PackageKitBackend/PKTransaction.cpp:214
 #, kde-format
@@ -2280,17 +2344,17 @@ msgstr "Zobrazit závislosti..."
 #: libdiscover/backends/PackageKitBackend/qml/DependenciesButton.qml:43
 #, kde-format
 msgid "Dependencies for package: %1"
-msgstr ""
+msgstr "Závislosti pro balíček: %1"
 
 #: libdiscover/backends/PackageKitBackend/qml/PackageKitPermissions.qml:31
 #, kde-format
 msgid "Full Access"
-msgstr ""
+msgstr "Plný přístup"
 
 #: libdiscover/backends/PackageKitBackend/qml/PackageKitPermissions.qml:32
 #, kde-format
 msgid "Can access everything on the system"
-msgstr ""
+msgstr "Může přistupovat k celému systému"
 
 #: libdiscover/backends/RpmOstreeBackend/rpm-ostree-backend-categories.xml:4
 #, kde-format
@@ -2303,11 +2367,15 @@ msgstr "Operační systém"
 msgid ""
 "rpm-ostree backend: Multiple booted deployments found. Please file a bug."
 msgstr ""
+"Podpůrná vrstva rpm-ostree: Bylo nalezeno vícero spuštěných nasazení. Prosím "
+"nahlaste chybu."
 
 #: libdiscover/backends/RpmOstreeBackend/RpmOstreeBackend.cpp:184
 #, kde-format
 msgid "rpm-ostree backend: No booted deployment found. Please file a bug."
 msgstr ""
+"Podpůrná vrstva rpm-ostree: Nebylo nalezeno žádné spuštěné nasazení. Prosím "
+"nahlaste chybu."
 
 #: libdiscover/backends/RpmOstreeBackend/RpmOstreeBackend.cpp:373
 #, kde-format
@@ -2319,16 +2387,19 @@ msgstr "Zahájit aktualizaci..."
 #, kde-format
 msgid "You have pending updates for the current version. Proceeding anyway."
 msgstr ""
+"Pro aktuální verzi jsou ještě k dispozici aktualizace. Přesto pokračovat."
 
 #: libdiscover/backends/RpmOstreeBackend/RpmOstreeBackend.cpp:527
 #, kde-format
 msgid "Please update to the latest version before rebasing to a major version"
 msgstr ""
+"Před operací ‚rebase’ na novou hlavní verzi, proveďte prosím aktualizaci na "
+"nejnovější dostupnou verzi."
 
 #: libdiscover/backends/RpmOstreeBackend/RpmOstreeBackend.cpp:535
 #, kde-format
 msgid "Missing remote ref for rebase operation. Please file a bug."
-msgstr ""
+msgstr "Chybí vzdálený zdroj pro operaci ‚rebase’. Prosím nahlaste chybu."
 
 #: libdiscover/backends/RpmOstreeBackend/RpmOstreeResource.cpp:301
 #, kde-format
@@ -2338,22 +2409,22 @@ msgstr "GPL a další licence"
 #: libdiscover/backends/RpmOstreeBackend/RpmOstreeResource.cpp:311
 #, kde-format
 msgid "Additional packages: "
-msgstr ""
+msgstr "Dodatečné balíčky: "
 
 #: libdiscover/backends/RpmOstreeBackend/RpmOstreeResource.cpp:318
 #, kde-format
 msgid "Additional modules: "
-msgstr ""
+msgstr "Dodatečné moduly: "
 
 #: libdiscover/backends/RpmOstreeBackend/RpmOstreeResource.cpp:325
 #, kde-format
 msgid "Local packages: "
-msgstr ""
+msgstr "Lokální balíčky: "
 
 #: libdiscover/backends/RpmOstreeBackend/RpmOstreeResource.cpp:332
 #, kde-format
 msgid "Replaced packages:"
-msgstr ""
+msgstr "Nahrazené balíčky:"
 
 #: libdiscover/backends/RpmOstreeBackend/RpmOstreeResource.cpp:339
 #, kde-format
@@ -2363,33 +2434,35 @@ msgstr "Odstraněny balíčky:"
 #: libdiscover/backends/RpmOstreeBackend/RpmOstreeResource.cpp:400
 #, kde-format
 msgid "Currently booted version (pinned)"
-msgstr ""
+msgstr "Aktuálně spuštěná verze (připnutá)"
 
 #: libdiscover/backends/RpmOstreeBackend/RpmOstreeResource.cpp:402
 #, kde-format
 msgid "Currently booted version"
-msgstr ""
+msgstr "Aktuálně spuštěná verze"
 
 #: libdiscover/backends/RpmOstreeBackend/RpmOstreeResource.cpp:405
 #, kde-format
 msgid "Version that will be used after reboot"
-msgstr ""
+msgstr "Verze, která bude použitá po restartu"
 
 #: libdiscover/backends/RpmOstreeBackend/RpmOstreeResource.cpp:407
 #, kde-format
 msgid "Fallback version (pinned)"
-msgstr ""
+msgstr "Alternativní verze (připnutá)"
 
 #: libdiscover/backends/RpmOstreeBackend/RpmOstreeResource.cpp:409
 #, kde-format
 msgid "Fallback version"
-msgstr ""
+msgstr "Alternativní verze"
 
 #: libdiscover/backends/RpmOstreeBackend/RpmOstreeTransaction.cpp:40
 #, kde-format
 msgid ""
 "rpm-ostree backend: Error: No DBus interface provided. Please file a bug."
 msgstr ""
+"Podpůrná vrstva rpm-ostree: Chyba: Není k dispozici rozhraní DBus. Prosím "
+"nahlaste chybu."
 
 #: libdiscover/backends/RpmOstreeBackend/RpmOstreeTransaction.cpp:60
 #, kde-format
@@ -2397,18 +2470,24 @@ msgid ""
 "rpm-ostree backend: Error: Can not start a transaction for resource with an "
 "invalid format. Please file a bug."
 msgstr ""
+"Podpůrná vrstva rpm-ostree: Chyba: Nelze zahájit transakci pro zdroj v "
+"neplatném formátu. Prosím nahlaste chybu."
 
 #: libdiscover/backends/RpmOstreeBackend/RpmOstreeTransaction.cpp:80
 #, kde-format
 msgid ""
 "rpm-ostree backend: Error: Can not rebase to an empty ref. Please file a bug."
 msgstr ""
+"Podpůrná vrstva rpm-ostree: Chyba: Nelze provést operaci ‚rebase’ na "
+"prázdnou referenci. Prosím nahlaste chybu."
 
 #: libdiscover/backends/RpmOstreeBackend/RpmOstreeTransaction.cpp:98
 #, kde-format
 msgid ""
 "rpm-ostree backend: Error: Unknown operation requested. Please file a bug."
 msgstr ""
+"Podpůrná vrstva rpm-ostree: Chyba: Byla požadována neznámá operace. Prosím "
+"nahlaste chybu."
 
 #: libdiscover/backends/RpmOstreeBackend/RpmOstreeTransaction.cpp:160
 #: libdiscover/backends/RpmOstreeBackend/RpmOstreeTransaction.cpp:183
@@ -2417,33 +2496,42 @@ msgid ""
 "rpm-ostree transaction failed with:\n"
 "%1"
 msgstr ""
+"rpm-ostree transakce selhala s:\n"
+"%1"
 
 #: libdiscover/backends/RpmOstreeBackend/RpmOstreeTransaction.cpp:244
 #, kde-format
 msgid "rpm-ostree backend: Error: Unknown resource format. Please file a bug."
 msgstr ""
+"Podpůrná vrstva rpm-ostree: Chyba: Neznámý formát zdroje. Prosím nahlaste "
+"chybu."
 
 #: libdiscover/backends/RpmOstreeBackend/RpmOstreeTransaction.cpp:366
 #, kde-format
 msgid ""
 "Cancelling rpm-ostree transaction. This may take some time. Please wait."
 msgstr ""
+"Transakce rpm-ostree bude zrušena. Může to chvíli trvat. Prosím, vyčkejte."
 
 #: libdiscover/backends/RpmOstreeBackend/RpmOstreeTransaction.cpp:395
 #, kde-format
 msgid "Checking for a system update"
-msgstr ""
+msgstr "Zkontrolovat dostupnost aktualizací systému"
 
 #: libdiscover/backends/RpmOstreeBackend/RpmOstreeTransaction.cpp:398
 #, kde-format
 msgid ""
 "Downloading system update. Please be patient as progress is not reported."
 msgstr ""
+"Stahování aktualizace systému. Prosím, buďte trpěliví, protože jeho průběh "
+"není reportován."
 
 #: libdiscover/backends/RpmOstreeBackend/RpmOstreeTransaction.cpp:401
 #, kde-format
 msgid "Updating the system. Please be patient as progress is not reported."
 msgstr ""
+"Aktualizování systému. Prosím, buďte trpěliví, protože jeho průběh není "
+"reportován."
 
 #: libdiscover/backends/RpmOstreeBackend/RpmOstreeTransaction.cpp:404
 #, kde-format
@@ -2451,6 +2539,8 @@ msgid ""
 "Updating to the next major version. Please be patient as progress is not "
 "reported."
 msgstr ""
+"Aktualizování na další hlavní verzi. Prosím, buďte trpěliví, protože jeho "
+"průběh není reportován."
 
 #: libdiscover/backends/RpmOstreeBackend/RpmOstreeTransaction.cpp:407
 #, kde-format
@@ -2496,12 +2586,12 @@ msgstr "Přichytávat"
 #: libdiscover/backends/SnapBackend/SnapResource.cpp:585
 #, kde-format
 msgid "Verified Publisher on snapcraft.io"
-msgstr ""
+msgstr "Ověřený vydavatel na snapcraft.io"
 
 #: libdiscover/backends/SnapBackend/SnapResource.cpp:587
 #, kde-format
 msgid "Starred Publisher on snapcraft.io"
-msgstr ""
+msgstr "Oblíbený vydavatel na snapcraft.io"
 
 #: libdiscover/backends/SnapBackend/SnapTransaction.cpp:57
 #, kde-format
@@ -2509,11 +2599,13 @@ msgid ""
 "This Snap application is not compatible with security sandboxing and will "
 "have full access to this computer. Install it anyway?"
 msgstr ""
+"Tato Snap aplikace není kompatibilní s bezpečnostním sandboxem a má plný "
+"přístup k vašemu počítači. Chcete ji přesto nainstalovat?"
 
 #: libdiscover/backends/SteamOSBackend/SteamOSBackend.cpp:94
 #, kde-format
 msgid "SteamOS: Unable to query atomupd for SteamOS Updates..."
-msgstr ""
+msgstr "SteamOS: Nelze dotazovat atomupd na aktualizace SteamOS…"
 
 #: libdiscover/backends/SteamOSBackend/SteamOSResource.cpp:16
 #, kde-format
@@ -2524,13 +2616,13 @@ msgstr "SteamOS"
 #, kde-kuit-format
 msgctxt "@info:status"
 msgid "Failed to get appstream data for “%1”.<nl/><nl/>Error message: %2"
-msgstr ""
+msgstr "Selhalo získání appstream dat pro „%1”.<nl/><nl/>Chybová zpráva: %2"
 
 #: libdiscover/backends/SystemdSysupdateBackend/SystemdSysupdateBackend.cpp:154
 #, kde-format
 msgctxt "@info:status"
 msgid "No appstream URLs found for target “%1”"
-msgstr ""
+msgstr "Nenalezena appstream URL pro zdroj \"%1\""
 
 #: libdiscover/backends/SystemdSysupdateBackend/SystemdSysupdateBackend.cpp:165
 #, kde-kuit-format
@@ -2539,24 +2631,29 @@ msgid ""
 "Failed to fetch the updates from <a href='%1'>%1</a>.<nl/><nl/>Error "
 "message: %2"
 msgstr ""
+"Nepodařilo se načíst aktualizace z <a href='%1'>%1</a>.<nl/><nl/>Chybová "
+"zpráva: %2"
 
 #: libdiscover/backends/SystemdSysupdateBackend/SystemdSysupdateBackend.cpp:178
 #, kde-kuit-format
 msgctxt "@info:status"
 msgid "Failed to parse update metadata.<nl/><nl/>Error message: %1"
 msgstr ""
+"Nepodařilo se analyzovat metadata aktualizace.<nl/><nl/>Chybová zpráva: %1"
 
 #: libdiscover/backends/SystemdSysupdateBackend/SystemdSysupdateBackend.cpp:187
 #, kde-format
 msgctxt "@info:status"
 msgid "No components found in appstream metadata for target “%1”"
-msgstr ""
+msgstr "V appstream metadatech nebyly nalezeny žádné komponenty pro cíl „%1“"
 
 #: libdiscover/DiscoverBackendsFactory.cpp:127
 #, kde-format
 msgid ""
 "List all the backends we'll want to have loaded, separated by comma ','."
 msgstr ""
+"Zobrazit všechny podpůrné vrstvy oddělené čárkou (','), které mají být "
+"načteny."
 
 #: libdiscover/resources/AbstractResource.cpp:93
 #, kde-format
@@ -2583,7 +2680,7 @@ msgstr "Spustit"
 msgctxt ""
 "@info 'Refresh' is used as a noun here, and %1 is an app's version number"
 msgid "Refresh of version %1"
-msgstr ""
+msgstr "Aktualizace verze %1"
 
 #: libdiscover/resources/AbstractResource.cpp:260
 #, kde-format
@@ -2605,7 +2702,7 @@ msgstr "Obnovit"
 #, kde-format
 msgctxt "@info:status %1 is the name of a source of updates"
 msgid "Refreshing %1"
-msgstr ""
+msgstr "Obnovuji %1"
 
 #: libdiscover/resources/ResourcesProxyModel.cpp:787
 #, kde-format

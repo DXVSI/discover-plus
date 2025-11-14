@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: extragear-sysadmin-kde4\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-04 00:43+0000\n"
-"PO-Revision-Date: 2025-10-26 19:56+0300\n"
+"POT-Creation-Date: 2025-11-11 00:43+0000\n"
+"PO-Revision-Date: 2025-11-11 20:02+0300\n"
 "Last-Translator: Emir SARI <emir_sari@îcloud.com>\n"
 "Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
 "Language: tr\n"
@@ -965,12 +965,22 @@ msgstr "%1 (kullanıcı)"
 msgid "Enter a Flatpak repository URI (*.flatpakrepo):"
 msgstr "Bir Flatpak deposu URI’si gir (*.flatpakrepo):"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakTransactionThread.cpp:34
+#: libdiscover/backends/FlatpakBackend/FlatpakTransactionThread.cpp:35
 #, kde-format
 msgid "Adding remote '%1' in %2 from %3"
 msgstr "%2 içindeki “%1” uzak sunucusu %3 konumundan ekleniyor"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakTransactionThread.cpp:414
+#: libdiscover/backends/FlatpakBackend/FlatpakTransactionThread.cpp:338
+#, kde-format
+msgctxt "@info:status"
+msgid ""
+"Cannot create transaction for '%1':<nl/>%2<nl/><nl/>Please report this to <a "
+"href='%3'>%3</a>"
+msgstr ""
+"“%1” için işlem oluşturulamıyor:<nl/>%2<nl/><nl/>Bunu, <a href='%3'>%3</a> "
+"topluluğuna bildirin."
+
+#: libdiscover/backends/FlatpakBackend/FlatpakTransactionThread.cpp:424
 #, kde-format
 msgctxt "fallback error message"
 msgid ""
@@ -980,13 +990,13 @@ msgstr ""
 "Bir iç hata oluştu. Lütfen https://bugs.kde.org/enter_bug.cgi?"
 "product=Discover adresinden bir hata kaydı açın."
 
-#: libdiscover/backends/FlatpakBackend/FlatpakTransactionThread.cpp:452
+#: libdiscover/backends/FlatpakBackend/FlatpakTransactionThread.cpp:462
 #, kde-format
 msgctxt "@title"
 msgid "Replacement Available"
 msgstr "Alternatif Kullanılabilir"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakTransactionThread.cpp:454
+#: libdiscover/backends/FlatpakBackend/FlatpakTransactionThread.cpp:464
 #, kde-kuit-format
 msgctxt ""
 "@info %1 and 2 are flatpak ids e.g. org.kde.krita (can be rather lengthy "
@@ -999,13 +1009,13 @@ msgstr ""
 "%2</resource> tarafından sağlanan desteklenen sürümle değiştirmek ister "
 "misiniz?"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakTransactionThread.cpp:460
+#: libdiscover/backends/FlatpakBackend/FlatpakTransactionThread.cpp:470
 #, kde-format
 msgctxt "@title"
 msgid "Automatic Removal"
 msgstr "Kendiliğinden Kaldır"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakTransactionThread.cpp:462
+#: libdiscover/backends/FlatpakBackend/FlatpakTransactionThread.cpp:472
 #, kde-kuit-format
 msgctxt ""
 "@info %1 is a flatpak id e.g. org.kde.krita (can be rather lengthy though)"

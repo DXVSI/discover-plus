@@ -1570,16 +1570,3 @@ msgstr "Трябва да проверите за актуализации"
 msgctxt "@info"
 msgid "Time of last update unknown"
 msgstr "Неизвестно време от последното актуализиране"
-
-#, fuzzy
-#~| msgid "Please report this issue to the packagers of your distribution."
-#~ msgctxt "@info %1 is an additional error reference"
-#~ msgid ""
-#~ "Please report this issue to the packagers of your distribution.<nl/>(%1)"
-#~ msgstr " Моля, докладвайте този проблем на вашата дистрибуция."
-
-#~ msgid "Report This Issue"
-#~ msgstr "Докладвайте този проблем"
-
-#~ msgid "Report this issue"
-#~ msgstr "Докладвайте този проблем"

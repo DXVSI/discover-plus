@@ -13,8 +13,8 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-11-07 00:44+0000\n"
-"PO-Revision-Date: 2025-09-26 08:59+0200\n"
-"Last-Translator: Alexander Yavorskiy <kekcuha@gmail.com>\n"
+"PO-Revision-Date: 2025-11-05 17:21+0300\n"
+"Last-Translator: Alexander Yavorsky <kekcuha@gmail.com>\n"
 "Language-Team: Russian <kde-russian@lists.kde.ru>\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
@@ -22,7 +22,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=n==1 ? 3 : n%10==1 && n%100!=11 ? 0 : n"
 "%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
-"X-Generator: Lokalize 25.08.1\n"
+"X-Generator: Lokalize 25.08.2\n"
 "X-Environment: kde\n"
 "X-Accelerator-Marker: &\n"
 "X-Text-Markup: kde4\n"
@@ -38,12 +38,7 @@ msgstr ""
 "дополнения и расширения приложений."
 
 #: discover/DiscoverObject.cpp:185
-#, fuzzy, kde-kuit-format
-#| msgctxt "@info:usagetip %1 is the distro name"
-#| msgid ""
-#| "To use Discover for apps, install your preferred module on the "
-#| "<interface>Settings</interface> page, under <interface>Missing Backends</"
-#| "interface>."
+#, kde-kuit-format
 msgctxt "@info:usagetip %2 is the name of the operating system"
 msgid ""
 "To use Discover for apps, install your preferred module on the "
@@ -52,7 +47,8 @@ msgid ""
 msgstr ""
 "Чтобы использовать центр программ Discover для установки приложений, "
 "установите модуль поддержки на странице <interface>Настройка</interface> в "
-"разделе <interface>Неустановленные модули</interface>."
+"разделе <interface>Неустановленные модули</interface>.<nl/><nl/><link "
+"url='%1'>Сообщите  %2 об этой ситуации</link>."
 
 #: discover/DiscoverObject.cpp:192
 #, kde-kuit-format
@@ -122,16 +118,11 @@ msgid "Please make sure Snap support is installed"
 msgstr "Убедитесь, что модули поддержки Snap установлены"
 
 #: discover/DiscoverObject.cpp:407
-#, fuzzy, kde-format
-#| msgid ""
-#| "Could not open %1 because it was not found in any available software "
-#| "repositories."
+#, kde-format
 msgid ""
 "The requested application could not be found in any available software "
 "repositories"
-msgstr ""
-"Приложение «%1» не найдено ни в одном из репозиториев и не может быть "
-"открыто."
+msgstr "Запрошенное приложение не найдено ни в одном из репозиториев"
 
 #: discover/DiscoverObject.cpp:410
 #, kde-kuit-format
@@ -142,6 +133,8 @@ msgid ""
 "(No entry for %1)<nl/><nl/>Please <link url='%2'>report this issue to %3.</"
 "link>"
 msgstr ""
+"(Нет ни одной записи о %1)<nl/><nl/> <link url='%2'>Сообщите %3 об этой "
+"ситуации</link>."
 
 #: discover/DiscoverObject.cpp:473 discover/DiscoverObject.cpp:475
 #: discover/main.cpp:120
@@ -550,7 +543,7 @@ msgid ","
 msgstr ","
 
 #: discover/qml/ApplicationPage.qml:509
-#, fuzzy, kde-format
+#, kde-format
 msgctxt "Show all licenses of the package"
 msgid "See more…"
 msgstr "Дополнительно…"
@@ -609,11 +602,10 @@ msgstr "Отзывы о %1 временно недоступны"
 #, kde-format
 msgctxt "@Info placeholder message"
 msgid "No reviews posted yet"
-msgstr ""
+msgstr "Пока нет ни одного отзыва"
 
 #: discover/qml/ApplicationPage.qml:774
-#, fuzzy, kde-format
-#| msgid "Install to Write a Review"
+#, kde-format
 msgctxt "@info placeholder explanation"
 msgid "Install to write a review"
 msgstr "Установите, чтобы оставить отзыв"
@@ -952,12 +944,10 @@ msgid "Proceed"
 msgstr "Продолжить"
 
 #: discover/qml/DiscoverWindow.qml:325
-#, fuzzy, kde-format
-#| msgctxt "@action:button %1 is the distro name"
-#| msgid "Report This Issue to %1"
+#, kde-format
 msgctxt "@info %1 is the name of the operating system"
 msgid "Report this issue to %1"
-msgstr "Сообщить об ошибке разработчикам %1"
+msgstr "Сообщить %1 об ошибке"
 
 #: discover/qml/DiscoverWindow.qml:347
 #, kde-format
