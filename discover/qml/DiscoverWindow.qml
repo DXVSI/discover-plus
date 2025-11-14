@@ -128,6 +128,7 @@ Kirigami.ApplicationWindow {
         readonly property Discover.DiscoverAction action: Discover.ResourcesModel.updateAction
         text: action.text
         icon.name: "view-refresh"
+        icon.color: "#3498db"
         onTriggered: action.trigger()
         enabled: action.enabled
         // Don't need to show this action on mobile since you can pull down

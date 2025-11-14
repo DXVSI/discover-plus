@@ -68,6 +68,12 @@ make -j$(nproc)
 sudo make install
 ```
 
+### Debug
+
+```bash
+clear && QT_LOGGING_RULES="org.kde.plasma.libdiscover*.debug=true" plasma-discover
+```
+
 ## Technical Details
 
 ### Repository Mapping

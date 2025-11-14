@@ -7,6 +7,7 @@
 
 import QtQuick
 import QtQuick.Controls
+import QtQuick.Effects
 import org.kde.kirigami as Kirigami
 
 Kirigami.SearchField {
@@ -24,6 +25,21 @@ Kirigami.SearchField {
     property string currentSearchText
 
     placeholderText: (!enabled || !page || page.hasOwnProperty("isHome") || window.leftPage.name.length === 0) ? i18n("Search…") : i18n("Search in '%1'…", window.leftPage.name)
+
+    // Modern search field styling
+    background: Rectangle {
+        radius: height / 2
+        color: Qt.rgba(Kirigami.Theme.textColor.r, Kirigami.Theme.textColor.g, Kirigami.Theme.textColor.b, 0.05)
+        border.width: root.activeFocus ? 2 : 1
+        border.color: root.activeFocus ? Kirigami.Theme.highlightColor : Qt.rgba(Kirigami.Theme.textColor.r, Kirigami.Theme.textColor.g, Kirigami.Theme.textColor.b, 0.2)
+
+        Behavior on border.color {
+            ColorAnimation { duration: 150 }
+        }
+        Behavior on color {
+            ColorAnimation { duration: 150 }
+        }
+    }
 
     onAccepted: {
         text = text.trim();

@@ -3,6 +3,7 @@ pragma ComponentBehavior: Bound
 import QtQuick
 import QtQuick.Controls as QQC2
 import QtQuick.Layouts
+import QtQuick.Effects
 import org.kde.discover as Discover
 import org.kde.kcmutils as KCMUtils
 import org.kde.kirigami as Kirigami
@@ -30,6 +31,80 @@ DiscoverPage {
 
     header: ColumnLayout {
         spacing: Kirigami.Units.smallSpacing
+
+        // Modern settings header
+        Rectangle {
+            Layout.fillWidth: true
+            Layout.preferredHeight: settingsHeaderContent.implicitHeight + Kirigami.Units.largeSpacing * 2
+            Layout.bottomMargin: Kirigami.Units.smallSpacing
+
+            gradient: Gradient {
+                orientation: Gradient.Horizontal
+                GradientStop { position: 0.0; color: Qt.rgba(0.6, 0.4, 0.8, 0.08) }
+                GradientStop { position: 0.5; color: Qt.rgba(0.5, 0.3, 0.7, 0.12) }
+                GradientStop { position: 1.0; color: Qt.rgba(0.6, 0.4, 0.8, 0.08) }
+            }
+
+            radius: Kirigami.Units.smallSpacing
+            border.width: 1
+            border.color: Qt.rgba(Kirigami.Theme.textColor.r, Kirigami.Theme.textColor.g, Kirigami.Theme.textColor.b, 0.1)
+
+            Row {
+                id: settingsHeaderContent
+                anchors {
+                    left: parent.left
+                    right: parent.right
+                    verticalCenter: parent.verticalCenter
+                    leftMargin: Kirigami.Units.largeSpacing
+                    rightMargin: Kirigami.Units.largeSpacing
+                }
+                spacing: 8  // Минимальный отступ
+
+                Rectangle {
+                    width: Kirigami.Units.iconSizes.large
+                    height: width
+                    radius: width / 2
+                    color: Qt.rgba(0.6, 0.4, 0.8, 0.15)
+                    anchors.verticalCenter: parent.verticalCenter
+
+                    Kirigami.Icon {
+                        anchors.centerIn: parent
+                        source: "configure"
+                        width: parent.width * 0.6
+                        height: width
+                        color: "#9b59b6"
+                    }
+                }
+
+                Column {
+                    anchors.verticalCenter: parent.verticalCenter
+                    spacing: 2
+
+                    Kirigami.Heading {
+                        text: i18n("⚙️ Software Sources & Settings")
+                        level: 2
+                    }
+
+                    QQC2.Label {
+                        text: i18n("Manage repositories and configure update settings")
+                        opacity: 0.7
+                        font: Kirigami.Theme.smallFont
+                    }
+                }
+
+                Item {
+                    width: parent.width - x - updateSettingsBtn.width - parent.spacing * 2
+                }
+
+                QQC2.Button {
+                    id: updateSettingsBtn
+                    anchors.verticalCenter: parent.verticalCenter
+                    icon.name: "configure"
+                    text: i18n("Update Settings")
+                    onClicked: configureUpdatesAction.trigger()
+                }
+            }
+        }
 
         Repeater {
             model: Discover.SourcesModel.sources
@@ -59,18 +134,38 @@ DiscoverPage {
         currentIndex: -1
         pixelAligned: true
         section.property: "sourceName"
-        section.delegate: Kirigami.ListSectionHeader {
+        section.delegate: Rectangle {
             id: backendItem
 
             required property string section
 
-            height: Math.ceil(Math.max(Kirigami.Units.gridUnit * 2.5, contentItem.implicitHeight))
+            height: Math.ceil(Math.max(Kirigami.Units.gridUnit * 3, backendContent.implicitHeight + Kirigami.Units.largeSpacing))
 
             readonly property Discover.AbstractSourcesBackend backend: Discover.SourcesModel.sourcesBackendByName(section)
             readonly property Discover.AbstractResourcesBackend resourcesBackend: backend.resourcesBackend
             readonly property bool isDefault: Discover.ResourcesModel.currentApplicationBackend === resourcesBackend
 
             width: sourcesView.width
+
+            gradient: Gradient {
+                orientation: Gradient.Horizontal
+                GradientStop {
+                    position: 0.0
+                    color: isDefault ? Qt.rgba(0.2, 0.6, 1, 0.1) : Qt.rgba(Kirigami.Theme.textColor.r, Kirigami.Theme.textColor.g, Kirigami.Theme.textColor.b, 0.05)
+                }
+                GradientStop {
+                    position: 0.5
+                    color: isDefault ? Qt.rgba(0.3, 0.5, 0.9, 0.15) : Qt.rgba(Kirigami.Theme.textColor.r, Kirigami.Theme.textColor.g, Kirigami.Theme.textColor.b, 0.08)
+                }
+                GradientStop {
+                    position: 1.0
+                    color: isDefault ? Qt.rgba(0.2, 0.6, 1, 0.1) : Qt.rgba(Kirigami.Theme.textColor.r, Kirigami.Theme.textColor.g, Kirigami.Theme.textColor.b, 0.05)
+                }
+            }
+
+            border.width: isDefault ? 1 : 0
+            border.color: Qt.rgba(Kirigami.Theme.highlightColor.r, Kirigami.Theme.highlightColor.g, Kirigami.Theme.highlightColor.b, 0.3)
+            radius: Kirigami.Units.smallSpacing
 
             Connections {
                 target: backendItem.backend
@@ -87,8 +182,36 @@ DiscoverPage {
                 }
             }
 
-            contentItem: RowLayout {
-                spacing: Kirigami.Units.smallSpacing
+            RowLayout {
+                id: backendContent
+                anchors {
+                    fill: parent
+                    margins: Kirigami.Units.smallSpacing
+                }
+                spacing: Kirigami.Units.largeSpacing
+
+                // Backend icon
+                Rectangle {
+                    width: Kirigami.Units.iconSizes.medium
+                    height: width
+                    radius: width / 2
+                    color: backendItem.isDefault ? Qt.rgba(0.2, 0.6, 1, 0.2) : Qt.rgba(Kirigami.Theme.textColor.r, Kirigami.Theme.textColor.g, Kirigami.Theme.textColor.b, 0.1)
+
+                    Kirigami.Icon {
+                        anchors.centerIn: parent
+                        source: {
+                            var name = resourcesBackend.displayName.toLowerCase()
+                            if (name.includes("flatpak")) return "flatpak"
+                            if (name.includes("snap")) return "snap"
+                            if (name.includes("packagekit") || name.includes("rpm")) return "package-x-generic"
+                            if (name.includes("fwupd")) return "system-software-update"
+                            return "package-x-generic"
+                        }
+                        width: parent.width * 0.6
+                        height: width
+                        color: backendItem.isDefault ? "#3498db" : Kirigami.Theme.textColor
+                    }
+                }
 
                 Kirigami.Heading {
                     text: resourcesBackend.displayName

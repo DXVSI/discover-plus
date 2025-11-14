@@ -9,6 +9,7 @@
 import QtQuick
 import QtQuick.Controls as QQC2
 import QtQuick.Layouts
+import QtQuick.Effects
 import org.kde.discover as Discover
 import org.kde.kirigami as Kirigami
 
@@ -29,24 +30,98 @@ BasicAbstractCard {
         ListView.currentIndex = index
         Navigation.openApplication(application)
     }
+
     padding: Kirigami.Units.largeSpacing * 2
     highlighted: ListView.isCurrentItem
 
     Keys.onReturnPressed: trigger()
     onClicked: trigger()
 
+    // Modern card background with shadow
+    background: Rectangle {
+        radius: Kirigami.Units.largeSpacing
+        color: {
+            if (root.highlighted) {
+                return Qt.rgba(Kirigami.Theme.highlightColor.r, Kirigami.Theme.highlightColor.g, Kirigami.Theme.highlightColor.b, 0.2)
+            } else if (hoverHandler.hovered) {
+                return Qt.rgba(Kirigami.Theme.hoverColor.r, Kirigami.Theme.hoverColor.g, Kirigami.Theme.hoverColor.b, 0.1)
+            } else {
+                return Kirigami.Theme.backgroundColor
+            }
+        }
+
+        border.color: Qt.rgba(Kirigami.Theme.textColor.r, Kirigami.Theme.textColor.g, Kirigami.Theme.textColor.b, 0.1)
+        border.width: 1
+
+        // Smooth color transitions
+        Behavior on color {
+            ColorAnimation {
+                duration: 200
+                easing.type: Easing.InOutQuad
+            }
+        }
+
+        // Shadow effect
+        layer.enabled: true
+        layer.effect: MultiEffect {
+            shadowEnabled: true
+            shadowHorizontalOffset: 0
+            shadowVerticalOffset: hoverHandler.hovered ? 4 : 2
+            shadowBlur: hoverHandler.hovered ? 0.8 : 0.4
+            shadowOpacity: hoverHandler.hovered ? 0.3 : 0.15
+            shadowColor: Qt.rgba(0, 0, 0, 0.5)
+
+            Behavior on shadowVerticalOffset {
+                NumberAnimation { duration: 200; easing.type: Easing.OutCubic }
+            }
+            Behavior on shadowBlur {
+                NumberAnimation { duration: 200; easing.type: Easing.OutCubic }
+            }
+            Behavior on shadowOpacity {
+                NumberAnimation { duration: 200; easing.type: Easing.OutCubic }
+            }
+        }
+    }
+
+    // Hover detection for effects
+    HoverHandler {
+        id: hoverHandler
+    }
+
+    // Scale animation on hover
+    transform: Scale {
+        id: scaleTransform
+        origin.x: root.width / 2
+        origin.y: root.height / 2
+        xScale: hoverHandler.hovered ? 1.02 : 1.0
+        yScale: hoverHandler.hovered ? 1.02 : 1.0
+
+        Behavior on xScale {
+            NumberAnimation { duration: 200; easing.type: Easing.OutCubic }
+        }
+        Behavior on yScale {
+            NumberAnimation { duration: 200; easing.type: Easing.OutCubic }
+        }
+    }
+
     content: Item {
         implicitHeight: Math.max(columnLayout.implicitHeight, resourceIconFrame.implicitHeight)
 
-        Kirigami.Padding {
+        // Icon with modern styling
+        Rectangle {
             id: resourceIconFrame
             anchors {
                 top: parent.top
                 left: parent.left
                 bottom: parent.bottom
             }
-            padding: Kirigami.Units.largeSpacing
-            contentItem: Kirigami.Icon {
+            width: iconLoader.width + Kirigami.Units.largeSpacing * 2
+            color: "transparent"
+            radius: Kirigami.Units.smallSpacing
+
+            Kirigami.Icon {
+                id: iconLoader
+                anchors.centerIn: parent
                 source: root.application.icon
                 animated: false
 
@@ -66,26 +141,23 @@ BasicAbstractCard {
                 left: resourceIconFrame.right
                 leftMargin: Kirigami.Units.gridUnit
             }
-            spacing: 0
+            spacing: Kirigami.Units.smallSpacing
 
             // Container for app name and backend name labels
             RowLayout {
                 spacing: Kirigami.Units.largeSpacing
 
-                // App name label
+                // App name label with gradient effect
                 Kirigami.Heading {
                     id: head
                     Layout.fillWidth: true
-                    // We want the heading visually top-aligned with the top margin, the icon background and that in general
-                    // it's root.padding away from the border. We can't just align the label to the top for it because internally
-                    // everything is aligned respecting the text boundingRect, which includes blank space on the top as a "line" height, called "leading". Instead we need to base ourselves on tightBoundingRect which is a rect only around the
-                    // painted area of the label, not including the leading
                     topPadding: headMetrics.boundingRect.y - headMetrics.tightBoundingRect.y
                     level: root.compact ? 2 : 1
                     type: Kirigami.Heading.Type.Primary
                     text: root.application.name
                     elide: Text.ElideRight
                     maximumLineCount: 1
+
                     TextMetrics {
                         id: headMetrics
                         font: head.font
@@ -93,20 +165,46 @@ BasicAbstractCard {
                     }
                 }
 
-                // Backend name label (always shown except in compact view)
-                RowLayout {
+                // Backend name label with chip style
+                Rectangle {
                     Layout.alignment: Qt.AlignRight
                     visible: !root.compact
-                    spacing: Kirigami.Units.smallSpacing
-
-                    Kirigami.Icon {
-                        source: root.application.sourceIcon
-                        implicitWidth: Kirigami.Units.iconSizes.smallMedium
-                        implicitHeight: Kirigami.Units.iconSizes.smallMedium
+                    implicitWidth: backendLayout.implicitWidth + Kirigami.Units.largeSpacing
+                    implicitHeight: backendLayout.implicitHeight + Kirigami.Units.smallSpacing
+                    radius: height / 2
+                    color: {
+                        if (root.application.origin === "COPR") {
+                            return Qt.rgba(0.2, 0.6, 1, 0.15)
+                        } else if (root.application.origin === "RPM Fusion") {
+                            return Qt.rgba(0.8, 0.3, 0.3, 0.15)
+                        } else {
+                            return Qt.rgba(Kirigami.Theme.highlightColor.r, Kirigami.Theme.highlightColor.g, Kirigami.Theme.highlightColor.b, 0.15)
+                        }
                     }
-                    QQC2.Label {
-                        text: root.application.origin
-                        font: Kirigami.Theme.smallFont
+
+                    RowLayout {
+                        id: backendLayout
+                        anchors.centerIn: parent
+                        spacing: Kirigami.Units.smallSpacing
+
+                        Kirigami.Icon {
+                            source: root.application.sourceIcon
+                            implicitWidth: Kirigami.Units.iconSizes.small
+                            implicitHeight: Kirigami.Units.iconSizes.small
+                        }
+                        QQC2.Label {
+                            text: root.application.origin
+                            font: Kirigami.Theme.smallFont
+                            color: {
+                                if (root.application.origin === "COPR") {
+                                    return Qt.rgba(0.2, 0.6, 1, 1)
+                                } else if (root.application.origin === "RPM Fusion") {
+                                    return Qt.rgba(0.8, 0.3, 0.3, 1)
+                                } else {
+                                    return Kirigami.Theme.highlightColor
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -120,6 +218,7 @@ BasicAbstractCard {
                 elide: Text.ElideRight
                 maximumLineCount: 1
                 textFormat: Text.PlainText
+                opacity: 0.7
 
                 // reserve space for description even if none is available
                 TextMetrics {
@@ -128,6 +227,7 @@ BasicAbstractCard {
                     text: "Sample text"
                 }
             }
+
             // Container for rating, size, and install button
             RowLayout {
                 Layout.fillWidth: true
@@ -141,7 +241,7 @@ BasicAbstractCard {
                     id: rating
                     Layout.alignment: Qt.AlignBottom
                     visible: root.showRating
-                    opacity: 0.6
+                    opacity: 0.8
                     spacing: Kirigami.Units.largeSpacing
 
                     Rating {
@@ -157,28 +257,24 @@ BasicAbstractCard {
                         visible: root.application.backend.reviewsBackend?.isResourceSupported(root.application) ?? false
                         text: root.application.rating.ratingCount > 0 ? i18np("%1 rating", "%1 ratings", root.application.rating.ratingCount) : i18n("No ratings yet")
                         font: Kirigami.Theme.smallFont
-                        elide: Text.ElideRight
+
                         TextMetrics {
                             id: ratingLabelMetrics
-                            font: head.font
-                            text: head.text
+                            font: ratingLabelMetrics.parent ? ratingLabelMetrics.parent.font : Kirigami.Theme.smallFont
+                            text: ratingLabelMetrics.parent ? ratingLabelMetrics.parent.text : ""
                         }
                     }
                 }
 
                 // Size label
                 QQC2.Label {
-                    id: sizeInfo
                     Layout.alignment: Qt.AlignBottom
                     visible: !root.compact && root.showSize
-                    text: visible ? root.application.sizeDescription : ""
-                    horizontalAlignment: Text.AlignRight
-                    opacity: 0.6;
+                    text: root.application.sizeDescription
                     font: Kirigami.Theme.smallFont
-                    elide: Text.ElideRight
-                    maximumLineCount: 1
                 }
 
+                // Spacer to push button to the right
                 Item {
                     Layout.fillWidth: true
                 }
@@ -186,15 +282,11 @@ BasicAbstractCard {
                 // Install button
                 InstallApplicationButton {
                     id: installButton
-                    Layout.alignment: Qt.AlignBottom | Qt.AlignRight
+                    Layout.alignment: Qt.AlignVCenter | Qt.AlignRight
                     visible: !root.compact
                     application: root.application
-                    installOrRemoveButtonDisplayStyle: QQC2.AbstractButton.IconOnly
                 }
             }
         }
     }
-
-    Accessible.name: head.text
-    Accessible.onPressAction: trigger()
 }

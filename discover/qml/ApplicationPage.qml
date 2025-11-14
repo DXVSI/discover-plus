@@ -11,6 +11,7 @@ pragma ComponentBehavior: Bound
 import QtQuick
 import QtQuick.Controls as QQC2
 import QtQuick.Layouts
+import QtQuick.Effects
 import org.kde.discover as Discover
 import org.kde.discover.app as DiscoverApp
 import org.kde.kirigami as Kirigami
@@ -124,13 +125,7 @@ DiscoverPage {
         Component.onCompleted: reviewsSheet.sortRole = reviewsModel.preferredSortRole
     }
 
-    actions: [
-        addonsAction,
-        shareAction,
-        installRemoveAndProgressAction,
-        invokeAction,
-        originsMenuAction
-    ]
+    actions: []  // Disable default actions, we'll add custom buttons
 
     QQC2.ActionGroup {
         id: sourcesGroup
@@ -250,7 +245,7 @@ DiscoverPage {
         }
         spacing: appInfo.internalSpacings
 
-        // Colored header with app icon, name, and metadata
+        // Modern colored header with app icon, name, and metadata
         Rectangle {
             Layout.fillWidth: true
 
@@ -262,7 +257,35 @@ DiscoverPage {
             Layout.rightMargin: -appInfo.rightPadding
 
             implicitHeight: headerLayout.implicitHeight + (headerLayout.anchors.topMargin * 2)
-            color: Kirigami.ColorUtils.tintWithAlpha(Kirigami.Theme.backgroundColor, appImageColorExtractor.dominant, 0.1)
+
+            // Modern gradient background
+            gradient: Gradient {
+                GradientStop {
+                    position: 0.0
+                    color: Qt.rgba(appImageColorExtractor.dominant.r,
+                                  appImageColorExtractor.dominant.g,
+                                  appImageColorExtractor.dominant.b, 0.15)
+                }
+                GradientStop {
+                    position: 0.5
+                    color: Qt.rgba(appImageColorExtractor.dominant.r,
+                                  appImageColorExtractor.dominant.g,
+                                  appImageColorExtractor.dominant.b, 0.08)
+                }
+                GradientStop {
+                    position: 1.0
+                    color: Kirigami.Theme.backgroundColor
+                }
+            }
+
+            // Subtle border at bottom
+            Rectangle {
+                anchors.bottom: parent.bottom
+                width: parent.width
+                height: 1
+                color: Qt.rgba(Kirigami.Theme.textColor.r, Kirigami.Theme.textColor.g,
+                              Kirigami.Theme.textColor.b, 0.1)
+            }
 
             GridLayout {
                 id: headerLayout
@@ -297,11 +320,50 @@ DiscoverPage {
                     Layout.alignment: headerLayout.stackedMode ? Qt.AlignHCenter : Qt.AlignLeft
                     spacing: appInfo.padding
 
-                    // App icon
-                    Kirigami.Icon {
-                        implicitWidth: Kirigami.Units.iconSizes.huge
-                        implicitHeight: Kirigami.Units.iconSizes.huge
-                        source: appInfo.application.icon
+                    // App icon with modern styling
+                    Item {
+                        implicitWidth: Kirigami.Units.iconSizes.huge + Kirigami.Units.largeSpacing
+                        implicitHeight: implicitWidth
+
+                        // Icon background with gradient
+                        Rectangle {
+                            anchors.centerIn: parent
+                            width: parent.width
+                            height: width
+                            radius: Kirigami.Units.largeSpacing
+
+                            gradient: Gradient {
+                                GradientStop {
+                                    position: 0.0
+                                    color: Qt.rgba(1, 1, 1, 0.1)
+                                }
+                                GradientStop {
+                                    position: 1.0
+                                    color: Qt.rgba(1, 1, 1, 0.05)
+                                }
+                            }
+
+                            border.width: 1
+                            border.color: Qt.rgba(1, 1, 1, 0.2)
+
+                            // Shadow effect
+                            layer.enabled: true
+                            layer.effect: MultiEffect {
+                                shadowEnabled: true
+                                shadowHorizontalOffset: 0
+                                shadowVerticalOffset: 2
+                                shadowBlur: 0.5
+                                shadowOpacity: 0.2
+                                shadowColor: Qt.rgba(0, 0, 0, 0.8)
+                            }
+
+                            Kirigami.Icon {
+                                anchors.centerIn: parent
+                                implicitWidth: Kirigami.Units.iconSizes.huge
+                                implicitHeight: Kirigami.Units.iconSizes.huge
+                                source: appInfo.application.icon
+                            }
+                        }
                     }
 
                     // App name, author, and rating
@@ -376,21 +438,32 @@ DiscoverPage {
                     }
                 }
 
-                // Metadata
-                // Not using Kirigami.FormLayout here because we never want it to move into Mobile
-                // mode and we also want to customize the spacing, neither of which it lets us do
-                GridLayout {
-                    id: appMetadataLayout
+                // Metadata with modern card style
+                Rectangle {
+                    id: appMetadataCard
 
                     Layout.alignment: headerLayout.stackedMode ? Qt.AlignHCenter : Qt.AlignRight
+                    Layout.preferredWidth: appMetadataLayout.implicitWidth + Kirigami.Units.largeSpacing * 2
+                    Layout.preferredHeight: appMetadataLayout.implicitHeight + Kirigami.Units.largeSpacing * 2
+                    Layout.topMargin: 70 // Push metadata below buttons
 
-                    columns: 2
-                    rows: Math.ceil(appMetadataLayout.visibleChildren.count / 2)
-                    columnSpacing: Kirigami.Units.smallSpacing
-                    rowSpacing: 0
+                    radius: Kirigami.Units.smallSpacing
+                    color: Qt.rgba(Kirigami.Theme.textColor.r, Kirigami.Theme.textColor.g, Kirigami.Theme.textColor.b, 0.05)
+                    border.width: 1
+                    border.color: Qt.rgba(Kirigami.Theme.textColor.r, Kirigami.Theme.textColor.g, Kirigami.Theme.textColor.b, 0.1)
 
                     // Not relevant to offline updates
                     visible: !appInfo.isOfflineUpgrade
+
+                    GridLayout {
+                        id: appMetadataLayout
+
+                        anchors.centerIn: parent
+
+                        columns: 2
+                        rows: Math.ceil(appMetadataLayout.visibleChildren.count / 2)
+                        columnSpacing: Kirigami.Units.largeSpacing
+                        rowSpacing: Kirigami.Units.smallSpacing
 
                     // Version
                     QQC2.Label {
@@ -551,6 +624,224 @@ DiscoverPage {
                             }
                         }
                     }
+                    } // GridLayout end
+                } // Rectangle end
+
+                // Modern action buttons row
+                RowLayout {
+                    anchors {
+                        right: parent.right
+                        top: parent.top
+                        margins: appInfo.padding
+                    }
+                    spacing: Kirigami.Units.smallSpacing
+
+                    // Add-ons button
+                    Rectangle {
+                        visible: addonsView.containsAddons
+                        width: addonsBtn.width + Kirigami.Units.largeSpacing * 2
+                        height: addonsBtn.height + Kirigami.Units.smallSpacing * 2
+                        radius: height / 2
+                        gradient: Gradient {
+                            GradientStop { position: 0.0; color: Qt.rgba(0.5, 0.3, 0.7, 0.15) }
+                            GradientStop { position: 1.0; color: Qt.rgba(0.5, 0.3, 0.7, 0.25) }
+                        }
+                        border.width: 1
+                        border.color: Qt.rgba(0.5, 0.3, 0.7, 0.3)
+
+                        QQC2.Button {
+                            id: addonsBtn
+                            anchors.centerIn: parent
+                            flat: true
+                            text: i18nc("@action:button", "Add-ons")
+                            icon.name: "extension-symbolic"
+                            icon.color: "#8e44ad"
+                            onClicked: {
+                                if (addonsView.addonsCount === 0) {
+                                    Navigation.openExtends(application.appstreamId, appInfo.application.name)
+                                } else {
+                                    addonsView.visible = true
+                                }
+                            }
+                        }
+                    }
+
+                    // Source/Origin button (if multiple sources available)
+                    Rectangle {
+                        visible: sourcesGroup.actions.length > 1 && !transactionListener.isActive
+                        width: sourceBtn.width + Kirigami.Units.largeSpacing * 2
+                        height: sourceBtn.height + Kirigami.Units.smallSpacing * 2
+                        radius: height / 2
+                        gradient: Gradient {
+                            GradientStop { position: 0.0; color: Qt.rgba(0.9, 0.5, 0.1, 0.15) }
+                            GradientStop { position: 1.0; color: Qt.rgba(0.9, 0.5, 0.1, 0.25) }
+                        }
+                        border.width: 1
+                        border.color: Qt.rgba(0.9, 0.5, 0.1, 0.3)
+
+                        QQC2.Button {
+                            id: sourceBtn
+                            anchors.centerIn: parent
+                            flat: true
+                            text: i18nc("@item:inlistbox %1 is the name of an app source e.g. \"Flathub\" or \"Ubuntu\"", "From %1", appInfo.application.displayOrigin)
+                            icon.name: appInfo.application.sourceIcon
+                            icon.color: "#e67e22"
+                            onClicked: sourceMenu.popup()
+
+                            QQC2.Menu {
+                                id: sourceMenu
+                                Instantiator {
+                                    model: Discover.ResourcesProxyModel {
+                                        allBackends: true
+                                        resourcesUrl: appInfo.application.url
+                                    }
+                                    delegate: QQC2.MenuItem {
+                                        required property var model
+                                        text: model.availableVersion
+                                            ? i18n("%1 - %2", model.displayOrigin, model.availableVersion)
+                                            : model.displayOrigin
+                                        icon.name: model.sourceIcon
+                                        checkable: true
+                                        checked: appInfo.application === model.application
+                                        onTriggered: {
+                                            appInfo.application = model.application
+                                        }
+                                    }
+                                    onObjectAdded: (index, object) => sourceMenu.addItem(object)
+                                    onObjectRemoved: (index, object) => sourceMenu.removeItem(object)
+                                }
+                            }
+                        }
+                    }
+
+                    // Share button
+                    Rectangle {
+                        visible: application.url.toString().length > 0 && !appInfo.isTechnicalPackage
+                        width: shareBtn.width + Kirigami.Units.largeSpacing * 2
+                        height: shareBtn.height + Kirigami.Units.smallSpacing * 2
+                        radius: height / 2
+                        gradient: Gradient {
+                            GradientStop { position: 0.0; color: Qt.rgba(0.2, 0.6, 1, 0.15) }
+                            GradientStop { position: 1.0; color: Qt.rgba(0.2, 0.6, 1, 0.25) }
+                        }
+                        border.width: 1
+                        border.color: Qt.rgba(0.2, 0.6, 1, 0.3)
+
+                        QQC2.Button {
+                            id: shareBtn
+                            anchors.centerIn: parent
+                            flat: true
+                            text: i18nc("@action:button share a link to this app", "Share")
+                            icon.name: "document-share"
+                            icon.color: "#3498db"
+                            onClicked: shareSheet.open()
+                        }
+                    }
+
+                    // Launch button
+                    Rectangle {
+                        visible: application.isInstalled && application.canExecute && !transactionListener.isActive
+                        width: launchBtn.width + Kirigami.Units.largeSpacing * 2
+                        height: launchBtn.height + Kirigami.Units.smallSpacing * 2
+                        radius: height / 2
+                        gradient: Gradient {
+                            GradientStop { position: 0.0; color: Qt.rgba(0.2, 0.7, 0.3, 0.15) }
+                            GradientStop { position: 1.0; color: Qt.rgba(0.2, 0.7, 0.3, 0.25) }
+                        }
+                        border.width: 1
+                        border.color: Qt.rgba(0.2, 0.7, 0.3, 0.3)
+
+                        QQC2.Button {
+                            id: launchBtn
+                            anchors.centerIn: parent
+                            flat: true
+                            text: application.executeLabel
+                            icon.name: "media-playback-start-symbolic"
+                            icon.color: "#27ae60"
+                            onClicked: application.invokeApplication()
+                        }
+                    }
+
+                    // Install/Remove button
+                    Rectangle {
+                        // Hide for system updates (offline upgrades)
+                        visible: !appInfo.isOfflineUpgrade
+                        width: installRemoveBtn.implicitWidth + Kirigami.Units.largeSpacing * 2
+                        height: installRemoveBtn.implicitHeight + Kirigami.Units.smallSpacing * 2
+                        radius: height / 2
+                        gradient: Gradient {
+                            GradientStop {
+                                position: 0.0
+                                color: {
+                                    if (transactionListener.isActive) {
+                                        return Qt.rgba(0.9, 0.6, 0.2, 0.15)
+                                    } else if (application.isInstalled) {
+                                        return Qt.rgba(0.8, 0.3, 0.3, 0.15)
+                                    } else {
+                                        return Qt.rgba(0.2, 0.7, 0.3, 0.15)
+                                    }
+                                }
+                            }
+                            GradientStop {
+                                position: 1.0
+                                color: {
+                                    if (transactionListener.isActive) {
+                                        return Qt.rgba(0.9, 0.6, 0.2, 0.25)
+                                    } else if (application.isInstalled) {
+                                        return Qt.rgba(0.8, 0.3, 0.3, 0.25)
+                                    } else {
+                                        return Qt.rgba(0.2, 0.7, 0.3, 0.25)
+                                    }
+                                }
+                            }
+                        }
+                        border.width: 1
+                        border.color: {
+                            if (transactionListener.isActive) {
+                                return Qt.rgba(0.9, 0.6, 0.2, 0.3)
+                            } else if (application.isInstalled) {
+                                return Qt.rgba(0.8, 0.3, 0.3, 0.3)
+                            } else {
+                                return Qt.rgba(0.2, 0.7, 0.3, 0.3)
+                            }
+                        }
+
+                        InstallApplicationButton {
+                            id: installRemoveBtn
+                            anchors.centerIn: parent
+                            application: appInfo.application
+                            flat: true
+                            availableFromOnlySingleSource: appInfo.availableFromOnlySingleSource
+                        }
+                    }
+
+                    // System update info button (for offline upgrades)
+                    Rectangle {
+                        visible: appInfo.isOfflineUpgrade
+                        width: updateInfoBtn.width + Kirigami.Units.largeSpacing * 2
+                        height: updateInfoBtn.height + Kirigami.Units.smallSpacing * 2
+                        radius: height / 2
+                        gradient: Gradient {
+                            GradientStop { position: 0.0; color: Qt.rgba(0.2, 0.6, 1, 0.15) }
+                            GradientStop { position: 1.0; color: Qt.rgba(0.2, 0.6, 1, 0.25) }
+                        }
+                        border.width: 1
+                        border.color: Qt.rgba(0.2, 0.6, 1, 0.3)
+
+                        QQC2.Button {
+                            id: updateInfoBtn
+                            anchors.centerIn: parent
+                            flat: true
+                            text: i18n("Update Ready")
+                            icon.name: "system-software-update"
+                            icon.color: "#3498db"
+                            enabled: false // Just informational
+
+                            QQC2.ToolTip {
+                                text: i18n("System update is ready to be installed")
+                            }
+                        }
+                    }
                 }
             }
 
@@ -667,87 +958,185 @@ DiscoverPage {
             }
         }
 
-        // App description section
-        ColumnLayout {
-            spacing: Kirigami.Units.smallSpacing
-
-            // Short description
-            // Not using Kirigami.Heading here because that component doesn't
-            // support selectable text, and we want this to be selectable because
-            // it's also used to show the path for local packages, and that makes
-            // sense to be selectable
-            Kirigami.SelectableLabel {
-                Layout.fillWidth: true
-                Layout.preferredWidth: contentWidth
-                // Not relevant to the offline upgrade use case because we
-                // display the info in the header instead
-                visible: !appInfo.isOfflineUpgrade
-                text: appInfo.application.comment
-                wrapMode: Text.Wrap
-
-                // Match `level: 1` in Kirigami.Heading
-                font.pointSize: Kirigami.Theme.defaultFont.pointSize * 1.35
-                font.weight: Font.DemiBold
-
-                Accessible.role: Accessible.Heading
+        // App description section with modern card
+        Rectangle {
+            Layout.fillWidth: true
+            Layout.preferredHeight: descriptionLayout.implicitHeight + Kirigami.Units.largeSpacing * 2
+            radius: Kirigami.Units.smallSpacing
+            gradient: Gradient {
+                GradientStop { position: 0.0; color: Qt.rgba(0.3, 0.5, 0.9, 0.05) }
+                GradientStop { position: 0.5; color: Qt.rgba(0.2, 0.4, 0.8, 0.08) }
+                GradientStop { position: 1.0; color: Qt.rgba(0.3, 0.5, 0.9, 0.05) }
             }
+            border.width: 1
+            border.color: Qt.rgba(Kirigami.Theme.textColor.r, Kirigami.Theme.textColor.g, Kirigami.Theme.textColor.b, 0.1)
 
-            // Long app description
-            Kirigami.SelectableLabel {
-                objectName: "applicationDescription" // for appium tests
-                Layout.fillWidth: true
-                Layout.preferredWidth: contentWidth
-                wrapMode: Text.WordWrap
-                text: appInfo.application.longDescription
-                textFormat: TextEdit.RichText
-                onLinkActivated: link => Qt.openUrlExternally(link);
+            ColumnLayout {
+                id: descriptionLayout
+                anchors {
+                    left: parent.left
+                    right: parent.right
+                    top: parent.top
+                    margins: Kirigami.Units.largeSpacing
+                }
+                spacing: Kirigami.Units.smallSpacing
+
+                // Short description
+                // Not using Kirigami.Heading here because that component doesn't
+                // support selectable text, and we want this to be selectable because
+                // it's also used to show the path for local packages, and that makes
+                // sense to be selectable
+                Kirigami.SelectableLabel {
+                    Layout.fillWidth: true
+                    Layout.preferredWidth: contentWidth
+                    // Not relevant to the offline upgrade use case because we
+                    // display the info in the header instead
+                    visible: !appInfo.isOfflineUpgrade
+                    text: appInfo.application.comment
+                    wrapMode: Text.Wrap
+
+                    // Match `level: 1` in Kirigami.Heading
+                    font.pointSize: Kirigami.Theme.defaultFont.pointSize * 1.35
+                    font.weight: Font.DemiBold
+
+                    Accessible.role: Accessible.Heading
+                }
+
+                // Long app description
+                Kirigami.SelectableLabel {
+                    objectName: "applicationDescription" // for appium tests
+                    Layout.fillWidth: true
+                    Layout.preferredWidth: contentWidth
+                    wrapMode: Text.WordWrap
+                    text: appInfo.application.longDescription
+                    textFormat: TextEdit.RichText
+                    onLinkActivated: link => Qt.openUrlExternally(link);
+                }
             }
         }
 
-        // Changelog section
-        ColumnLayout {
-            spacing: Kirigami.Units.smallSpacing
+        // Changelog section with modern card
+        Rectangle {
+            Layout.fillWidth: true
+            Layout.preferredHeight: changelogLayout.implicitHeight + Kirigami.Units.largeSpacing * 2
             visible: changelogLabel.visible
-
-            Kirigami.Heading {
-                text: i18n("What's New")
-                level: 2
-                type: Kirigami.Heading.Type.Primary
-                wrapMode: Text.Wrap
+            radius: Kirigami.Units.smallSpacing
+            gradient: Gradient {
+                GradientStop { position: 0.0; color: Qt.rgba(0.2, 0.7, 0.3, 0.05) }
+                GradientStop { position: 0.5; color: Qt.rgba(0.2, 0.6, 0.3, 0.08) }
+                GradientStop { position: 1.0; color: Qt.rgba(0.2, 0.7, 0.3, 0.05) }
             }
+            border.width: 1
+            border.color: Qt.rgba(Kirigami.Theme.textColor.r, Kirigami.Theme.textColor.g, Kirigami.Theme.textColor.b, 0.1)
 
-            // Changelog text
-            QQC2.Label {
-                id: changelogLabel
+            ColumnLayout {
+                id: changelogLayout
+                anchors {
+                    left: parent.left
+                    right: parent.right
+                    top: parent.top
+                    margins: Kirigami.Units.largeSpacing
+                }
+                spacing: Kirigami.Units.smallSpacing
 
-                Layout.fillWidth: true
+                RowLayout {
+                    spacing: Kirigami.Units.smallSpacing
 
-                // Some backends are known to produce empty line break as a text
-                visible: text !== "" && text !== "<br />"
-                wrapMode: Text.WordWrap
+                    Rectangle {
+                        width: Kirigami.Units.iconSizes.medium
+                        height: width
+                        radius: width / 2
+                        color: Qt.rgba(0.2, 0.7, 0.3, 0.15)
 
-                Component.onCompleted: appInfo.application.fetchChangelog()
-                Connections {
-                    target: appInfo.application
-                    function onChangelogFetched(changelog) {
-                        changelogLabel.text = changelog
+                        Kirigami.Icon {
+                            anchors.centerIn: parent
+                            source: "view-refresh"
+                            width: parent.width * 0.6
+                            height: width
+                            color: "#27ae60"
+                        }
+                    }
+
+                    Kirigami.Heading {
+                        text: i18n("🆕 What's New")
+                        level: 2
+                        type: Kirigami.Heading.Type.Primary
+                        wrapMode: Text.Wrap
+                    }
+                }
+
+                // Changelog text
+                QQC2.Label {
+                    id: changelogLabel
+
+                    Layout.fillWidth: true
+                    Layout.leftMargin: Kirigami.Units.largeSpacing
+
+                    // Some backends are known to produce empty line break as a text
+                    visible: text !== "" && text !== "<br />"
+                    wrapMode: Text.WordWrap
+
+                    Component.onCompleted: appInfo.application.fetchChangelog()
+                    Connections {
+                        target: appInfo.application
+                        function onChangelogFetched(changelog) {
+                            changelogLabel.text = changelog
+                        }
                     }
                 }
             }
         }
 
-        // Reviews section
-        ColumnLayout {
-            spacing: Kirigami.Units.smallSpacing
+        // Reviews section with modern card
+        Rectangle {
+            Layout.fillWidth: true
+            Layout.preferredHeight: reviewsLayout.implicitHeight + Kirigami.Units.largeSpacing * 2
             visible: !appInfo.isTechnicalPackage
-
-            Kirigami.Heading {
-                Layout.fillWidth: true
-                text: i18n("Reviews")
-                level: 2
-                type: Kirigami.Heading.Type.Primary
-                wrapMode: Text.Wrap
+            radius: Kirigami.Units.smallSpacing
+            gradient: Gradient {
+                GradientStop { position: 0.0; color: Qt.rgba(0.9, 0.6, 0.2, 0.05) }
+                GradientStop { position: 0.5; color: Qt.rgba(0.8, 0.5, 0.2, 0.08) }
+                GradientStop { position: 1.0; color: Qt.rgba(0.9, 0.6, 0.2, 0.05) }
             }
+            border.width: 1
+            border.color: Qt.rgba(Kirigami.Theme.textColor.r, Kirigami.Theme.textColor.g, Kirigami.Theme.textColor.b, 0.1)
+
+            ColumnLayout {
+                id: reviewsLayout
+                anchors {
+                    left: parent.left
+                    right: parent.right
+                    top: parent.top
+                    margins: Kirigami.Units.largeSpacing
+                }
+                spacing: Kirigami.Units.smallSpacing
+
+                RowLayout {
+                    spacing: Kirigami.Units.smallSpacing
+
+                    Rectangle {
+                        width: Kirigami.Units.iconSizes.medium
+                        height: width
+                        radius: width / 2
+                        color: Qt.rgba(0.9, 0.6, 0.2, 0.15)
+
+                        Kirigami.Icon {
+                            anchors.centerIn: parent
+                            source: "dialog-messages"
+                            width: parent.width * 0.6
+                            height: width
+                            color: "#f39c12"
+                        }
+                    }
+
+                    Kirigami.Heading {
+                        Layout.fillWidth: true
+                        text: i18n("⭐ Reviews")
+                        level: 2
+                        type: Kirigami.Heading.Type.Primary
+                        wrapMode: Text.Wrap
+                    }
+                }
 
             Kirigami.LoadingPlaceholder {
                 id: reviewsLoadingPlaceholder
@@ -795,42 +1184,69 @@ DiscoverPage {
                 compact: appInfo.compact
             }
 
-            // Review-related buttons
+            // Modern review-related buttons
             Flow {
                 Layout.fillWidth: true
                 spacing: Kirigami.Units.smallSpacing
 
-                QQC2.Button {
+                // Show all reviews button
+                Rectangle {
                     visible: reviewsModel.count > visibleReviews
+                    width: showAllButton.width
+                    height: showAllButton.height
+                    radius: Kirigami.Units.smallSpacing
+                    gradient: Gradient {
+                        GradientStop { position: 0.0; color: Qt.rgba(0.2, 0.6, 1, 0.15) }
+                        GradientStop { position: 1.0; color: Qt.rgba(0.2, 0.6, 1, 0.25) }
+                    }
 
-                    text: i18nc("@action:button", "Show All Reviews")
-                    icon.name: "view-visible"
-
-                    onClicked: {
-                        reviewsSheet.open()
+                    QQC2.Button {
+                        id: showAllButton
+                        anchors.centerIn: parent
+                        flat: true
+                        text: i18nc("@action:button", "Show All Reviews")
+                        icon.name: "view-visible"
+                        onClicked: reviewsSheet.open()
                     }
                 }
 
-                QQC2.Button {
+                // Write review button
+                Rectangle {
                     visible: transactionListener.resource.state !== Discover.AbstractResource.Broken
                           && reviewsModel.backend
                           && !reviewsError.visible
                           && reviewsStats.visible
                           && reviewsModel.backend.isResourceSupported(appInfo.application)
-                    enabled: appInfo.application.isInstalled
+                    width: writeReviewButton.width
+                    height: writeReviewButton.height
+                    radius: Kirigami.Units.smallSpacing
+                    gradient: Gradient {
+                        GradientStop {
+                            position: 0.0
+                            color: appInfo.application.isInstalled ? Qt.rgba(0.2, 0.8, 0.4, 0.15) : Qt.rgba(0.5, 0.5, 0.5, 0.1)
+                        }
+                        GradientStop {
+                            position: 1.0
+                            color: appInfo.application.isInstalled ? Qt.rgba(0.2, 0.8, 0.4, 0.25) : Qt.rgba(0.5, 0.5, 0.5, 0.2)
+                        }
+                    }
 
-                    text: appInfo.application.isInstalled ? i18n("Write a Review") : i18n("Install to Write a Review")
-                    icon.name: "document-edit"
-
-                    onClicked: {
-                        reviewsSheet.openReviewDialog()
+                    QQC2.Button {
+                        id: writeReviewButton
+                        anchors.centerIn: parent
+                        flat: true
+                        enabled: appInfo.application.isInstalled
+                        text: appInfo.application.isInstalled ? i18n("Write a Review") : i18n("Install to Write a Review")
+                        icon.name: "document-edit"
+                        onClicked: reviewsSheet.openReviewDialog()
                     }
                 }
             }
-        }
+            } // reviewsLayout end
+        } // Rectangle end
 
-        // "External Links" section
-        ColumnLayout {
+        // "External Links" section with modern card
+        Rectangle {
             readonly property int visibleButtons: (helpButton.visible ? 1 : 0)
                                                 + (homepageButton.visible ? 1: 0)
                                                 + (donateButton.visible ? 1 : 0)
@@ -838,19 +1254,57 @@ DiscoverPage {
                                                 + (contributeButton.visible ? 1 : 0)
             visible: visibleButtons > 0 && !appInfo.isTechnicalPackage
 
-            spacing: Kirigami.Units.smallSpacing
-
-            Kirigami.Heading {
-                text: i18nc("@title", "External Links")
-                level: 2
-                type: Kirigami.Heading.Type.Primary
-                wrapMode: Text.Wrap
+            Layout.fillWidth: true
+            Layout.preferredHeight: linksLayout.implicitHeight + Kirigami.Units.largeSpacing * 2
+            radius: Kirigami.Units.smallSpacing
+            gradient: Gradient {
+                GradientStop { position: 0.0; color: Qt.rgba(0.5, 0.3, 0.7, 0.05) }
+                GradientStop { position: 0.5; color: Qt.rgba(0.5, 0.3, 0.7, 0.08) }
+                GradientStop { position: 1.0; color: Qt.rgba(0.5, 0.3, 0.7, 0.05) }
             }
+            border.width: 1
+            border.color: Qt.rgba(Kirigami.Theme.textColor.r, Kirigami.Theme.textColor.g, Kirigami.Theme.textColor.b, 0.1)
 
             ColumnLayout {
-                Layout.fillWidth: true
+                id: linksLayout
+                anchors {
+                    left: parent.left
+                    right: parent.right
+                    top: parent.top
+                    margins: Kirigami.Units.largeSpacing
+                }
+                spacing: Kirigami.Units.smallSpacing
 
-                spacing: Kirigami.Units.largeSpacing
+                RowLayout {
+                    spacing: Kirigami.Units.smallSpacing
+
+                    Rectangle {
+                        width: Kirigami.Units.iconSizes.medium
+                        height: width
+                        radius: width / 2
+                        color: Qt.rgba(0.5, 0.3, 0.7, 0.15)
+
+                        Kirigami.Icon {
+                            anchors.centerIn: parent
+                            source: "internet-services"
+                            width: parent.width * 0.6
+                            height: width
+                            color: "#8e44ad"
+                        }
+                    }
+
+                    Kirigami.Heading {
+                        text: i18nc("@title", "🔗 External Links")
+                        level: 2
+                        type: Kirigami.Heading.Type.Primary
+                        wrapMode: Text.Wrap
+                    }
+                }
+
+                ColumnLayout {
+                    Layout.fillWidth: true
+                    Layout.leftMargin: Kirigami.Units.largeSpacing
+                    spacing: Kirigami.Units.largeSpacing
 
                 ApplicationResourceButton {
                     id: helpButton
@@ -902,8 +1356,9 @@ DiscoverPage {
                     website: application.contributeURL.toString()
                     linkText: i18nc("@info text of a web URL", "Start contributing")
                 }
-            }
-        }
+                } // ColumnLayout for buttons end
+            } // linksLayout end
+        } // Rectangle end
 
         Repeater {
             model: appInfo.application.bottomObjects

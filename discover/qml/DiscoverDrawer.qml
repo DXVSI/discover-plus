@@ -7,6 +7,7 @@
 import QtQuick
 import QtQuick.Controls as QQC2
 import QtQuick.Layouts
+import QtQuick.Effects
 import org.kde.discover as Discover
 import org.kde.kirigami as Kirigami
 
@@ -64,6 +65,24 @@ Kirigami.GlobalDrawer {
     resetMenuOnTriggered: false
     modal: !drawer.wideScreen
 
+    // Modern drawer background
+    background: Rectangle {
+        gradient: Gradient {
+            orientation: Gradient.Vertical
+            GradientStop { position: 0.0; color: Qt.lighter(Kirigami.Theme.backgroundColor, 1.05) }
+            GradientStop { position: 0.1; color: Kirigami.Theme.backgroundColor }
+            GradientStop { position: 1.0; color: Qt.darker(Kirigami.Theme.backgroundColor, 1.02) }
+        }
+
+        // Subtle right border
+        Rectangle {
+            anchors.right: parent.right
+            width: 1
+            height: parent.height
+            color: Qt.rgba(Kirigami.Theme.textColor.r, Kirigami.Theme.textColor.g, Kirigami.Theme.textColor.b, 0.15)
+        }
+    }
+
     onCurrentSubMenuChanged: {
         if (currentSubMenu) {
             currentSubMenu.trigger()
@@ -119,37 +138,53 @@ Kirigami.GlobalDrawer {
     }
 
     topContent: [
-        ActionListItem {
+        CategoryListItem {
             id: featuredActionListItem
             action: featuredAction
             visible: enabled && drawer.wideScreen
+            isCategory: false
             Keys.onUpPressed: searchField.forceActiveFocus(Qt.TabFocusReason)
         },
-        ActionListItem {
+        CategoryListItem {
             action: installedAction
             visible: enabled && drawer.wideScreen
+            isCategory: false
         },
-        ActionListItem {
+        CategoryListItem {
             action: coprAction
             visible: enabled && drawer.wideScreen
+            isCategory: false
+            subtitle: i18n("Community packages")
         },
-        ActionListItem {
+        CategoryListItem {
             objectName: "updateButton"
             action: updateAction
             visible: enabled && drawer.wideScreen
-            stateIconName: Discover.ResourcesModel.fetchingUpdatesProgress < 100 ? "view-refresh" : Discover.ResourcesModel.updatesCount > 0 ? "emblem-important" : ""
+            isCategory: false
+            subtitle: Discover.ResourcesModel.updatesCount > 0 ? i18np("%1 update available", "%1 updates available", Discover.ResourcesModel.updatesCount) : ""
         },
-        ActionListItem {
+        CategoryListItem {
             action: sourcesAction
+            isCategory: false
         },
-        ActionListItem {
+        CategoryListItem {
             action: aboutAction
+            isCategory: false
         },
-        Kirigami.Separator {
+        Rectangle {
             Layout.fillWidth: true
+            Layout.preferredHeight: 1
             Layout.topMargin: Kirigami.Units.smallSpacing
             Layout.leftMargin: Kirigami.Units.largeSpacing
             Layout.rightMargin: Kirigami.Units.largeSpacing
+
+            gradient: Gradient {
+                orientation: Gradient.Horizontal
+                GradientStop { position: 0.0; color: "transparent" }
+                GradientStop { position: 0.1; color: Qt.rgba(Kirigami.Theme.textColor.r, Kirigami.Theme.textColor.g, Kirigami.Theme.textColor.b, 0.1) }
+                GradientStop { position: 0.9; color: Qt.rgba(Kirigami.Theme.textColor.r, Kirigami.Theme.textColor.g, Kirigami.Theme.textColor.b, 0.1) }
+                GradientStop { position: 1.0; color: "transparent" }
+            }
         }
     ]
 
@@ -163,8 +198,16 @@ Kirigami.GlobalDrawer {
         spacing: 0
         visible: transactions > 1 || (transactions === 1 && !currentPageShowsTransactionProgressInline)
 
-        Kirigami.Separator {
+        Rectangle {
             Layout.fillWidth: true
+            Layout.preferredHeight: 1
+            gradient: Gradient {
+                orientation: Gradient.Horizontal
+                GradientStop { position: 0.0; color: "transparent" }
+                GradientStop { position: 0.1; color: Qt.rgba(Kirigami.Theme.textColor.r, Kirigami.Theme.textColor.g, Kirigami.Theme.textColor.b, 0.15) }
+                GradientStop { position: 0.9; color: Qt.rgba(Kirigami.Theme.textColor.r, Kirigami.Theme.textColor.g, Kirigami.Theme.textColor.b, 0.15) }
+                GradientStop { position: 1.0; color: "transparent" }
+            }
         }
 
         ProgressView {
@@ -194,7 +237,28 @@ Kirigami.GlobalDrawer {
             readonly property bool itsMe: window?.leftPage?.category === category
 
             text: category?.name ?? ""
-            icon.name: category?.icon + "-symbolic" ?? ""
+            icon.name: {
+                // Custom icons for categories with modern feel
+                if (text.toLowerCase().includes("game")) {
+                    return "applications-games"
+                } else if (text.toLowerCase().includes("development")) {
+                    return "applications-development"
+                } else if (text.toLowerCase().includes("graphics")) {
+                    return "applications-graphics"
+                } else if (text.toLowerCase().includes("internet") || text.toLowerCase().includes("network")) {
+                    return "applications-internet"
+                } else if (text.toLowerCase().includes("multimedia") || text.toLowerCase().includes("audio") || text.toLowerCase().includes("video")) {
+                    return "applications-multimedia"
+                } else if (text.toLowerCase().includes("office") || text.toLowerCase().includes("productivity")) {
+                    return "applications-office"
+                } else if (text.toLowerCase().includes("science") || text.toLowerCase().includes("education")) {
+                    return "applications-science"
+                } else if (text.toLowerCase().includes("system") || text.toLowerCase().includes("utilities")) {
+                    return "applications-utilities"
+                } else {
+                    return category?.icon ?? ""
+                }
+            }
             checked: itsMe
             enabled: (currentSearchText.length === 0
                       || (category?.contains(window?.leftPage?.model?.subcategories) ?? false))

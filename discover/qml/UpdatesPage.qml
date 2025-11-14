@@ -3,6 +3,7 @@ pragma ComponentBehavior: Bound
 import QtQuick
 import QtQuick.Controls as QQC2
 import QtQuick.Layouts
+import QtQuick.Effects
 import org.kde.discover as Discover
 import org.kde.discover.app as DiscoverApp
 import org.kde.kirigami as Kirigami
@@ -42,7 +43,8 @@ DiscoverPage {
 
         property string errorMessage: ""
 
-        parent: page.QQC2.Overlay.overlay
+        // Remove parent binding to fix binding loop
+        // parent: page.QQC2.Overlay.overlay
 
         title: contentLoader.sourceComponent === friendlyMessageComponent ? i18n("Update Issue") :  i18n("Technical details")
 
@@ -161,6 +163,7 @@ DiscoverPage {
         text: page.unselected > 0 ? i18nc("@action:button as in, 'update the selected items' ", "Update Selected") : i18nc("@action:button as in, 'update all items'", "Update All")
         visible: updateModel.toUpdateCount
         icon.name: "update-none"
+        icon.color: "#2ecc71"
 
         readonly property bool hasErrors: page.header.children.some(item => item?.visible && item instanceof Kirigami.InlineMessage)
 
@@ -175,6 +178,159 @@ DiscoverPage {
         id: errorsColumn
 
         spacing: Kirigami.Units.smallSpacing
+
+        // Modern update header
+        Rectangle {
+            Layout.fillWidth: true
+            Layout.preferredHeight: updateHeaderContent.implicitHeight + Kirigami.Units.largeSpacing * 2
+            visible: updateModel.totalUpdatesCount > 0 || resourcesUpdatesModel.isFetching
+
+            gradient: Gradient {
+                orientation: Gradient.Horizontal
+                GradientStop { position: 0.0; color: Qt.rgba(0.1, 0.7, 0.5, 0.08) }
+                GradientStop { position: 0.5; color: Qt.rgba(0.2, 0.6, 0.4, 0.12) }
+                GradientStop { position: 1.0; color: Qt.rgba(0.1, 0.7, 0.5, 0.08) }
+            }
+
+            radius: Kirigami.Units.smallSpacing
+            border.width: 1
+            border.color: Qt.rgba(Kirigami.Theme.textColor.r, Kirigami.Theme.textColor.g, Kirigami.Theme.textColor.b, 0.1)
+
+            RowLayout {
+                id: updateHeaderContent
+                anchors {
+                    left: parent.left
+                    right: parent.right
+                    verticalCenter: parent.verticalCenter
+                    margins: Kirigami.Units.largeSpacing
+                }
+                spacing: Kirigami.Units.largeSpacing
+
+                Rectangle {
+                    width: Kirigami.Units.iconSizes.large
+                    height: width
+                    radius: width / 2
+                    color: Qt.rgba(0.1, 0.7, 0.5, 0.15)
+
+                    Kirigami.Icon {
+                        id: updateIcon
+                        anchors.centerIn: parent
+                        source: resourcesUpdatesModel.isFetching ? "view-refresh" : updateModel.totalUpdatesCount > 0 ? "update-high" : "checkmark"
+                        width: parent.width * 0.6
+                        height: width
+                        color: updateModel.totalUpdatesCount > 0 ? "#e74c3c" : "#2ecc71"
+
+                        RotationAnimation on rotation {
+                            running: resourcesUpdatesModel.isFetching
+                            from: 0
+                            to: 360
+                            duration: 2000
+                            loops: Animation.Infinite
+                        }
+                    }
+                }
+
+                ColumnLayout {
+                    Layout.fillWidth: true
+                    spacing: Kirigami.Units.smallSpacing
+
+                    Kirigami.Heading {
+                        text: {
+                            if (resourcesUpdatesModel.isFetching) {
+                                return i18n("🔍 Checking for updates...")
+                            } else if (updateModel.totalUpdatesCount > 0) {
+                                return i18n("🎯 Updates available!")
+                            } else {
+                                return i18n("✨ System is up to date")
+                            }
+                        }
+                        level: 2
+                    }
+
+                    QQC2.Label {
+                        visible: updateModel.totalUpdatesCount > 0
+                        text: {
+                            var updatesText = i18np("%1 update available", "%1 updates available", updateModel.totalUpdatesCount)
+                            if (updateModel.updateSize) {
+                                return updatesText + " • " + updateModel.updateSize
+                            }
+                            return updatesText
+                        }
+                        opacity: 0.7
+                        font: Kirigami.Theme.smallFont
+                    }
+                }
+
+                // Spacer to push buttons to the right
+                Item {
+                    Layout.fillWidth: true
+                }
+
+                // Modern action buttons
+                RowLayout {
+                    spacing: Kirigami.Units.smallSpacing
+                    Layout.alignment: Qt.AlignVCenter | Qt.AlignRight
+
+                    // Update button
+                    Rectangle {
+                        visible: updateModel.totalUpdatesCount > 0 && !resourcesUpdatesModel.isFetching
+                        width: updateBtn.width + Kirigami.Units.largeSpacing * 2
+                        height: updateBtn.height + Kirigami.Units.smallSpacing * 2
+                        radius: height / 2
+                        gradient: Gradient {
+                            GradientStop { position: 0.0; color: updateBtn.enabled ? Qt.rgba(0.2, 0.7, 0.3, 0.15) : Qt.rgba(0.5, 0.5, 0.5, 0.1) }
+                            GradientStop { position: 1.0; color: updateBtn.enabled ? Qt.rgba(0.2, 0.7, 0.3, 0.25) : Qt.rgba(0.5, 0.5, 0.5, 0.15) }
+                        }
+                        border.width: 1
+                        border.color: updateBtn.enabled ? Qt.rgba(0.2, 0.7, 0.3, 0.3) : Qt.rgba(0.5, 0.5, 0.5, 0.2)
+
+                        QQC2.Button {
+                            id: updateBtn
+                            anchors.centerIn: parent
+                            flat: true
+                            enabled: page.readyToUpdate && !updateAction.hasErrors
+                            text: page.unselected > 0 ? i18n("Update Selected") : i18n("Update All")
+                            icon.name: "update-none"
+                            icon.color: enabled ? "#27ae60" : Kirigami.Theme.textColor
+                            onClicked: resourcesUpdatesModel.updateAll()
+                        }
+                    }
+
+                    // Refresh button
+                    Rectangle {
+                        visible: !resourcesUpdatesModel.isFetching && !Kirigami.Settings.isMobile
+                        width: refreshBtn.width + Kirigami.Units.largeSpacing * 2
+                        height: refreshBtn.height + Kirigami.Units.smallSpacing * 2
+                        radius: height / 2
+                        gradient: Gradient {
+                            GradientStop { position: 0.0; color: Qt.rgba(0.2, 0.6, 1, 0.15) }
+                            GradientStop { position: 1.0; color: Qt.rgba(0.2, 0.6, 1, 0.25) }
+                        }
+                        border.width: 1
+                        border.color: Qt.rgba(0.2, 0.6, 1, 0.3)
+
+                        QQC2.Button {
+                            id: refreshBtn
+                            anchors.centerIn: parent
+                            flat: true
+                            enabled: Discover.ResourcesModel.updateAction.enabled
+                            text: Discover.ResourcesModel.updateAction.text
+                            icon.name: "view-refresh"
+                            icon.color: "#3498db"
+                            onClicked: Discover.ResourcesModel.updateAction.trigger()
+
+                            RotationAnimation on icon {
+                                running: resourcesUpdatesModel.isFetching
+                                from: 0
+                                to: 360
+                                duration: 2000
+                                loops: Animation.Infinite
+                            }
+                        }
+                    }
+                }
+            }
+        }
 
         DiscoverInlineMessage {
             Layout.fillWidth: true
@@ -378,14 +534,9 @@ DiscoverPage {
             filterString: "false"
         }
 
+        // Отключаем секции - они не нужны
         section {
-            property: "section"
-            delegate: Kirigami.ListSectionHeader {
-                required property string section
-
-                width: updatesView.width
-                label: section
-            }
+            property: ""
         }
 
         delegate: QQC2.ItemDelegate {
@@ -397,6 +548,10 @@ DiscoverPage {
             required property bool extended
 
             width: updatesView.width
+            leftPadding: Kirigami.Units.smallSpacing
+            rightPadding: Kirigami.Units.smallSpacing
+            topPadding: Kirigami.Units.smallSpacing
+            bottomPadding: Kirigami.Units.smallSpacing
 
             highlighted: false
             focus: ListView.isCurrentItem
@@ -406,6 +561,26 @@ DiscoverPage {
             Accessible.name: model.display
             Accessible.description: model.resource?.upgradeText ?? ""
             Accessible.role: Accessible.ListItem
+
+            // Modern background
+            background: Rectangle {
+                radius: Kirigami.Units.smallSpacing
+                color: {
+                    if (listItem.hovered || listItem.down) {
+                        return Qt.rgba(0.2, 0.6, 1, 0.1)
+                    } else if (listItem.checked) {
+                        return Qt.rgba(0.2, 0.7, 0.3, 0.08)
+                    } else {
+                        return "transparent"
+                    }
+                }
+                border.width: listItem.extended ? 1 : 0
+                border.color: Qt.rgba(0.2, 0.6, 1, 0.2)
+
+                Behavior on color {
+                    ColorAnimation { duration: 150 }
+                }
+            }
 
             onEnabledChanged: if (!enabled) {
                 model.extended = false;
@@ -493,6 +668,7 @@ DiscoverPage {
                         }
                     }
 
+                    // Size/Progress indicator
                     TransactionProgressIndicator {
                         Layout.minimumWidth: Kirigami.Units.gridUnit * 6
 
@@ -506,64 +682,71 @@ DiscoverPage {
                     }
                 }
 
-                QQC2.Frame {
-                    Layout.fillWidth: true
-                    implicitHeight: view.implicitHeight
-                    visible: listItem.model.extended && listItem.model.changelog.length > 0
-                    QQC2.Label {
-                        id: view
-                        anchors {
-                            right: parent.right
-                            left: parent.left
-                        }
-                        text: listItem.model.changelog
-                        textFormat: Text.StyledText
-                        wrapMode: Text.WordWrap
-                        color: listItem.down ? Kirigami.Theme.highlightedTextColor : Kirigami.Theme.textColor
-                        onLinkActivated: link => Qt.openUrlExternally(link)
-
-                    }
-                }
-
+                // Источник и кнопка дополнительной информации
                 RowLayout {
                     Layout.fillWidth: true
+                    Layout.topMargin: Kirigami.Units.smallSpacing
                     spacing: Kirigami.Units.smallSpacing
-                    visible: listItem.model.extended
+                    visible: true // Показываем источник и кнопку
 
+                    // Источник
                     QQC2.Label {
                         Layout.leftMargin: Kirigami.Units.gridUnit
-                        text: i18n("Update from:")
+                        text: i18n("Source:")
                         color: listItem.down ? Kirigami.Theme.highlightedTextColor : Kirigami.Theme.textColor
+                        opacity: 0.7
+                        font: Kirigami.Theme.smallFont
                     }
+
                     // Backend icon
                     Kirigami.Icon {
                         source: listItem.model.resource.sourceIcon
-                        implicitWidth: Kirigami.Units.iconSizes.smallMedium
-                        implicitHeight: Kirigami.Units.iconSizes.smallMedium
+                        implicitWidth: Kirigami.Units.iconSizes.small
+                        implicitHeight: Kirigami.Units.iconSizes.small
                         selected: listItem.down
                     }
-                    // Backend label and origin/remote
+
+                    // Backend label
                     QQC2.Label {
-                        Layout.fillWidth: true
-                        text: listItem.model.resource.origin.length === 0 ? listItem.model.resource.backend.displayName
-                                : i18nc("%1 is the backend that provides this app, %2 is the specific repository or address within that backend","%1 (%2)",
-                                        listItem.model.resource.backend.displayName, listItem.model.resource.origin)
-                        elide: Text.ElideRight
+                        text: listItem.model.resource.backend.displayName
                         color: listItem.down ? Kirigami.Theme.highlightedTextColor : Kirigami.Theme.textColor
+                        opacity: 0.7
+                        font: Kirigami.Theme.smallFont
                     }
 
-                    QQC2.Button {
-                        id: moreInformationButton
+                    Item {
+                        Layout.fillWidth: true
+                    }
+
+                    // Modern More Information button
+                    Rectangle {
                         Layout.alignment: Qt.AlignRight
-                        text: i18n("More Information…")
-                        enabled: !resourcesUpdatesModel.isProgressing
-                        onClicked: Navigation.openApplication(listItem.model.resource)
+                        width: moreInformationButton.width + Kirigami.Units.largeSpacing * 2
+                        height: moreInformationButton.height + Kirigami.Units.smallSpacing
+                        radius: height / 2
+                        gradient: Gradient {
+                            GradientStop { position: 0.0; color: Qt.rgba(0.9, 0.3, 0.3, 0.15) }
+                            GradientStop { position: 1.0; color: Qt.rgba(0.9, 0.3, 0.3, 0.25) }
+                        }
+                        border.width: 1
+                        border.color: Qt.rgba(0.9, 0.3, 0.3, 0.3)
+
+                        QQC2.Button {
+                            id: moreInformationButton
+                            anchors.centerIn: parent
+                            flat: true
+                            text: i18n("More Information…")
+                            icon.name: "dialog-information"
+                            icon.color: "#e74c3c"
+                            enabled: !resourcesUpdatesModel.isProgressing
+                            onClicked: Navigation.openApplication(listItem.model.resource)
+                        }
                     }
                 }
             }
 
             onClicked: {
-                model.extended = !model.extended
+                // Убираем разворачивание по клику - только через кнопку "Дополнительная информация"
             }
         }
     }
@@ -585,7 +768,7 @@ DiscoverPage {
             name: "fetching"
             PropertyChanges { page.footerLabel: i18nc("@info", "Fetching updates…") }
             PropertyChanges { page.footerProgress: Discover.ResourcesModel.fetchingUpdatesProgress }
-            PropertyChanges { page.actions: [ updateAction, refreshAction ] }
+            PropertyChanges { page.actions: [] }
             PropertyChanges { page.busy: true }
             PropertyChanges { statusLabel.progressBar.visible: true }
             PropertyChanges { updatesView.opacity: 0 }
@@ -593,7 +776,7 @@ DiscoverPage {
         State {
             name: "progressing"
             PropertyChanges { page.supportsRefreshing: false }
-            PropertyChanges { page.actions: [cancelUpdateAction] }
+            PropertyChanges { page.actions: [] }
             PropertyChanges { statusLabel.visible: false }
         },
         State {
@@ -602,12 +785,12 @@ DiscoverPage {
             // On mobile, we want "Update" to be the primary action so it's in
             // the center, but on desktop this feels a bit awkward and it would
             // be better to have "Update" be the right-most action
-            PropertyChanges { page.actions: [ updateAction, refreshAction ] }
+            PropertyChanges { page.actions: [] }
             PropertyChanges { statusLabel.visible: false }
         },
         State {
             name: "reboot"
-            PropertyChanges { page.actions: [refreshAction] }
+            PropertyChanges { page.actions: [] }
             PropertyChanges { page.footerLabel: i18nc("@info", "Updates will be installed after the system is restarted") }
             PropertyChanges { statusLabel.helpfulAction: promptRestartAction }
             PropertyChanges { statusLabel.explanation: i18nc("@info", "You can keep using the system if you're not ready to restart yet.") }
@@ -625,35 +808,35 @@ DiscoverPage {
         State {
             name: "now-uptodate"
             PropertyChanges { page.footerLabel: i18nc("@info", "Up to date") }
-            PropertyChanges { page.actions: [refreshAction] }
+            PropertyChanges { page.actions: [] }
             PropertyChanges { statusLabel.explanation: "" }
             PropertyChanges { statusLabel.progressBar.visible: false }
         },
         State {
             name: "uptodate"
             PropertyChanges { page.footerLabel: i18nc("@info", "Up to date") }
-            PropertyChanges { page.actions: [refreshAction] }
+            PropertyChanges { page.actions: [] }
             PropertyChanges { statusLabel.explanation: "" }
             PropertyChanges { statusLabel.progressBar.visible: false }
         },
         State {
             name: "medium"
             PropertyChanges { page.title: i18nc("@info", "Up to date") }
-            PropertyChanges { page.actions: [refreshAction] }
+            PropertyChanges { page.actions: [] }
             PropertyChanges { statusLabel.explanation: "" }
             PropertyChanges { statusLabel.progressBar.visible: false }
         },
         State {
             name: "low"
             PropertyChanges { page.title: i18nc("@info", "Should check for updates") }
-            PropertyChanges { page.actions: [refreshAction] }
+            PropertyChanges { page.actions: [] }
             PropertyChanges { statusLabel.explanation: "" }
             PropertyChanges { statusLabel.progressBar.visible: false }
         },
         State {
             name: "unknown"
             PropertyChanges { page.title: i18nc("@info", "Time of last update unknown") }
-            PropertyChanges { page.actions: [refreshAction] }
+            PropertyChanges { page.actions: [] }
             PropertyChanges { statusLabel.explanation: "" }
             PropertyChanges { statusLabel.progressBar.visible: false }
         }

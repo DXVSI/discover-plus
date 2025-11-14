@@ -10,6 +10,7 @@ pragma ComponentBehavior: Bound
 import QtQuick
 import QtQuick.Controls as QQC2
 import QtQuick.Layouts
+import QtQuick.Effects
 import org.kde.kirigami as Kirigami
 import org.kde.discover as Discover
 import org.kde.discover.app as DiscoverApp
@@ -81,15 +82,64 @@ DiscoverPage {
         columnSpacing: page.padding
         maximumColumnWidth: Kirigami.Units.gridUnit * 6
 
-        Kirigami.Heading {
+        // Modern section header with gradient
+        Rectangle {
             id: popHeading
-            // Need to undo some the row spacing of the parent layout which looks bad here
-            Layout.bottomMargin: -(apps.rowSpacing / 2)
             Layout.columnSpan: apps.columns
             Layout.fillWidth: true
-            text: i18nc("@title:group", "Most Popular")
-            wrapMode: Text.Wrap
+            Layout.preferredHeight: popHeadingContent.implicitHeight + Kirigami.Units.largeSpacing * 2
+            Layout.bottomMargin: Kirigami.Units.smallSpacing
             visible: popRep.count > 0 && !featuredModel.isFetching
+
+            radius: Kirigami.Units.smallSpacing
+            gradient: Gradient {
+                orientation: Gradient.Horizontal
+                GradientStop { position: 0.0; color: Qt.rgba(0.2, 0.6, 1, 0.08) }
+                GradientStop { position: 0.5; color: Qt.rgba(0.3, 0.5, 0.9, 0.12) }
+                GradientStop { position: 1.0; color: Qt.rgba(0.2, 0.6, 1, 0.08) }
+            }
+
+            border.width: 1
+            border.color: Qt.rgba(Kirigami.Theme.textColor.r, Kirigami.Theme.textColor.g, Kirigami.Theme.textColor.b, 0.1)
+
+            RowLayout {
+                id: popHeadingContent
+                anchors {
+                    left: parent.left
+                    right: parent.right
+                    verticalCenter: parent.verticalCenter
+                    margins: Kirigami.Units.largeSpacing
+                }
+                spacing: Kirigami.Units.largeSpacing
+
+                Rectangle {
+                    width: Kirigami.Units.iconSizes.medium
+                    height: width
+                    radius: width / 2
+                    color: Qt.rgba(0.2, 0.6, 1, 0.15)
+
+                    Kirigami.Icon {
+                        anchors.centerIn: parent
+                        source: "rating"
+                        width: parent.width * 0.6
+                        height: width
+                        color: "#3498db"
+                    }
+                }
+
+                Kirigami.Heading {
+                    Layout.fillWidth: true
+                    text: i18nc("@title:group", "🔥 Most Popular")
+                    wrapMode: Text.Wrap
+                    level: 2
+                }
+
+                QQC2.Label {
+                    text: i18np("%1 app", "%1 apps", popRep.count)
+                    opacity: 0.6
+                    font: Kirigami.Theme.smallFont
+                }
+            }
         }
 
         Repeater {
@@ -109,16 +159,64 @@ DiscoverPage {
             property int numberItemsOnLastRow: (count % apps.columns) || apps.columns
         }
 
-        Kirigami.Heading {
+        Rectangle {
             id: recentlyUpdatedHeading
             Layout.topMargin: page.padding
-            // Need to undo some the row spacing of the parent layout which looks bad here
-            Layout.bottomMargin: -(apps.rowSpacing / 2)
             Layout.columnSpan: apps.columns
             Layout.fillWidth: true
-            text: i18nc("@title:group", "Newly Published & Recently Updated")
-            wrapMode: Text.Wrap
+            Layout.preferredHeight: recentlyUpdatedHeadingContent.implicitHeight + Kirigami.Units.largeSpacing * 2
+            Layout.bottomMargin: Kirigami.Units.smallSpacing
             visible: recentlyUpdatedRepeater.count > 0 && !featuredModel.isFetching
+
+            radius: Kirigami.Units.smallSpacing
+            gradient: Gradient {
+                orientation: Gradient.Horizontal
+                GradientStop { position: 0.0; color: Qt.rgba(0.1, 0.8, 0.5, 0.08) }
+                GradientStop { position: 0.5; color: Qt.rgba(0.2, 0.7, 0.4, 0.12) }
+                GradientStop { position: 1.0; color: Qt.rgba(0.1, 0.8, 0.5, 0.08) }
+            }
+
+            border.width: 1
+            border.color: Qt.rgba(Kirigami.Theme.textColor.r, Kirigami.Theme.textColor.g, Kirigami.Theme.textColor.b, 0.1)
+
+            RowLayout {
+                id: recentlyUpdatedHeadingContent
+                anchors {
+                    left: parent.left
+                    right: parent.right
+                    verticalCenter: parent.verticalCenter
+                    margins: Kirigami.Units.largeSpacing
+                }
+                spacing: Kirigami.Units.largeSpacing
+
+                Rectangle {
+                    width: Kirigami.Units.iconSizes.medium
+                    height: width
+                    radius: width / 2
+                    color: Qt.rgba(0.1, 0.8, 0.5, 0.15)
+
+                    Kirigami.Icon {
+                        anchors.centerIn: parent
+                        source: "clock"
+                        width: parent.width * 0.6
+                        height: width
+                        color: "#2ecc71"
+                    }
+                }
+
+                Kirigami.Heading {
+                    Layout.fillWidth: true
+                    text: i18nc("@title:group", "✨ Newly Published & Recently Updated")
+                    wrapMode: Text.Wrap
+                    level: 2
+                }
+
+                QQC2.Label {
+                    text: i18np("%1 app", "%1 apps", recentlyUpdatedRepeater.count)
+                    opacity: 0.6
+                    font: Kirigami.Theme.smallFont
+                }
+            }
         }
 
         Repeater {
@@ -159,16 +257,64 @@ DiscoverPage {
             }
         }
 
-        Kirigami.Heading {
+        Rectangle {
             id: featuredHeading
             Layout.topMargin: page.padding
-            // Need to undo some the row spacing of the parent layout which looks bad here
-            Layout.bottomMargin: -(apps.rowSpacing / 2)
             Layout.columnSpan: apps.columns
             Layout.fillWidth: true
-            text: i18nc("@title:group", "Editor's Choice")
-            wrapMode: Text.Wrap
+            Layout.preferredHeight: featuredHeadingContent.implicitHeight + Kirigami.Units.largeSpacing * 2
+            Layout.bottomMargin: Kirigami.Units.smallSpacing
             visible: featuredRep.count > 0 && !featuredModel.isFetching
+
+            radius: Kirigami.Units.smallSpacing
+            gradient: Gradient {
+                orientation: Gradient.Horizontal
+                GradientStop { position: 0.0; color: Qt.rgba(0.9, 0.6, 0.1, 0.08) }
+                GradientStop { position: 0.5; color: Qt.rgba(0.8, 0.5, 0.2, 0.12) }
+                GradientStop { position: 1.0; color: Qt.rgba(0.9, 0.6, 0.1, 0.08) }
+            }
+
+            border.width: 1
+            border.color: Qt.rgba(Kirigami.Theme.textColor.r, Kirigami.Theme.textColor.g, Kirigami.Theme.textColor.b, 0.1)
+
+            RowLayout {
+                id: featuredHeadingContent
+                anchors {
+                    left: parent.left
+                    right: parent.right
+                    verticalCenter: parent.verticalCenter
+                    margins: Kirigami.Units.largeSpacing
+                }
+                spacing: Kirigami.Units.largeSpacing
+
+                Rectangle {
+                    width: Kirigami.Units.iconSizes.medium
+                    height: width
+                    radius: width / 2
+                    color: Qt.rgba(0.9, 0.6, 0.1, 0.15)
+
+                    Kirigami.Icon {
+                        anchors.centerIn: parent
+                        source: "favorite"
+                        width: parent.width * 0.6
+                        height: width
+                        color: "#f39c12"
+                    }
+                }
+
+                Kirigami.Heading {
+                    Layout.fillWidth: true
+                    text: i18nc("@title:group", "⭐ Editor's Choice")
+                    wrapMode: Text.Wrap
+                    level: 2
+                }
+
+                QQC2.Label {
+                    text: i18np("%1 app", "%1 apps", featuredRep.count)
+                    opacity: 0.6
+                    font: Kirigami.Theme.smallFont
+                }
+            }
         }
 
         Repeater {
@@ -184,16 +330,64 @@ DiscoverPage {
             property int numberItemsOnLastRow: (count % apps.columns) || apps.columns
         }
 
-        Kirigami.Heading {
+        Rectangle {
             id: gamesHeading
             Layout.topMargin: page.padding
-            // Need to undo some the row spacing of the parent layout which looks bad here
-            Layout.bottomMargin: -(apps.rowSpacing / 2)
             Layout.columnSpan: apps.columns
             Layout.fillWidth: true
-            text: i18nc("@title:group", "Highest-Rated Games")
-            wrapMode: Text.Wrap
+            Layout.preferredHeight: gamesHeadingContent.implicitHeight + Kirigami.Units.largeSpacing * 2
+            Layout.bottomMargin: Kirigami.Units.smallSpacing
             visible: gamesRep.count > 0 && !featuredModel.isFetching
+
+            radius: Kirigami.Units.smallSpacing
+            gradient: Gradient {
+                orientation: Gradient.Horizontal
+                GradientStop { position: 0.0; color: Qt.rgba(0.9, 0.3, 0.3, 0.08) }
+                GradientStop { position: 0.5; color: Qt.rgba(0.8, 0.2, 0.4, 0.12) }
+                GradientStop { position: 1.0; color: Qt.rgba(0.9, 0.3, 0.3, 0.08) }
+            }
+
+            border.width: 1
+            border.color: Qt.rgba(Kirigami.Theme.textColor.r, Kirigami.Theme.textColor.g, Kirigami.Theme.textColor.b, 0.1)
+
+            RowLayout {
+                id: gamesHeadingContent
+                anchors {
+                    left: parent.left
+                    right: parent.right
+                    verticalCenter: parent.verticalCenter
+                    margins: Kirigami.Units.largeSpacing
+                }
+                spacing: Kirigami.Units.largeSpacing
+
+                Rectangle {
+                    width: Kirigami.Units.iconSizes.medium
+                    height: width
+                    radius: width / 2
+                    color: Qt.rgba(0.9, 0.3, 0.3, 0.15)
+
+                    Kirigami.Icon {
+                        anchors.centerIn: parent
+                        source: "applications-games"
+                        width: parent.width * 0.6
+                        height: width
+                        color: "#e74c3c"
+                    }
+                }
+
+                Kirigami.Heading {
+                    Layout.fillWidth: true
+                    text: i18nc("@title:group", "🎮 Highest-Rated Games")
+                    wrapMode: Text.Wrap
+                    level: 2
+                }
+
+                QQC2.Label {
+                    text: i18np("%1 game", "%1 games", gamesRep.count)
+                    opacity: 0.6
+                    font: Kirigami.Theme.smallFont
+                }
+            }
         }
 
         Repeater {
@@ -240,13 +434,64 @@ DiscoverPage {
             }
         }
 
-        Kirigami.Heading {
+        Rectangle {
+            id: devHeading
             Layout.topMargin: page.padding
             Layout.columnSpan: apps.columns
             Layout.fillWidth: true
-            text: i18nc("@title:group", "Highest-Rated Developer Tools")
-            wrapMode: Text.Wrap
+            Layout.preferredHeight: devHeadingContent.implicitHeight + Kirigami.Units.largeSpacing * 2
+            Layout.bottomMargin: Kirigami.Units.smallSpacing
             visible: devRep.count > 0 && !featuredModel.isFetching
+
+            radius: Kirigami.Units.smallSpacing
+            gradient: Gradient {
+                orientation: Gradient.Horizontal
+                GradientStop { position: 0.0; color: Qt.rgba(0.2, 0.4, 0.8, 0.08) }
+                GradientStop { position: 0.5; color: Qt.rgba(0.3, 0.5, 0.9, 0.12) }
+                GradientStop { position: 1.0; color: Qt.rgba(0.2, 0.4, 0.8, 0.08) }
+            }
+
+            border.width: 1
+            border.color: Qt.rgba(Kirigami.Theme.textColor.r, Kirigami.Theme.textColor.g, Kirigami.Theme.textColor.b, 0.1)
+
+            RowLayout {
+                id: devHeadingContent
+                anchors {
+                    left: parent.left
+                    right: parent.right
+                    verticalCenter: parent.verticalCenter
+                    margins: Kirigami.Units.largeSpacing
+                }
+                spacing: Kirigami.Units.largeSpacing
+
+                Rectangle {
+                    width: Kirigami.Units.iconSizes.medium
+                    height: width
+                    radius: width / 2
+                    color: Qt.rgba(0.2, 0.4, 0.8, 0.15)
+
+                    Kirigami.Icon {
+                        anchors.centerIn: parent
+                        source: "applications-development"
+                        width: parent.width * 0.6
+                        height: width
+                        color: "#3498db"
+                    }
+                }
+
+                Kirigami.Heading {
+                    Layout.fillWidth: true
+                    text: i18nc("@title:group", "💻 Highest-Rated Developer Tools")
+                    wrapMode: Text.Wrap
+                    level: 2
+                }
+
+                QQC2.Label {
+                    text: i18np("%1 tool", "%1 tools", devRep.count)
+                    opacity: 0.6
+                    font: Kirigami.Theme.smallFont
+                }
+            }
         }
 
         Repeater {
