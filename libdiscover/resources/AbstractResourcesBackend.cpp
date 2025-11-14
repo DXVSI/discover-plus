@@ -115,6 +115,16 @@ bool AbstractResourcesBackend::Filters::shouldFilter(AbstractResource *resourse)
         }
     }
 
+    // COPR packages should only be visible in the COPR category
+    // Exclude them from all other categories unless explicitly filtered by origin
+    const QString resourceOrigin = resourse->origin();
+    const bool isCoprPackage = (resourceOrigin == QStringLiteral("COPR"));
+    const bool isCoprFilterActive = (origin == QStringLiteral("COPR"));
+
+    if (isCoprPackage && !isCoprFilterActive) {
+        return false;
+    }
+
     bool stateCheck = filterMinimumState ? (resourse->state() < state) : (resourse->state() != state);
     if (stateCheck) {
         return false;

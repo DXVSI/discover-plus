@@ -240,3 +240,19 @@ struct CoprProject {
 3. История обновлений проектов
 4. Поддержка других дистрибутивов (CentOS Stream, RHEL)
 5. Интеграция с Fedora Account System (FAS) для авторизации
+
+## build 
+ cmake .. \
+          -DCMAKE_INSTALL_PREFIX=/usr \
+          -DCMAKE_BUILD_TYPE=RelWithDebInfo \
+          -DBUILD_TESTING=OFF \
+          -DBUILD_FlatpakBackend=ON \
+          -DBUILD_PackageKitBackend=ON \
+          -DBUILD_FwupdBackend=ON \
+          -DBUILD_SnapBackend=ON \
+          -DBUILD_AlpineApkBackend=ON \
+          -DBUILD_DummyBackend=OFF \
+          -DBUILD_RpmOstreeBackend=OFF \
+          -DBUILD_SteamOSBackend=OFF \
+          -DBUILD_WITH_QT6=ON
+  make -j32 && sudo make install
