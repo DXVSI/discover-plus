@@ -20,7 +20,7 @@
 #include <resources/AbstractResource.h>
 
 PKTransaction::PKTransaction(const QVector<AbstractResource *> &resources, Transaction::Role role)
-    : Transaction(resources.first(), resources.first(), role)
+    : Transaction(resources.first()->backend(), resources.first(), role)
     , m_apps(resources)
 {
     Q_ASSERT(!resources.contains(nullptr));

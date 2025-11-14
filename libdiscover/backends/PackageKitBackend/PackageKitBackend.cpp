@@ -13,6 +13,9 @@
 #include "PKTransaction.h"
 #include "PackageKitSourcesBackend.h"
 #include "PackageKitUpdater.h"
+#include "CoprClient.h"
+#include "CoprResource.h"
+#include "CoprTransaction.h"
 #include <AppStreamQt/release.h>
 #include <AppStreamQt/systeminfo.h>
 #include <AppStreamQt/utils.h>
@@ -228,6 +231,11 @@ PackageKitBackend::PackageKitBackend(QObject *parent)
 
     m_globalHints = QStringList() << QStringLiteral("interactive=true") << QStringLiteral("locale=%1").arg(qEnvironmentVariable("LANG"));
     PackageKit::Daemon::global()->setHints(m_globalHints);
+
+    // Initialize COPR client
+    m_coprClient = new CoprClient(this);
+    connect(m_coprClient, &CoprClient::projectsFound, this, &PackageKitBackend::onCoprProjectsFound);
+    connect(m_coprClient, &CoprClient::packagesFound, this, &PackageKitBackend::onCoprPackagesFound);
 
     // Hide the drivers category if there's no drivers
     connect(CategoryModel::global(), &CategoryModel::rootCategoriesChanged, this, [this] {
@@ -629,17 +637,30 @@ static bool needsResolveFilter(const StreamResult &result)
 
 class PKResultsStream : public ResultsStream
 {
+    Q_OBJECT
 private:
     PKResultsStream(PackageKitBackend *backend, const QString &name)
         : ResultsStream(name)
         , backend(backend)
+        , m_isCoprStream(name.startsWith(QStringLiteral("COPR")))
     {
         Q_ASSERT(QThread::currentThread() == backend->thread());
+
+        // Connect fetchMore signal for COPR pagination
+        if (m_isCoprStream) {
+            connect(this, &ResultsStream::fetchMore, this, [this, backend]() {
+                if (backend) {
+                    qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "PKResultsStream: fetchMore requested for COPR stream";
+                    backend->loadMoreCoprProjects();
+                }
+            });
+        }
     }
 
     PKResultsStream(PackageKitBackend *backend, const QString &name, const QVector<StreamResult> &resources)
         : ResultsStream(name)
         , backend(backend)
+        , m_isCoprStream(false)
     {
         QTimer::singleShot(0, this, [resources, this]() {
             sendResources(resources);
@@ -653,10 +674,19 @@ public:
         return new PKResultsStream(std::forward<Args>(args)...);
     }
 
+    void finishCoprStream() {
+        if (m_isCoprStream) {
+            finish();
+        }
+    }
+
     void sendResources(const QVector<StreamResult> &resources, bool waitForResolved = false)
     {
         if (resources.isEmpty()) {
-            finish();
+            // Don't finish COPR streams immediately - keep them open for pagination
+            if (!m_isCoprStream) {
+                finish();
+            }
             return;
         }
 
@@ -671,18 +701,24 @@ public:
                 Q_ASSERT(transaction);
                 connect(transaction, &QObject::destroyed, this, [this, resources] {
                     Q_EMIT resourcesFound(resources);
-                    finish();
+                    if (!m_isCoprStream) {
+                        finish();
+                    }
                 });
                 return;
             }
         }
 
         Q_EMIT resourcesFound(resources);
-        finish();
+        // Don't finish COPR streams - keep them open for pagination
+        if (!m_isCoprStream) {
+            finish();
+        }
     }
 
 private:
     PackageKitBackend *const backend;
+    bool m_isCoprStream;
 };
 
 PKResultsStream *PackageKitBackend::deferredResultStream(const QString &streamName, std::function<void(PKResultsStream *)> callback)
@@ -712,6 +748,81 @@ ResultsStream *PackageKitBackend::search(const AbstractResourcesBackend::Filters
     // In this method we are copying filters by value into capturing lambdas
     // to avoid lifetime issues. Also coroutines should not be capturing, so
     // we use nested lambdas with arguments instead of captures.
+
+    qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "search() called with: origin=" << filter.origin << "search=" << filter.search << "category=" << filter.category;
+
+    // Clean up existing COPR stream if switching away from COPR
+    if (m_currentSearchStream && filter.origin != QStringLiteral("COPR")) {
+        qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "Closing previous COPR stream as we're switching to non-COPR category";
+        auto coprStream = qobject_cast<PKResultsStream*>(m_currentSearchStream.data());
+        if (coprStream) {
+            coprStream->finishCoprStream();
+        }
+        m_currentSearchStream = nullptr;
+        m_lastCoprSearchQuery.clear(); // Clear the last search query
+        m_coprOffset = 0; // Reset offset
+    }
+
+    // Handle COPR category: load popular projects when category is opened without search
+    if (filter.origin == QStringLiteral("COPR") && filter.search.isEmpty()) {
+        qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "Loading popular COPR projects for COPR category";
+
+        // Close any previous COPR stream
+        if (m_currentSearchStream) {
+            auto oldStream = qobject_cast<PKResultsStream*>(m_currentSearchStream.data());
+            if (oldStream) {
+                oldStream->finishCoprStream();
+            }
+        }
+
+        // Create and return a stream for COPR results
+        auto stream = PKResultsStream::create(this, QStringLiteral("COPR-popular"));
+        m_currentSearchStream = stream;
+        qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "Created and saved stream for COPR popular projects";
+
+        // Reset offset and clear search query for new session
+        m_coprOffset = 0;
+        m_lastCoprSearchQuery.clear();
+
+        // Load popular projects asynchronously
+        loadPopularCoprProjects();
+
+        return stream;
+    }
+
+    // Handle COPR search with query
+    if (filter.origin == QStringLiteral("COPR") && !filter.search.isEmpty()) {
+        qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "COPR search with query:" << filter.search;
+
+        // Close any previous COPR stream
+        if (m_currentSearchStream) {
+            auto oldStream = qobject_cast<PKResultsStream*>(m_currentSearchStream.data());
+            if (oldStream) {
+                oldStream->finishCoprStream();
+            }
+        }
+
+        // Reset offset for new search
+        m_coprOffset = 0;
+
+        // Create and return a stream for COPR search results
+        auto stream = PKResultsStream::create(this, QStringLiteral("COPR-search"));
+        m_currentSearchStream = stream;
+        qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "Created and saved stream for COPR search";
+
+        // Trigger COPR search
+        searchCoprPackages(filter.search);
+
+        return stream;
+    }
+
+    // Trigger COPR search in background when there's a search query in general search
+    // COPR results will be added to the general search results
+    if (!filter.search.isEmpty() && filter.origin.isEmpty()) {
+        qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "Triggering background COPR search for general search:" << filter.search;
+        searchCoprPackages(filter.search);
+    }
+
     if (!filter.resourceUrl.isEmpty()) {
         return findResourceByPackageName(filter.resourceUrl);
     } else if (!filter.extends.isEmpty()) {
@@ -787,6 +898,16 @@ ResultsStream *PackageKitBackend::search(const AbstractResourcesBackend::Filters
         });
     } else {
         return deferredResultStream(u"PackageKitStream-search"_s, [this, filter = filter](PKResultsStream *stream) {
+            qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "In deferredResultStream lambda: origin=" << filter.origin << "search=" << filter.search;
+            // Save stream reference for COPR results
+            if ((filter.origin == QStringLiteral("COPR") && filter.search.isEmpty()) ||
+                (!filter.search.isEmpty() && (filter.origin.isEmpty() || filter.origin == QStringLiteral("COPR")))) {
+                m_currentSearchStream = stream;
+                qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "Saved search stream for COPR results!";
+            } else {
+                qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "NOT saving stream for COPR: origin=" << filter.origin << "search=" << filter.search;
+            }
+
             qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "PackageKitBackend search called with query:" << filter.search;
             auto loadComponents = [](const auto &filter, const auto &appdata) -> QFuture<AppStream::ComponentBox> {
                 QFuture<AppStream::ComponentBox> components;
@@ -1128,11 +1249,26 @@ Transaction *PackageKitBackend::installApplication(AbstractResource *app, const 
 
 Transaction *PackageKitBackend::installApplication(AbstractResource *app)
 {
+    // Check if this is a COPR resource
+    auto coprResource = qobject_cast<CoprResource*>(app);
+    if (coprResource) {
+        qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "Installing COPR package:" << coprResource->name();
+        // Use special COPR transaction that handles dnf copr enable
+        return new CoprTransaction(coprResource, Transaction::InstallRole, this);
+    }
+
     return new PKTransaction({app}, Transaction::InstallRole);
 }
 
 Transaction *PackageKitBackend::removeApplication(AbstractResource *app)
 {
+    // Check if this is a COPR resource
+    auto coprResource = qobject_cast<CoprResource*>(app);
+    if (coprResource) {
+        // Use special COPR transaction that handles dnf copr disable
+        return new CoprTransaction(coprResource, Transaction::RemoveRole, this);
+    }
+
     if (!qobject_cast<PackageKitResource *>(app)) {
         Q_EMIT passiveMessage(i18n("Cannot remove '%1'", app->name()));
         return nullptr;
@@ -1415,6 +1551,204 @@ void PackageKitBackend::aboutTo(AboutToAction action)
         break;
     }
     m_updater->setOfflineUpdateAction(packageKitAction);
+}
+
+void PackageKitBackend::searchCoprPackages(const QString &query)
+{
+    if (!m_coprClient) {
+        qCWarning(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "COPR client not initialized!";
+        return;
+    }
+
+    qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "Searching COPR packages for query:" << query;
+    m_lastCoprSearchQuery = query; // Store the search query for relevance calculation
+    m_coprOffset = 0; // Reset offset for new search
+    m_coprClient->searchProjects(query, 30); // Search up to 30 projects for better results
+}
+
+void PackageKitBackend::loadPopularCoprProjects()
+{
+    if (!m_coprClient) {
+        qCWarning(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "COPR client not initialized!";
+        return;
+    }
+
+    qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "Loading COPR projects, offset:" << m_coprOffset;
+
+    // Load 50 projects at once to avoid overwhelming the server
+    // Start from offset 100 to skip test projects
+    m_coprClient->getLatestProjects(50, 100 + m_coprOffset);
+
+    m_coprOffset += 50;
+}
+
+void PackageKitBackend::loadMoreCoprProjects()
+{
+    qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "Loading more COPR projects";
+
+    // Check if we have a stream to send results to
+    if (!m_currentSearchStream) {
+        qCWarning(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "No stream available for more COPR results";
+        return;
+    }
+
+    loadPopularCoprProjects();
+}
+
+void PackageKitBackend::onCoprProjectsFound(const QList<CoprProjectInfo> &projects)
+{
+    qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "Found" << projects.size() << "COPR projects";
+
+    // Get the current search query if we're in search mode
+    QString searchQuery;
+    if (m_currentSearchStream && m_currentSearchStream->objectName().contains(QStringLiteral("search"))) {
+        // Extract search query from somewhere - we need to store it
+        searchQuery = m_lastCoprSearchQuery;
+    }
+
+    // Filter out projects without chroots (automated CI projects) and create resources directly
+    QVector<StreamResult> results;
+    int processedCount = 0;
+
+    for (const CoprProjectInfo &project : projects) {
+        // Skip projects without builds
+        if (project.chroots.isEmpty()) {
+            continue;
+        }
+
+        // Create a simple COPR resource for the project itself
+        // This allows showing projects immediately without waiting for package details
+        QString key = QStringLiteral("%1/%2").arg(project.owner, project.name);
+
+        if (!m_coprResources.contains(key)) {
+            // Create a package info from project info
+            CoprPackageInfo packageInfo;
+            packageInfo.name = project.name;
+            packageInfo.owner = project.owner;
+            packageInfo.projectName = project.name;
+            packageInfo.description = project.description;
+            packageInfo.availableChroots = project.chroots;
+            packageInfo.homepage = project.homepage;
+
+            // Check if available for current Fedora
+            QString currentChroot = m_coprClient ? m_coprClient->getCurrentChroot() : QString();
+            packageInfo.isAvailableForCurrentFedora = packageInfo.availableChroots.contains(currentChroot);
+
+            CoprResource *resource = new CoprResource(packageInfo, this);
+            m_coprResources[key] = resource;
+
+            // Add to packages registry
+            auto packageId = makeAppId(key);
+            m_packages.packages[packageId] = resource;
+
+            // Calculate relevance score based on search query
+            int relevanceScore = 50; // Base score
+            if (!searchQuery.isEmpty()) {
+                const QString lowerQuery = searchQuery.toLower();
+                const QString lowerName = project.name.toLower();
+                const QString lowerDesc = project.description.toLower();
+
+                // Exact match gets highest score
+                if (lowerName == lowerQuery) {
+                    relevanceScore = 100;
+                }
+                // Name starts with query
+                else if (lowerName.startsWith(lowerQuery)) {
+                    relevanceScore = 90;
+                }
+                // Name contains query
+                else if (lowerName.contains(lowerQuery)) {
+                    relevanceScore = 80;
+                }
+                // Description contains query
+                else if (lowerDesc.contains(lowerQuery)) {
+                    relevanceScore = 60;
+                }
+                // Partial match in name
+                else {
+                    // Check for partial word matches (e.g., "vscode" matches "code", "visual-studio-code")
+                    QStringList queryParts = lowerQuery.split(QRegularExpression(QStringLiteral("[\\s\\-_]")), Qt::SkipEmptyParts);
+                    bool hasPartialMatch = false;
+                    for (const QString &part : queryParts) {
+                        if (lowerName.contains(part)) {
+                            hasPartialMatch = true;
+                            break;
+                        }
+                    }
+                    if (hasPartialMatch) {
+                        relevanceScore = 70;
+                    } else {
+                        relevanceScore = 30; // Low relevance for non-matching results
+                    }
+                }
+            }
+
+            results.append(StreamResult(resource, relevanceScore));
+            processedCount++;
+
+            qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "Created COPR resource for project:" << project.owner << "/" << project.name << "with score:" << relevanceScore;
+        }
+
+        // Limit to 20 projects per batch for faster display
+        if (processedCount >= 20) {
+            break;
+        }
+    }
+
+    qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "Created" << results.size() << "COPR resources immediately";
+
+    // Sort results by relevance score (descending) before sending
+    if (!searchQuery.isEmpty()) {
+        std::sort(results.begin(), results.end(), [](const StreamResult &a, const StreamResult &b) {
+            return a.sortScore > b.sortScore;
+        });
+        qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "Sorted COPR results by relevance";
+    }
+
+    // Send results immediately if we have them
+    if (!results.isEmpty() && m_currentSearchStream) {
+        qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "Sending" << results.size() << "COPR results to stream";
+        Q_EMIT m_currentSearchStream->resourcesFound(results);
+    } else if (!results.isEmpty() && !m_currentSearchStream) {
+        qCWarning(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "Have" << results.size() << "COPR results but no search stream!";
+    }
+
+    // Don't fetch detailed packages anymore - we already show projects as resources
+    // This avoids too many parallel requests causing HTTP/2 errors
+}
+
+void PackageKitBackend::onCoprPackagesFound(const QList<CoprPackageInfo> &packages)
+{
+    qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "Found" << packages.size() << "COPR packages";
+
+    QVector<StreamResult> results;
+
+    for (const CoprPackageInfo &packageInfo : packages) {
+        QString key = QStringLiteral("%1/%2:%3").arg(packageInfo.owner, packageInfo.projectName, packageInfo.name);
+
+        if (!m_coprResources.contains(key)) {
+            CoprResource *resource = new CoprResource(packageInfo, this);
+            m_coprResources[key] = resource;
+
+            // Add to packages registry
+            auto packageId = makeAppId(key);
+            m_packages.packages[packageId] = resource;
+
+            qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "Created new COPR resource:" << packageInfo.name << "from" << packageInfo.owner << "/" << packageInfo.projectName;
+        }
+
+        results.append(StreamResult(m_coprResources[key], 50)); // relevance 50 for COPR packages
+    }
+
+    // Add COPR results to the current search stream
+    if (!results.isEmpty() && m_currentSearchStream) {
+        qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "Adding" << results.size() << "COPR results to search stream";
+        Q_EMIT m_currentSearchStream->resourcesFound(results);
+    } else if (!results.isEmpty() && !m_currentSearchStream) {
+        qCWarning(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "Have" << results.size() << "COPR results but no search stream to send them to!";
+    } else if (results.isEmpty()) {
+        qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "No COPR results to send";
+    }
 }
 
 #include "PackageKitBackend.moc"

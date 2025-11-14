@@ -31,6 +31,9 @@ set(packagekit-backend_SRCS
     PackageKitSourcesBackend.cpp
     LocalFilePKResource.cpp
     PKResolveTransaction.cpp
+    CoprClient.cpp
+    CoprResource.cpp
+    CoprTransaction.cpp
     pkui.qrc
 )
 
@@ -41,6 +44,7 @@ target_link_libraries(packagekit-backend
         Discover::Common
         Qt::Core
         Qt::Concurrent
+        Qt::Network
         PK::packagekitqt6
         KF6::ConfigGui
         KF6::KIOCore

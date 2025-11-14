@@ -27,6 +27,10 @@ class PackageKitUpdater;
 class OdrsReviewsBackend;
 class PKResultsStream;
 class PKResolveTransaction;
+class CoprClient;
+class CoprResource;
+struct CoprProjectInfo;
+struct CoprPackageInfo;
 
 /** This is either a package name or an appstream id */
 struct PackageOrAppId {
@@ -142,6 +146,11 @@ public:
         return m_refresher;
     }
 
+    CoprClient *coprClient() const { return m_coprClient; }
+    void searchCoprPackages(const QString &query);
+    void loadPopularCoprProjects();
+    void loadMoreCoprProjects();
+
 public Q_SLOTS:
     void reloadPackageList();
     void transactionError(PackageKit::Transaction::Error, const QString &message);
@@ -153,10 +162,13 @@ private Q_SLOTS:
     void addPackageToUpdate(PackageKit::Transaction::Info, const QString &pkgid, const QString &summary);
     void getUpdatesFinished(PackageKit::Transaction::Exit, uint);
     void loadAllPackages();
+    void onCoprProjectsFound(const QList<CoprProjectInfo> &projects);
+    void onCoprPackagesFound(const QList<CoprPackageInfo> &packages);
 
 Q_SIGNALS:
     void loadedAppStream();
     void available();
+    void coprSearchResults(const QList<CoprResource*> &resources);
 
 private:
     friend class PackageKitResource;
@@ -202,4 +214,9 @@ private:
     QPointer<PKResolveTransaction> m_resolveTransaction;
     QStringList m_globalHints;
     bool m_allPackagesLoaded = false;
+    CoprClient *m_coprClient = nullptr;
+    QHash<QString, CoprResource*> m_coprResources;
+    QPointer<PKResultsStream> m_currentSearchStream;
+    int m_coprOffset = 0;
+    QString m_lastCoprSearchQuery;
 };
