@@ -31,4 +31,5 @@ private:
 
     FwupdResource *const m_app;
     FwupdBackend *const m_backend;
+    GCancellable *const m_cancellable;
 };

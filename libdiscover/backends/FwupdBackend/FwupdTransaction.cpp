@@ -14,6 +14,7 @@ FwupdTransaction::FwupdTransaction(FwupdResource *app, FwupdBackend *backend)
     : Transaction(backend, app, Transaction::InstallRole, {})
     , m_app(app)
     , m_backend(backend)
+    , m_cancellable(g_cancellable_new())
 {
     setCancellable(true);
     setStatus(QueuedStatus);
@@ -22,7 +23,10 @@ FwupdTransaction::FwupdTransaction(FwupdResource *app, FwupdBackend *backend)
     QTimer::singleShot(0, this, &FwupdTransaction::install);
 }
 
-FwupdTransaction::~FwupdTransaction() = default;
+FwupdTransaction::~FwupdTransaction()
+{
+    g_object_unref(m_cancellable);
+}
 
 void FwupdTransaction::install()
 {
@@ -32,7 +36,7 @@ void FwupdTransaction::install()
         QString device_id = m_app->deviceId();
         if (device_id.isEmpty()) {
             qWarning() << "Fwupd Error: No Device ID set, cannot unlock device " << this << m_app->name();
-        } else if (!fwupd_client_unlock(m_backend->client, device_id.toUtf8().constData(), nullptr, &error)) {
+        } else if (!fwupd_client_unlock(m_backend->client, device_id.toUtf8().constData(), m_cancellable, &error)) {
             m_backend->handleError(error);
         }
         setStatus(DoneWithErrorStatus);
@@ -83,7 +87,7 @@ void FwupdTransaction::fwupdInstall(const QString &file)
     FwupdInstallFlags install_flags = FWUPD_INSTALL_FLAG_NONE;
     g_autoptr(GError) error = nullptr;
 
-    if (!fwupd_client_install(m_backend->client, m_app->deviceId().toUtf8().constData(), file.toUtf8().constData(), install_flags, nullptr, &error)) {
+    if (!fwupd_client_install(m_backend->client, m_app->deviceId().toUtf8().constData(), file.toUtf8().constData(), install_flags, m_cancellable, &error)) {
         m_backend->handleError(error);
         setStatus(DoneWithErrorStatus);
     } else
@@ -102,11 +106,16 @@ void FwupdTransaction::proceed()
 
 void FwupdTransaction::cancel()
 {
+    g_cancellable_cancel(m_cancellable);
     setStatus(CancelledStatus);
 }
 
 void FwupdTransaction::finishTransaction()
 {
+    if (g_cancellable_is_cancelled(m_cancellable)) {
+        return;
+    }
+
     AbstractResource::State newState = AbstractResource::None;
     switch (role()) {
     case InstallRole:
@@ -122,7 +131,6 @@ void FwupdTransaction::finishTransaction()
         m_app->backend()->backendUpdater()->setNeedsReboot(true);
     }
     setStatus(DoneStatus);
-    deleteLater();
 }
 
 #include "moc_FwupdTransaction.cpp"

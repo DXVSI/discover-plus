@@ -29,9 +29,11 @@ QtObject {
 
     function openApplicationMime(mime: string) {
         clearStack();
+
+        const mimeTypeComment = app.mimeTypeComment(mime);
         openApplicationList({
             mimeTypeFilter: mime,
-            title: i18n("Resources for '%1'", mime),
+            title: i18n("Resources for '%1'", mimeTypeComment),
         });
     }
 

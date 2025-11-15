@@ -47,6 +47,7 @@ public:
     void showError(const QString &msg);
     Q_INVOKABLE void copyTextToClipboard(const QString &text);
     Q_INVOKABLE QUrl searchUrl(const QString &searchText);
+    Q_INVOKABLE QString mimeTypeComment(const QString &mimeTypeName);
 
     QString describeSources() const;
     Q_SCRIPTABLE void restore();

@@ -649,6 +649,16 @@ QUrl DiscoverObject::searchUrl(const QString &searchText)
     return {};
 }
 
+QString DiscoverObject::mimeTypeComment(const QString &mimeTypeName)
+{
+    QMimeDatabase db;
+    QMimeType mimeType = db.mimeTypeForName(mimeTypeName);
+    if (mimeType.isValid()) {
+        return mimeType.comment();
+    }
+    return mimeTypeName;
+}
+
 Q_GLOBAL_STATIC_WITH_ARGS(const bool, s_weAreOnPlasma, (qgetenv("XDG_CURRENT_DESKTOP") == "KDE"))
 
 void DiscoverObject::promptReboot()
