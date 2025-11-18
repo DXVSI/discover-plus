@@ -94,7 +94,16 @@ Kirigami.GlobalDrawer {
             page: window.leftPage
 
             onCurrentSearchTextChanged: {
+                // Избегаем обработки, если значение не изменилось
+                if (drawer.currentSearchText === currentSearchText) {
+                    return;
+                }
+
+                console.log("DiscoverDrawer: currentSearchText changed to:", currentSearchText)
+                drawer.currentSearchText = currentSearchText
+
                 var curr = window.leftPage;
+                console.log("Current page:", curr, "has search:", curr ? curr.hasOwnProperty("search") : "no page")
 
                 if (pageStack.depth > 1) {
                     pageStack.pop()
@@ -104,14 +113,15 @@ Kirigami.GlobalDrawer {
                     Navigation.openHome()
                 } else if (!curr.hasOwnProperty("search")) {
                     if (currentSearchText) {
+                        console.log("Opening ApplicationList with search:", currentSearchText)
                         Navigation.clearStack()
                         Navigation.openApplicationList({ search: currentSearchText })
                     }
                 } else {
+                    console.log("Setting search on current page:", currentSearchText)
                     curr.search = currentSearchText;
                     curr.forceActiveFocus()
                 }
-                drawer.currentSearchText = currentSearchText
             }
 
             Keys.onDownPressed: featuredActionListItem.forceActiveFocus(Qt.TabFocusReason)
@@ -196,8 +206,16 @@ Kirigami.GlobalDrawer {
             text: category?.name ?? ""
             icon.name: category?.icon + "-symbolic" ?? ""
             checked: itsMe
-            enabled: (currentSearchText.length === 0
-                      || (category?.contains(window?.leftPage?.model?.subcategories) ?? false))
+            enabled: {
+                if (currentSearchText.length === 0) {
+                    return true
+                }
+                const subcats = window?.leftPage?.model?.subcategories
+                if (subcats && category) {
+                    return category.contains(subcats)
+                }
+                return false
+            }
 
             visible: category?.visible
             onTriggered: {
