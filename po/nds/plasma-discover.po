@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-07 00:44+0000\n"
+"POT-Creation-Date: 2025-11-17 11:53+0000\n"
 "PO-Revision-Date: 2014-03-16 09:10+0100\n"
 "Last-Translator: Manfred Wiese <m.j.wiese@web.de>\n"
 "Language-Team: Low Saxon <kde-i18n-nds@kde.org>\n"
@@ -232,7 +232,7 @@ msgstr "Verföögbor Hülpprogrammen:\n"
 msgid "Available modes:\n"
 msgstr "Verföögbor Bedriefoorden:\n"
 
-#: discover/qml/AddonsView.qml:28 discover/qml/Navigation.qml:58
+#: discover/qml/AddonsView.qml:28 discover/qml/Navigation.qml:60
 #, fuzzy, kde-format
 #| msgid "Addons"
 msgid "Addons for %1"
@@ -999,7 +999,7 @@ msgstr "Wegmaken"
 msgid "Installed"
 msgstr "Installeert"
 
-#: discover/qml/Navigation.qml:34
+#: discover/qml/Navigation.qml:36
 #, kde-format
 msgid "Resources for '%1'"
 msgstr ""
