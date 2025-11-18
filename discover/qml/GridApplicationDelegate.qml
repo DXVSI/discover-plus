@@ -8,11 +8,13 @@
 
 import QtQuick
 import QtQuick.Controls as QQC2
+import QtQuick.Controls.Material
 import QtQuick.Layouts
 import org.kde.discover as Discover
 import org.kde.kirigami as Kirigami
+import "." as Local
 
-BasicAbstractCard {
+Local.MaterialCard {
     id: root
 
     required property Discover.AbstractResource application
@@ -24,15 +26,20 @@ BasicAbstractCard {
     property int maxUp: columns*2
     property int maxDown: columns*2
 
-    showClickFeedback: true
+    elevation: 1
+    interactive: true
+
+    // Force dark theme for consistency
+    Material.theme: Material.Dark
+    Material.background: "#1C1B1F"
+    Material.foreground: "#E6E1E5"
 
     // Don't let RowLayout affect parent GridLayout's decisions, or else it
     // would resize cells proportionally to their label text length.
     implicitWidth: 0
 
     activeFocusOnTab: true
-    highlighted: focus
-    Accessible.name: application.name
+    Accessible.name: application ? application.name : ""
     Accessible.role: Accessible.Link
     Keys.onPressed: (event) => {
         if (((Qt.application.layoutDirection == Qt.LeftToRight && event.key == Qt.Key_Left) ||
@@ -75,51 +82,111 @@ BasicAbstractCard {
         target.forceActiveFocus(Qt.TabFocusReason)
     }
 
-    content: RowLayout {
+    ColumnLayout {
         anchors.fill: parent
-        spacing: Kirigami.Units.largeSpacing
+        anchors.margins: 12
+        spacing: 12
 
-        Kirigami.Icon {
-            Layout.alignment: Qt.AlignVCenter
-            Layout.margins: Kirigami.Units.largeSpacing
-            implicitWidth: Kirigami.Units.iconSizes.huge
-            implicitHeight: Kirigami.Units.iconSizes.huge
-            source: root.application.icon
-            animated: false
+        Item {
+            Layout.fillWidth: true
+            Layout.preferredHeight: 80
+
+            Rectangle {
+                anchors.centerIn: parent
+                width: 64
+                height: 64
+                radius: 12
+                color: "#2B2A2E"
+
+                Kirigami.Icon {
+                    anchors.centerIn: parent
+                    width: 48
+                    height: 48
+                    source: root.application ? root.application.icon : ""
+                    animated: false
+                    // Prevent icon from becoming monochrome
+                    isMask: false
+                    // Disable theme color application
+                    Kirigami.Theme.inherit: false
+                    color: "transparent"
+                }
+            }
         }
 
         ColumnLayout {
             Layout.fillWidth: true
-            Layout.fillHeight: true
-            spacing: 0
+            spacing: 4
 
-            Kirigami.Heading {
+            QQC2.Label {
                 id: head
-                level: 2
-                type: Kirigami.Heading.Type.Primary
                 Layout.fillWidth: true
-                Layout.alignment: Qt.AlignBottom
+                horizontalAlignment: Text.AlignHCenter
+                font.pixelSize: 14
+                font.weight: Font.Medium
                 wrapMode: Text.Wrap
                 maximumLineCount: 2
-
-                text: root.application.name
+                elide: Text.ElideRight
+                text: root.application ? root.application.name : ""
             }
 
             QQC2.Label {
                 Layout.fillWidth: true
-                Layout.alignment: Qt.AlignTop
-                maximumLineCount: head.lineCount === 1 ? 3 : 2
-                opacity: 0.6
+                horizontalAlignment: Text.AlignHCenter
+                font.pixelSize: 12
+                opacity: 0.7
                 wrapMode: Text.Wrap
+                maximumLineCount: 2
+                elide: Text.ElideRight
+                text: root.application ? (root.application.comment || "") : ""
+            }
 
-                text: root.application.comment
+            // Source/Origin info
+            RowLayout {
+                Layout.fillWidth: true
+                Layout.preferredHeight: 16
+                spacing: 4
+
+                Item { Layout.fillWidth: true }
+
+                Kirigami.Icon {
+                    visible: root.application && root.application.origin
+                    source: root.application ? root.application.sourceIcon : ""
+                    Layout.preferredWidth: 14
+                    Layout.preferredHeight: 14
+                    opacity: 0.6
+                }
+
+                QQC2.Label {
+                    visible: root.application && root.application.origin
+                    text: root.application ? root.application.origin : ""
+                    font.pixelSize: 10
+                    opacity: 0.6
+                    elide: Text.ElideRight
+                }
+
+                Item { Layout.fillWidth: true }
+            }
+
+            // Install/Remove button
+            Local.InstallApplicationButton {
+                Layout.fillWidth: true
+                Layout.topMargin: 4
+                visible: root.application
+                application: root.application
+                installOrRemoveButtonDisplayStyle: QQC2.AbstractButton.IconOnly
             }
         }
     }
 
-    onClicked: Navigation.openApplication(root.application)
+    onClicked: {
+        if (root.application) {
+            console.log("GridApplicationDelegate clicked:", root.application.name)
+            Local.Navigation.openApplication(root.application)
+        }
+    }
+
     onFocusChanged: {
-        if (focus) {
+        if (focus && typeof page !== 'undefined' && page && page.ensureVisible) {
             page.ensureVisible(root)
         }
     }

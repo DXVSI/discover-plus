@@ -56,6 +56,7 @@ target_link_libraries(plasma-discover PUBLIC
                                      Qt::Quick
                                      Qt::QuickControls2
                                      Discover::Common
+                                     qml_material
 )
 
 if (TARGET Qt::WebView)

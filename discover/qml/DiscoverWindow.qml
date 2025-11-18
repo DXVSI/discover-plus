@@ -3,14 +3,26 @@ pragma ComponentBehavior: Bound
 import QtQml.Models
 import QtQuick
 import QtQuick.Controls as QQC2
+import QtQuick.Controls.Material
 import QtQuick.Layouts
 import org.kde.discover as Discover
 import org.kde.discover.app as DiscoverApp
 import org.kde.kirigami as Kirigami
 import org.kde.config as KConfig
+import "." as Local
 
 Kirigami.ApplicationWindow {
     id: window
+
+    // Material Design 3 Dark Theme
+    Material.theme: Material.Dark
+    Material.primary: "#D0BCFF"      // MD3 Purple 80
+    Material.accent: "#CCC2DC"       // MD3 Purple 90
+    Material.background: "#1C1B1F"   // MD3 Surface
+    Material.foreground: "#E6E1E5"   // MD3 On Surface
+
+    // Window background color
+    color: "#1C1B1F"
 
     property string currentTopLevel
 

@@ -31,6 +31,9 @@ include(ECMSourceVersionControl)
 find_package(Qt6 ${QT_MIN_VERSION} REQUIRED CONFIG COMPONENTS Widgets Test Network Concurrent DBus Quick QuickControls2)
 find_package(Qt6 ${QT_MIN_VERSION} CONFIG OPTIONAL_COMPONENTS WebView)
 
+# Add QmlMaterial library for Material Design 3 (using local copy)
+add_subdirectory(QmlMaterial EXCLUDE_FROM_ALL)
+
 find_package(PkgConfig REQUIRED)
 
 find_package(KF6 ${KF6_MIN_VERSION} REQUIRED Kirigami CoreAddons Config Crash DBusAddons I18n Archive XmlGui KIO KCMUtils IdleTime Notifications Purpose Auth StatusNotifierItem IconThemes)

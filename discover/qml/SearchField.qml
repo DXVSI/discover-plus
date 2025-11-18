@@ -6,26 +6,25 @@
  */
 
 import QtQuick
-import QtQuick.Controls
+import QtQuick.Controls as QQC2
 import QtQuick.Layouts
 import org.kde.kirigami as Kirigami
 import org.kde.discover 2.0
 
-Kirigami.SearchField {
+QQC2.TextField {
     id: root
 
     // for appium tests
     objectName: "searchField"
 
-    // Search operations are network-intensive, so we can't have search-as-you-type.
-    // This means we should turn off auto-accept entirely, rather than having it on
-    // with a delay. The result just isn't good. See Bug 445142.
-    autoAccept: false
-
     property QtObject page
     property string currentSearchText
 
-    placeholderText: (!enabled || !page || page.hasOwnProperty("isHome") || window.leftPage.name.length === 0) ? i18n("Search…") : i18n("Search in '%1'…", window.leftPage.name)
+    onCurrentSearchTextChanged: {
+        // Emit signal when property changes
+    }
+
+    placeholderText: (!enabled || !page || page.hasOwnProperty("isHome") || window.leftPage?.name?.length === 0) ? i18n("Search…") : i18n("Search in '%1'…", window.leftPage?.name)
 
     SearchHistory {
         id: searchHistory
@@ -35,6 +34,8 @@ Kirigami.SearchField {
         // Инициализируем модель истории при запуске
         historyModel = searchHistory.suggestionsForTerm("");
     }
+
+    selectByMouse: true
 
     onAccepted: {
         text = text.trim();
@@ -49,6 +50,10 @@ Kirigami.SearchField {
     function clearText() {
         text = "";
         currentSearchText = "";
+    }
+
+    function clear() {
+        clearText();
     }
 
     onTextChanged: {
@@ -97,7 +102,7 @@ Kirigami.SearchField {
         }
     }
 
-    Popup {
+    QQC2.Popup {
         id: historyPopup
         y: root.height
         width: root.width
@@ -124,7 +129,7 @@ Kirigami.SearchField {
             currentIndex: -1
             clip: true
 
-            delegate: ItemDelegate {
+            delegate: QQC2.ItemDelegate {
                 width: parent ? parent.width : 0
                 height: 40
 
@@ -137,13 +142,13 @@ Kirigami.SearchField {
                         Layout.preferredHeight: Kirigami.Units.iconSizes.small
                     }
 
-                    Label {
+                    QQC2.Label {
                         text: modelData
                         Layout.fillWidth: true
                         elide: Text.ElideRight
                     }
 
-                    ToolButton {
+                    QQC2.ToolButton {
                         icon.name: "edit-clear"
                         Layout.preferredWidth: Kirigami.Units.iconSizes.small
                         Layout.preferredHeight: Kirigami.Units.iconSizes.small
@@ -174,7 +179,7 @@ Kirigami.SearchField {
                 width: parent ? parent.width : 0
                 height: 30
 
-                Label {
+                QQC2.Label {
                     anchors.left: parent.left
                     anchors.leftMargin: Kirigami.Units.smallSpacing
                     anchors.verticalCenter: parent.verticalCenter

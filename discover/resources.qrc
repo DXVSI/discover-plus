@@ -6,6 +6,8 @@
     <file>qml/ApplicationPage.qml</file>
     <file>qml/ApplicationResourceButton.qml</file>
     <file>qml/BasicAbstractCard.qml</file>
+    <file>qml/MaterialCard.qml</file>
+    <file>qml/MaterialTheme.qml</file>
     <file>qml/ReviewsPage.qml</file>
     <file>qml/AddonsView.qml</file>
     <file>qml/ApplicationDelegate.qml</file>

@@ -84,22 +84,82 @@ void FeaturedModel::refresh()
     const auto dest = qScopeGuard([this] {
         acquireFetching(false);
     });
+
+    // Popular applications that users actually want
+    // Using correct appstream IDs that are available in Fedora/Flathub repos
+    static const QVector<QUrl> popularApps = {
+        // Communication
+        QUrl(QStringLiteral("appstream://telegram-desktop.desktop")),       // Telegram (Fedora)
+        QUrl(QStringLiteral("appstream://org.telegram.desktop.desktop")),   // Telegram (Flatpak)
+        QUrl(QStringLiteral("appstream://discord.desktop")),                // Discord (RPM)
+        QUrl(QStringLiteral("appstream://com.discordapp.Discord.desktop")), // Discord (Flatpak)
+
+        // Browsers
+        QUrl(QStringLiteral("appstream://google-chrome.desktop")),          // Google Chrome
+        QUrl(QStringLiteral("appstream://firefox.desktop")),                // Firefox (Fedora)
+        QUrl(QStringLiteral("appstream://org.mozilla.firefox.desktop")),    // Firefox (Flatpak)
+        QUrl(QStringLiteral("appstream://chromium-browser.desktop")),       // Chromium
+        QUrl(QStringLiteral("appstream://brave-browser.desktop")),          // Brave
+
+        // Gaming
+        QUrl(QStringLiteral("appstream://steam.desktop")),                  // Steam (RPM)
+        QUrl(QStringLiteral("appstream://com.valvesoftware.Steam.desktop")), // Steam (Flatpak)
+
+        // Media
+        QUrl(QStringLiteral("appstream://vlc.desktop")),                    // VLC (Fedora)
+        QUrl(QStringLiteral("appstream://org.videolan.VLC.desktop")),       // VLC (Flatpak)
+        QUrl(QStringLiteral("appstream://spotify.desktop")),                // Spotify
+        QUrl(QStringLiteral("appstream://com.spotify.Client.desktop")),     // Spotify (Flatpak)
+        QUrl(QStringLiteral("appstream://obs-studio.desktop")),             // OBS
+        QUrl(QStringLiteral("appstream://com.obsproject.Studio.desktop")),  // OBS (Flatpak)
+
+        // Development
+        QUrl(QStringLiteral("appstream://code.desktop")),                   // VS Code (RPM)
+        QUrl(QStringLiteral("appstream://com.visualstudio.code.desktop")),  // VS Code (Flatpak)
+
+        // Graphics
+        QUrl(QStringLiteral("appstream://gimp.desktop")),                   // GIMP (Fedora)
+        QUrl(QStringLiteral("appstream://org.gimp.GIMP.desktop")),          // GIMP (Flatpak)
+        QUrl(QStringLiteral("appstream://org.kde.krita.desktop")),          // Krita
+        QUrl(QStringLiteral("appstream://inkscape.desktop")),               // Inkscape
+        QUrl(QStringLiteral("appstream://org.inkscape.Inkscape.desktop")),  // Inkscape (Flatpak)
+
+        // Office
+        QUrl(QStringLiteral("appstream://libreoffice-startcenter.desktop")), // LibreOffice
+        QUrl(QStringLiteral("appstream://org.libreoffice.LibreOffice.desktop")), // LibreOffice (Flatpak)
+
+        // Utilities
+        QUrl(QStringLiteral("appstream://qbittorrent.desktop")),            // qBittorrent
+        QUrl(QStringLiteral("appstream://org.qbittorrent.qBittorrent.desktop")), // qBittorrent (Flatpak)
+        QUrl(QStringLiteral("appstream://thunderbird.desktop")),            // Thunderbird
+        QUrl(QStringLiteral("appstream://org.mozilla.Thunderbird.desktop")) // Thunderbird (Flatpak)
+    };
+
+    // Try to load additional apps from cache if available
     QFile f(*featuredCache);
-    if (!f.open(QIODevice::ReadOnly)) {
-        qCWarning(DISCOVER_LOG) << "couldn't open file" << *featuredCache << f.errorString();
-        return;
-    }
-    QJsonParseError error;
-    const auto array = QJsonDocument::fromJson(f.readAll(), &error).array();
-    if (error.error) {
-        qCWarning(DISCOVER_LOG) << "couldn't parse" << *featuredCache << ". error:" << error.errorString();
-        return;
+    if (f.open(QIODevice::ReadOnly)) {
+        QJsonParseError error;
+        const auto array = QJsonDocument::fromJson(f.readAll(), &error).array();
+        if (!error.error && !array.isEmpty()) {
+            // Parse cached URIs
+            const auto cachedUris = kTransform<QVector<QUrl>>(array, [](const QJsonValue &uri) {
+                return QUrl(uri.toString());
+            });
+
+            // Combine popular apps with cached ones (popular apps first)
+            QVector<QUrl> combined = popularApps;
+            for (const auto &uri : cachedUris) {
+                if (!combined.contains(uri)) {
+                    combined.append(uri);
+                }
+            }
+            setUris(combined);
+            return;
+        }
     }
 
-    const auto uris = kTransform<QVector<QUrl>>(array, [](const QJsonValue &uri) {
-        return QUrl(uri.toString());
-    });
-    setUris(uris);
+    // Use only popular apps if cache is not available or invalid
+    setUris(popularApps);
 }
 
 #include "moc_FeaturedModel.cpp"

@@ -8,11 +8,13 @@
 
 import QtQuick
 import QtQuick.Controls as QQC2
+import QtQuick.Controls.Material
 import QtQuick.Layouts
 import org.kde.discover as Discover
 import org.kde.kirigami as Kirigami
+import "." as Local
 
-BasicAbstractCard {
+Local.MaterialCard {
     id: root
 
     required property int index
@@ -23,74 +25,68 @@ BasicAbstractCard {
     property bool showSize: false
 
     readonly property bool appIsFromNonDefaultBackend: Discover.ResourcesModel.currentApplicationBackend !== application.backend && application.backend.hasApplications
-    showClickFeedback: true
+
+    // Force dark theme for consistency
+    Material.theme: Material.Dark
+    Material.background: "#1C1B1F"
+    Material.foreground: "#E6E1E5"
 
     function trigger() {
         ListView.currentIndex = index
-        Navigation.openApplication(application)
+        Local.Navigation.openApplication(application)
     }
-    padding: Kirigami.Units.largeSpacing * 2
-    highlighted: ListView.isCurrentItem
+    elevation: 1
+    interactive: true
 
     Keys.onReturnPressed: trigger()
     onClicked: trigger()
 
-    content: Item {
-        implicitHeight: Math.max(columnLayout.implicitHeight, resourceIconFrame.implicitHeight)
+    RowLayout {
+        anchors.fill: parent
+        anchors.margins: Kirigami.Units.largeSpacing
+        spacing: Kirigami.Units.largeSpacing
 
-        Kirigami.Padding {
-            id: resourceIconFrame
-            anchors {
-                top: parent.top
-                left: parent.left
-                bottom: parent.bottom
-            }
-            padding: Kirigami.Units.largeSpacing
-            contentItem: Kirigami.Icon {
-                source: root.application.icon
+        // App icon
+        Rectangle {
+            Layout.preferredWidth: root.compact ? 48 : 64
+            Layout.preferredHeight: Layout.preferredWidth
+            radius: 8
+            color: "#2B2A2E"
+
+            Kirigami.Icon {
+                anchors.centerIn: parent
+                source: root.application ? root.application.icon : ""
                 animated: false
-
-                implicitHeight: root.compact ? Kirigami.Units.iconSizes.large : Kirigami.Units.iconSizes.huge
-                implicitWidth: implicitHeight
+                width: parent.width - 8
+                height: parent.height - 8
+                // Prevent icon from becoming monochrome
+                isMask: false
+                // Disable theme color application
+                Kirigami.Theme.inherit: false
+                color: "transparent"
             }
         }
 
         // Container for everything but the app icon
         ColumnLayout {
             id: columnLayout
-
-            anchors {
-                top: parent.top
-                right: parent.right
-                bottom: parent.bottom
-                left: resourceIconFrame.right
-                leftMargin: Kirigami.Units.gridUnit
-            }
-            spacing: 0
+            Layout.fillWidth: true
+            spacing: Kirigami.Units.smallSpacing
 
             // Container for app name and backend name labels
             RowLayout {
                 spacing: Kirigami.Units.largeSpacing
 
                 // App name label
-                Kirigami.Heading {
+                QQC2.Label {
                     id: head
                     Layout.fillWidth: true
-                    // We want the heading visually top-aligned with the top margin, the icon background and that in general
-                    // it's root.padding away from the border. We can't just align the label to the top for it because internally
-                    // everything is aligned respecting the text boundingRect, which includes blank space on the top as a "line" height, called "leading". Instead we need to base ourselves on tightBoundingRect which is a rect only around the
-                    // painted area of the label, not including the leading
-                    topPadding: headMetrics.boundingRect.y - headMetrics.tightBoundingRect.y
-                    level: root.compact ? 2 : 1
-                    type: Kirigami.Heading.Type.Primary
+                    font.pixelSize: root.compact ? 14 : 16
+                    font.weight: Font.DemiBold
                     text: root.application.name
                     elide: Text.ElideRight
                     maximumLineCount: 1
-                    TextMetrics {
-                        id: headMetrics
-                        font: head.font
-                        text: head.text
-                    }
+                    color: Material.foreground
                 }
 
                 // Backend name label (always shown except in compact view)
@@ -115,18 +111,14 @@ BasicAbstractCard {
             QQC2.Label {
                 id: description
                 Layout.fillWidth: true
-                Layout.preferredHeight: descriptionMetrics.height
-                text: root.application.comment
+                text: root.application.comment || ""
                 elide: Text.ElideRight
-                maximumLineCount: 1
+                maximumLineCount: 2
+                wrapMode: Text.WordWrap
                 textFormat: Text.PlainText
-
-                // reserve space for description even if none is available
-                TextMetrics {
-                    id: descriptionMetrics
-                    font: description.font
-                    text: "Sample text"
-                }
+                font.pixelSize: 12
+                opacity: 0.7
+                color: Material.foreground
             }
             // Container for rating, size, and install button
             RowLayout {
@@ -144,39 +136,34 @@ BasicAbstractCard {
                     opacity: 0.6
                     spacing: Kirigami.Units.largeSpacing
 
-                    Rating {
+                    Local.Rating {
                         Layout.alignment: Qt.AlignVCenter
                         value: root.application.rating.sortableRating
                         starSize: root.compact ? description.font.pointSize : head.font.pointSize
-                        precision: Rating.Precision.HalfStar
+                        precision: Local.Rating.Precision.HalfStar
                         padding: 0
                     }
                     QQC2.Label {
                         Layout.alignment: Qt.AlignVCenter
-                        topPadding: (ratingLabelMetrics.boundingRect.y - ratingLabelMetrics.tightBoundingRect.y)/2
                         visible: root.application.backend.reviewsBackend?.isResourceSupported(root.application) ?? false
                         text: root.application.rating.ratingCount > 0 ? i18np("%1 rating", "%1 ratings", root.application.rating.ratingCount) : i18n("No ratings yet")
-                        font: Kirigami.Theme.smallFont
+                        font.pixelSize: 11
                         elide: Text.ElideRight
-                        TextMetrics {
-                            id: ratingLabelMetrics
-                            font: head.font
-                            text: head.text
-                        }
+                        color: Material.foreground
                     }
                 }
 
                 // Size label
                 QQC2.Label {
                     id: sizeInfo
-                    Layout.alignment: Qt.AlignBottom
+                    Layout.alignment: Qt.AlignVCenter
                     visible: !root.compact && root.showSize
                     text: visible ? root.application.sizeDescription : ""
-                    horizontalAlignment: Text.AlignRight
-                    opacity: 0.6;
-                    font: Kirigami.Theme.smallFont
+                    opacity: 0.6
+                    font.pixelSize: 11
                     elide: Text.ElideRight
                     maximumLineCount: 1
+                    color: Material.foreground
                 }
 
                 Item {
@@ -184,17 +171,17 @@ BasicAbstractCard {
                 }
 
                 // Install button
-                InstallApplicationButton {
+                Local.InstallApplicationButton {
                     id: installButton
-                    Layout.alignment: Qt.AlignBottom | Qt.AlignRight
-                    visible: !root.compact
+                    Layout.alignment: Qt.AlignVCenter
+                    visible: true
                     application: root.application
-                    installOrRemoveButtonDisplayStyle: QQC2.AbstractButton.IconOnly
+                    installOrRemoveButtonDisplayStyle: root.compact ? QQC2.AbstractButton.IconOnly : QQC2.AbstractButton.TextBesideIcon
                 }
             }
         }
     }
 
-    Accessible.name: head.text
+    Accessible.name: application.name
     Accessible.onPressAction: trigger()
 }
