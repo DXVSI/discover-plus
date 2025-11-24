@@ -1176,7 +1176,7 @@ msgstr "Plasma 附加组件"
 #, kde-format
 msgctxt "Category"
 msgid "Plasma Widgets"
-msgstr "Plasma 挂件"
+msgstr "Plasma 小部件"
 
 #: libdiscover/backends/PackageKitBackend/packagekit-backend-categories.xml:592
 #, kde-format

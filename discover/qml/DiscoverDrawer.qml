@@ -80,9 +80,7 @@ Kirigami.GlobalDrawer {
 
             anchors {
                 left: parent.left
-                leftMargin: Kirigami.Units.smallSpacing
                 right: parent.right
-                rightMargin: Kirigami.Units.smallSpacing
             }
 
             // Give the search field keyboard focus by default, unless it would
