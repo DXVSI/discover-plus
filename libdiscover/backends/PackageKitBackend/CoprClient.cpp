@@ -11,6 +11,9 @@
 #include <QDebug>
 #include <QRegularExpression>
 
+// Network timeout for COPR API requests (in milliseconds)
+static constexpr int COPR_REQUEST_TIMEOUT = 30000; // 30 seconds - increased for slower API responses
+
 CoprClient::CoprClient(QObject *parent)
     : QObject(parent)
     , m_networkManager(new QNetworkAccessManager(this))
@@ -57,7 +60,7 @@ QString CoprClient::getCurrentChroot() const
     return QStringLiteral("fedora-%1-%2").arg(m_fedoraVersion, arch);
 }
 
-void CoprClient::searchProjects(const QString &query, int limit)
+void CoprClient::searchProjects(const QString &query, int limit, int offset)
 {
     QString endpoint = QStringLiteral("/project/search");
     QUrl url(m_baseUrl + endpoint);
@@ -65,11 +68,15 @@ void CoprClient::searchProjects(const QString &query, int limit)
     QUrlQuery urlQuery;
     urlQuery.addQueryItem(QStringLiteral("query"), query);
     urlQuery.addQueryItem(QStringLiteral("limit"), QString::number(limit));
+    urlQuery.addQueryItem(QStringLiteral("offset"), QString::number(offset));
     url.setQuery(urlQuery);
 
     QNetworkRequest request(url);
     request.setHeader(QNetworkRequest::ContentTypeHeader, QStringLiteral("application/json"));
     request.setAttribute(QNetworkRequest::Http2AllowedAttribute, false); // Disable HTTP/2 to avoid protocol errors
+    request.setTransferTimeout(COPR_REQUEST_TIMEOUT);
+
+    qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "CoprClient: Searching projects, query:" << query << "limit:" << limit << "offset:" << offset;
 
     QNetworkReply *reply = m_networkManager->get(request);
     m_pendingRequests[reply] = QStringLiteral("searchProjects");
@@ -89,6 +96,7 @@ void CoprClient::getLatestProjects(int limit, int offset)
     QNetworkRequest request(url);
     request.setHeader(QNetworkRequest::ContentTypeHeader, QStringLiteral("application/json"));
     request.setAttribute(QNetworkRequest::Http2AllowedAttribute, false); // Disable HTTP/2 to avoid protocol errors
+    request.setTransferTimeout(COPR_REQUEST_TIMEOUT);
 
     qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "CoprClient: Getting latest projects, limit:" << limit << "offset:" << offset;
 
@@ -116,6 +124,7 @@ void CoprClient::getProjectInfo(const QString &owner, const QString &project)
     QNetworkRequest request(url);
     request.setHeader(QNetworkRequest::ContentTypeHeader, QStringLiteral("application/json"));
     request.setAttribute(QNetworkRequest::Http2AllowedAttribute, false); // Disable HTTP/2 to avoid protocol errors
+    request.setTransferTimeout(COPR_REQUEST_TIMEOUT);
 
     QNetworkReply *reply = m_networkManager->get(request);
     m_pendingRequests[reply] = QStringLiteral("getProjectInfo");
@@ -137,6 +146,7 @@ void CoprClient::getProjectPackages(const QString &owner, const QString &project
     QNetworkRequest request(url);
     request.setHeader(QNetworkRequest::ContentTypeHeader, QStringLiteral("application/json"));
     request.setAttribute(QNetworkRequest::Http2AllowedAttribute, false); // Disable HTTP/2 to avoid protocol errors
+    request.setTransferTimeout(COPR_REQUEST_TIMEOUT);
 
     QNetworkReply *reply = m_networkManager->get(request);
     m_pendingRequests[reply] = QStringLiteral("getProjectPackages:") + owner + QStringLiteral(":") + project;
@@ -146,6 +156,21 @@ void CoprClient::getProjectPackages(const QString &owner, const QString &project
 void CoprClient::searchPackages(const QString &query, int limit)
 {
     searchProjects(query, limit);
+}
+
+void CoprClient::cancelAllRequests()
+{
+    // Cancel all pending network requests
+    QList<QNetworkReply*> replies = m_pendingRequests.keys();
+    for (QNetworkReply* reply : replies) {
+        if (reply) {
+            reply->abort();
+            reply->deleteLater();
+        }
+    }
+    m_pendingRequests.clear();
+
+    qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "Cancelled all COPR pending requests";
 }
 
 void CoprClient::onNetworkReplyFinished()
@@ -160,7 +185,9 @@ void CoprClient::onNetworkReplyFinished()
     if (reply->error() != QNetworkReply::NoError) {
         // Log the error but don't spam if it's HTTP/2 protocol errors
         if (!reply->errorString().contains(QStringLiteral("HTTP/2"))) {
-            qWarning() << "COPR API error for" << requestType << ":" << reply->errorString();
+            qWarning() << "COPR API error for" << requestType << ":" << reply->errorString()
+                       << "Error code:" << reply->error()
+                       << "URL:" << reply->url().toString();
         } else {
             qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "HTTP/2 error for" << requestType << "- likely too many requests";
         }
@@ -252,9 +279,26 @@ QList<CoprProjectInfo> CoprClient::parseProjectsResponse(const QJsonObject &json
         project.id = obj.value(QStringLiteral("id")).toInt();
         project.homepage = obj.value(QStringLiteral("homepage")).toString();
 
-        QStringList chrootKeys = obj.value(QStringLiteral("chroot_repos")).toObject().keys();
-        for (const QString &chroot : chrootKeys) {
-            project.chroots.append(chroot);
+        // Try to get chroots from different possible fields
+        QJsonObject chrootRepos = obj.value(QStringLiteral("chroot_repos")).toObject();
+        if (!chrootRepos.isEmpty()) {
+            QStringList chrootKeys = chrootRepos.keys();
+            for (const QString &chroot : chrootKeys) {
+                project.chroots.append(chroot);
+            }
+        } else {
+            // For search results, chroots might be in a different field
+            QJsonArray chrootsArray = obj.value(QStringLiteral("chroots")).toArray();
+            if (!chrootsArray.isEmpty()) {
+                for (const QJsonValue &chrootVal : chrootsArray) {
+                    QString chrootName = chrootVal.toString();
+                    if (!chrootName.isEmpty()) {
+                        project.chroots.append(chrootName);
+                    }
+                }
+            } else {
+                qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "No chroots found for project:" << project.owner << "/" << project.name;
+            }
         }
 
         projects.append(project);

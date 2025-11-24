@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: discover\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-07 00:44+0000\n"
+"POT-Creation-Date: 2025-11-17 11:53+0000\n"
 "PO-Revision-Date: 2025-10-28 16:32+0100\n"
 "Last-Translator: Mincho Kondarev <mkondarev@yahoo.de>\n"
 "Language-Team: Bulgarian <kde-i18n-doc@kde.org>\n"
@@ -253,7 +253,7 @@ msgstr "Налични бекенд програми:\n"
 msgid "Available modes:\n"
 msgstr "Налични режими:\n"
 
-#: discover/qml/AddonsView.qml:28 discover/qml/Navigation.qml:58
+#: discover/qml/AddonsView.qml:28 discover/qml/Navigation.qml:60
 #, kde-format
 msgid "Addons for %1"
 msgstr "Добавки за %1"
@@ -1045,7 +1045,7 @@ msgstr "Премахване"
 msgid "Installed"
 msgstr "Инсталирани"
 
-#: discover/qml/Navigation.qml:34
+#: discover/qml/Navigation.qml:36
 #, kde-format
 msgid "Resources for '%1'"
 msgstr "Ресурси за „%1“"

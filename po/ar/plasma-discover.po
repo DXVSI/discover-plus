@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-07 00:44+0000\n"
+"POT-Creation-Date: 2025-11-17 11:53+0000\n"
 "PO-Revision-Date: 2025-08-30 11:58+0400\n"
 "Last-Translator: Zayed Al-Saidi <zayed.alsaidi@gmail.com>\n"
 "Language-Team: ar\n"
@@ -246,7 +246,7 @@ msgstr "الأسناد المتوفّرة:\n"
 msgid "Available modes:\n"
 msgstr "الأوضاع المتوفّرة:\n"
 
-#: discover/qml/AddonsView.qml:28 discover/qml/Navigation.qml:58
+#: discover/qml/AddonsView.qml:28 discover/qml/Navigation.qml:60
 #, kde-format
 msgid "Addons for %1"
 msgstr "إضافات %1"
@@ -1045,7 +1045,7 @@ msgstr "أزل"
 msgid "Installed"
 msgstr "المثبّتة"
 
-#: discover/qml/Navigation.qml:34
+#: discover/qml/Navigation.qml:36
 #, kde-format
 msgid "Resources for '%1'"
 msgstr "موارد ’%1‘"

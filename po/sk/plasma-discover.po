@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: muon-discover\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-07 00:44+0000\n"
+"POT-Creation-Date: 2025-11-17 11:53+0000\n"
 "PO-Revision-Date: 2023-12-05 17:21+0100\n"
 "Last-Translator: Roman Paholik <wizzardsk@gmail.com>\n"
 "Language-Team: Slovak <kde-sk@linux.sk>\n"
@@ -271,7 +271,7 @@ msgstr "Dostupné podporné programy:\n"
 msgid "Available modes:\n"
 msgstr "Dostupné režimy:\n"
 
-#: discover/qml/AddonsView.qml:28 discover/qml/Navigation.qml:58
+#: discover/qml/AddonsView.qml:28 discover/qml/Navigation.qml:60
 #, kde-format
 msgid "Addons for %1"
 msgstr "Doplnky pre %1"
@@ -1082,7 +1082,7 @@ msgstr "Odstrániť"
 msgid "Installed"
 msgstr "Nainštalované"
 
-#: discover/qml/Navigation.qml:34
+#: discover/qml/Navigation.qml:36
 #, kde-format
 msgid "Resources for '%1'"
 msgstr "Prostriedky pre \"%1\""

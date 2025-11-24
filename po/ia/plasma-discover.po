@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-07 00:44+0000\n"
+"POT-Creation-Date: 2025-11-17 11:53+0000\n"
 "PO-Revision-Date: 2025-09-24 17:22+0200\n"
 "Last-Translator: giovanni <g.sora@tiscali.it>\n"
 "Language-Team: Interlingua <kde-i18n-doc@kde.org>\n"
@@ -253,7 +253,7 @@ msgstr "Retro administrationes disponibile:\n"
 msgid "Available modes:\n"
 msgstr "Modos disponibile:\n"
 
-#: discover/qml/AddonsView.qml:28 discover/qml/Navigation.qml:58
+#: discover/qml/AddonsView.qml:28 discover/qml/Navigation.qml:60
 #, kde-format
 msgid "Addons for %1"
 msgstr "Addons (Elementos adjunte) per %1"
@@ -1043,7 +1043,7 @@ msgstr "Remove"
 msgid "Installed"
 msgstr "Installate"
 
-#: discover/qml/Navigation.qml:34
+#: discover/qml/Navigation.qml:36
 #, kde-format
 msgid "Resources for '%1'"
 msgstr "Ressources for '%1'"

@@ -598,6 +598,14 @@
       </Include>
     </Menu>
 -->
+
+  <Menu>
+    <Name>COPR</Name>
+    <Icon>folder-rpm</Icon>
+    <Top />
+    <Origin>COPR</Origin>
+  </Menu>
+
   </Menu>
 
 </Menu>

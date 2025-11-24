@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: discover\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-07 00:44+0000\n"
+"POT-Creation-Date: 2025-11-17 11:53+0000\n"
 "PO-Revision-Date: 2021-09-19 20:01+0630\n"
 "Last-Translator: ဇေယျာလွင် <lw1nzayar@yandex.com>\n"
 "Language-Team: Burmese <kde-i18n-doc@kde.org>\n"
@@ -229,7 +229,7 @@ msgstr "ရရှိနိုင်သော အုတ်မြစ်ပရိ�
 msgid "Available modes:\n"
 msgstr "ရရှိနိုင်သော ထုံးနည်းများ-\n"
 
-#: discover/qml/AddonsView.qml:28 discover/qml/Navigation.qml:58
+#: discover/qml/AddonsView.qml:28 discover/qml/Navigation.qml:60
 #, fuzzy, kde-format
 #| msgid "Addons"
 msgid "Addons for %1"
@@ -993,7 +993,7 @@ msgstr "ဖယ်ရှားမည်"
 msgid "Installed"
 msgstr "တပ်ဆင်ပြီး"
 
-#: discover/qml/Navigation.qml:34
+#: discover/qml/Navigation.qml:36
 #, kde-format
 msgid "Resources for '%1'"
 msgstr "'%1' အတွက်ရင်းမြစ်များ"

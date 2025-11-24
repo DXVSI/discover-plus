@@ -21,6 +21,9 @@
 #include <QTest>
 #include <flatpak.h>
 
+// Should make sure it's available on all tested architectures
+constexpr QLatin1StringView s_testId("com.chez.GrafX2");
+
 class FlatpakTest : public QObject
 {
     Q_OBJECT
@@ -115,7 +118,7 @@ private Q_SLOTS:
     void testInstallApp()
     {
         AbstractResourcesBackend::Filters f;
-        f.resourceUrl = QUrl(QStringLiteral("appstream://chat.rocket.RocketChat.desktop"));
+        f.resourceUrl = QUrl(QStringLiteral("appstream://") + s_testId);
         const auto res = getResources(m_appBackend->search(f));
         QCOMPARE(res.count(), 1);
 
@@ -123,8 +126,7 @@ private Q_SLOTS:
         QCOMPARE(ourResource->state(), AbstractResource::None);
         QCOMPARE(waitTransaction(m_appBackend->installApplication(ourResource)), Transaction::DoneStatus);
         QCOMPARE(ourResource->state(), AbstractResource::Installed);
-        f.resourceUrl =
-            QUrl(QStringLiteral("flatpak:app/io.github.igorlogius.scr2ppm/") + QLatin1StringView(flatpak_get_default_arch()) + QStringLiteral("/stable"));
+        f.resourceUrl = QUrl(QStringLiteral("flatpak:app/") + s_testId + u'/' + QLatin1StringView(flatpak_get_default_arch()) + QLatin1StringView("/stable"));
         QCOMPARE(getResources(m_appBackend->search(f)).count(), 1);
         QCOMPARE(waitTransaction(m_appBackend->removeApplication(ourResource)), Transaction::DoneStatus);
         QCOMPARE(ourResource->state(), AbstractResource::None);
@@ -133,11 +135,11 @@ private Q_SLOTS:
     void testFlatpakref()
     {
         AbstractResourcesBackend::Filters f;
-        f.resourceUrl = QUrl(QStringLiteral("https://dl.flathub.org/repo/appstream/chat.rocket.RocketChat.flatpakref"));
+        f.resourceUrl = QUrl(QStringLiteral("https://dl.flathub.org/repo/appstream/") + s_testId + u".flatpakref");
         const auto res = getResources(m_appBackend->search(f));
         QCOMPARE(res.count(), 1);
 
-        f.resourceUrl = QUrl(QStringLiteral("appstream://chat.rocket.RocketChat"));
+        f.resourceUrl = QUrl(QStringLiteral("appstream://") + s_testId);
         const auto res2 = getResources(m_appBackend->search(f));
         QCOMPARE(res2, res);
     }
@@ -146,15 +148,15 @@ private Q_SLOTS:
     {
         // We test an item that provides another appstream id, this way we test both
         AbstractResourcesBackend::Filters f;
-        f.resourceUrl = QUrl(QStringLiteral("flatpak:app/chat.rocket.RocketChat/") + QLatin1StringView(flatpak_get_default_arch()) + QStringLiteral("/stable"));
+        f.resourceUrl = QUrl(QStringLiteral("flatpak:app/") + s_testId + u'/' + QLatin1StringView(flatpak_get_default_arch()) + QStringLiteral("/stable"));
         const auto res = getResources(m_appBackend->search(f));
         QCOMPARE(res.count(), 1);
 
-        f.resourceUrl = QUrl(QStringLiteral("appstream://chat.rocket.RocketChat.desktop"));
+        f.resourceUrl = QUrl(QStringLiteral("appstream://grafx2.desktop")); // That's the alternatively provided id
         const auto res2 = getResources(m_appBackend->search(f));
         QCOMPARE(res2, res);
 
-        f.resourceUrl = QUrl(QStringLiteral("appstream://chat.rocket.RocketChat"));
+        f.resourceUrl = QUrl(QStringLiteral("appstream://") + s_testId);
         const auto res3 = getResources(m_appBackend->search(f));
         QCOMPARE(res3, res);
     }
@@ -206,11 +208,14 @@ private:
                 ret = trans->status();
             }
         });
+        connect(t, &Transaction::passiveMessage, t, [t](const QString &msg) {
+            qCInfo(LIBDISCOVER_BACKEND_FLATPAK_LOG) << "message" << msg;
+        });
         connect(t, &Transaction::statusChanged, t, [t] {
             qCDebug(LIBDISCOVER_BACKEND_FLATPAK_LOG) << "status" << t->status();
         });
         connect(t, &Transaction::proceedRequest, t, [t](const QString &title, const QString &description) {
-            qCDebug(LIBDISCOVER_BACKEND_FLATPAK_LOG) << "proceed?" << t << title << description;
+            qCInfo(LIBDISCOVER_BACKEND_FLATPAK_LOG) << "proceed?" << t << title << description;
             t->proceed();
         });
         while (t && spyInstalled.count() == 0) {

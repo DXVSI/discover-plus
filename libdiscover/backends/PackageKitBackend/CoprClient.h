@@ -41,12 +41,13 @@ public:
     QString getFedoraVersion() const;
     QString getCurrentChroot() const;
 
-    void searchProjects(const QString &query, int limit = 50);
+    void searchProjects(const QString &query, int limit = 50, int offset = 0);
     void getPopularProjects(int limit = 20, int offset = 0);
     void getLatestProjects(int limit = 20, int offset = 0);
     void getProjectInfo(const QString &owner, const QString &project);
     void getProjectPackages(const QString &owner, const QString &project);
     void searchPackages(const QString &query, int limit = 50);
+    void cancelAllRequests();
 
 Q_SIGNALS:
     void projectsFound(const QList<CoprProjectInfo> &projects);

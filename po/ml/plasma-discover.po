@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: discover\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-07 00:44+0000\n"
+"POT-Creation-Date: 2025-11-17 11:53+0000\n"
 "PO-Revision-Date: 2019-12-29 20:50+0000\n"
 "Last-Translator: Subin Siby <subins2000@gmail.com>\n"
 "Language-Team: Swathanthra|സ്വതന്ത്ര Malayalam|മലയാളം Computing|കമ്പ്യൂട്ടിങ്ങ് <smc."
@@ -230,7 +230,7 @@ msgstr "ലഭ്യമായ ബാക്കെൻഡുകൾ:\n"
 msgid "Available modes:\n"
 msgstr "ലഭ്യമായ രീതികൾ:\n"
 
-#: discover/qml/AddonsView.qml:28 discover/qml/Navigation.qml:58
+#: discover/qml/AddonsView.qml:28 discover/qml/Navigation.qml:60
 #, fuzzy, kde-format
 #| msgid "Addons"
 msgid "Addons for %1"
@@ -983,7 +983,7 @@ msgstr "ഒഴിവാക്കുക"
 msgid "Installed"
 msgstr "ഇൻസ്റ്റാളുചെയ്‌തു"
 
-#: discover/qml/Navigation.qml:34
+#: discover/qml/Navigation.qml:36
 #, kde-format
 msgid "Resources for '%1'"
 msgstr ""

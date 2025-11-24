@@ -7,6 +7,7 @@
 #include "DiscoverDeclarativePlugin.h"
 #include "ReadFile.h"
 #include <ApplicationAddonsModel.h>
+#include <SearchHistory.h>
 #include <Category/Category.h>
 #include <Category/CategoryModel.h>
 #include <QQmlContext>
@@ -89,6 +90,7 @@ void DiscoverDeclarativePlugin::registerTypes(const char * /*uri*/)
     qmlRegisterType<ScreenshotsModel>("org.kde.discover", 2, 0, "ScreenshotsModel");
     qmlRegisterType<UpdateModel>("org.kde.discover", 2, 0, "UpdateModel");
     qmlRegisterType<ReadFile>("org.kde.discover", 2, 0, "ReadFile");
+    qmlRegisterType<SearchHistory>("org.kde.discover", 2, 0, "SearchHistory");
 
     qmlRegisterUncreatableType<DiscoverAction>("org.kde.discover", 2, 0, "DiscoverAction", QStringLiteral("Use QQC Action"));
     qmlRegisterUncreatableType<AbstractResource>("org.kde.discover", 2, 0, "AbstractResource", QStringLiteral("should come from the ResourcesModel"));
