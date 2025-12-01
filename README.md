@@ -54,7 +54,7 @@ Experimental Material Design 3 interface using [QmlMaterial](https://github.com/
 ### Additional Dependencies
 
 ```bash
-sudo dnf install -y qt6-qtshadertools-devel
+sudo dnf install -y qt6-qtshadertools-devel qt6-qtbase-private-devel qt6-qtdeclarative-private-devel
 ```
 
 ### Building
@@ -64,7 +64,18 @@ QmlMaterial library is included in the repository with Qt 6.10+ compatibility pa
 ```bash
 git checkout material-ui
 mkdir build && cd build
-cmake ..
+cmake .. \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_BUILD_TYPE=RelWithDebInfo \
+    -DBUILD_TESTING=OFF \
+    -DBUILD_FlatpakBackend=ON \
+    -DBUILD_PackageKitBackend=ON \
+    -DBUILD_FwupdBackend=OFF \
+    -DBUILD_SnapBackend=OFF \
+    -DBUILD_AlpineApkBackend=OFF \
+    -DBUILD_DummyBackend=OFF \
+    -DBUILD_RpmOstreeBackend=OFF \
+    -DBUILD_SteamOSBackend=OFF
 make -j$(nproc)
 sudo make install
 ```
