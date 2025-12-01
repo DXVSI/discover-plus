@@ -44,6 +44,37 @@ The redesigned interface features:
 - **Styled Action Buttons** - Color-coded buttons with gradient backgrounds
 - **Improved Spacing** - Better content distribution and readability
 
+## Material Design 3 UI (WIP)
+
+> **Warning:** This branch is under active development and not yet ready for production use.
+> To try it: `git checkout material-ui`
+
+Experimental Material Design 3 interface using [QmlMaterial](https://github.com/hypengw/QmlMaterial) library.
+
+### Additional Dependencies
+
+```bash
+sudo dnf install -y qt6-qtshadertools-devel
+```
+
+### Building
+
+QmlMaterial library is included in the repository with Qt 6.10+ compatibility patches applied.
+
+```bash
+git checkout material-ui
+mkdir build && cd build
+cmake ..
+make -j$(nproc)
+sudo make install
+```
+
+### Running
+
+```bash
+./run_discover.sh
+```
+
 ## Key Features
 
 * **COPR Repository Integration** - Browse and install packages from Fedora COPR (Community Projects)

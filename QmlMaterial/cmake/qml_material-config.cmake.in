@@ -1,0 +1,7 @@
+@PACKAGE_INIT@
+
+include(CMakeFindDependencyMacro)
+find_dependency(Qt6 COMPONENTS Core Quick QuickControls2 Gui ShaderTools)
+
+include("${CMAKE_CURRENT_LIST_DIR}/qml_material-targets.cmake")
+check_required_components(qml_material)

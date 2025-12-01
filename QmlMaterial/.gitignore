@@ -1,0 +1,7 @@
+.qmlls.ini
+build
+.cache
+/build*
+/doc/html
+/doc/doxygen-awesome-css
+CMakeLists.txt.user*

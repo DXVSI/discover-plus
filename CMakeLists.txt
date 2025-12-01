@@ -32,7 +32,11 @@ find_package(Qt6 ${QT_MIN_VERSION} REQUIRED CONFIG COMPONENTS Widgets Test Netwo
 find_package(Qt6 ${QT_MIN_VERSION} CONFIG OPTIONAL_COMPONENTS WebView)
 
 # Add QmlMaterial library for Material Design 3 (using local copy)
+# Temporarily remove strict QString checks for QmlMaterial compatibility
+set(_saved_definitions ${CMAKE_CXX_FLAGS})
+remove_definitions(-DQT_NO_CAST_FROM_ASCII -DQT_NO_CAST_TO_ASCII)
 add_subdirectory(QmlMaterial EXCLUDE_FROM_ALL)
+add_definitions(-DQT_NO_CAST_FROM_ASCII -DQT_NO_CAST_TO_ASCII)
 
 find_package(PkgConfig REQUIRED)
 
