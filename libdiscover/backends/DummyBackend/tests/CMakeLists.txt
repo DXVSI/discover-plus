@@ -8,3 +8,6 @@ add_unit_test(updatedummytest
 target_link_libraries(updatedummytest
     KF6::CoreAddons
 )
+
+add_test(NAME headless-updates
+         COMMAND Plasma::Discover --backends dummy --headless-update)

@@ -41,7 +41,6 @@ DummyBackend::DummyBackend(QObject *parent)
     if (!m_fetching)
         m_reviews->initialize();
 
-    m_updater->setErrorMessage(QStringLiteral("I am super broken"));
     SourcesModel::global()->addSourcesBackend(new DummySourcesBackend(this));
 }
 

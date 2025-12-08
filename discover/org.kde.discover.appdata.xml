@@ -329,7 +329,7 @@
     <release version="6.5.0" date="2025-10-21"/>
   </releases>
   <custom>
-    <value key="KDE::supporters">.</value>
+    <value key="KDE::supporters">lorberi, Artur Motyka (@artur9010)</value>
   </custom>
   <content_rating type="oars-1.1"/>
 </component>
