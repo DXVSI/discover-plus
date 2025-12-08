@@ -144,6 +144,7 @@ DiscoverPage {
         if (updateAction.enabled) {
             updateAction.trigger()
             app.quitWhenIdle();
+            startHeadlessUpdate = false;
         } else if (updateAction.hasErrors) {
             console.warn("Unable to start update")
             app.restore();

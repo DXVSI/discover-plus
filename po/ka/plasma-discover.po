@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: discover\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-17 11:53+0000\n"
+"POT-Creation-Date: 2025-11-27 00:44+0000\n"
 "PO-Revision-Date: 2025-08-29 05:42+0200\n"
 "Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
 "Language-Team: Georgian <kde-i18n-doc@kde.org>\n"
@@ -279,10 +279,10 @@ msgstr "ახალი %1-ის რეპოზიტორიის დამ
 msgid "Add"
 msgstr "დამატება"
 
-#: discover/qml/AddSourceDialog.qml:50 discover/qml/DiscoverWindow.qml:280
+#: discover/qml/AddSourceDialog.qml:50 discover/qml/DiscoverWindow.qml:279
 #: discover/qml/InstallApplicationButton.qml:51
 #: discover/qml/ProgressView.qml:152 discover/qml/SourcesPage.qml:201
-#: discover/qml/UpdatesPage.qml:302 discover/qml/WebflowDialog.qml:41
+#: discover/qml/UpdatesPage.qml:303 discover/qml/WebflowDialog.qml:41
 #, kde-format
 msgid "Cancel"
 msgstr "გაუქმება"
@@ -848,103 +848,103 @@ msgctxt "@action:button"
 msgid "Next Screenshot"
 msgstr "შემდეგი ეკრანის ანაბეჭდი"
 
-#: discover/qml/DiscoverWindow.qml:48
+#: discover/qml/DiscoverWindow.qml:47
 #, kde-format
 msgid "Running as <em>root</em> is discouraged and unnecessary."
 msgstr "<em>root</em> -ით გაშვება რეკომენდებული და საჭირო არაა."
 
-#: discover/qml/DiscoverWindow.qml:67
+#: discover/qml/DiscoverWindow.qml:66
 #, kde-format
 msgid "&Home"
 msgstr "&სახლი"
 
-#: discover/qml/DiscoverWindow.qml:77
+#: discover/qml/DiscoverWindow.qml:76
 #, kde-format
 msgid "&Search"
 msgstr "&ძებნა"
 
-#: discover/qml/DiscoverWindow.qml:85
+#: discover/qml/DiscoverWindow.qml:84
 #, kde-format
 msgid "&Installed"
 msgstr "&დაყენებული"
 
-#: discover/qml/DiscoverWindow.qml:96
+#: discover/qml/DiscoverWindow.qml:95
 #, kde-format
 msgid "&Updates (Fetching…)"
 msgstr "&განახლებები (გამოთხოვა…)"
 
-#: discover/qml/DiscoverWindow.qml:96
+#: discover/qml/DiscoverWindow.qml:95
 #, kde-format
 msgid "&Updates (%1)"
 msgstr "&განახლებები (%1)"
 
-#: discover/qml/DiscoverWindow.qml:104
+#: discover/qml/DiscoverWindow.qml:103
 #, kde-format
 msgid "&About"
 msgstr "შ&ესახებ"
 
-#: discover/qml/DiscoverWindow.qml:112
+#: discover/qml/DiscoverWindow.qml:111
 #, kde-format
 msgid "S&ettings"
 msgstr "&პარამეტრები"
 
-#: discover/qml/DiscoverWindow.qml:165 discover/qml/DiscoverWindow.qml:347
-#: discover/qml/DiscoverWindow.qml:459
+#: discover/qml/DiscoverWindow.qml:164 discover/qml/DiscoverWindow.qml:346
+#: discover/qml/DiscoverWindow.qml:458
 #, kde-format
 msgid "Error"
 msgstr "შეცდომა"
 
-#: discover/qml/DiscoverWindow.qml:169
+#: discover/qml/DiscoverWindow.qml:168
 #, kde-format
 msgid "Unable to find resource: %1"
 msgstr "რესურსის პოვნა შეუძლებელია: %1"
 
-#: discover/qml/DiscoverWindow.qml:267 discover/qml/SourcesPage.qml:195
+#: discover/qml/DiscoverWindow.qml:266 discover/qml/SourcesPage.qml:195
 #, kde-format
 msgid "Proceed"
 msgstr "გაგრძელება"
 
-#: discover/qml/DiscoverWindow.qml:325
+#: discover/qml/DiscoverWindow.qml:324
 #, kde-format
 msgctxt "@info %1 is the name of the operating system"
 msgid "Report this issue to %1"
 msgstr "ამ პრობლემის გადაგზავნა %1-სთვის"
 
-#: discover/qml/DiscoverWindow.qml:347
+#: discover/qml/DiscoverWindow.qml:346
 #, kde-format
 msgid "Error %1 of %2"
 msgstr "შეცდომა %1 %2-დან"
 
-#: discover/qml/DiscoverWindow.qml:347 discover/qml/UpdatesPage.qml:47
+#: discover/qml/DiscoverWindow.qml:346 discover/qml/UpdatesPage.qml:47
 #, kde-format
 msgid "Update Issue"
 msgstr "განახლების პრობლემა"
 
-#: discover/qml/DiscoverWindow.qml:358
+#: discover/qml/DiscoverWindow.qml:357
 #, kde-format
 msgid ""
 "There was an issue during the update or installation process. Please try "
 "again later."
 msgstr "პრობლემა დაყენების ან განახლების მიმდინარეობისას. მოგვიანებით სცადეთ."
 
-#: discover/qml/DiscoverWindow.qml:394
+#: discover/qml/DiscoverWindow.qml:393
 #, kde-format
 msgctxt "@action:button"
 msgid "Show Previous"
 msgstr "წინას ჩვენება"
 
-#: discover/qml/DiscoverWindow.qml:405
+#: discover/qml/DiscoverWindow.qml:404
 #, kde-format
 msgctxt "@action:button"
 msgid "Show Next"
 msgstr "შემდეგის ჩვენება"
 
-#: discover/qml/DiscoverWindow.qml:417 discover/qml/UpdatesPage.qml:69
+#: discover/qml/DiscoverWindow.qml:416 discover/qml/UpdatesPage.qml:69
 #, kde-format
 msgid "See Technical Details"
 msgstr "იხილეთ ტექნიკური დეტალები"
 
-#: discover/qml/DiscoverWindow.qml:425
+#: discover/qml/DiscoverWindow.qml:424
 #, kde-format
 msgid "Copy to Clipboard"
 msgstr "ბუფერში კოპირება"
@@ -1426,34 +1426,34 @@ msgctxt "@action:button %1 is the name of the user's distro/OS"
 msgid "Report Issue to %1"
 msgstr "პრობლემის გადაგზავნა %1-სთვის"
 
-#: discover/qml/UpdatesPage.qml:161
+#: discover/qml/UpdatesPage.qml:162
 #, kde-format
 msgctxt "@action:button as in, 'update the selected items' "
 msgid "Update Selected"
 msgstr "მონიშნულის განახლება"
 
-#: discover/qml/UpdatesPage.qml:161
+#: discover/qml/UpdatesPage.qml:162
 #, kde-format
 msgctxt "@action:button as in, 'update all items'"
 msgid "Update All"
 msgstr "ყველას განახლება"
 
-#: discover/qml/UpdatesPage.qml:201
+#: discover/qml/UpdatesPage.qml:202
 #, kde-format
 msgid "Ignore"
 msgstr "იგნორი"
 
-#: discover/qml/UpdatesPage.qml:251
+#: discover/qml/UpdatesPage.qml:252
 #, kde-format
 msgid "Select All"
 msgstr "ყველას მონიშვნა"
 
-#: discover/qml/UpdatesPage.qml:259
+#: discover/qml/UpdatesPage.qml:260
 #, kde-format
 msgid "Select None"
 msgstr "მონიშვნის მოხსნა"
 
-#: discover/qml/UpdatesPage.qml:278
+#: discover/qml/UpdatesPage.qml:279
 #, kde-format
 msgctxt ""
 "@info on the completion of updates, the action that automatically happens "
@@ -1461,46 +1461,46 @@ msgctxt ""
 msgid "On completion, automatically:"
 msgstr "დასრულებისას ავტომატურად:"
 
-#: discover/qml/UpdatesPage.qml:283
+#: discover/qml/UpdatesPage.qml:284
 #, kde-format
 msgctxt "@item:inlistbox placeholder for when no action is selected"
 msgid "Select an action"
 msgstr "აირჩიეთ ქმედება"
 
-#: discover/qml/UpdatesPage.qml:283
+#: discover/qml/UpdatesPage.qml:284
 #, kde-format
 msgctxt "@item:inlistbox"
 msgid "Restart"
 msgstr "გადატვირთვა"
 
-#: discover/qml/UpdatesPage.qml:283
+#: discover/qml/UpdatesPage.qml:284
 #, kde-format
 msgctxt "@item:inlistbox"
 msgid "Shut down"
 msgstr "გამორთვა"
 
-#: discover/qml/UpdatesPage.qml:292
+#: discover/qml/UpdatesPage.qml:293
 #, kde-format
 msgid "Total size: %1"
 msgstr "ჯამური ზომა: %1"
 
-#: discover/qml/UpdatesPage.qml:322
+#: discover/qml/UpdatesPage.qml:323
 #, kde-format
 msgctxt "@action:button"
 msgid "Restart and Install Updates"
 msgstr "გადატვირთვა და განახლებების დაყენება"
 
-#: discover/qml/UpdatesPage.qml:502
+#: discover/qml/UpdatesPage.qml:503
 #, kde-format
 msgid "Installing"
 msgstr "დაყენება"
 
-#: discover/qml/UpdatesPage.qml:535
+#: discover/qml/UpdatesPage.qml:536
 #, kde-format
 msgid "Update from:"
 msgstr "განახლების წყარო:"
 
-#: discover/qml/UpdatesPage.qml:549
+#: discover/qml/UpdatesPage.qml:550
 #, kde-format
 msgctxt ""
 "%1 is the backend that provides this app, %2 is the specific repository or "
@@ -1508,50 +1508,50 @@ msgctxt ""
 msgid "%1 (%2)"
 msgstr "%1 (%2)"
 
-#: discover/qml/UpdatesPage.qml:558
+#: discover/qml/UpdatesPage.qml:559
 #, kde-format
 msgid "More Information…"
 msgstr "მეტი ინფორმაცია…"
 
-#: discover/qml/UpdatesPage.qml:586
+#: discover/qml/UpdatesPage.qml:587
 #, kde-format
 msgctxt "@info"
 msgid "Fetching updates…"
 msgstr "განახლებების გამოთხოვა…"
 
-#: discover/qml/UpdatesPage.qml:601
+#: discover/qml/UpdatesPage.qml:602
 #, kde-format
 msgctxt "@info"
 msgid "Updates"
 msgstr "განახლებები"
 
-#: discover/qml/UpdatesPage.qml:611
+#: discover/qml/UpdatesPage.qml:612
 #, kde-format
 msgctxt "@info"
 msgid "Updates will be installed after the system is restarted"
 msgstr "განახლებების დაყენება სისტემის გადატვირთვის შემდეგ მოხდება"
 
-#: discover/qml/UpdatesPage.qml:613
+#: discover/qml/UpdatesPage.qml:614
 #, kde-format
 msgctxt "@info"
 msgid "You can keep using the system if you're not ready to restart yet."
 msgstr ""
 "თუ სისტემა გადატვირთვისთვის მზად არაა, მისი გამოყენება ჩვეულებრივ შეგიძლიათ."
 
-#: discover/qml/UpdatesPage.qml:627 discover/qml/UpdatesPage.qml:634
-#: discover/qml/UpdatesPage.qml:641
+#: discover/qml/UpdatesPage.qml:628 discover/qml/UpdatesPage.qml:635
+#: discover/qml/UpdatesPage.qml:642
 #, kde-format
 msgctxt "@info"
 msgid "Up to date"
 msgstr "განახლებულია"
 
-#: discover/qml/UpdatesPage.qml:648
+#: discover/qml/UpdatesPage.qml:649
 #, kde-format
 msgctxt "@info"
 msgid "Should check for updates"
 msgstr "უნდა შემოწმდეს განახლებები, თუ არა"
 
-#: discover/qml/UpdatesPage.qml:655
+#: discover/qml/UpdatesPage.qml:656
 #, kde-format
 msgctxt "@info"
 msgid "Time of last update unknown"
