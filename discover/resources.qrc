@@ -41,6 +41,7 @@
     <file>qml/DiscoverWindow.qml</file>
     <file>qml/DiscoverDrawer.qml</file>
     <file>qml/ActionListItem.qml</file>
+    <file>qml/SidebarItem.qml</file>
     <file>qml/LoadingPage.qml</file>
     <file>qml/SearchField.qml</file>
     <file>qml/AboutPage.qml</file>

@@ -29,9 +29,8 @@ Kirigami.GlobalDrawer {
         }
     }
 
-    function createCategoryActions(categories /*list<Discover.Category>*/) /*list<Kirigami.Action>*/ {
+    function createCategoryActions(categories) {
         const ret = []
-
         for (const c of categories) {
             const category = Discover.CategoryModel.get(c)
             const categoryAction = categoryActionComponent.createObject(drawer, { category: category, categoryPtr: c })
@@ -47,7 +46,7 @@ Kirigami.GlobalDrawer {
         if (app.sidebarWidth > 0) {
             preferredSize = app.sidebarWidth
         } else {
-            preferredSize =  Kirigami.Units.gridUnit * 14
+            preferredSize = Kirigami.Units.gridUnit * 15
         }
     }
 
@@ -72,51 +71,33 @@ Kirigami.GlobalDrawer {
         }
     }
 
-    header: Kirigami.AbstractApplicationHeader {
+    header: ColumnLayout {
         visible: drawer.wideScreen
+        spacing: Kirigami.Units.largeSpacing
 
-        contentItem: SearchField {
+        // Search field
+        SearchField {
             id: searchField
+            Layout.fillWidth: true
+            Layout.margins: Kirigami.Units.largeSpacing
 
-            anchors {
-                left: parent.left
-                right: parent.right
-            }
-
-            // Give the search field keyboard focus by default, unless it would
-            // make the virtual keyboard appear, because we don't want that
             focus: !Kirigami.InputMethod.willShowOnActive
-
             visible: window.leftPage && (window.leftPage.searchFor !== null || window.leftPage.hasOwnProperty("search"))
-
             page: window.leftPage
 
             onCurrentSearchTextChanged: {
-                // Избегаем обработки, если значение не изменилось
-                if (drawer.currentSearchText === currentSearchText) {
-                    return;
-                }
-
-                console.log("DiscoverDrawer: currentSearchText changed to:", currentSearchText)
+                if (drawer.currentSearchText === currentSearchText) return;
                 drawer.currentSearchText = currentSearchText
-
                 var curr = window.leftPage;
-                console.log("Current page:", curr, "has search:", curr ? curr.hasOwnProperty("search") : "no page")
-
-                if (pageStack.depth > 1) {
-                    pageStack.pop()
-                }
-
+                if (pageStack.depth > 1) pageStack.pop()
                 if (currentSearchText === "" && window.currentTopLevel === "" && !window.leftPage.category) {
                     Navigation.openHome()
                 } else if (!curr.hasOwnProperty("search")) {
                     if (currentSearchText) {
-                        console.log("Opening ApplicationList with search:", currentSearchText)
                         Navigation.clearStack()
                         Navigation.openApplicationList({ search: currentSearchText })
                     }
                 } else {
-                    console.log("Setting search on current page:", currentSearchText)
                     curr.search = currentSearchText;
                     curr.forceActiveFocus()
                 }
@@ -127,37 +108,65 @@ Kirigami.GlobalDrawer {
     }
 
     topContent: [
-        ActionListItem {
+        // Home
+        SidebarItem {
             id: featuredActionListItem
             action: featuredAction
+            iconColor: "#4A90D9"
             visible: enabled && drawer.wideScreen
             Keys.onUpPressed: searchField.forceActiveFocus(Qt.TabFocusReason)
         },
-        ActionListItem {
+        // Installed
+        SidebarItem {
             action: installedAction
+            iconColor: "#5CB85C"
             visible: enabled && drawer.wideScreen
         },
-        ActionListItem {
+        // COPR
+        SidebarItem {
             action: coprAction
+            iconColor: "#9B59B6"
             visible: enabled && drawer.wideScreen
         },
-        ActionListItem {
+        // Updates
+        SidebarItem {
             objectName: "updateButton"
             action: updateAction
+            iconColor: "#F39C12"
             visible: enabled && drawer.wideScreen
-            stateIconName: Discover.ResourcesModel.fetchingUpdatesProgress < 100 ? "view-refresh" : Discover.ResourcesModel.updatesCount > 0 ? "emblem-important" : ""
+            badge: Discover.ResourcesModel.updatesCount > 0 ? Discover.ResourcesModel.updatesCount : 0
         },
-        ActionListItem {
+        // Sources
+        SidebarItem {
             action: sourcesAction
+            iconColor: "#6C757D"
         },
-        ActionListItem {
+        // About
+        SidebarItem {
             action: aboutAction
+            iconColor: "#17A2B8"
         },
-        Kirigami.Separator {
+
+        // Categories section header
+        Item {
             Layout.fillWidth: true
-            Layout.topMargin: Kirigami.Units.smallSpacing
+            Layout.preferredHeight: Kirigami.Units.largeSpacing * 2
+            visible: drawer.wideScreen
+        },
+        QQC2.Label {
+            Layout.fillWidth: true
             Layout.leftMargin: Kirigami.Units.largeSpacing
-            Layout.rightMargin: Kirigami.Units.largeSpacing
+            text: "CATEGORIES"
+            font.pixelSize: 11
+            font.weight: Font.DemiBold
+            font.letterSpacing: 1
+            color: Kirigami.Theme.disabledTextColor
+            visible: drawer.wideScreen
+        },
+        Item {
+            Layout.fillWidth: true
+            Layout.preferredHeight: Kirigami.Units.smallSpacing
+            visible: drawer.wideScreen
         }
     ]
 
@@ -202,16 +211,12 @@ Kirigami.GlobalDrawer {
             readonly property bool itsMe: window?.leftPage?.category === category
 
             text: category?.name ?? ""
-            icon.name: category?.icon + "-symbolic" ?? ""
+            icon.name: category?.icon ?? ""
             checked: itsMe
             enabled: {
-                if (currentSearchText.length === 0) {
-                    return true
-                }
+                if (currentSearchText.length === 0) return true
                 const subcats = window?.leftPage?.model?.subcategories
-                if (subcats && category) {
-                    return category.contains(subcats)
-                }
+                if (subcats && category) return category.contains(subcats)
                 return false
             }
 
@@ -220,13 +225,10 @@ Kirigami.GlobalDrawer {
                 if (!window.leftPage.canNavigate) {
                     Navigation.openCategory(categoryPtr, currentSearchText)
                 } else {
-                    if (pageStack.depth > 1) {
-                        pageStack.pop()
-                    }
+                    if (pageStack.depth > 1) pageStack.pop()
                     pageStack.currentIndex = 0
                     window.leftPage.category = categoryPtr
                 }
-
                 if (!drawer.wideScreen && category.subcategories.length === 0) {
                     drawer.close();
                 }
