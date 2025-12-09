@@ -47,6 +47,25 @@ Kirigami.ApplicationWindow {
         if (app.isRoot) {
             messagesSheet.addMessage(i18n("Running as <em>root</em> is discouraged and unnecessary."));
         }
+
+        // Show first run dialog for Fedora systems if RPM Fusion is not set up
+        if (DiscoverApp.FedoraRepoManager.isFedora &&
+            !DiscoverApp.FedoraRepoManager.firstRunCompleted &&
+            DiscoverApp.FedoraRepoManager.setupNeeded) {
+            firstRunDialogLoader.active = true
+        }
+    }
+
+    Loader {
+        id: firstRunDialogLoader
+        active: false
+        sourceComponent: FirstRunDialog {
+            parent: window.overlay
+            onClosed: {
+                firstRunDialogLoader.active = false
+            }
+            Component.onCompleted: open()
+        }
     }
 
     // This property is queried from C++, do not remove it

@@ -55,8 +55,8 @@ Kirigami.SearchField {
         // Обновляем модель истории на основе текущего текста
         if (text.length === 0) {
             historyModel = searchHistory.suggestionsForTerm("");
-            // Если поле стало пустым и есть фокус, показываем историю
-            if (activeFocus && historyModel.length > 0) {
+            // Показываем историю только если был клик мышью
+            if (clickedByMouse && historyModel.length > 0) {
                 historyPopup.open();
             }
         } else {
@@ -65,26 +65,25 @@ Kirigami.SearchField {
         }
     }
 
+    // Флаг для отслеживания клика мышью
+    property bool clickedByMouse: false
+
     onActiveFocusChanged: {
-        // При потере фокуса закрываем историю
         if (!activeFocus) {
+            // При потере фокуса закрываем историю
             historyPopup.close();
+            clickedByMouse = false;
         }
     }
 
-    MouseArea {
-        anchors.fill: parent
-        acceptedButtons: Qt.LeftButton
-        propagateComposedEvents: true
-        cursorShape: Qt.IBeamCursor
-
-        onClicked: (mouse) => {
+    // Показываем историю только при явном клике мышью на поле
+    TapHandler {
+        onTapped: {
+            root.clickedByMouse = true;
             root.forceActiveFocus();
-            // При клике на поле поиска показываем историю, если поле пустое
-            if (root.text.length === 0 && historyModel.length > 0) {
+            if (root.text.length === 0 && root.historyModel.length > 0) {
                 historyPopup.open();
             }
-            mouse.accepted = false;
         }
     }
 

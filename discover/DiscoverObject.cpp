@@ -66,6 +66,7 @@
 #ifdef WITH_FEEDBACK
 #include "plasmauserfeedback.h"
 #endif
+#include "FedoraRepoManager.h"
 #include "PowerManagementInterface.h"
 #include "RefreshNotifier.h"
 #include "discoversettings.h"
@@ -123,6 +124,7 @@ DiscoverObject::DiscoverObject(const QVariantMap &initialProperties)
         connect(r, &DiscoverSettings::appsListPageSortingChanged, r, &DiscoverSettings::save);
         return r;
     });
+    qmlRegisterSingletonType<FedoraRepoManager>(uriApp, 1, 0, "FedoraRepoManager", FedoraRepoManager::create);
     qmlRegisterAnonymousType<QQuickView>(uriApp, 1);
 
     qmlRegisterAnonymousType<KAboutData>(uriApp, 1);

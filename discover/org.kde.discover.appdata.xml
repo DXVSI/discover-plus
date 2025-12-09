@@ -323,13 +323,13 @@
   </provides>
   <compulsory_for_desktop>KDE</compulsory_for_desktop>
   <releases>
+    <release version="6.5.4" date="2025-12-09"/>
     <release version="6.5.3" date="2025-11-18"/>
     <release version="6.5.2" date="2025-11-04"/>
     <release version="6.5.1" date="2025-10-28"/>
-    <release version="6.5.0" date="2025-10-21"/>
   </releases>
   <custom>
-    <value key="KDE::supporters">lorberi, Artur Motyka (@artur9010)</value>
+    <value key="KDE::supporters">lorberi, Artur Motyka (@artur9010), ChaoticDucc</value>
   </custom>
   <content_rating type="oars-1.1"/>
 </component>

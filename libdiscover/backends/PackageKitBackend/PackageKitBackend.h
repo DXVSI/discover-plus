@@ -162,6 +162,8 @@ private Q_SLOTS:
     void addPackageToUpdate(PackageKit::Transaction::Info, const QString &pkgid, const QString &summary);
     void getUpdatesFinished(PackageKit::Transaction::Exit, uint);
     void loadAllPackages();
+    void loadAllPackagesHybrid();
+    void loadPackagesFromPackageKit();
     void onCoprProjectsFound(const QList<CoprProjectInfo> &projects);
     void onCoprPackagesFound(const QList<CoprPackageInfo> &packages);
 

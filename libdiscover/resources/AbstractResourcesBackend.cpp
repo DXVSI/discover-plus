@@ -109,9 +109,17 @@ bool AbstractResourcesBackend::Filters::shouldFilter(AbstractResource *resourse)
     }
 
     if (!origin.isEmpty()) {
-        // Special case for COPR: exact match (PackageKit returns "COPR" for copr repos)
-        if (resourse->origin() != origin) {
-            return false;
+        const QString resourceOrigin = resourse->origin();
+        // Use contains for partial matching (e.g., "rpmfusion" matches "rpmfusion-free-updates")
+        // But exact match for special cases like "COPR"
+        if (origin == QStringLiteral("COPR")) {
+            if (resourceOrigin != origin) {
+                return false;
+            }
+        } else {
+            if (!resourceOrigin.contains(origin, Qt::CaseInsensitive)) {
+                return false;
+            }
         }
     }
 

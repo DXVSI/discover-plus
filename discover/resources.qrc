@@ -47,6 +47,7 @@
     <file>qml/Feedback.qml</file>
     <file>qml/ConvertDiscoverAction.qml</file>
     <file>qml/WebflowDialog.qml</file>
+    <file>qml/FirstRunDialog.qml</file>
 
     <!-- Singleton -->
     <file>qml/Navigation.qml</file>
