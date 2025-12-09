@@ -146,7 +146,10 @@ public:
         return m_refresher;
     }
 
-    CoprClient *coprClient() const { return m_coprClient; }
+    CoprClient *coprClient() const
+    {
+        return m_coprClient;
+    }
     void searchCoprPackages(const QString &query);
     void loadPopularCoprProjects();
     void loadMoreCoprProjects();
@@ -163,14 +166,13 @@ private Q_SLOTS:
     void getUpdatesFinished(PackageKit::Transaction::Exit, uint);
     void loadAllPackages();
     void loadAllPackagesHybrid();
-    void loadPackagesFromPackageKit();
     void onCoprProjectsFound(const QList<CoprProjectInfo> &projects);
     void onCoprPackagesFound(const QList<CoprPackageInfo> &packages);
 
 Q_SIGNALS:
     void loadedAppStream();
     void available();
-    void coprSearchResults(const QList<CoprResource*> &resources);
+    void coprSearchResults(const QList<CoprResource *> &resources);
 
 private:
     friend class PackageKitResource;
@@ -217,7 +219,7 @@ private:
     QStringList m_globalHints;
     bool m_allPackagesLoaded = false;
     CoprClient *m_coprClient = nullptr;
-    QHash<QString, CoprResource*> m_coprResources;
+    QHash<QString, CoprResource *> m_coprResources;
     QPointer<PKResultsStream> m_currentSearchStream;
     int m_coprOffset = 0;
     QString m_lastCoprSearchQuery;

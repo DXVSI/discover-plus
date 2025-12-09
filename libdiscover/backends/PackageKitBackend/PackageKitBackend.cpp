@@ -8,14 +8,14 @@
 
 #include "PackageKitBackend.h"
 #include "AppPackageKitResource.h"
+#include "CoprClient.h"
+#include "CoprResource.h"
+#include "CoprTransaction.h"
 #include "LocalFilePKResource.h"
 #include "PKResolveTransaction.h"
 #include "PKTransaction.h"
 #include "PackageKitSourcesBackend.h"
 #include "PackageKitUpdater.h"
-#include "CoprClient.h"
-#include "CoprResource.h"
-#include "CoprTransaction.h"
 #include <AppStreamQt/release.h>
 #include <AppStreamQt/systeminfo.h>
 #include <AppStreamQt/utils.h>
@@ -333,8 +333,7 @@ void PackageKitBackend::reloadPackageList()
     acquireFetching(true);
 
     auto *pool = new AppStream::Pool;
-    pool->setFlags(AppStream::Pool::Flags(AppStream::Pool::Flag::FlagLoadOsCatalog
-                                          | AppStream::Pool::Flag::FlagLoadOsDesktopFiles
+    pool->setFlags(AppStream::Pool::Flags(AppStream::Pool::Flag::FlagLoadOsCatalog | AppStream::Pool::Flag::FlagLoadOsDesktopFiles
                                           | AppStream::Pool::Flag::FlagLoadOsMetainfo));
     m_appdata->reset(pool, &m_threadPool);
 
@@ -674,7 +673,8 @@ public:
         return new PKResultsStream(std::forward<Args>(args)...);
     }
 
-    void finishCoprStream() {
+    void finishCoprStream()
+    {
         if (m_isCoprStream) {
             finish();
         }
@@ -749,14 +749,13 @@ ResultsStream *PackageKitBackend::search(const AbstractResourcesBackend::Filters
     // to avoid lifetime issues. Also coroutines should not be capturing, so
     // we use nested lambdas with arguments instead of captures.
 
-    qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "search() called with: origin=" << filter.origin << "search=" << filter.search << "category=" << filter.category;
+    qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "search() called with: origin=" << filter.origin << "search=" << filter.search
+                                                << "category=" << filter.category;
 
     // Clean up existing COPR stream and cancel pending requests when switching categories
     if (m_currentSearchStream) {
         // If we're switching away from COPR or starting a new search
-        if (filter.origin != QStringLiteral("COPR") ||
-            (filter.origin == QStringLiteral("COPR") && m_lastCoprSearchQuery != filter.search)) {
-
+        if (filter.origin != QStringLiteral("COPR") || (filter.origin == QStringLiteral("COPR") && m_lastCoprSearchQuery != filter.search)) {
             qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "Cleaning up previous COPR stream and cancelling requests";
 
             // Cancel all pending COPR requests first
@@ -764,7 +763,7 @@ ResultsStream *PackageKitBackend::search(const AbstractResourcesBackend::Filters
                 m_coprClient->cancelAllRequests();
             }
 
-            auto coprStream = qobject_cast<PKResultsStream*>(m_currentSearchStream.data());
+            auto coprStream = qobject_cast<PKResultsStream *>(m_currentSearchStream.data());
             if (coprStream) {
                 coprStream->finishCoprStream();
             }
@@ -783,7 +782,7 @@ ResultsStream *PackageKitBackend::search(const AbstractResourcesBackend::Filters
             if (m_coprClient) {
                 m_coprClient->cancelAllRequests();
             }
-            auto oldStream = qobject_cast<PKResultsStream*>(m_currentSearchStream.data());
+            auto oldStream = qobject_cast<PKResultsStream *>(m_currentSearchStream.data());
             if (oldStream) {
                 oldStream->finishCoprStream();
             }
@@ -813,7 +812,7 @@ ResultsStream *PackageKitBackend::search(const AbstractResourcesBackend::Filters
             if (m_coprClient) {
                 m_coprClient->cancelAllRequests();
             }
-            auto oldStream = qobject_cast<PKResultsStream*>(m_currentSearchStream.data());
+            auto oldStream = qobject_cast<PKResultsStream *>(m_currentSearchStream.data());
             if (oldStream) {
                 oldStream->finishCoprStream();
             }
@@ -998,133 +997,139 @@ ResultsStream *PackageKitBackend::search(const AbstractResourcesBackend::Filters
                     QPointer<PKResultsStream> streamPtr(stream);
 
                     // Collect found packages in a local set to avoid relying on m_packagesToAdd
-                    auto foundPackages = std::make_shared<QSet<AbstractResource*>>();
+                    auto foundPackages = std::make_shared<QSet<AbstractResource *>>();
 
-                    connect(pkTransaction, &PackageKit::Transaction::package, this, [this, foundPackages](PackageKit::Transaction::Info info, const QString &packageId, const QString &summary) {
-                        addPackageNotArch(info, packageId, summary);
+                    connect(pkTransaction,
+                            &PackageKit::Transaction::package,
+                            this,
+                            [this, foundPackages](PackageKit::Transaction::Info info, const QString &packageId, const QString &summary) {
+                                addPackageNotArch(info, packageId, summary);
 
-                        // Also track the resource directly
-                        const QString packageName = PackageKit::Daemon::packageName(packageId);
-                        QSet<AbstractResource *> resources = resourcesByPackageName(packageName);
-                        foundPackages->unite(resources);
-                    });
+                                // Also track the resource directly
+                                const QString packageName = PackageKit::Daemon::packageName(packageId);
+                                QSet<AbstractResource *> resources = resourcesByPackageName(packageName);
+                                foundPackages->unite(resources);
+                            });
                     connect(pkTransaction, &PackageKit::Transaction::errorCode, this, [](PackageKit::Transaction::Error, const QString &) {
                         // Silently ignore errors
                     });
-                    connect(pkTransaction, &PackageKit::Transaction::finished, this, [this, streamPtr, filter, pkTransaction, appstreamResults, foundPackages]() {
-                        Q_UNUSED(pkTransaction); // Keep transaction alive until finished
+                    connect(pkTransaction,
+                            &PackageKit::Transaction::finished,
+                            this,
+                            [this, streamPtr, filter, pkTransaction, appstreamResults, foundPackages]() {
+                                Q_UNUSED(pkTransaction); // Keep transaction alive until finished
 
-                        if (!streamPtr) {
-                            includePackagesToAdd();
-                            return;
-                        }
-
-                        // Collect PackageKit results - use foundPackages which includes both new and existing
-                        QVector<StreamResult> pkResults;
-                        for (auto resource : std::as_const(*foundPackages)) {
-                            auto pkResource = qobject_cast<PackageKitResource *>(resource);
-                            if (pkResource && !pkResource->extendsItself()) {
-                                // Calculate relevance score based on search query match
-                                uint sortScore = 0;
-                                const QString resName = pkResource->name().toLower();
-                                const QString searchLower = filter.search.toLower();
-
-                                // Split package name by dash/underscore to check each part
-                                const QStringList nameParts = resName.split(QRegularExpression(QStringLiteral("[-_]")), Qt::SkipEmptyParts);
-
-                                // Exact match gets highest priority (100)
-                                if (resName == searchLower) {
-                                    sortScore = 100;
+                                if (!streamPtr) {
+                                    includePackagesToAdd();
+                                    return;
                                 }
-                                // Check if search query exactly matches any part of the package name (95)
-                                // e.g., "chrome" matches "google-chrome-stable"
-                                else {
-                                    bool exactPartMatch = false;
-                                    for (const QString &part : nameParts) {
-                                        if (part == searchLower) {
-                                            exactPartMatch = true;
-                                            sortScore = 95;
-                                            break;
-                                        }
-                                    }
 
-                                    if (!exactPartMatch) {
-                                        // Starts with search query gets high priority (80)
-                                        if (resName.startsWith(searchLower)) {
-                                            sortScore = 80;
+                                // Collect PackageKit results - use foundPackages which includes both new and existing
+                                QVector<StreamResult> pkResults;
+                                for (auto resource : std::as_const(*foundPackages)) {
+                                    auto pkResource = qobject_cast<PackageKitResource *>(resource);
+                                    if (pkResource && !pkResource->extendsItself()) {
+                                        // Calculate relevance score based on search query match
+                                        uint sortScore = 0;
+                                        const QString resName = pkResource->name().toLower();
+                                        const QString searchLower = filter.search.toLower();
+
+                                        // Split package name by dash/underscore to check each part
+                                        const QStringList nameParts = resName.split(QRegularExpression(QStringLiteral("[-_]")), Qt::SkipEmptyParts);
+
+                                        // Exact match gets highest priority (100)
+                                        if (resName == searchLower) {
+                                            sortScore = 100;
                                         }
-                                        // Any part starts with search query (75)
+                                        // Check if search query exactly matches any part of the package name (95)
+                                        // e.g., "chrome" matches "google-chrome-stable"
                                         else {
-                                            bool partStartsWith = false;
+                                            bool exactPartMatch = false;
                                             for (const QString &part : nameParts) {
-                                                if (part.startsWith(searchLower)) {
-                                                    partStartsWith = true;
-                                                    sortScore = 75;
+                                                if (part == searchLower) {
+                                                    exactPartMatch = true;
+                                                    sortScore = 95;
                                                     break;
                                                 }
                                             }
 
-                                            if (!partStartsWith) {
-                                                // Contains search query gets medium priority (60)
-                                                if (resName.contains(searchLower)) {
-                                                    sortScore = 60;
+                                            if (!exactPartMatch) {
+                                                // Starts with search query gets high priority (80)
+                                                if (resName.startsWith(searchLower)) {
+                                                    sortScore = 80;
                                                 }
-                                                // Otherwise check if search words match (40)
+                                                // Any part starts with search query (75)
                                                 else {
-                                                    const QStringList searchWords = filter.search.split(QLatin1Char(' '), Qt::SkipEmptyParts);
-                                                    bool hasMatch = false;
-                                                    for (const QString &word : searchWords) {
-                                                        if (resName.contains(word.toLower())) {
-                                                            hasMatch = true;
+                                                    bool partStartsWith = false;
+                                                    for (const QString &part : nameParts) {
+                                                        if (part.startsWith(searchLower)) {
+                                                            partStartsWith = true;
+                                                            sortScore = 75;
                                                             break;
                                                         }
                                                     }
-                                                    if (hasMatch) {
-                                                        sortScore = 40;
+
+                                                    if (!partStartsWith) {
+                                                        // Contains search query gets medium priority (60)
+                                                        if (resName.contains(searchLower)) {
+                                                            sortScore = 60;
+                                                        }
+                                                        // Otherwise check if search words match (40)
+                                                        else {
+                                                            const QStringList searchWords = filter.search.split(QLatin1Char(' '), Qt::SkipEmptyParts);
+                                                            bool hasMatch = false;
+                                                            for (const QString &word : searchWords) {
+                                                                if (resName.contains(word.toLower())) {
+                                                                    hasMatch = true;
+                                                                    break;
+                                                                }
+                                                            }
+                                                            if (hasMatch) {
+                                                                sortScore = 40;
+                                                            }
+                                                        }
                                                     }
                                                 }
                                             }
                                         }
+
+                                        // Only add if there's some relevance
+                                        if (sortScore > 0) {
+                                            pkResults << StreamResult(pkResource, sortScore);
+                                        }
                                     }
                                 }
 
-                                // Only add if there's some relevance
-                                if (sortScore > 0) {
-                                    pkResults << StreamResult(pkResource, sortScore);
+                                // Merge AppStream and PackageKit results
+                                QVector<StreamResult> allResults = appstreamResults;
+
+                                // Add PackageKit results, avoiding duplicates
+                                for (const auto &pkResult : pkResults) {
+                                    bool isDuplicate = false;
+                                    for (const auto &asResult : appstreamResults) {
+                                        if (asResult.resource == pkResult.resource) {
+                                            isDuplicate = true;
+                                            break;
+                                        }
+                                    }
+                                    if (!isDuplicate) {
+                                        allResults.append(pkResult);
+                                    }
                                 }
-                            }
-                        }
 
-                        // Merge AppStream and PackageKit results
-                        QVector<StreamResult> allResults = appstreamResults;
+                                // Sort by sortScore (descending) - higher score = more relevant
+                                std::sort(allResults.begin(), allResults.end(), [](const StreamResult &a, const StreamResult &b) {
+                                    return a.sortScore > b.sortScore;
+                                });
 
-                        // Add PackageKit results, avoiding duplicates
-                        for (const auto &pkResult : pkResults) {
-                            bool isDuplicate = false;
-                            for (const auto &asResult : appstreamResults) {
-                                if (asResult.resource == pkResult.resource) {
-                                    isDuplicate = true;
-                                    break;
+                                // Send all results sorted by relevance
+                                if (!allResults.isEmpty()) {
+                                    streamPtr->sendResources(allResults, false);
                                 }
-                            }
-                            if (!isDuplicate) {
-                                allResults.append(pkResult);
-                            }
-                        }
 
-                        // Sort by sortScore (descending) - higher score = more relevant
-                        std::sort(allResults.begin(), allResults.end(), [](const StreamResult &a, const StreamResult &b) {
-                            return a.sortScore > b.sortScore;
-                        });
-
-                        // Send all results sorted by relevance
-                        if (!allResults.isEmpty()) {
-                            streamPtr->sendResources(allResults, false);
-                        }
-
-                        includePackagesToAdd();
-                        streamPtr->finish();
-                    });
+                                includePackagesToAdd();
+                                streamPtr->finish();
+                            });
                 } else {
                     // No search, just send AppStream results
                     if (!appstreamResults.isEmpty()) {
@@ -1253,7 +1258,7 @@ Transaction *PackageKitBackend::installApplication(AbstractResource *app, const 
 Transaction *PackageKitBackend::installApplication(AbstractResource *app)
 {
     // Check if this is a COPR resource
-    auto coprResource = qobject_cast<CoprResource*>(app);
+    auto coprResource = qobject_cast<CoprResource *>(app);
     if (coprResource) {
         qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "Installing COPR package:" << coprResource->name();
         // Use special COPR transaction that handles dnf copr enable
@@ -1266,7 +1271,7 @@ Transaction *PackageKitBackend::installApplication(AbstractResource *app)
 Transaction *PackageKitBackend::removeApplication(AbstractResource *app)
 {
     // Check if this is a COPR resource
-    auto coprResource = qobject_cast<CoprResource*>(app);
+    auto coprResource = qobject_cast<CoprResource *>(app);
     if (coprResource) {
         // Use special COPR transaction that handles dnf copr disable
         return new CoprTransaction(coprResource, Transaction::RemoveRole, this);
@@ -1548,7 +1553,7 @@ void PackageKitBackend::loadAllPackagesHybrid()
         return;
     }
 
-    // PHASE 1: Load AppStream components (as before) - fast, rich UI
+    // Load AppStream components - fast, rich UI
     const auto components = m_appdata->components().result();
     for (const auto &component : components) {
         if (!component.packageNames().isEmpty()) {
@@ -1556,64 +1561,7 @@ void PackageKitBackend::loadAllPackagesHybrid()
         }
     }
     includePackagesToAdd();
-
-    // PHASE 2: Load additional packages via PackageKit API - all repositories
-    loadPackagesFromPackageKit();
-}
-
-void PackageKitBackend::loadPackagesFromPackageKit()
-{
-    qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "Loading packages from PackageKit (all repositories)";
-    acquireFetching(true);
-
-    // Search for all packages that contain .desktop files (GUI applications)
-    // This works for both installed and available packages
-    PackageKit::Transaction *pkTransaction = PackageKit::Daemon::searchFiles(
-        QStringLiteral("/usr/share/applications/*.desktop"),
-        PackageKit::Transaction::FilterNotSource | PackageKit::Transaction::FilterNewest
-    );
-
-    connect(pkTransaction, &PackageKit::Transaction::package,
-            this, [this](PackageKit::Transaction::Info info,
-                         const QString &packageId,
-                         const QString &summary) {
-
-        // Skip source packages
-        if (PackageKit::Daemon::packageArch(packageId) == QLatin1String("source")) {
-            return;
-        }
-
-        const QString packageName = PackageKit::Daemon::packageName(packageId);
-
-        // Check: do we already have this package?
-        QSet<AbstractResource *> existing = resourcesByPackageName(packageName);
-
-        if (existing.isEmpty()) {
-            // Package not found - create new PackageKitResource (without AppStream)
-            addPackageNotArch(info, packageId, summary);
-        } else {
-            // Package already exists (from AppStream) - just update PackageID
-            for (auto resource : existing) {
-                auto pkResource = static_cast<PackageKitResource*>(resource);
-                pkResource->addPackageId(info, packageId, false);
-            }
-        }
-    });
-
-    connect(pkTransaction, &PackageKit::Transaction::errorCode,
-            this, [](PackageKit::Transaction::Error err, const QString &msg) {
-        // Log errors but don't fail - AppStream packages are already loaded
-        qCWarning(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "PackageKit searchFiles error:" << err << msg;
-    });
-
-    connect(pkTransaction, &PackageKit::Transaction::finished,
-            this, [this](PackageKit::Transaction::Exit status, uint) {
-        qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "PackageKit searchFiles finished, status:" << status
-                                                    << "total packages:" << m_packages.packages.size();
-        includePackagesToAdd();
-        m_allPackagesLoaded = true;
-        acquireFetching(false);
-    });
+    m_allPackagesLoaded = true;
 }
 
 void PackageKitBackend::aboutTo(AboutToAction action)
@@ -1728,8 +1676,7 @@ void PackageKitBackend::onCoprProjectsFound(const QList<CoprProjectInfo> &projec
             // Description contains query
             else if (lowerDesc.contains(lowerQuery)) {
                 relevanceScore = 60;
-            }
-            else {
+            } else {
                 // No match - skip this result entirely when searching
                 qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "Skipping irrelevant COPR project:" << project.owner << "/" << project.name;
                 continue;
@@ -1797,7 +1744,8 @@ void PackageKitBackend::onCoprPackagesFound(const QList<CoprPackageInfo> &packag
             auto packageId = makeAppId(key);
             m_packages.packages[packageId] = resource;
 
-            qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "Created new COPR resource:" << packageInfo.name << "from" << packageInfo.owner << "/" << packageInfo.projectName;
+            qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG)
+                << "Created new COPR resource:" << packageInfo.name << "from" << packageInfo.owner << "/" << packageInfo.projectName;
         }
 
         results.append(StreamResult(m_coprResources[key], 50)); // relevance 50 for COPR packages
