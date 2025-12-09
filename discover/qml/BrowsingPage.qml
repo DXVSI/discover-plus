@@ -36,6 +36,41 @@ Kirigami.Page {
 
     signal clearSearch()
 
+    // State for animation phases
+    property bool showAppsSection: false
+    property bool initialLayoutDone: false
+
+    // Timer to mark initial layout as done (prevents y animation on load)
+    Timer {
+        id: initialLayoutTimer
+        interval: 100
+        running: true
+        onTriggered: page.initialLayoutDone = true
+    }
+
+    // Timer to trigger the transition (4 seconds)
+    Timer {
+        id: transitionTimer
+        interval: 4000
+        running: true
+        onTriggered: page.showAppsSection = true
+    }
+
+    // Popular apps list (using icons available in hicolor/breeze)
+    ListModel {
+        id: popularAppsModel
+        ListElement { name: "Firefox"; icon: "firefox" }
+        ListElement { name: "LibreOffice Writer"; icon: "libreoffice-writer" }
+        ListElement { name: "Kate"; icon: "kate" }
+        ListElement { name: "Kdenlive"; icon: "kdenlive" }
+        ListElement { name: "Telegram"; icon: "org.telegram.desktop" }
+        ListElement { name: "Steam"; icon: "steam" }
+        ListElement { name: "Gwenview"; icon: "gwenview" }
+        ListElement { name: "Okular"; icon: "okular" }
+        ListElement { name: "Elisa"; icon: "elisa" }
+        ListElement { name: "Kolourpaint"; icon: "kolourpaint" }
+    }
+
     // Full screen gradient background
     Rectangle {
         id: heroSection
@@ -254,8 +289,18 @@ Kirigami.Page {
 
         // ========== MAIN CONTENT ==========
         ColumnLayout {
-            anchors.centerIn: parent
+            id: mainContent
+            anchors.horizontalCenter: parent.horizontalCenter
+            y: page.showAppsSection ? Kirigami.Units.largeSpacing * 3 : (parent.height - height) / 2
             spacing: Kirigami.Units.largeSpacing * 1.5
+
+            Behavior on y {
+                enabled: page.initialLayoutDone
+                NumberAnimation {
+                    duration: 800
+                    easing.type: Easing.InOutQuad
+                }
+            }
 
             // Logos row
             RowLayout {
@@ -403,45 +448,128 @@ Kirigami.Page {
                 }
             }
 
-            // Development notice
-            ColumnLayout {
+        }
+
+        // ========== APPS SECTION ==========
+        ColumnLayout {
+            id: appsSection
+            anchors {
+                top: mainContent.bottom
+                topMargin: Kirigami.Units.largeSpacing * 3
+                horizontalCenter: parent.horizontalCenter
+            }
+            spacing: Kirigami.Units.largeSpacing * 2
+            opacity: page.showAppsSection ? 1 : 0
+            visible: opacity > 0
+
+            Behavior on opacity {
+                NumberAnimation {
+                    duration: 600
+                    easing.type: Easing.OutCubic
+                }
+            }
+
+            // "What shall we install today?" text
+            QQC2.Label {
                 Layout.alignment: Qt.AlignHCenter
-                Layout.topMargin: Kirigami.Units.largeSpacing * 4
-                spacing: Kirigami.Units.smallSpacing
-                opacity: 0
+                text: "What shall we install today?"
+                font.pixelSize: 22
+                font.weight: Font.DemiBold
+                color: Qt.rgba(1, 1, 1, 0.9)
 
-                SequentialAnimation on opacity {
-                    running: true
-                    PauseAnimation { duration: 2500 }
-                    NumberAnimation { from: 0; to: 1; duration: 1000; easing.type: Easing.OutCubic }
+                layer.enabled: true
+                layer.effect: MultiEffect {
+                    shadowEnabled: true
+                    shadowColor: Qt.rgba(0, 0, 0, 0.3)
+                    shadowBlur: 0.8
+                    shadowVerticalOffset: 2
                 }
+            }
 
-                // Icon
-                Kirigami.Icon {
-                    Layout.alignment: Qt.AlignHCenter
-                    source: "preferences-system-windows-effect-fadedesktop"
-                    Layout.preferredWidth: 32
-                    Layout.preferredHeight: 32
-                    color: Qt.rgba(1, 1, 1, 0.6)
-                }
+            // Apps grid
+            GridLayout {
+                Layout.alignment: Qt.AlignHCenter
+                columns: 5
+                rowSpacing: Kirigami.Units.largeSpacing * 2
+                columnSpacing: Kirigami.Units.largeSpacing * 2
 
-                // Title
-                QQC2.Label {
-                    Layout.alignment: Qt.AlignHCenter
-                    Layout.topMargin: Kirigami.Units.smallSpacing
-                    text: i18n("This page is under development")
-                    font.pixelSize: 14
-                    font.weight: Font.DemiBold
-                    color: Qt.rgba(1, 1, 1, 0.75)
-                }
+                Repeater {
+                    model: popularAppsModel
 
-                // Subtitle
-                QQC2.Label {
-                    Layout.alignment: Qt.AlignHCenter
-                    text: i18n("We're working on bringing more interesting features for you!")
-                    font.pixelSize: 12
-                    font.italic: true
-                    color: Qt.rgba(1, 1, 1, 0.5)
+                    delegate: Item {
+                        id: appDelegate
+                        required property int index
+                        required property string name
+                        required property string icon
+
+                        Layout.preferredWidth: 100
+                        Layout.preferredHeight: 110
+                        opacity: 0
+
+                        // Staggered fade in animation
+                        SequentialAnimation on opacity {
+                            running: page.showAppsSection
+                            PauseAnimation { duration: appDelegate.index * 100 }
+                            NumberAnimation {
+                                from: 0
+                                to: 1
+                                duration: 400
+                                easing.type: Easing.OutCubic
+                            }
+                        }
+
+                        ColumnLayout {
+                            anchors.fill: parent
+                            spacing: Kirigami.Units.smallSpacing
+
+                            // App icon with hover effect
+                            Rectangle {
+                                Layout.alignment: Qt.AlignHCenter
+                                Layout.preferredWidth: 72
+                                Layout.preferredHeight: 72
+                                radius: 16
+                                color: appMouseArea.containsMouse ? Qt.rgba(1, 1, 1, 0.15) : Qt.rgba(1, 1, 1, 0.08)
+                                border.color: Qt.rgba(1, 1, 1, 0.2)
+                                border.width: 1
+
+                                Behavior on color {
+                                    ColorAnimation { duration: 150 }
+                                }
+
+                                Kirigami.Icon {
+                                    id: appIconImage
+                                    anchors.centerIn: parent
+                                    width: 48
+                                    height: 48
+                                    source: appDelegate.icon
+                                    fallback: "application-x-executable"
+                                }
+
+                                MouseArea {
+                                    id: appMouseArea
+                                    anchors.fill: parent
+                                    hoverEnabled: true
+                                    cursorShape: Qt.PointingHandCursor
+                                    onClicked: {
+                                        Navigation.openApplicationList({ search: appDelegate.name })
+                                    }
+                                }
+                            }
+
+                            // App name
+                            QQC2.Label {
+                                Layout.fillWidth: true
+                                Layout.alignment: Qt.AlignHCenter
+                                text: appDelegate.name
+                                font.pixelSize: 11
+                                color: Qt.rgba(1, 1, 1, 0.85)
+                                horizontalAlignment: Text.AlignHCenter
+                                elide: Text.ElideRight
+                                maximumLineCount: 2
+                                wrapMode: Text.Wrap
+                            }
+                        }
+                    }
                 }
             }
         }
