@@ -66,25 +66,14 @@ Kirigami.SearchField {
     }
 
     onActiveFocusChanged: {
-        // При потере фокуса закрываем историю
-        if (!activeFocus) {
-            historyPopup.close();
-        }
-    }
-
-    MouseArea {
-        anchors.fill: parent
-        acceptedButtons: Qt.LeftButton
-        propagateComposedEvents: true
-        cursorShape: Qt.IBeamCursor
-
-        onClicked: (mouse) => {
-            root.forceActiveFocus();
-            // При клике на поле поиска показываем историю, если поле пустое
-            if (root.text.length === 0 && historyModel.length > 0) {
+        if (activeFocus) {
+            // При получении фокуса показываем историю, если поле пустое
+            if (text.length === 0 && historyModel.length > 0) {
                 historyPopup.open();
             }
-            mouse.accepted = false;
+        } else {
+            // При потере фокуса закрываем историю
+            historyPopup.close();
         }
     }
 

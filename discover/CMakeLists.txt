@@ -24,6 +24,7 @@ add_executable(plasma-discover ${plasma_discover_SRCS}
     UnityLauncher.cpp
     ReadFile.cpp
     PowerManagementInterface.cpp
+    FedoraRepoManager.cpp
 
     DiscoverObject.h
     DiscoverDeclarativePlugin.h
@@ -31,6 +32,7 @@ add_executable(plasma-discover ${plasma_discover_SRCS}
     FeaturedModel.h
     UnityLauncher.h
     ReadFile.h
+    FedoraRepoManager.h
 
 
     resources.qrc
