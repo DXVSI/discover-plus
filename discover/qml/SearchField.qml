@@ -55,8 +55,8 @@ Kirigami.SearchField {
         // Обновляем модель истории на основе текущего текста
         if (text.length === 0) {
             historyModel = searchHistory.suggestionsForTerm("");
-            // Если поле стало пустым и есть фокус, показываем историю
-            if (activeFocus && historyModel.length > 0) {
+            // Показываем историю только если был клик мышью
+            if (clickedByMouse && historyModel.length > 0) {
                 historyPopup.open();
             }
         } else {
@@ -65,15 +65,25 @@ Kirigami.SearchField {
         }
     }
 
+    // Флаг для отслеживания клика мышью
+    property bool clickedByMouse: false
+
     onActiveFocusChanged: {
-        if (activeFocus) {
-            // При получении фокуса показываем историю, если поле пустое
-            if (text.length === 0 && historyModel.length > 0) {
-                historyPopup.open();
-            }
-        } else {
+        if (!activeFocus) {
             // При потере фокуса закрываем историю
             historyPopup.close();
+            clickedByMouse = false;
+        }
+    }
+
+    // Показываем историю только при явном клике мышью на поле
+    TapHandler {
+        onTapped: {
+            root.clickedByMouse = true;
+            root.forceActiveFocus();
+            if (root.text.length === 0 && root.historyModel.length > 0) {
+                historyPopup.open();
+            }
         }
     }
 
