@@ -78,7 +78,8 @@ sudo dnf install -y cmake extra-cmake-modules gcc-c++ \
     kf6-kstatusnotifieritem-devel kf6-kauth-devel kf6-knotifications-devel \
     kf6-kirigami-devel kf6-kirigami-addons-devel \
     PackageKit-Qt6-devel appstream-qt-devel qcoro-qt6-devel \
-    qt6-qtbase-devel qt6-qtdeclarative-devel qt6-qtwebview-devel
+    qt6-qtbase-devel qt6-qtdeclarative-devel qt6-qtwebview-devel \
+    flatpak-devel fwupd-devel discount-devel
 ```
 
 ### Build
