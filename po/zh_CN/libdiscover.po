@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdeorg\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-17 11:53+0000\n"
+"POT-Creation-Date: 2025-12-13 00:45+0000\n"
 "PO-Revision-Date: 2024-04-23 19:24\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Simplified\n"
@@ -32,7 +32,7 @@ msgstr ""
 "fusionfuture@kde.org, i@guoyunhe.me, honghao.li@kde.org, LiYulin@kde.org, "
 "tang142857@kde.org, tds00@qq.com"
 
-#: libdiscover/appstream/AppStreamUtils.cpp:111
+#: libdiscover/appstream/AppStreamUtils.cpp:112
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:326
 #: libdiscover/backends/RpmOstreeBackend/RpmOstreeResource.cpp:304
 #: libdiscover/backends/RpmOstreeBackend/RpmOstreeResource.cpp:367
@@ -43,12 +43,12 @@ msgstr ""
 msgid "Unknown"
 msgstr "未知"
 
-#: libdiscover/appstream/AppStreamUtils.cpp:113
+#: libdiscover/appstream/AppStreamUtils.cpp:114
 #, kde-format
 msgid "Proprietary"
 msgstr "专有软件"
 
-#: libdiscover/appstream/AppStreamUtils.cpp:117
+#: libdiscover/appstream/AppStreamUtils.cpp:118
 #, kde-format
 msgid "Public Domain"
 msgstr "公共领域"
@@ -1155,34 +1155,35 @@ msgstr "KDE 商店"
 msgid "Log in information for %1"
 msgstr "%1 的登录信息"
 
-#: libdiscover/backends/PackageKitBackend/AppPackageKitResource.cpp:266
+#: libdiscover/backends/PackageKitBackend/AppPackageKitResource.cpp:268
 #, kde-format
 msgid "Cannot launch %1"
 msgstr "无法启动 %1"
 
 #: libdiscover/backends/PackageKitBackend/packagekit-backend-categories.xml:557
+#: libdiscover/backends/PackageKitBackend/packagekit-backend-categories.xml:603
+#, kde-format
+msgctxt "Category"
+msgid "Fonts"
+msgstr "字体"
+
+#: libdiscover/backends/PackageKitBackend/packagekit-backend-categories.xml:568
 #, kde-format
 msgctxt "Category"
 msgid "Hardware Drivers"
 msgstr "硬件驱动程序"
 
-#: libdiscover/backends/PackageKitBackend/packagekit-backend-categories.xml:568
+#: libdiscover/backends/PackageKitBackend/packagekit-backend-categories.xml:579
 #, kde-format
 msgctxt "Category"
 msgid "Plasma Addons"
 msgstr "Plasma 附加组件"
 
-#: libdiscover/backends/PackageKitBackend/packagekit-backend-categories.xml:580
+#: libdiscover/backends/PackageKitBackend/packagekit-backend-categories.xml:591
 #, kde-format
 msgctxt "Category"
 msgid "Plasma Widgets"
 msgstr "Plasma 小部件"
-
-#: libdiscover/backends/PackageKitBackend/packagekit-backend-categories.xml:592
-#, kde-format
-msgctxt "Category"
-msgid "Fonts"
-msgstr "字体"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitBackend.cpp:331
 #, kde-format

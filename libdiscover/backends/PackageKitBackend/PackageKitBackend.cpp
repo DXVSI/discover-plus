@@ -37,6 +37,7 @@
 #include <QRegularExpression>
 #include <QStandardPaths>
 #include <QStringList>
+#include <QTimer>
 #include <QtConcurrentRun>
 
 #include <QCoroCore>
@@ -642,6 +643,7 @@ private:
         : ResultsStream(name)
         , backend(backend)
         , m_isCoprStream(name.startsWith(QStringLiteral("COPR")))
+        , m_hasReceivedData(false)
     {
         Q_ASSERT(QThread::currentThread() == backend->thread());
 
@@ -651,6 +653,27 @@ private:
                 if (backend) {
                     qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "PKResultsStream: fetchMore requested for COPR stream";
                     backend->loadMoreCoprProjects();
+                }
+            });
+
+            // Add timeout for COPR streams - if no data received in 35 seconds, finish the stream
+            // This prevents infinite loading if API is unreachable
+            m_timeoutTimer = new QTimer(this);
+            m_timeoutTimer->setSingleShot(true);
+            m_timeoutTimer->setInterval(35000); // 35 seconds (slightly more than API timeout)
+            connect(m_timeoutTimer, &QTimer::timeout, this, [this]() {
+                if (!m_hasReceivedData) {
+                    qCWarning(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "COPR stream timeout - no data received, finishing";
+                    finish();
+                }
+            });
+            m_timeoutTimer->start();
+
+            // Reset timeout when data is received
+            connect(this, &ResultsStream::resourcesFound, this, [this]() {
+                m_hasReceivedData = true;
+                if (m_timeoutTimer) {
+                    m_timeoutTimer->stop();
                 }
             });
         }
@@ -719,6 +742,8 @@ public:
 private:
     PackageKitBackend *const backend;
     bool m_isCoprStream;
+    bool m_hasReceivedData = false;
+    QTimer *m_timeoutTimer = nullptr;
 };
 
 PKResultsStream *PackageKitBackend::deferredResultStream(const QString &streamName, std::function<void(PKResultsStream *)> callback)
@@ -1566,7 +1591,7 @@ void PackageKitBackend::loadAllPackagesHybrid()
 
 void PackageKitBackend::aboutTo(AboutToAction action)
 {
-    PackageKit::Offline::Action packageKitAction;
+    PackageKit::Offline::Action packageKitAction = PackageKit::Offline::ActionReboot;
     switch (action) {
     case Reboot:
         packageKitAction = PackageKit::Offline::ActionReboot;
@@ -1713,15 +1738,25 @@ void PackageKitBackend::onCoprProjectsFound(const QList<CoprProjectInfo> &projec
         qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "COPR result:" << project.owner << "/" << project.name << "score:" << relevanceScore;
     }
 
-    // Sort and send all results at once
-    if (!results.isEmpty() && m_currentSearchStream && !m_currentSearchStream.isNull()) {
-        // Sort by relevance (highest first)
-        std::sort(results.begin(), results.end(), [](const StreamResult &a, const StreamResult &b) {
-            return a.sortScore > b.sortScore;
-        });
+    // Sort and send results, or handle empty case
+    if (m_currentSearchStream && !m_currentSearchStream.isNull()) {
+        if (!results.isEmpty()) {
+            // Sort by relevance (highest first)
+            std::sort(results.begin(), results.end(), [](const StreamResult &a, const StreamResult &b) {
+                return a.sortScore > b.sortScore;
+            });
 
-        qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "Sending" << results.size() << "COPR results";
-        Q_EMIT m_currentSearchStream->resourcesFound(results);
+            qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "Sending" << results.size() << "COPR results";
+            Q_EMIT m_currentSearchStream->resourcesFound(results);
+        } else if (projects.isEmpty()) {
+            // No more projects from API - finish the stream to stop loading indicator
+            qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "No more COPR projects, finishing stream";
+            auto coprStream = qobject_cast<PKResultsStream *>(m_currentSearchStream.data());
+            if (coprStream) {
+                coprStream->finishCoprStream();
+            }
+        }
+        // If projects were received but all filtered out, don't finish - try loading more
     }
 
     qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "COPR: processed" << results.size() << "relevant results from" << projects.size() << "projects";

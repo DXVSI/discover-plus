@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libmuon\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-17 11:53+0000\n"
+"POT-Creation-Date: 2025-12-13 00:45+0000\n"
 "PO-Revision-Date: 2025-10-15 20:59+0300\n"
 "Last-Translator: Tommi Nieminen <translator@legisign.org>\n"
 "Language-Team: Finnish <kde-i18n-doc@kde.org>\n"
@@ -35,7 +35,7 @@ msgctxt "EMAIL OF TRANSLATORS"
 msgid "Your emails"
 msgstr "translator@legisign.org"
 
-#: libdiscover/appstream/AppStreamUtils.cpp:111
+#: libdiscover/appstream/AppStreamUtils.cpp:112
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:326
 #: libdiscover/backends/RpmOstreeBackend/RpmOstreeResource.cpp:304
 #: libdiscover/backends/RpmOstreeBackend/RpmOstreeResource.cpp:367
@@ -46,12 +46,12 @@ msgstr "translator@legisign.org"
 msgid "Unknown"
 msgstr "Tuntematon"
 
-#: libdiscover/appstream/AppStreamUtils.cpp:113
+#: libdiscover/appstream/AppStreamUtils.cpp:114
 #, kde-format
 msgid "Proprietary"
 msgstr "Suljettu lähdekoodi"
 
-#: libdiscover/appstream/AppStreamUtils.cpp:117
+#: libdiscover/appstream/AppStreamUtils.cpp:118
 #, kde-format
 msgid "Public Domain"
 msgstr "Public domain"
@@ -1189,34 +1189,35 @@ msgstr "KDE Store"
 msgid "Log in information for %1"
 msgstr "Kirjautumistiedot – %1"
 
-#: libdiscover/backends/PackageKitBackend/AppPackageKitResource.cpp:266
+#: libdiscover/backends/PackageKitBackend/AppPackageKitResource.cpp:268
 #, kde-format
 msgid "Cannot launch %1"
 msgstr "Ei voida käynnistää: %1"
 
 #: libdiscover/backends/PackageKitBackend/packagekit-backend-categories.xml:557
+#: libdiscover/backends/PackageKitBackend/packagekit-backend-categories.xml:603
+#, kde-format
+msgctxt "Category"
+msgid "Fonts"
+msgstr "Fontit"
+
+#: libdiscover/backends/PackageKitBackend/packagekit-backend-categories.xml:568
 #, kde-format
 msgctxt "Category"
 msgid "Hardware Drivers"
 msgstr "Laiteajurit"
 
-#: libdiscover/backends/PackageKitBackend/packagekit-backend-categories.xml:568
+#: libdiscover/backends/PackageKitBackend/packagekit-backend-categories.xml:579
 #, kde-format
 msgctxt "Category"
 msgid "Plasma Addons"
 msgstr "Plasma-lisäosat"
 
-#: libdiscover/backends/PackageKitBackend/packagekit-backend-categories.xml:580
+#: libdiscover/backends/PackageKitBackend/packagekit-backend-categories.xml:591
 #, kde-format
 msgctxt "Category"
 msgid "Plasma Widgets"
 msgstr "Plasma-sovelmat"
-
-#: libdiscover/backends/PackageKitBackend/packagekit-backend-categories.xml:592
-#, kde-format
-msgctxt "Category"
-msgid "Fonts"
-msgstr "Fontit"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitBackend.cpp:331
 #, kde-format

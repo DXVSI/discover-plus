@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: discover\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-17 11:53+0000\n"
+"POT-Creation-Date: 2025-12-13 00:45+0000\n"
 "PO-Revision-Date: 2025-11-11 04:57+0100\n"
 "Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
 "Language-Team: Georgian <kde-i18n-doc@kde.org>\n"
@@ -28,7 +28,7 @@ msgctxt "EMAIL OF TRANSLATORS"
 msgid "Your emails"
 msgstr "Temuri.doghonadze@gmail.com"
 
-#: libdiscover/appstream/AppStreamUtils.cpp:111
+#: libdiscover/appstream/AppStreamUtils.cpp:112
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:326
 #: libdiscover/backends/RpmOstreeBackend/RpmOstreeResource.cpp:304
 #: libdiscover/backends/RpmOstreeBackend/RpmOstreeResource.cpp:367
@@ -39,12 +39,12 @@ msgstr "Temuri.doghonadze@gmail.com"
 msgid "Unknown"
 msgstr "უცნობი"
 
-#: libdiscover/appstream/AppStreamUtils.cpp:113
+#: libdiscover/appstream/AppStreamUtils.cpp:114
 #, kde-format
 msgid "Proprietary"
 msgstr "დახურული კოდი"
 
-#: libdiscover/appstream/AppStreamUtils.cpp:117
+#: libdiscover/appstream/AppStreamUtils.cpp:118
 #, kde-format
 msgid "Public Domain"
 msgstr "საჯარო"
@@ -1186,34 +1186,35 @@ msgstr "KDE -ის მაღაზია"
 msgid "Log in information for %1"
 msgstr "შესვლის ინფორმაცია %1-სთვის"
 
-#: libdiscover/backends/PackageKitBackend/AppPackageKitResource.cpp:266
+#: libdiscover/backends/PackageKitBackend/AppPackageKitResource.cpp:268
 #, kde-format
 msgid "Cannot launch %1"
 msgstr "%1-ის გაშვება შეუძლებელია"
 
 #: libdiscover/backends/PackageKitBackend/packagekit-backend-categories.xml:557
+#: libdiscover/backends/PackageKitBackend/packagekit-backend-categories.xml:603
+#, kde-format
+msgctxt "Category"
+msgid "Fonts"
+msgstr "ფონტები"
+
+#: libdiscover/backends/PackageKitBackend/packagekit-backend-categories.xml:568
 #, kde-format
 msgctxt "Category"
 msgid "Hardware Drivers"
 msgstr "აპარატურის დრაივერები"
 
-#: libdiscover/backends/PackageKitBackend/packagekit-backend-categories.xml:568
+#: libdiscover/backends/PackageKitBackend/packagekit-backend-categories.xml:579
 #, kde-format
 msgctxt "Category"
 msgid "Plasma Addons"
 msgstr "Plasma -ის დამატებები"
 
-#: libdiscover/backends/PackageKitBackend/packagekit-backend-categories.xml:580
+#: libdiscover/backends/PackageKitBackend/packagekit-backend-categories.xml:591
 #, kde-format
 msgctxt "Category"
 msgid "Plasma Widgets"
 msgstr "Plasma-ის ვიჯეტები"
-
-#: libdiscover/backends/PackageKitBackend/packagekit-backend-categories.xml:592
-#, kde-format
-msgctxt "Category"
-msgid "Fonts"
-msgstr "ფონტები"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitBackend.cpp:331
 #, kde-format

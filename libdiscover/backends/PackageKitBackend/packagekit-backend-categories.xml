@@ -554,6 +554,17 @@
   </Menu>
 
   <Menu>
+    <Name>Fonts</Name>
+    <Icon>preferences-desktop-font-installer</Icon>
+    <Fonts />
+    <Include>
+      <And>
+        <Category>Fonts</Category>
+      </And>
+    </Include>
+  </Menu>
+
+  <Menu>
     <Name>Hardware Drivers</Name>
     <Icon>computer-laptop</Icon>
     <Drivers />
