@@ -1,22 +1,19 @@
 #include "CoprClient.h"
 #include "libdiscover_backend_packagekit_debug.h"
 
+#include <QDebug>
 #include <QFile>
-#include <QTextStream>
+#include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
-#include <QJsonArray>
-#include <QUrlQuery>
-#include <QSysInfo>
-#include <QDebug>
 #include <QRegularExpression>
-
-// Network timeout for COPR API requests (in milliseconds)
-static constexpr int COPR_REQUEST_TIMEOUT = 30000; // 30 seconds - increased for slower API responses
+#include <QSysInfo>
+#include <QTextStream>
+#include <QTimer>
+#include <QUrlQuery>
 
 CoprClient::CoprClient(QObject *parent)
     : QObject(parent)
-    , m_networkManager(new QNetworkAccessManager(this))
     , m_baseUrl(QStringLiteral("https://copr.fedorainfracloud.org/api_3"))
 {
     m_fedoraVersion = getFedoraVersion();
@@ -71,16 +68,8 @@ void CoprClient::searchProjects(const QString &query, int limit, int offset)
     urlQuery.addQueryItem(QStringLiteral("offset"), QString::number(offset));
     url.setQuery(urlQuery);
 
-    QNetworkRequest request(url);
-    request.setHeader(QNetworkRequest::ContentTypeHeader, QStringLiteral("application/json"));
-    request.setAttribute(QNetworkRequest::Http2AllowedAttribute, false); // Disable HTTP/2 to avoid protocol errors
-    request.setTransferTimeout(COPR_REQUEST_TIMEOUT);
-
     qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "CoprClient: Searching projects, query:" << query << "limit:" << limit << "offset:" << offset;
-
-    QNetworkReply *reply = m_networkManager->get(request);
-    m_pendingRequests[reply] = QStringLiteral("searchProjects");
-    connect(reply, &QNetworkReply::finished, this, &CoprClient::onNetworkReplyFinished);
+    queueRequest(url, QStringLiteral("searchProjects"));
 }
 
 void CoprClient::getLatestProjects(int limit, int offset)
@@ -93,16 +82,8 @@ void CoprClient::getLatestProjects(int limit, int offset)
     urlQuery.addQueryItem(QStringLiteral("offset"), QString::number(offset));
     url.setQuery(urlQuery);
 
-    QNetworkRequest request(url);
-    request.setHeader(QNetworkRequest::ContentTypeHeader, QStringLiteral("application/json"));
-    request.setAttribute(QNetworkRequest::Http2AllowedAttribute, false); // Disable HTTP/2 to avoid protocol errors
-    request.setTransferTimeout(COPR_REQUEST_TIMEOUT);
-
     qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "CoprClient: Getting latest projects, limit:" << limit << "offset:" << offset;
-
-    QNetworkReply *reply = m_networkManager->get(request);
-    m_pendingRequests[reply] = QStringLiteral("getLatestProjects");
-    connect(reply, &QNetworkReply::finished, this, &CoprClient::onNetworkReplyFinished);
+    queueRequest(url, QStringLiteral("getLatestProjects"));
 }
 
 void CoprClient::getPopularProjects(int limit, int offset)
@@ -121,14 +102,7 @@ void CoprClient::getProjectInfo(const QString &owner, const QString &project)
     urlQuery.addQueryItem(QStringLiteral("projectname"), project);
     url.setQuery(urlQuery);
 
-    QNetworkRequest request(url);
-    request.setHeader(QNetworkRequest::ContentTypeHeader, QStringLiteral("application/json"));
-    request.setAttribute(QNetworkRequest::Http2AllowedAttribute, false); // Disable HTTP/2 to avoid protocol errors
-    request.setTransferTimeout(COPR_REQUEST_TIMEOUT);
-
-    QNetworkReply *reply = m_networkManager->get(request);
-    m_pendingRequests[reply] = QStringLiteral("getProjectInfo");
-    connect(reply, &QNetworkReply::finished, this, &CoprClient::onNetworkReplyFinished);
+    queueRequest(url, QStringLiteral("getProjectInfo"));
 }
 
 void CoprClient::getProjectPackages(const QString &owner, const QString &project)
@@ -143,14 +117,7 @@ void CoprClient::getProjectPackages(const QString &owner, const QString &project
     urlQuery.addQueryItem(QStringLiteral("limit"), QStringLiteral("10"));
     url.setQuery(urlQuery);
 
-    QNetworkRequest request(url);
-    request.setHeader(QNetworkRequest::ContentTypeHeader, QStringLiteral("application/json"));
-    request.setAttribute(QNetworkRequest::Http2AllowedAttribute, false); // Disable HTTP/2 to avoid protocol errors
-    request.setTransferTimeout(COPR_REQUEST_TIMEOUT);
-
-    QNetworkReply *reply = m_networkManager->get(request);
-    m_pendingRequests[reply] = QStringLiteral("getProjectPackages:") + owner + QStringLiteral(":") + project;
-    connect(reply, &QNetworkReply::finished, this, &CoprClient::onNetworkReplyFinished);
+    queueRequest(url, QStringLiteral("getProjectPackages:") + owner + QStringLiteral(":") + project);
 }
 
 void CoprClient::searchPackages(const QString &query, int limit)
@@ -160,71 +127,102 @@ void CoprClient::searchPackages(const QString &query, int limit)
 
 void CoprClient::cancelAllRequests()
 {
-    // Cancel all pending network requests
-    QList<QNetworkReply*> replies = m_pendingRequests.keys();
-    for (QNetworkReply* reply : replies) {
-        if (reply) {
-            reply->abort();
-            reply->deleteLater();
-        }
-    }
-    m_pendingRequests.clear();
+    // Clear the request queue
+    m_requestQueue.clear();
+    m_requestInProgress = false;
 
     qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "Cancelled all COPR pending requests";
 }
 
-void CoprClient::onNetworkReplyFinished()
+void CoprClient::queueRequest(const QUrl &url, const QString &requestType)
 {
-    QNetworkReply *reply = qobject_cast<QNetworkReply*>(sender());
-    if (!reply) {
+    m_requestQueue.enqueue(qMakePair(url, requestType));
+    qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "Queued COPR request:" << requestType << "queue size:" << m_requestQueue.size();
+
+    if (!m_requestInProgress) {
+        processNextRequest();
+    }
+}
+
+void CoprClient::processNextRequest()
+{
+    if (m_requestQueue.isEmpty()) {
+        m_requestInProgress = false;
         return;
     }
 
-    QString requestType = m_pendingRequests.take(reply);
+    m_requestInProgress = true;
+    auto request_data = m_requestQueue.dequeue();
+    QUrl url = request_data.first;
+    QString requestType = request_data.second;
 
-    if (reply->error() != QNetworkReply::NoError) {
-        // Log the error but don't spam if it's HTTP/2 protocol errors
-        if (!reply->errorString().contains(QStringLiteral("HTTP/2"))) {
-            qWarning() << "COPR API error for" << requestType << ":" << reply->errorString()
-                       << "Error code:" << reply->error()
-                       << "URL:" << reply->url().toString();
-        } else {
-            qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "HTTP/2 error for" << requestType << "- likely too many requests";
+    qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "Processing COPR request via curl:" << requestType << "URL:" << url.toString();
+
+    // Use curl to bypass TLS fingerprinting and anti-bot protection
+    QProcess *curlProcess = new QProcess(this);
+    curlProcess->setProperty("requestType", requestType);
+
+    connect(curlProcess, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), this, [this, curlProcess](int exitCode, QProcess::ExitStatus) {
+        QString requestType = curlProcess->property("requestType").toString();
+        QByteArray data = curlProcess->readAllStandardOutput();
+
+        if (exitCode != 0 || data.isEmpty()) {
+            qWarning() << "COPR curl request failed for" << requestType << "exit code:" << exitCode;
+            if (requestType == QStringLiteral("searchProjects") || requestType == QStringLiteral("getPopularProjects")
+                || requestType == QStringLiteral("getLatestProjects")) {
+                Q_EMIT projectsFound(QList<CoprProjectInfo>());
+            } else if (requestType.startsWith(QStringLiteral("getProjectPackages:"))) {
+                Q_EMIT packagesFound(QList<CoprPackageInfo>());
+            }
+            curlProcess->deleteLater();
+            QTimer::singleShot(100, this, &CoprClient::processNextRequest);
+            return;
         }
-        // Don't emit error for individual project failures, just log and continue
-        reply->deleteLater();
-        return;
-    }
 
-    QByteArray data = reply->readAll();
-    QJsonDocument doc = QJsonDocument::fromJson(data);
-
-    if (!doc.isObject()) {
-        qWarning() << "Invalid JSON response from COPR API";
-        Q_EMIT errorOccurred(QStringLiteral("Invalid JSON response"));
-        reply->deleteLater();
-        return;
-    }
-
-    QJsonObject json = doc.object();
-
-    if (requestType == QStringLiteral("searchProjects") || requestType == QStringLiteral("getPopularProjects") || requestType == QStringLiteral("getLatestProjects")) {
-        QList<CoprProjectInfo> projects = parseProjectsResponse(json);
-        Q_EMIT projectsFound(projects);
-    } else if (requestType == QStringLiteral("getProjectInfo")) {
-        CoprProjectInfo project = parseProjectResponse(json);
-        Q_EMIT projectInfoReceived(project);
-    } else if (requestType.startsWith(QStringLiteral("getProjectPackages:"))) {
-        QStringList parts = requestType.split(QLatin1Char(':'));
-        if (parts.size() >= 3) {
-            QString owner = parts[1];
-            QString project = parts[2];
-            QList<CoprPackageInfo> packages = parsePackagesResponse(json, owner, project);
-            Q_EMIT packagesFound(packages);
+        QJsonDocument doc = QJsonDocument::fromJson(data);
+        if (!doc.isObject()) {
+            qWarning() << "Invalid JSON from curl for" << requestType << "- data:" << data.left(200);
+            if (requestType == QStringLiteral("searchProjects") || requestType == QStringLiteral("getPopularProjects")
+                || requestType == QStringLiteral("getLatestProjects")) {
+                Q_EMIT projectsFound(QList<CoprProjectInfo>());
+            } else if (requestType.startsWith(QStringLiteral("getProjectPackages:"))) {
+                Q_EMIT packagesFound(QList<CoprPackageInfo>());
+            }
+            curlProcess->deleteLater();
+            QTimer::singleShot(100, this, &CoprClient::processNextRequest);
+            return;
         }
-    }
 
-    reply->deleteLater();
+        QJsonObject json = doc.object();
+
+        if (requestType == QStringLiteral("searchProjects") || requestType == QStringLiteral("getPopularProjects")
+            || requestType == QStringLiteral("getLatestProjects")) {
+            QList<CoprProjectInfo> projects = parseProjectsResponse(json);
+            Q_EMIT projectsFound(projects);
+        } else if (requestType == QStringLiteral("getProjectInfo")) {
+            CoprProjectInfo project = parseProjectResponse(json);
+            Q_EMIT projectInfoReceived(project);
+        } else if (requestType.startsWith(QStringLiteral("getProjectPackages:"))) {
+            QStringList parts = requestType.split(QLatin1Char(':'));
+            if (parts.size() >= 3) {
+                QString owner = parts[1];
+                QString project = parts[2];
+                QList<CoprPackageInfo> packages = parsePackagesResponse(json, owner, project);
+                Q_EMIT packagesFound(packages);
+            }
+        }
+
+        curlProcess->deleteLater();
+        QTimer::singleShot(100, this, &CoprClient::processNextRequest);
+    });
+
+    curlProcess->start(QStringLiteral("curl"),
+                       {QStringLiteral("-s"),
+                        QStringLiteral("-H"),
+                        QStringLiteral("Accept: application/json"),
+                        QStringLiteral("--max-time"),
+                        QStringLiteral("30"),
+                        url.toString()});
 }
 
 QList<CoprProjectInfo> CoprClient::parseProjectsResponse(const QJsonObject &json)

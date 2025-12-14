@@ -1,13 +1,15 @@
 #ifndef COPRCLIENT_H
 #define COPRCLIENT_H
 
+#include <QJsonArray>
+#include <QJsonObject>
 #include <QObject>
-#include <QNetworkAccessManager>
-#include <QNetworkReply>
+#include <QPair>
+#include <QProcess>
+#include <QQueue>
 #include <QString>
 #include <QStringList>
-#include <QJsonObject>
-#include <QJsonArray>
+#include <QUrl>
 
 struct CoprPackageInfo {
     QString name;
@@ -55,21 +57,21 @@ Q_SIGNALS:
     void packagesFound(const QList<CoprPackageInfo> &packages);
     void errorOccurred(const QString &errorMessage);
 
-private Q_SLOTS:
-    void onNetworkReplyFinished();
-
 private:
-    void makeRequest(const QString &endpoint, const QString &requestType);
     QList<CoprProjectInfo> parseProjectsResponse(const QJsonObject &json);
     CoprProjectInfo parseProjectResponse(const QJsonObject &json);
     QList<CoprPackageInfo> parsePackagesResponse(const QJsonObject &json, const QString &owner, const QString &project);
 
-    QNetworkAccessManager *m_networkManager;
+    void processNextRequest();
+    void queueRequest(const QUrl &url, const QString &requestType);
+
     QString m_baseUrl;
     QString m_fedoraVersion;
     QString m_currentChroot;
 
-    QHash<QNetworkReply*, QString> m_pendingRequests;
+    // Request queue to prevent parallel requests (anti-bot protection)
+    QQueue<QPair<QUrl, QString>> m_requestQueue;
+    bool m_requestInProgress = false;
 };
 
 #endif // COPRCLIENT_H
