@@ -1,13 +1,13 @@
 # Copyright (C) YEAR This_file_is_part_of_KDE
 # This file is distributed under the same license as the PACKAGE package.
-# Sergiu Bivol <sergiu@cip.md>, 2015, 2020, 2021, 2022, 2024.
+# SPDX-FileCopyrightText: 2015, 2020, 2021, 2022, 2024, 2025 Sergiu Bivol <sergiu@cip.md>
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-11-17 11:53+0000\n"
-"PO-Revision-Date: 2024-01-07 16:02+0000\n"
+"PO-Revision-Date: 2025-12-12 11:32+0000\n"
 "Last-Translator: Sergiu Bivol <sergiu@cip.md>\n"
 "Language-Team: Romanian <kde-i18n-ro@kde.org>\n"
 "Language: ro\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n==1 ? 0 : (n==0 || (n%100 > 0 && n%100 < "
 "20)) ? 1 : 2;\n"
-"X-Generator: Lokalize 21.12.3\n"
+"X-Generator: Lokalize 25.08.1\n"
 
 #: notifier/DiscoverNotifier.cpp:218
 #, kde-format
@@ -64,17 +64,16 @@ msgid "The system needs to be restarted for the updates to take effect."
 msgstr "Sistemul trebuie repornit pentru ca actualizările să intre în vigoare."
 
 #: notifier/DiscoverNotifier.cpp:406
-#, fuzzy, kde-format
-#| msgid "Computer needs to restart"
+#, kde-format
 msgctxt "@action:button"
 msgid "Update and Restart"
-msgstr "Calculatorul trebuie repornit"
+msgstr "Actualizează și repornește"
 
 #: notifier/DiscoverNotifier.cpp:407
 #, kde-format
 msgctxt "@action:button"
 msgid "Update and Shut Down"
-msgstr ""
+msgstr "Actualizează și oprește"
 
 #: notifier/DiscoverNotifier.cpp:451
 #, kde-format
@@ -104,10 +103,9 @@ msgid "System update status notifier"
 msgstr "Notificator pentru actualizări de sistem"
 
 #: notifier/main.cpp:43
-#, fuzzy, kde-format
-#| msgid "© 2010-2024 Plasma Development Team"
+#, kde-format
 msgid "© 2010-2025 Plasma Development Team"
-msgstr "© 2010-2024 Echipa de dezvoltatori Plasma"
+msgstr "© 2010-2025 Echipa de dezvoltatori Plasma"
 
 #: notifier/main.cpp:47
 #, kde-format
@@ -142,18 +140,16 @@ msgid "Updates"
 msgstr "Actualizări"
 
 #: notifier/NotifierItem.cpp:36
-#, fuzzy, kde-format
-#| msgid "Open Discover…"
+#, kde-format
 msgctxt "@action:button Opens Discover's main UI to analyze the updates"
 msgid "Open Discover…"
 msgstr "Deschide Discover…"
 
 #: notifier/NotifierItem.cpp:47
-#, fuzzy, kde-format
-#| msgid "Updates"
+#, kde-format
 msgctxt "@action:button Starts an update in the background"
 msgid "Start Update"
-msgstr "Actualizări"
+msgstr "Începe actualizarea"
 
 #: notifier/NotifierItem.cpp:50
 #, kde-format
@@ -163,12 +159,12 @@ msgstr "Împrospătează…"
 #: notifier/NotifierItem.cpp:56
 #, kde-format
 msgid "Install Updates and Restart…"
-msgstr ""
+msgstr "Instalează actualizări și repornește…"
 
 #: notifier/NotifierItem.cpp:59
 #, kde-format
 msgid "Install Updates and Shut Down…"
-msgstr ""
+msgstr "Instalează actualizări și oprește…"
 
 #: notifier/NotifierItem.cpp:64
 #, kde-format

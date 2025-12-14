@@ -65,6 +65,7 @@ public:
     enum class Type {
         Addon, /* < Category contains Plasma addons */
         Driver, /* < Category contains hardware drivers */
+        Font, /* < Category contains fonts */
         Package, /* < Category contains regular packages */
     };
 

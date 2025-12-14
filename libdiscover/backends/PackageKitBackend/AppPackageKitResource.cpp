@@ -137,6 +137,8 @@ bool AppPackageKitResource::hasCategory(const QString &category) const
             return false;
         }
     }
+    if (m_appdata.kind() == AppStream::Component::KindFont && category == QStringLiteral("Fonts"))
+        return true;
     return m_appdata.hasCategory(category);
 }
 

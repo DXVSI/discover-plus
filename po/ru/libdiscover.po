@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-17 11:53+0000\n"
+"POT-Creation-Date: 2025-12-13 00:45+0000\n"
 "PO-Revision-Date: 2025-11-22 16:43+0200\n"
 "Last-Translator: Alexander Yavorskiy <kekcuha@gmail.com>\n"
 "Language-Team: Russian <kde-russian@lists.kde.ru>\n"
@@ -41,7 +41,7 @@ msgstr ""
 "yur.arh@gmail.com,aspotashev@gmail.com,exclusion@gmail.com,kekcuha@gmail.com,"
 "translation-team@basealt.ru,translation-team@basealt.ru"
 
-#: libdiscover/appstream/AppStreamUtils.cpp:111
+#: libdiscover/appstream/AppStreamUtils.cpp:112
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:326
 #: libdiscover/backends/RpmOstreeBackend/RpmOstreeResource.cpp:304
 #: libdiscover/backends/RpmOstreeBackend/RpmOstreeResource.cpp:367
@@ -52,12 +52,12 @@ msgstr ""
 msgid "Unknown"
 msgstr "неизвестная"
 
-#: libdiscover/appstream/AppStreamUtils.cpp:113
+#: libdiscover/appstream/AppStreamUtils.cpp:114
 #, kde-format
 msgid "Proprietary"
 msgstr "С закрытым кодом"
 
-#: libdiscover/appstream/AppStreamUtils.cpp:117
+#: libdiscover/appstream/AppStreamUtils.cpp:118
 #, kde-format
 msgid "Public Domain"
 msgstr "Общественное достояние"
@@ -1210,34 +1210,35 @@ msgstr "KDE Store"
 msgid "Log in information for %1"
 msgstr "Данные для входа в %1"
 
-#: libdiscover/backends/PackageKitBackend/AppPackageKitResource.cpp:266
+#: libdiscover/backends/PackageKitBackend/AppPackageKitResource.cpp:268
 #, kde-format
 msgid "Cannot launch %1"
 msgstr "Не удалось запустить %1"
 
 #: libdiscover/backends/PackageKitBackend/packagekit-backend-categories.xml:557
+#: libdiscover/backends/PackageKitBackend/packagekit-backend-categories.xml:603
+#, kde-format
+msgctxt "Category"
+msgid "Fonts"
+msgstr "Шрифты"
+
+#: libdiscover/backends/PackageKitBackend/packagekit-backend-categories.xml:568
 #, kde-format
 msgctxt "Category"
 msgid "Hardware Drivers"
 msgstr "Драйверы оборудования"
 
-#: libdiscover/backends/PackageKitBackend/packagekit-backend-categories.xml:568
+#: libdiscover/backends/PackageKitBackend/packagekit-backend-categories.xml:579
 #, kde-format
 msgctxt "Category"
 msgid "Plasma Addons"
 msgstr "Расширения Plasma"
 
-#: libdiscover/backends/PackageKitBackend/packagekit-backend-categories.xml:580
+#: libdiscover/backends/PackageKitBackend/packagekit-backend-categories.xml:591
 #, kde-format
 msgctxt "Category"
 msgid "Plasma Widgets"
 msgstr "Виджеты Plasma"
-
-#: libdiscover/backends/PackageKitBackend/packagekit-backend-categories.xml:592
-#, kde-format
-msgctxt "Category"
-msgid "Fonts"
-msgstr "Шрифты"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitBackend.cpp:331
 #, kde-format

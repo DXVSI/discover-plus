@@ -81,7 +81,7 @@ Category::Category(const QString &name,
     , m_subCategories(subCategories)
     , m_plugins(pluginName)
     , m_type(type)
-    , m_priority(type == Type::Addon || type == Type::Driver ? 5 : 0)
+    , m_priority(type == Type::Addon || type == Type::Driver || type == Type::Font ? 5 : 0)
 {
     setObjectName(m_name);
 
@@ -124,6 +124,10 @@ void Category::parseData(const QString &path, QXmlStreamReader *xml, Localizatio
             m_visible = !m_hide && qEnvironmentVariable("XDG_CURRENT_DESKTOP") == xml->readElementText();
         } else if (xml->name() == QLatin1String("Drivers")) {
             m_type = Type::Driver;
+            m_priority = 5;
+            xml->readNext();
+        } else if (xml->name() == QLatin1String("Fonts")) {
+            m_type = Type::Font;
             m_priority = 5;
             xml->readNext();
         } else if (xml->name() == QLatin1String("Icon")) {

@@ -8,6 +8,7 @@
 
 #include "utils.h"
 #include <AppStreamQt/category.h>
+#include <AppStreamQt/component.h>
 #include <AppStreamQt/pool.h>
 #include <AppStreamQt/release.h>
 #include <AppStreamQt/screenshot.h>
@@ -196,6 +197,8 @@ AppStreamUtils::componentsByCategoriesTask(AppStream::ConcurrentPool *pool, cons
     futures.reserve(categories.size());
     if (cat->type() == Category::Type::Driver) {
         futures += pool->componentsByKind(AppStream::Component::KindDriver);
+    } else if (cat->type() == Category::Type::Font) {
+        futures += pool->componentsByKind(AppStream::Component::KindFont);
     } else {
         for (const auto &categoryName : categories) {
             futures += pool->componentsByCategories({categoryName});

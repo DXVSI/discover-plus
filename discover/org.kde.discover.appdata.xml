@@ -91,6 +91,7 @@
   <summary xml:lang="nl">Installeer en verwijder toepassingen en add-ons</summary>
   <summary xml:lang="pl">Wgrywaj i usuwaj aplikacje oraz dodatki do nich</summary>
   <summary xml:lang="pt-BR">Instalar e remover programas e complementos</summary>
+  <summary xml:lang="ro">Instalează și elimină aplicații și suplimente</summary>
   <summary xml:lang="ru">Установка и удаление приложений и дополнений</summary>
   <summary xml:lang="sa">एप्स्, एड्-ऑन् च संस्थाप्य निष्कासयन्तु</summary>
   <summary xml:lang="sl">Namešča in odstranjuje aplikacije in dodatke</summary>
@@ -328,8 +329,5 @@
     <release version="6.5.2" date="2025-11-04"/>
     <release version="6.5.1" date="2025-10-28"/>
   </releases>
-  <custom>
-    <value key="KDE::supporters">lorberi, Artur Motyka (@artur9010), ChaoticDucc</value>
-  </custom>
   <content_rating type="oars-1.1"/>
 </component>
