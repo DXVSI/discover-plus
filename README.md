@@ -65,24 +65,38 @@ The redesigned interface features:
 * Clean uninstall with repository removal
 * Launch button for installed applications
 
-## Building and Installation
+## Installation
 
-### Dependencies
+### Quick Install (Recommended)
 
 ```bash
-sudo dnf install -y cmake extra-cmake-modules gcc-c++ \
-    kf6-kconfig-devel kf6-kcoreaddons-devel kf6-kcrash-devel \
-    kf6-kdbusaddons-devel kf6-ki18n-devel kf6-karchive-devel \
-    kf6-kxmlgui-devel kf6-kio-devel kf6-kcmutils-devel \
-    kf6-kidletime-devel kf6-purpose-devel kf6-kiconthemes-devel \
-    kf6-kstatusnotifieritem-devel kf6-kauth-devel kf6-knotifications-devel \
-    kf6-kirigami-devel kf6-kirigami-addons-devel \
-    PackageKit-Qt6-devel appstream-qt-devel qcoro-qt6-devel \
-    qt6-qtbase-devel qt6-qtdeclarative-devel qt6-qtwebview-devel \
-    flatpak-devel fwupd-devel discount-devel
+chmod +x install.sh
+./install.sh
 ```
 
-### Build
+The script will automatically:
+- Remove conflicting system packages
+- Install all dependencies
+- Build and install Discover Plus
+
+### Manual Installation
+
+<details>
+<summary>Click to expand manual steps</summary>
+
+#### Dependencies
+
+```bash
+sudo dnf install -y cmake extra-cmake-modules gcc-c++ kf6-kconfig-devel kf6-kcoreaddons-devel kf6-kcrash-devel kf6-kdbusaddons-devel kf6-ki18n-devel kf6-karchive-devel kf6-kxmlgui-devel kf6-kio-devel kf6-kcmutils-devel kf6-kidletime-devel kf6-purpose-devel kf6-kiconthemes-devel kf6-kstatusnotifieritem-devel kf6-kauth-devel kf6-knotifications-devel kf6-kirigami-devel kf6-kirigami-addons-devel PackageKit-Qt6-devel appstream-qt-devel qcoro-qt6-devel qt6-qtbase-devel qt6-qtdeclarative-devel qt6-qtwebview-devel flatpak-devel fwupd-devel libmarkdown-devel
+```
+
+#### Remove conflicting packages
+
+```bash
+sudo dnf remove -y plasma-discover plasma-discover-flatpak plasma-discover-snap plasma-discover-packagekit plasma-discover-libs
+```
+
+#### Build
 
 ```bash
 mkdir build
@@ -103,11 +117,13 @@ cmake .. \
 make -j$(nproc)
 ```
 
-### Installation
+#### Install
 
 ```bash
 sudo make install
 ```
+
+</details>
 
 ### Debug
 
