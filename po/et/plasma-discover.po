@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-27 00:44+0000\n"
+"POT-Creation-Date: 2025-12-15 00:43+0000\n"
 "PO-Revision-Date: 2020-10-11 01:25+0200\n"
 "Last-Translator: Mihkel Tõnnov <mihhkel@gmail.com>\n"
 "Language-Team: Estonian <>\n"
@@ -263,7 +263,7 @@ msgstr "Uue %1 hoidla lisamine"
 msgid "Add"
 msgstr "Lisa"
 
-#: discover/qml/AddSourceDialog.qml:50 discover/qml/DiscoverWindow.qml:279
+#: discover/qml/AddSourceDialog.qml:50 discover/qml/DiscoverWindow.qml:281
 #: discover/qml/InstallApplicationButton.qml:51
 #: discover/qml/ProgressView.qml:152 discover/qml/SourcesPage.qml:201
 #: discover/qml/UpdatesPage.qml:303 discover/qml/WebflowDialog.qml:41
@@ -807,6 +807,20 @@ msgctxt "@action:button"
 msgid "Next Screenshot"
 msgstr ""
 
+#: discover/qml/DiscoverDrawer.qml:166
+#, fuzzy, kde-format
+#| msgctxt "@info"
+#| msgid "No updates are available"
+msgid "Security updates available"
+msgstr "Uuendusi pole"
+
+#: discover/qml/DiscoverDrawer.qml:167
+#, fuzzy, kde-format
+#| msgctxt "@info"
+#| msgid "No updates are available"
+msgid "Updates available"
+msgstr "Uuendusi pole"
+
 #: discover/qml/DiscoverWindow.qml:47
 #, kde-format
 msgid "Running as <em>root</em> is discouraged and unnecessary."
@@ -832,90 +846,89 @@ msgstr "Otsing"
 msgid "&Installed"
 msgstr "Paigaldatud"
 
-#: discover/qml/DiscoverWindow.qml:95
+#: discover/qml/DiscoverWindow.qml:96
 #, kde-format
 msgid "&Updates (Fetching…)"
 msgstr ""
 
-#: discover/qml/DiscoverWindow.qml:95
+#: discover/qml/DiscoverWindow.qml:97
 #, fuzzy, kde-format
-#| msgctxt "Update section name"
-#| msgid "Update (%1)"
-msgid "&Updates (%1)"
-msgstr "Uuendused (%1)"
+#| msgid "Updates"
+msgid "&Updates"
+msgstr "Uuendused"
 
-#: discover/qml/DiscoverWindow.qml:103
+#: discover/qml/DiscoverWindow.qml:105
 #, fuzzy, kde-format
 #| msgid "About"
 msgid "&About"
 msgstr "Teave"
 
-#: discover/qml/DiscoverWindow.qml:111
+#: discover/qml/DiscoverWindow.qml:113
 #, fuzzy, kde-format
 #| msgid "Settings"
 msgid "S&ettings"
 msgstr "Seadistused"
 
-#: discover/qml/DiscoverWindow.qml:164 discover/qml/DiscoverWindow.qml:346
-#: discover/qml/DiscoverWindow.qml:458
+#: discover/qml/DiscoverWindow.qml:166 discover/qml/DiscoverWindow.qml:348
+#: discover/qml/DiscoverWindow.qml:460
 #, kde-format
 msgid "Error"
 msgstr ""
 
-#: discover/qml/DiscoverWindow.qml:168
+#: discover/qml/DiscoverWindow.qml:170
 #, kde-format
 msgid "Unable to find resource: %1"
 msgstr "Ressurssi ei leitud: %1"
 
-#: discover/qml/DiscoverWindow.qml:266 discover/qml/SourcesPage.qml:195
+#: discover/qml/DiscoverWindow.qml:268 discover/qml/SourcesPage.qml:195
 #, kde-format
 msgid "Proceed"
 msgstr "Edasi"
 
-#: discover/qml/DiscoverWindow.qml:324
+#: discover/qml/DiscoverWindow.qml:326
 #, kde-format
 msgctxt "@info %1 is the name of the operating system"
 msgid "Report this issue to %1"
 msgstr ""
 
-#: discover/qml/DiscoverWindow.qml:346
+#: discover/qml/DiscoverWindow.qml:348
 #, fuzzy, kde-format
 #| msgid "Votes: %1 out of %2"
 msgid "Error %1 of %2"
 msgstr "Hääli: %1 / %2"
 
-#: discover/qml/DiscoverWindow.qml:346 discover/qml/UpdatesPage.qml:47
+#: discover/qml/DiscoverWindow.qml:348 discover/qml/UpdatesPage.qml:47
 #, kde-format
 msgid "Update Issue"
 msgstr "Uuenda"
 
-#: discover/qml/DiscoverWindow.qml:357
+#: discover/qml/DiscoverWindow.qml:359
 #, kde-format
 msgid ""
 "There was an issue during the update or installation process. Please try "
 "again later."
 msgstr ""
 
-#: discover/qml/DiscoverWindow.qml:393
+#: discover/qml/DiscoverWindow.qml:395
 #, kde-format
 msgctxt "@action:button"
 msgid "Show Previous"
 msgstr ""
 
-#: discover/qml/DiscoverWindow.qml:404
+#: discover/qml/DiscoverWindow.qml:406
 #, fuzzy, kde-format
 #| msgid "Show contents"
 msgctxt "@action:button"
 msgid "Show Next"
 msgstr "Sisu näitamine"
 
-#: discover/qml/DiscoverWindow.qml:416 discover/qml/UpdatesPage.qml:69
+#: discover/qml/DiscoverWindow.qml:418 discover/qml/UpdatesPage.qml:69
 #, fuzzy, kde-format
 #| msgid "Show technical packages"
 msgid "See Technical Details"
 msgstr "Tehniliste pakettide näitamine"
 
-#: discover/qml/DiscoverWindow.qml:424
+#: discover/qml/DiscoverWindow.qml:426
 #, kde-format
 msgid "Copy to Clipboard"
 msgstr ""
@@ -1546,6 +1559,12 @@ msgid "Time of last update unknown"
 msgstr ""
 
 #, fuzzy
+#~| msgctxt "Update section name"
+#~| msgid "Update (%1)"
+#~ msgid "&Updates (%1)"
+#~ msgstr "Uuendused (%1)"
+
+#, fuzzy
 #~| msgid "Donate:"
 #~ msgid "Donate"
 #~ msgstr "Annetus:"
@@ -1586,12 +1605,6 @@ msgstr ""
 
 #~ msgid "Featured"
 #~ msgstr "Esile tõstetud"
-
-#, fuzzy
-#~| msgctxt "@info"
-#~| msgid "No updates are available"
-#~ msgid "Updates are available"
-#~ msgstr "Uuendusi pole"
 
 #, fuzzy
 #~| msgid "Show all"

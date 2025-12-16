@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: discover\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-27 00:44+0000\n"
+"POT-Creation-Date: 2025-12-15 00:43+0000\n"
 "PO-Revision-Date: 2025-03-15 10:38+0100\n"
 "Last-Translator: Oliver Kellogg <olivermkellogg@gmail.com>\n"
 "Language-Team: Esperanto <kde-i18n-eo@kde.org>\n"
@@ -289,7 +289,7 @@ msgstr "Aldoni Novan Deponejon %1"
 msgid "Add"
 msgstr "Aldoni"
 
-#: discover/qml/AddSourceDialog.qml:50 discover/qml/DiscoverWindow.qml:279
+#: discover/qml/AddSourceDialog.qml:50 discover/qml/DiscoverWindow.qml:281
 #: discover/qml/InstallApplicationButton.qml:51
 #: discover/qml/ProgressView.qml:152 discover/qml/SourcesPage.qml:201
 #: discover/qml/UpdatesPage.qml:303 discover/qml/WebflowDialog.qml:41
@@ -834,6 +834,18 @@ msgctxt "@action:button"
 msgid "Next Screenshot"
 msgstr "Sekva Ekrankopio"
 
+#: discover/qml/DiscoverDrawer.qml:166
+#, kde-format
+msgid "Security updates available"
+msgstr ""
+
+#: discover/qml/DiscoverDrawer.qml:167
+#, fuzzy, kde-format
+#| msgctxt "@action:button as in, 'update all items'"
+#| msgid "Update All"
+msgid "Updates available"
+msgstr "Ĝisdatigi Ĉion"
+
 #: discover/qml/DiscoverWindow.qml:47
 #, kde-format
 msgid "Running as <em>root</em> is discouraged and unnecessary."
@@ -854,43 +866,44 @@ msgstr "&Serĉi"
 msgid "&Installed"
 msgstr "&Instalita"
 
-#: discover/qml/DiscoverWindow.qml:95
+#: discover/qml/DiscoverWindow.qml:96
 #, kde-format
 msgid "&Updates (Fetching…)"
 msgstr "Ĝisdatig&oj (Alprenado…)"
 
-#: discover/qml/DiscoverWindow.qml:95
-#, kde-format
-msgid "&Updates (%1)"
-msgstr "Ĝisdatig&oj (%1)"
+#: discover/qml/DiscoverWindow.qml:97
+#, fuzzy, kde-format
+#| msgid "Updates"
+msgid "&Updates"
+msgstr "Ĝisdatigoj"
 
-#: discover/qml/DiscoverWindow.qml:103
+#: discover/qml/DiscoverWindow.qml:105
 #, kde-format
 msgid "&About"
 msgstr "&Pri"
 
-#: discover/qml/DiscoverWindow.qml:111
+#: discover/qml/DiscoverWindow.qml:113
 #, kde-format
 msgid "S&ettings"
 msgstr "&Agordoj"
 
-#: discover/qml/DiscoverWindow.qml:164 discover/qml/DiscoverWindow.qml:346
-#: discover/qml/DiscoverWindow.qml:458
+#: discover/qml/DiscoverWindow.qml:166 discover/qml/DiscoverWindow.qml:348
+#: discover/qml/DiscoverWindow.qml:460
 #, kde-format
 msgid "Error"
 msgstr "Eraro"
 
-#: discover/qml/DiscoverWindow.qml:168
+#: discover/qml/DiscoverWindow.qml:170
 #, kde-format
 msgid "Unable to find resource: %1"
 msgstr "Ne eblas trovi rimedon: %1"
 
-#: discover/qml/DiscoverWindow.qml:266 discover/qml/SourcesPage.qml:195
+#: discover/qml/DiscoverWindow.qml:268 discover/qml/SourcesPage.qml:195
 #, kde-format
 msgid "Proceed"
 msgstr "Procedi"
 
-#: discover/qml/DiscoverWindow.qml:324
+#: discover/qml/DiscoverWindow.qml:326
 #, fuzzy, kde-format
 #| msgctxt "@action:button %1 is the distro name"
 #| msgid "Report This Issue to %1"
@@ -898,17 +911,17 @@ msgctxt "@info %1 is the name of the operating system"
 msgid "Report this issue to %1"
 msgstr "Raporti Ĉi Temon al %1"
 
-#: discover/qml/DiscoverWindow.qml:346
+#: discover/qml/DiscoverWindow.qml:348
 #, kde-format
 msgid "Error %1 of %2"
 msgstr "Eraro %1 el %2"
 
-#: discover/qml/DiscoverWindow.qml:346 discover/qml/UpdatesPage.qml:47
+#: discover/qml/DiscoverWindow.qml:348 discover/qml/UpdatesPage.qml:47
 #, kde-format
 msgid "Update Issue"
 msgstr "Ĝisdatigi Aferon"
 
-#: discover/qml/DiscoverWindow.qml:357
+#: discover/qml/DiscoverWindow.qml:359
 #, kde-format
 msgid ""
 "There was an issue during the update or installation process. Please try "
@@ -916,24 +929,24 @@ msgid ""
 msgstr ""
 "Estis problemo dum la ĝisdatiga aŭ instala procezo. Bonvolu reprovi poste."
 
-#: discover/qml/DiscoverWindow.qml:393
+#: discover/qml/DiscoverWindow.qml:395
 #, kde-format
 msgctxt "@action:button"
 msgid "Show Previous"
 msgstr "Montri Antaŭan"
 
-#: discover/qml/DiscoverWindow.qml:404
+#: discover/qml/DiscoverWindow.qml:406
 #, kde-format
 msgctxt "@action:button"
 msgid "Show Next"
 msgstr "Montri Sekvan"
 
-#: discover/qml/DiscoverWindow.qml:416 discover/qml/UpdatesPage.qml:69
+#: discover/qml/DiscoverWindow.qml:418 discover/qml/UpdatesPage.qml:69
 #, kde-format
 msgid "See Technical Details"
 msgstr "Vidi Teknikajn Detalojn"
 
-#: discover/qml/DiscoverWindow.qml:424
+#: discover/qml/DiscoverWindow.qml:426
 #, kde-format
 msgid "Copy to Clipboard"
 msgstr "Kopii al tondujo"
@@ -1533,6 +1546,9 @@ msgstr "Devus kontroli ĝisdatigojn"
 msgctxt "@info"
 msgid "Time of last update unknown"
 msgstr "Tempo de lasta ĝisdatigo nekonata"
+
+#~ msgid "&Updates (%1)"
+#~ msgstr "Ĝisdatig&oj (%1)"
 
 #, fuzzy
 #~| msgid "Please report this issue to the packagers of your distribution."

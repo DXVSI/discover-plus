@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-27 00:44+0000\n"
+"POT-Creation-Date: 2025-12-15 00:43+0000\n"
 "PO-Revision-Date: 2024-02-10 09:57-0600\n"
 "Last-Translator: A S Alam <aalam@punlinux.org>\n"
 "Language-Team: Punjabi <kde-i18n-doc@kde.org>\n"
@@ -264,7 +264,7 @@ msgstr "ਨਵੀਂ %1 ਰਿਪੋਜ਼ਟਰੀ ਜੋੜੋ"
 msgid "Add"
 msgstr "ਜੋੜੋ"
 
-#: discover/qml/AddSourceDialog.qml:50 discover/qml/DiscoverWindow.qml:279
+#: discover/qml/AddSourceDialog.qml:50 discover/qml/DiscoverWindow.qml:281
 #: discover/qml/InstallApplicationButton.qml:51
 #: discover/qml/ProgressView.qml:152 discover/qml/SourcesPage.qml:201
 #: discover/qml/UpdatesPage.qml:303 discover/qml/WebflowDialog.qml:41
@@ -797,6 +797,18 @@ msgctxt "@action:button"
 msgid "Next Screenshot"
 msgstr "ਅਗਲਾ ਸਕਰੀਨਸ਼ਾਟ"
 
+#: discover/qml/DiscoverDrawer.qml:166
+#, fuzzy, kde-format
+#| msgid "Updates are available"
+msgid "Security updates available"
+msgstr "ਅੱਪਡੇਟ ਮੌਜੂਦ ਹਨ"
+
+#: discover/qml/DiscoverDrawer.qml:167
+#, fuzzy, kde-format
+#| msgid "Updates are available"
+msgid "Updates available"
+msgstr "ਅੱਪਡੇਟ ਮੌਜੂਦ ਹਨ"
+
 #: discover/qml/DiscoverWindow.qml:47
 #, kde-format
 msgid "Running as <em>root</em> is discouraged and unnecessary."
@@ -817,45 +829,44 @@ msgstr "ਖੋਜੋ(&S)"
 msgid "&Installed"
 msgstr "ਇੰਸਟਾਲ ਹਨ(&I)"
 
-#: discover/qml/DiscoverWindow.qml:95
+#: discover/qml/DiscoverWindow.qml:96
 #, kde-format
 msgid "&Updates (Fetching…)"
 msgstr ""
 
-#: discover/qml/DiscoverWindow.qml:95
+#: discover/qml/DiscoverWindow.qml:97
 #, fuzzy, kde-format
-#| msgid "&Update (%1)"
-#| msgid_plural "&Updates (%1)"
-msgid "&Updates (%1)"
-msgstr "ਅੱਪਡੇਟ (%1)(&U)"
+#| msgid "Updates"
+msgid "&Updates"
+msgstr "ਅੱਪਡੇਟ"
 
-#: discover/qml/DiscoverWindow.qml:103
+#: discover/qml/DiscoverWindow.qml:105
 #, kde-format
 msgid "&About"
 msgstr "ਇਸ ਬਾਰੇ(&A)"
 
-#: discover/qml/DiscoverWindow.qml:111
+#: discover/qml/DiscoverWindow.qml:113
 #, kde-format
 msgid "S&ettings"
 msgstr "ਸੈਟਿੰਗਾਂ(&e)"
 
-#: discover/qml/DiscoverWindow.qml:164 discover/qml/DiscoverWindow.qml:346
-#: discover/qml/DiscoverWindow.qml:458
+#: discover/qml/DiscoverWindow.qml:166 discover/qml/DiscoverWindow.qml:348
+#: discover/qml/DiscoverWindow.qml:460
 #, kde-format
 msgid "Error"
 msgstr "ਗਲਤੀ"
 
-#: discover/qml/DiscoverWindow.qml:168
+#: discover/qml/DiscoverWindow.qml:170
 #, kde-format
 msgid "Unable to find resource: %1"
 msgstr "ਸਰੋਤ ਲੱਭਣ ਲਈ ਅਸਮਰੱਥ: %1"
 
-#: discover/qml/DiscoverWindow.qml:266 discover/qml/SourcesPage.qml:195
+#: discover/qml/DiscoverWindow.qml:268 discover/qml/SourcesPage.qml:195
 #, kde-format
 msgid "Proceed"
 msgstr "ਜਾਰੀ ਰੱਖੋ"
 
-#: discover/qml/DiscoverWindow.qml:324
+#: discover/qml/DiscoverWindow.qml:326
 #, fuzzy, kde-format
 #| msgctxt "@action:button %1 is the distro name"
 #| msgid "Report This Issue to %1"
@@ -863,17 +874,17 @@ msgctxt "@info %1 is the name of the operating system"
 msgid "Report this issue to %1"
 msgstr "ਇਹ ਮਸਲੇ ਬਾਰੇ %1 ਨੂੰ ਰਿਪੋਰਟ ਦਿਓ"
 
-#: discover/qml/DiscoverWindow.qml:346
+#: discover/qml/DiscoverWindow.qml:348
 #, kde-format
 msgid "Error %1 of %2"
 msgstr "%2 ਵਿੱਚ %1 ਗਲਤੀ"
 
-#: discover/qml/DiscoverWindow.qml:346 discover/qml/UpdatesPage.qml:47
+#: discover/qml/DiscoverWindow.qml:348 discover/qml/UpdatesPage.qml:47
 #, kde-format
 msgid "Update Issue"
 msgstr "ਅੱਪਡੇਟ ਮਸਲਾ"
 
-#: discover/qml/DiscoverWindow.qml:357
+#: discover/qml/DiscoverWindow.qml:359
 #, fuzzy, kde-format
 #| msgid "There was an issue installing this update. Please try again later."
 msgid ""
@@ -881,24 +892,24 @@ msgid ""
 "again later."
 msgstr "ਇਹ ਅੱਪਡੇਟ ਇੰਸਟਾਲ ਕਰਨ ਦੌਰਾਨ ਮਸਲਾ ਹੋ ਗਿਆ ਹੈ। ਬਾਅਦ ਵਿੱਚ ਫੇਰ ਕੋਸ਼ਿਸ਼ ਕਰੋ।"
 
-#: discover/qml/DiscoverWindow.qml:393
+#: discover/qml/DiscoverWindow.qml:395
 #, kde-format
 msgctxt "@action:button"
 msgid "Show Previous"
 msgstr "ਪਿਛਲਾ ਵੇਖਾਓ"
 
-#: discover/qml/DiscoverWindow.qml:404
+#: discover/qml/DiscoverWindow.qml:406
 #, kde-format
 msgctxt "@action:button"
 msgid "Show Next"
 msgstr "ਅਗਲਾ ਵੇਖਾਓ"
 
-#: discover/qml/DiscoverWindow.qml:416 discover/qml/UpdatesPage.qml:69
+#: discover/qml/DiscoverWindow.qml:418 discover/qml/UpdatesPage.qml:69
 #, kde-format
 msgid "See Technical Details"
 msgstr "ਤਕਨੀਕੀ ਵੇਰਵੇ ਵੇਖੋ"
 
-#: discover/qml/DiscoverWindow.qml:424
+#: discover/qml/DiscoverWindow.qml:426
 #, kde-format
 msgid "Copy to Clipboard"
 msgstr "ਕਲਿੱਪਬੋਰਡ ਵਿੱਚ ਕਾਪੀ ਕਰੋ"
@@ -1496,6 +1507,12 @@ msgctxt "@info"
 msgid "Time of last update unknown"
 msgstr "ਆਖਰੀ ਅੱਪਡੇਟ ਦਾ ਸਮਾਂ ਪਤਾ ਨਹੀ ਹੈ"
 
+#, fuzzy
+#~| msgid "&Update (%1)"
+#~| msgid_plural "&Updates (%1)"
+#~ msgid "&Updates (%1)"
+#~ msgstr "ਅੱਪਡੇਟ (%1)(&U)"
+
 #~ msgid "Report This Issue"
 #~ msgstr "ਇਸ ਮਸਲੇ ਬਾਰੇ ਰਿਪੋਰਟ ਕਰੋ"
 
@@ -1574,9 +1591,6 @@ msgstr "ਆਖਰੀ ਅੱਪਡੇਟ ਦਾ ਸਮਾਂ ਪਤਾ ਨਹੀ 
 
 #~ msgid "Featured"
 #~ msgstr "ਫ਼ੀਚਰ"
-
-#~ msgid "Updates are available"
-#~ msgstr "ਅੱਪਡੇਟ ਮੌਜੂਦ ਹਨ"
 
 #~ msgctxt "Short for 'show updates'"
 #~ msgid "Show"

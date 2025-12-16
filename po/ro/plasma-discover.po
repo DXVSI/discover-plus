@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-27 00:44+0000\n"
+"POT-Creation-Date: 2025-12-15 00:43+0000\n"
 "PO-Revision-Date: 2024-06-09 11:25+0100\n"
 "Last-Translator: Sergiu Bivol <sergiu@cip.md>\n"
 "Language-Team: Romanian <kde-i18n-ro@kde.org>\n"
@@ -293,7 +293,7 @@ msgstr "Adaugă depozit %1 nou"
 msgid "Add"
 msgstr "Adaugă"
 
-#: discover/qml/AddSourceDialog.qml:50 discover/qml/DiscoverWindow.qml:279
+#: discover/qml/AddSourceDialog.qml:50 discover/qml/DiscoverWindow.qml:281
 #: discover/qml/InstallApplicationButton.qml:51
 #: discover/qml/ProgressView.qml:152 discover/qml/SourcesPage.qml:201
 #: discover/qml/UpdatesPage.qml:303 discover/qml/WebflowDialog.qml:41
@@ -877,6 +877,18 @@ msgctxt "@action:button"
 msgid "Next Screenshot"
 msgstr "Captura următoare"
 
+#: discover/qml/DiscoverDrawer.qml:166
+#, fuzzy, kde-format
+#| msgid "Updates are available"
+msgid "Security updates available"
+msgstr "Sunt disponibile actualizări"
+
+#: discover/qml/DiscoverDrawer.qml:167
+#, fuzzy, kde-format
+#| msgid "Updates are available"
+msgid "Updates available"
+msgstr "Sunt disponibile actualizări"
+
 #: discover/qml/DiscoverWindow.qml:47
 #, kde-format
 msgid "Running as <em>root</em> is discouraged and unnecessary."
@@ -897,45 +909,44 @@ msgstr "&Caută"
 msgid "&Installed"
 msgstr "&Instalat"
 
-#: discover/qml/DiscoverWindow.qml:95
+#: discover/qml/DiscoverWindow.qml:96
 #, kde-format
 msgid "&Updates (Fetching…)"
 msgstr ""
 
-#: discover/qml/DiscoverWindow.qml:95
+#: discover/qml/DiscoverWindow.qml:97
 #, fuzzy, kde-format
-#| msgid "&Update (%1)"
-#| msgid_plural "&Updates (%1)"
-msgid "&Updates (%1)"
-msgstr "Act&ualizare (%1)"
+#| msgid "Updates"
+msgid "&Updates"
+msgstr "Actualizări"
 
-#: discover/qml/DiscoverWindow.qml:103
+#: discover/qml/DiscoverWindow.qml:105
 #, kde-format
 msgid "&About"
 msgstr "&Despre"
 
-#: discover/qml/DiscoverWindow.qml:111
+#: discover/qml/DiscoverWindow.qml:113
 #, kde-format
 msgid "S&ettings"
 msgstr "&Configurări"
 
-#: discover/qml/DiscoverWindow.qml:164 discover/qml/DiscoverWindow.qml:346
-#: discover/qml/DiscoverWindow.qml:458
+#: discover/qml/DiscoverWindow.qml:166 discover/qml/DiscoverWindow.qml:348
+#: discover/qml/DiscoverWindow.qml:460
 #, kde-format
 msgid "Error"
 msgstr "Eroare"
 
-#: discover/qml/DiscoverWindow.qml:168
+#: discover/qml/DiscoverWindow.qml:170
 #, kde-format
 msgid "Unable to find resource: %1"
 msgstr "Nu s-a putut găsi resursa: %1"
 
-#: discover/qml/DiscoverWindow.qml:266 discover/qml/SourcesPage.qml:195
+#: discover/qml/DiscoverWindow.qml:268 discover/qml/SourcesPage.qml:195
 #, kde-format
 msgid "Proceed"
 msgstr "Continuă"
 
-#: discover/qml/DiscoverWindow.qml:324
+#: discover/qml/DiscoverWindow.qml:326
 #, fuzzy, kde-format
 #| msgctxt "@action:button %1 is the distro name"
 #| msgid "Report This Issue to %1"
@@ -943,17 +954,17 @@ msgctxt "@info %1 is the name of the operating system"
 msgid "Report this issue to %1"
 msgstr "Raportează această problemă la %1"
 
-#: discover/qml/DiscoverWindow.qml:346
+#: discover/qml/DiscoverWindow.qml:348
 #, kde-format
 msgid "Error %1 of %2"
 msgstr "Eroarea %1 din %2"
 
-#: discover/qml/DiscoverWindow.qml:346 discover/qml/UpdatesPage.qml:47
+#: discover/qml/DiscoverWindow.qml:348 discover/qml/UpdatesPage.qml:47
 #, kde-format
 msgid "Update Issue"
 msgstr "Problemă cu actualizarea"
 
-#: discover/qml/DiscoverWindow.qml:357
+#: discover/qml/DiscoverWindow.qml:359
 #, fuzzy, kde-format
 #| msgid "There was an issue installing this update. Please try again later."
 msgid ""
@@ -963,24 +974,24 @@ msgstr ""
 "A intervenit o problemă la instalarea acestei actualizări. Reîncercați mai "
 "târziu."
 
-#: discover/qml/DiscoverWindow.qml:393
+#: discover/qml/DiscoverWindow.qml:395
 #, kde-format
 msgctxt "@action:button"
 msgid "Show Previous"
 msgstr "Arată precedenta"
 
-#: discover/qml/DiscoverWindow.qml:404
+#: discover/qml/DiscoverWindow.qml:406
 #, kde-format
 msgctxt "@action:button"
 msgid "Show Next"
 msgstr "Arată următoarea"
 
-#: discover/qml/DiscoverWindow.qml:416 discover/qml/UpdatesPage.qml:69
+#: discover/qml/DiscoverWindow.qml:418 discover/qml/UpdatesPage.qml:69
 #, kde-format
 msgid "See Technical Details"
 msgstr "Vezi detalii tehnice"
 
-#: discover/qml/DiscoverWindow.qml:424
+#: discover/qml/DiscoverWindow.qml:426
 #, kde-format
 msgid "Copy to Clipboard"
 msgstr "Copiază în clipboard"
@@ -1586,6 +1597,12 @@ msgid "Time of last update unknown"
 msgstr "Momentul ultimei actualizări e necunoscut"
 
 #, fuzzy
+#~| msgid "&Update (%1)"
+#~| msgid_plural "&Updates (%1)"
+#~ msgid "&Updates (%1)"
+#~ msgstr "Act&ualizare (%1)"
+
+#, fuzzy
 #~| msgid "Please report this issue to the packagers of your distribution."
 #~ msgctxt "@info %1 is an additional error reference"
 #~ msgid ""
@@ -1765,9 +1782,6 @@ msgstr "Momentul ultimei actualizări e necunoscut"
 
 #~ msgid "Featured"
 #~ msgstr "Promovat"
-
-#~ msgid "Updates are available"
-#~ msgstr "Sunt disponibile actualizări"
 
 #~ msgctxt "Short for 'show updates'"
 #~ msgid "Show"
