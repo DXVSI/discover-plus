@@ -414,6 +414,15 @@ QString FlatpakResource::origin() const
 
 QString FlatpakResource::displayOrigin() const
 {
+    const QString originName = m_origin.toLower();
+
+    // Return nice display names for known sources
+    if (originName.contains(QStringLiteral("flathub"))) {
+        return QStringLiteral("Flathub");
+    } else if (originName.contains(QStringLiteral("fedora"))) {
+        return QStringLiteral("Fedora Flatpaks");
+    }
+
     return !m_displayOrigin.isEmpty() ? m_displayOrigin : m_origin;
 }
 
@@ -701,6 +710,15 @@ QDate FlatpakResource::releaseDate() const
 
 QString FlatpakResource::sourceIcon() const
 {
+    const QString originName = origin().toLower();
+
+    // Different icons for different Flatpak sources
+    if (originName.contains(QStringLiteral("flathub"))) {
+        return QStringLiteral("flatpak-discover");
+    } else if (originName.contains(QStringLiteral("fedora"))) {
+        return QStringLiteral("org.fedoraproject.AnacondaInstaller");
+    }
+
     const auto sourceItem = backend()->sources()->sourceById(origin());
     if (!sourceItem) {
         qCWarning(LIBDISCOVER_BACKEND_FLATPAK_LOG) << "Could not find source " << origin();

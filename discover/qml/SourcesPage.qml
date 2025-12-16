@@ -326,7 +326,14 @@ DiscoverPage {
             Kirigami.ListSectionHeader {
                 Layout.fillWidth: true
 
-                visible: back.count > 0
+                // Only show if there are visible backends (excluding built-in Flatpak/PackageKit)
+                visible: {
+                    for (var i = 0; i < back.count; i++) {
+                        var item = back.itemAt(i)
+                        if (item && item.visible) return true
+                    }
+                    return false
+                }
                 text: i18n("Missing Backends")
             }
 
@@ -343,6 +350,9 @@ DiscoverPage {
                     required property int index
                     required property var model
                     required property string name
+
+                    // Hide Flatpak and PackageKit - they are built into Discover Plus
+                    visible: !name.toLowerCase().includes("flatpak") && !name.toLowerCase().includes("packagekit")
 
                     Layout.fillWidth: true
                     background: null

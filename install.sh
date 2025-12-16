@@ -60,6 +60,12 @@ echo -e "${YELLOW}Step 5: Installing Discover Plus...${NC}"
 sudo make install
 
 echo ""
+echo -e "${YELLOW}Step 6: Configuring offline updates...${NC}"
+sudo mkdir -p /etc/xdg
+echo '[Software]
+UseOfflineUpdates=true' | sudo tee /etc/xdg/discoverrc > /dev/null
+
+echo ""
 echo -e "${GREEN}=== Installation complete! ===${NC}"
 echo ""
 echo "Run: plasma-discover"

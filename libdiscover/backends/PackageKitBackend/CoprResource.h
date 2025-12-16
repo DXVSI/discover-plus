@@ -22,6 +22,7 @@ public:
     QString installedVersion() const override;
     QUrl homepage() override;
     QString author() const override;
+    QString sourceIcon() const override;
 
     AbstractResource::State state() override;
     QVariant icon() const override;

@@ -165,6 +165,11 @@ QString CoprResource::author() const
     return m_owner;
 }
 
+QString CoprResource::sourceIcon() const
+{
+    return QStringLiteral("cloud-upload");
+}
+
 void CoprResource::checkInstalledState()
 {
     // Store previous state to check if it actually changed

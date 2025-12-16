@@ -17,6 +17,7 @@ Makefile
 avail
 random_seed
 /build*/
+CLAUDE.md
 CMakeLists.txt.user*
 *.unc-backup*
 /build*/
