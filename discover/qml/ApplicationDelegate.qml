@@ -105,7 +105,7 @@ BasicAbstractCard {
                         implicitHeight: Kirigami.Units.iconSizes.smallMedium
                     }
                     QQC2.Label {
-                        text: root.application.origin
+                        text: root.application.displayOrigin
                         font: Kirigami.Theme.smallFont
                     }
                 }

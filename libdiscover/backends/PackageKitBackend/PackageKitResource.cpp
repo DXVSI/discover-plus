@@ -277,6 +277,21 @@ bool PackageKitResource::hasCategory(const QString & /*category*/) const
 
 AbstractResource::Type PackageKitResource::type() const
 {
+    // Show RPM Fusion packages as applications (except libs, devel, doc packages)
+    QString pkgid = availablePackageId().isEmpty() ? installedPackageId() : availablePackageId();
+    if (!pkgid.isEmpty()) {
+        QString repoName = PackageKit::Daemon::packageData(pkgid);
+        if (repoName.startsWith(QStringLiteral("rpmfusion-"))) {
+            QString pkgName = PackageKit::Daemon::packageName(pkgid);
+            // Filter out non-application packages
+            if (!pkgName.endsWith(QStringLiteral("-devel")) && !pkgName.endsWith(QStringLiteral("-libs")) && !pkgName.endsWith(QStringLiteral("-lib"))
+                && !pkgName.endsWith(QStringLiteral("-doc")) && !pkgName.endsWith(QStringLiteral("-docs")) && !pkgName.endsWith(QStringLiteral("-common"))
+                && !pkgName.endsWith(QStringLiteral("-data")) && !pkgName.startsWith(QStringLiteral("lib")) && !pkgName.startsWith(QStringLiteral("kmod-"))
+                && !pkgName.startsWith(QStringLiteral("akmod-"))) {
+                return Application;
+            }
+        }
+    }
     return System;
 }
 
@@ -483,6 +498,25 @@ QString PackageKitResource::sizeDescription()
 
 QString PackageKitResource::sourceIcon() const
 {
+    // Get repository name from package ID
+    QString pkgid = availablePackageId().isEmpty() ? installedPackageId() : availablePackageId();
+    if (!pkgid.isEmpty()) {
+        QString repoName = PackageKit::Daemon::packageData(pkgid);
+        // Clean up repo name
+        if (repoName.startsWith(QStringLiteral("installed:"))) {
+            repoName = repoName.mid(10);
+        }
+
+        // Return different icons based on repository
+        if (repoName.startsWith(QStringLiteral("rpmfusion-"))) {
+            return QStringLiteral("application-x-rpm");
+        } else if (repoName.startsWith(QStringLiteral("@copr:")) || repoName.startsWith(QStringLiteral("copr:"))) {
+            return QStringLiteral("cloud-upload");
+        } else if (repoName == QStringLiteral("fedora") || repoName == QStringLiteral("updates") || repoName == QStringLiteral("updates-testing")
+                   || repoName.isEmpty() || repoName == QStringLiteral("installed")) {
+            return QStringLiteral("fedora-logo-icon");
+        }
+    }
     return QStringLiteral("package-x-generic");
 }
 

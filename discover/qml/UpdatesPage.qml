@@ -546,9 +546,9 @@ DiscoverPage {
                     // Backend label and origin/remote
                     QQC2.Label {
                         Layout.fillWidth: true
-                        text: listItem.model.resource.origin.length === 0 ? listItem.model.resource.backend.displayName
+                        text: listItem.model.resource.displayOrigin.length === 0 ? listItem.model.resource.backend.displayName
                                 : i18nc("%1 is the backend that provides this app, %2 is the specific repository or address within that backend","%1 (%2)",
-                                        listItem.model.resource.backend.displayName, listItem.model.resource.origin)
+                                        listItem.model.resource.backend.displayName, listItem.model.resource.displayOrigin)
                         elide: Text.ElideRight
                         color: listItem.down ? Kirigami.Theme.highlightedTextColor : Kirigami.Theme.textColor
                     }
