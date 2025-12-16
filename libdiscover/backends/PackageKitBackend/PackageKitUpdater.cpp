@@ -15,6 +15,7 @@
 #include <QDBusMessage>
 #include <QDBusReply>
 #include <QDebug>
+#include <QIcon>
 #include <QSet>
 
 #include <KConfigGroup>
@@ -359,9 +360,35 @@ void PackageKitUpdater::prepare()
     Q_ASSERT(!m_transaction);
     const auto candidates = m_backend->upgradeablePackages();
     if (useOfflineUpdates() && !candidates.isEmpty()) {
-        m_upgrade->setCandidates(candidates);
+        // Separate packages with theme icons from system packages
+        QSet<AbstractResource *> appsWithIcons;
+        QSet<AbstractResource *> systemPackages;
 
-        m_toUpgrade = {m_upgrade};
+        for (auto resource : candidates) {
+            const QString pkgName = resource->packageName();
+            // Check if package has a theme icon
+            bool hasIcon = QIcon::hasThemeIcon(pkgName);
+            if (!hasIcon) {
+                // Try org.package.name format
+                QString orgName = QStringLiteral("org.") + QString(pkgName).replace(QLatin1Char('-'), QLatin1Char('.'));
+                hasIcon = QIcon::hasThemeIcon(orgName);
+            }
+
+            if (hasIcon) {
+                appsWithIcons.insert(resource);
+            } else {
+                systemPackages.insert(resource);
+            }
+        }
+
+        // Group only packages without icons
+        if (!systemPackages.isEmpty()) {
+            m_upgrade->setCandidates(systemPackages);
+            m_toUpgrade = appsWithIcons;
+            m_toUpgrade.insert(m_upgrade);
+        } else {
+            m_toUpgrade = candidates;
+        }
         connect(m_upgrade, &SystemUpgrade::updateSizeChanged, this, &PackageKitUpdater::checkFreeSpace);
     } else {
         m_toUpgrade = candidates;

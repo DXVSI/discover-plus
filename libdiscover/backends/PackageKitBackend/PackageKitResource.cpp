@@ -18,6 +18,7 @@
 #include <KShell>
 #include <PackageKit/Daemon>
 #include <QDebug>
+#include <QIcon>
 #include <QJsonArray>
 #include <QProcess>
 #include <appstream/AppStreamIntegration.h>
@@ -102,13 +103,24 @@ QUrl PackageKitResource::homepage()
 
 QVariant PackageKitResource::icon() const
 {
-    // Try to use package name as icon (e.g., "google-chrome" -> google-chrome icon)
-    // Falls back to generic icon if package-specific icon doesn't exist
-    const QString packageName = name();
-    if (!packageName.isEmpty()) {
-        return packageName;
+    const QString pkgName = packageName();
+    if (pkgName.isEmpty()) {
+        return QStringLiteral("applications-other");
     }
-    return QStringLiteral("applications-other");
+
+    // Try package name directly (works for discord, firefox, etc.)
+    if (QIcon::hasThemeIcon(pkgName)) {
+        return pkgName;
+    }
+
+    // Try org.package.name format (for telegram-desktop -> org.telegram.desktop)
+    QString orgName = QStringLiteral("org.") + QString(pkgName).replace(QLatin1Char('-'), QLatin1Char('.'));
+    if (QIcon::hasThemeIcon(orgName)) {
+        return orgName;
+    }
+
+    // Fallback to package name anyway (might resolve later)
+    return pkgName;
 }
 
 static QMap<QString, QString> s_translation = {
@@ -277,12 +289,25 @@ bool PackageKitResource::hasCategory(const QString & /*category*/) const
 
 AbstractResource::Type PackageKitResource::type() const
 {
+    const QString pkgName = packageName();
+
+    // If package has a theme icon, it's an application
+    if (!pkgName.isEmpty()) {
+        if (QIcon::hasThemeIcon(pkgName)) {
+            return Application;
+        }
+        // Try org.package.name format
+        QString orgName = QStringLiteral("org.") + QString(pkgName).replace(QLatin1Char('-'), QLatin1Char('.'));
+        if (QIcon::hasThemeIcon(orgName)) {
+            return Application;
+        }
+    }
+
     // Show RPM Fusion packages as applications (except libs, devel, doc packages)
     QString pkgid = availablePackageId().isEmpty() ? installedPackageId() : availablePackageId();
     if (!pkgid.isEmpty()) {
         QString repoName = PackageKit::Daemon::packageData(pkgid);
         if (repoName.startsWith(QStringLiteral("rpmfusion-"))) {
-            QString pkgName = PackageKit::Daemon::packageName(pkgid);
             // Filter out non-application packages
             if (!pkgName.endsWith(QStringLiteral("-devel")) && !pkgName.endsWith(QStringLiteral("-libs")) && !pkgName.endsWith(QStringLiteral("-lib"))
                 && !pkgName.endsWith(QStringLiteral("-doc")) && !pkgName.endsWith(QStringLiteral("-docs")) && !pkgName.endsWith(QStringLiteral("-common"))
