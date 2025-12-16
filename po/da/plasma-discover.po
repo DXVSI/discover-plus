@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-27 00:44+0000\n"
+"POT-Creation-Date: 2025-12-15 00:43+0000\n"
 "PO-Revision-Date: 2025-08-20 23:07+0200\n"
 "Last-Translator: Rasmus Rosendahl-Kaa <Rasmus@Rosendahl-kaa.name>\n"
 "Language-Team: Danish <kde-i18n-doc@kde.org>\n"
@@ -280,7 +280,7 @@ msgstr "Tilføj ny %1-softwarekilde"
 msgid "Add"
 msgstr "Tilføj"
 
-#: discover/qml/AddSourceDialog.qml:50 discover/qml/DiscoverWindow.qml:279
+#: discover/qml/AddSourceDialog.qml:50 discover/qml/DiscoverWindow.qml:281
 #: discover/qml/InstallApplicationButton.qml:51
 #: discover/qml/ProgressView.qml:152 discover/qml/SourcesPage.qml:201
 #: discover/qml/UpdatesPage.qml:303 discover/qml/WebflowDialog.qml:41
@@ -799,6 +799,20 @@ msgctxt "@action:button"
 msgid "Next Screenshot"
 msgstr "Næste skærmbillede"
 
+#: discover/qml/DiscoverDrawer.qml:166
+#, fuzzy, kde-format
+#| msgctxt "@info"
+#| msgid "No updates are available"
+msgid "Security updates available"
+msgstr "Ingen opdateringer er tilgængelige"
+
+#: discover/qml/DiscoverDrawer.qml:167
+#, fuzzy, kde-format
+#| msgctxt "@info"
+#| msgid "No updates are available"
+msgid "Updates available"
+msgstr "Ingen opdateringer er tilgængelige"
+
 #: discover/qml/DiscoverWindow.qml:47
 #, kde-format
 msgid "Running as <em>root</em> is discouraged and unnecessary."
@@ -819,43 +833,44 @@ msgstr "&Søg"
 msgid "&Installed"
 msgstr "&Installeret"
 
-#: discover/qml/DiscoverWindow.qml:95
+#: discover/qml/DiscoverWindow.qml:96
 #, kde-format
 msgid "&Updates (Fetching…)"
 msgstr "&Opdateringer (Henter…)"
 
-#: discover/qml/DiscoverWindow.qml:95
-#, kde-format
-msgid "&Updates (%1)"
-msgstr "&Opdateringer (%1)"
+#: discover/qml/DiscoverWindow.qml:97
+#, fuzzy, kde-format
+#| msgid "Updates"
+msgid "&Updates"
+msgstr "Opdateringer"
 
-#: discover/qml/DiscoverWindow.qml:103
+#: discover/qml/DiscoverWindow.qml:105
 #, kde-format
 msgid "&About"
 msgstr "&Om"
 
-#: discover/qml/DiscoverWindow.qml:111
+#: discover/qml/DiscoverWindow.qml:113
 #, kde-format
 msgid "S&ettings"
 msgstr "Ind&stillinger"
 
-#: discover/qml/DiscoverWindow.qml:164 discover/qml/DiscoverWindow.qml:346
-#: discover/qml/DiscoverWindow.qml:458
+#: discover/qml/DiscoverWindow.qml:166 discover/qml/DiscoverWindow.qml:348
+#: discover/qml/DiscoverWindow.qml:460
 #, kde-format
 msgid "Error"
 msgstr "Fejl"
 
-#: discover/qml/DiscoverWindow.qml:168
+#: discover/qml/DiscoverWindow.qml:170
 #, kde-format
 msgid "Unable to find resource: %1"
 msgstr "Kan ikke finde ressourcen: %1"
 
-#: discover/qml/DiscoverWindow.qml:266 discover/qml/SourcesPage.qml:195
+#: discover/qml/DiscoverWindow.qml:268 discover/qml/SourcesPage.qml:195
 #, kde-format
 msgid "Proceed"
 msgstr "Fortsæt"
 
-#: discover/qml/DiscoverWindow.qml:324
+#: discover/qml/DiscoverWindow.qml:326
 #, fuzzy, kde-format
 #| msgctxt "@action:button %1 is the distro name"
 #| msgid "Report This Issue to %1"
@@ -863,17 +878,17 @@ msgctxt "@info %1 is the name of the operating system"
 msgid "Report this issue to %1"
 msgstr "Rapportér denne fejl til %1"
 
-#: discover/qml/DiscoverWindow.qml:346
+#: discover/qml/DiscoverWindow.qml:348
 #, kde-format
 msgid "Error %1 of %2"
 msgstr "Fejl %1 ud af %2"
 
-#: discover/qml/DiscoverWindow.qml:346 discover/qml/UpdatesPage.qml:47
+#: discover/qml/DiscoverWindow.qml:348 discover/qml/UpdatesPage.qml:47
 #, kde-format
 msgid "Update Issue"
 msgstr "Opdateringsproblem"
 
-#: discover/qml/DiscoverWindow.qml:357
+#: discover/qml/DiscoverWindow.qml:359
 #, kde-format
 msgid ""
 "There was an issue during the update or installation process. Please try "
@@ -882,24 +897,24 @@ msgstr ""
 "Der opstod et problem under opdaterings- eller installationsprocessen. Prøv "
 "venligst igen senere."
 
-#: discover/qml/DiscoverWindow.qml:393
+#: discover/qml/DiscoverWindow.qml:395
 #, kde-format
 msgctxt "@action:button"
 msgid "Show Previous"
 msgstr "Vis forrige"
 
-#: discover/qml/DiscoverWindow.qml:404
+#: discover/qml/DiscoverWindow.qml:406
 #, kde-format
 msgctxt "@action:button"
 msgid "Show Next"
 msgstr "Vis næste"
 
-#: discover/qml/DiscoverWindow.qml:416 discover/qml/UpdatesPage.qml:69
+#: discover/qml/DiscoverWindow.qml:418 discover/qml/UpdatesPage.qml:69
 #, kde-format
 msgid "See Technical Details"
 msgstr "Se tekniske detaljer"
 
-#: discover/qml/DiscoverWindow.qml:424
+#: discover/qml/DiscoverWindow.qml:426
 #, kde-format
 msgid "Copy to Clipboard"
 msgstr "Kopiér til udklipsholderen"
@@ -1498,6 +1513,9 @@ msgctxt "@info"
 msgid "Time of last update unknown"
 msgstr "Tidspunkt for sidste opdatering ukendt"
 
+#~ msgid "&Updates (%1)"
+#~ msgstr "&Opdateringer (%1)"
+
 #, fuzzy
 #~| msgid "Please report this issue to the packagers of your distribution."
 #~ msgctxt "@info %1 is an additional error reference"
@@ -1552,12 +1570,6 @@ msgstr "Tidspunkt for sidste opdatering ukendt"
 
 #~ msgid "Featured"
 #~ msgstr "Udvalgte"
-
-#, fuzzy
-#~| msgctxt "@info"
-#~| msgid "No updates are available"
-#~ msgid "Updates are available"
-#~ msgstr "Ingen opdateringer er tilgængelige"
 
 #, fuzzy
 #~| msgid "Show all"

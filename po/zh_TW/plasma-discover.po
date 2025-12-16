@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-27 00:44+0000\n"
+"POT-Creation-Date: 2025-12-15 00:43+0000\n"
 "PO-Revision-Date: 2025-11-29 17:09+0900\n"
 "Last-Translator: Kisaragi Hiu <mail@kisaragi-hiu.com>\n"
 "Language-Team: Traditional Chinese <zh-l10n@lists.slat.org>\n"
@@ -273,7 +273,7 @@ msgstr "新增 %1 軟體庫"
 msgid "Add"
 msgstr "新增"
 
-#: discover/qml/AddSourceDialog.qml:50 discover/qml/DiscoverWindow.qml:279
+#: discover/qml/AddSourceDialog.qml:50 discover/qml/DiscoverWindow.qml:281
 #: discover/qml/InstallApplicationButton.qml:51
 #: discover/qml/ProgressView.qml:152 discover/qml/SourcesPage.qml:201
 #: discover/qml/UpdatesPage.qml:303 discover/qml/WebflowDialog.qml:41
@@ -821,6 +821,18 @@ msgctxt "@action:button"
 msgid "Next Screenshot"
 msgstr "下一張螢幕截圖"
 
+#: discover/qml/DiscoverDrawer.qml:166
+#, fuzzy, kde-format
+#| msgid "Updates are available"
+msgid "Security updates available"
+msgstr "有可用的更新"
+
+#: discover/qml/DiscoverDrawer.qml:167
+#, fuzzy, kde-format
+#| msgid "Updates are available"
+msgid "Updates available"
+msgstr "有可用的更新"
+
 #: discover/qml/DiscoverWindow.qml:47
 #, kde-format
 msgid "Running as <em>root</em> is discouraged and unnecessary."
@@ -841,83 +853,84 @@ msgstr "搜尋(&S)"
 msgid "&Installed"
 msgstr "已安裝(&I)"
 
-#: discover/qml/DiscoverWindow.qml:95
+#: discover/qml/DiscoverWindow.qml:96
 #, kde-format
 msgid "&Updates (Fetching…)"
 msgstr "取得更新中(&U)…"
 
-#: discover/qml/DiscoverWindow.qml:95
-#, kde-format
-msgid "&Updates (%1)"
-msgstr "%1 個更新(&U)"
+#: discover/qml/DiscoverWindow.qml:97
+#, fuzzy, kde-format
+#| msgid "Updates"
+msgid "&Updates"
+msgstr "更新"
 
-#: discover/qml/DiscoverWindow.qml:103
+#: discover/qml/DiscoverWindow.qml:105
 #, kde-format
 msgid "&About"
 msgstr "關於(&A)"
 
-#: discover/qml/DiscoverWindow.qml:111
+#: discover/qml/DiscoverWindow.qml:113
 #, kde-format
 msgid "S&ettings"
 msgstr "設定(&E)"
 
-#: discover/qml/DiscoverWindow.qml:164 discover/qml/DiscoverWindow.qml:346
-#: discover/qml/DiscoverWindow.qml:458
+#: discover/qml/DiscoverWindow.qml:166 discover/qml/DiscoverWindow.qml:348
+#: discover/qml/DiscoverWindow.qml:460
 #, kde-format
 msgid "Error"
 msgstr "錯誤"
 
-#: discover/qml/DiscoverWindow.qml:168
+#: discover/qml/DiscoverWindow.qml:170
 #, kde-format
 msgid "Unable to find resource: %1"
 msgstr "找不到資源：%1"
 
-#: discover/qml/DiscoverWindow.qml:266 discover/qml/SourcesPage.qml:195
+#: discover/qml/DiscoverWindow.qml:268 discover/qml/SourcesPage.qml:195
 #, kde-format
 msgid "Proceed"
 msgstr "繼續"
 
-#: discover/qml/DiscoverWindow.qml:324
+#: discover/qml/DiscoverWindow.qml:326
 #, kde-format
 msgctxt "@info %1 is the name of the operating system"
 msgid "Report this issue to %1"
 msgstr "回報此問題給 %1"
 
-#: discover/qml/DiscoverWindow.qml:346
+#: discover/qml/DiscoverWindow.qml:348
 #, kde-format
 msgid "Error %1 of %2"
 msgstr "%2 個錯誤中的第 %1 個"
 
-#: discover/qml/DiscoverWindow.qml:346 discover/qml/UpdatesPage.qml:47
+#: discover/qml/DiscoverWindow.qml:348 discover/qml/UpdatesPage.qml:47
 #, kde-format
 msgid "Update Issue"
 msgstr "更新時遇到問題"
 
-#: discover/qml/DiscoverWindow.qml:357
+#: discover/qml/DiscoverWindow.qml:359
 #, kde-format
 msgid ""
 "There was an issue during the update or installation process. Please try "
 "again later."
 msgstr "進行更新或安裝時遇到問題。請稍候再試。"
 
-#: discover/qml/DiscoverWindow.qml:393
+#: discover/qml/DiscoverWindow.qml:395
 #, kde-format
 msgctxt "@action:button"
 msgid "Show Previous"
 msgstr "顯示上一個"
 
-#: discover/qml/DiscoverWindow.qml:404
+#: discover/qml/DiscoverWindow.qml:406
 #, kde-format
 msgctxt "@action:button"
 msgid "Show Next"
 msgstr "顯示下一個"
 
-#: discover/qml/DiscoverWindow.qml:416 discover/qml/UpdatesPage.qml:69
+#: discover/qml/DiscoverWindow.qml:418 discover/qml/UpdatesPage.qml:69
 #, kde-format
 msgid "See Technical Details"
 msgstr "檢視技術細節"
 
-#: discover/qml/DiscoverWindow.qml:424
+#: discover/qml/DiscoverWindow.qml:426
 #, kde-format
 msgid "Copy to Clipboard"
 msgstr "複製到剪貼簿"
@@ -1523,6 +1536,9 @@ msgctxt "@info"
 msgid "Time of last update unknown"
 msgstr "無法得知最近的一次更新時間"
 
+#~ msgid "&Updates (%1)"
+#~ msgstr "%1 個更新(&U)"
+
 #, fuzzy
 #~| msgid "Please report this issue to the packagers of your distribution."
 #~ msgctxt "@info %1 is an additional error reference"
@@ -1686,9 +1702,6 @@ msgstr "無法得知最近的一次更新時間"
 
 #~ msgid "Featured"
 #~ msgstr "特色應用程式"
-
-#~ msgid "Updates are available"
-#~ msgstr "有可用的更新"
 
 #~ msgctxt "Short for 'show updates'"
 #~ msgid "Show"

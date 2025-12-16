@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-27 00:44+0000\n"
-"PO-Revision-Date: 2025-08-29 18:57+0200\n"
+"POT-Creation-Date: 2025-12-15 00:43+0000\n"
+"PO-Revision-Date: 2025-12-15 11:07+0100\n"
 "Last-Translator: Freek de Kruijf <freekdekruijf@kde.nl>\n"
 "Language-Team: \n"
 "Language: nl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Lokalize 25.08.0\n"
+"X-Generator: Lokalize 25.08.3\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 
 #: discover/DiscoverObject.cpp:183
@@ -286,7 +286,7 @@ msgstr "Een nieuwe repository %1 toevoegen"
 msgid "Add"
 msgstr "Toevoegen"
 
-#: discover/qml/AddSourceDialog.qml:50 discover/qml/DiscoverWindow.qml:279
+#: discover/qml/AddSourceDialog.qml:50 discover/qml/DiscoverWindow.qml:281
 #: discover/qml/InstallApplicationButton.qml:51
 #: discover/qml/ProgressView.qml:152 discover/qml/SourcesPage.qml:201
 #: discover/qml/UpdatesPage.qml:303 discover/qml/WebflowDialog.qml:41
@@ -860,6 +860,16 @@ msgctxt "@action:button"
 msgid "Next Screenshot"
 msgstr "Volgende schermafdruk"
 
+#: discover/qml/DiscoverDrawer.qml:166
+#, kde-format
+msgid "Security updates available"
+msgstr "Beveiligingsupdates beschikbaar"
+
+#: discover/qml/DiscoverDrawer.qml:167
+#, kde-format
+msgid "Updates available"
+msgstr "Bijwerkitems zijn beschikbaar"
+
 #: discover/qml/DiscoverWindow.qml:47
 #, kde-format
 msgid "Running as <em>root</em> is discouraged and unnecessary."
@@ -880,59 +890,59 @@ msgstr "&Zoeken"
 msgid "&Installed"
 msgstr "&Geïnstalleerd"
 
-#: discover/qml/DiscoverWindow.qml:95
+#: discover/qml/DiscoverWindow.qml:96
 #, kde-format
 msgid "&Updates (Fetching…)"
 msgstr "&Update (Ophalen…)"
 
-#: discover/qml/DiscoverWindow.qml:95
+#: discover/qml/DiscoverWindow.qml:97
 #, kde-format
-msgid "&Updates (%1)"
-msgstr "&Updates (%1)"
+msgid "&Updates"
+msgstr "&Elementen voor bijwerken"
 
-#: discover/qml/DiscoverWindow.qml:103
+#: discover/qml/DiscoverWindow.qml:105
 #, kde-format
 msgid "&About"
 msgstr "&Info over"
 
-#: discover/qml/DiscoverWindow.qml:111
+#: discover/qml/DiscoverWindow.qml:113
 #, kde-format
 msgid "S&ettings"
 msgstr "&Instellingen"
 
-#: discover/qml/DiscoverWindow.qml:164 discover/qml/DiscoverWindow.qml:346
-#: discover/qml/DiscoverWindow.qml:458
+#: discover/qml/DiscoverWindow.qml:166 discover/qml/DiscoverWindow.qml:348
+#: discover/qml/DiscoverWindow.qml:460
 #, kde-format
 msgid "Error"
 msgstr "Fout"
 
-#: discover/qml/DiscoverWindow.qml:168
+#: discover/qml/DiscoverWindow.qml:170
 #, kde-format
 msgid "Unable to find resource: %1"
 msgstr "Hulpbron '%1' kon niet worden gevonden"
 
-#: discover/qml/DiscoverWindow.qml:266 discover/qml/SourcesPage.qml:195
+#: discover/qml/DiscoverWindow.qml:268 discover/qml/SourcesPage.qml:195
 #, kde-format
 msgid "Proceed"
 msgstr "Verder gaan"
 
-#: discover/qml/DiscoverWindow.qml:324
+#: discover/qml/DiscoverWindow.qml:326
 #, kde-format
 msgctxt "@info %1 is the name of the operating system"
 msgid "Report this issue to %1"
 msgstr "Dit probleem rapporteren aan %1"
 
-#: discover/qml/DiscoverWindow.qml:346
+#: discover/qml/DiscoverWindow.qml:348
 #, kde-format
 msgid "Error %1 of %2"
 msgstr "Fout %1 van %2"
 
-#: discover/qml/DiscoverWindow.qml:346 discover/qml/UpdatesPage.qml:47
+#: discover/qml/DiscoverWindow.qml:348 discover/qml/UpdatesPage.qml:47
 #, kde-format
 msgid "Update Issue"
 msgstr "Probleem met update"
 
-#: discover/qml/DiscoverWindow.qml:357
+#: discover/qml/DiscoverWindow.qml:359
 #, kde-format
 msgid ""
 "There was an issue during the update or installation process. Please try "
@@ -941,24 +951,24 @@ msgstr ""
 "Er was een probleem tijdens het updaten of het installatieproces. Probeer "
 "het later nog eens."
 
-#: discover/qml/DiscoverWindow.qml:393
+#: discover/qml/DiscoverWindow.qml:395
 #, kde-format
 msgctxt "@action:button"
 msgid "Show Previous"
 msgstr "Vorige tonen"
 
-#: discover/qml/DiscoverWindow.qml:404
+#: discover/qml/DiscoverWindow.qml:406
 #, kde-format
 msgctxt "@action:button"
 msgid "Show Next"
 msgstr "Volgende tonen"
 
-#: discover/qml/DiscoverWindow.qml:416 discover/qml/UpdatesPage.qml:69
+#: discover/qml/DiscoverWindow.qml:418 discover/qml/UpdatesPage.qml:69
 #, kde-format
 msgid "See Technical Details"
 msgstr "Zie technische details"
 
-#: discover/qml/DiscoverWindow.qml:424
+#: discover/qml/DiscoverWindow.qml:426
 #, kde-format
 msgid "Copy to Clipboard"
 msgstr "Naar klembord kopiëren"
@@ -1578,6 +1588,9 @@ msgctxt "@info"
 msgid "Time of last update unknown"
 msgstr "Tijd van de laatste update is onbekend"
 
+#~ msgid "&Updates (%1)"
+#~ msgstr "&Updates (%1)"
+
 #~| msgid "Please report this issue to the packagers of your distribution."
 #~ msgctxt "@info %1 is an additional error reference"
 #~ msgid ""
@@ -1713,9 +1726,6 @@ msgstr "Tijd van de laatste update is onbekend"
 
 #~ msgid "Featured"
 #~ msgstr "Ondersteund"
-
-#~ msgid "Updates are available"
-#~ msgstr "Bijwerkitems zijn beschikbaar"
 
 #~ msgctxt "Short for 'show updates'"
 #~ msgid "Show"
