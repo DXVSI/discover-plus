@@ -223,4 +223,8 @@ private:
     QPointer<PKResultsStream> m_currentSearchStream;
     int m_coprOffset = 0;
     QString m_lastCoprSearchQuery;
+
+    // Batch loading: accumulate results from parallel initial requests
+    QList<CoprProjectInfo> m_coprBatchBuffer;
+    int m_coprBatchPending = 0;
 };

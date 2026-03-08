@@ -237,6 +237,9 @@ PackageKitBackend::PackageKitBackend(QObject *parent)
     m_coprClient = new CoprClient(this);
     connect(m_coprClient, &CoprClient::projectsFound, this, &PackageKitBackend::onCoprProjectsFound);
     connect(m_coprClient, &CoprClient::packagesFound, this, &PackageKitBackend::onCoprPackagesFound);
+    connect(m_coprClient, &CoprClient::errorOccurred, this, [](const QString &error) {
+        qCWarning(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "COPR error:" << error;
+    });
 
     // Hide the drivers category if there's no drivers
     connect(CategoryModel::global(), &CategoryModel::rootCategoriesChanged, this, [this] {
@@ -808,6 +811,12 @@ ResultsStream *PackageKitBackend::search(const AbstractResourcesBackend::Filters
             m_currentSearchStream = nullptr;
             m_lastCoprSearchQuery.clear();
             m_coprOffset = 0;
+            m_coprBatchPending = 0;
+            m_coprBatchBuffer.clear();
+
+            // Clean up old COPR resources to prevent memory accumulation
+            qDeleteAll(m_coprResources);
+            m_coprResources.clear();
         }
     }
 
@@ -831,9 +840,15 @@ ResultsStream *PackageKitBackend::search(const AbstractResourcesBackend::Filters
         m_currentSearchStream = stream;
         qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "Created and saved stream for COPR popular projects";
 
-        // Reset offset and clear search query for new session
+        // Reset state for new session
         m_coprOffset = 0;
         m_lastCoprSearchQuery.clear();
+        m_coprBatchPending = 0;
+        m_coprBatchBuffer.clear();
+
+        // Clean up old COPR resources to prevent memory accumulation
+        qDeleteAll(m_coprResources);
+        m_coprResources.clear();
 
         // Load popular projects asynchronously
         loadPopularCoprProjects();
@@ -856,8 +871,14 @@ ResultsStream *PackageKitBackend::search(const AbstractResourcesBackend::Filters
             }
         }
 
-        // Reset offset for new search
+        // Reset state for new search
         m_coprOffset = 0;
+        m_coprBatchPending = 0;
+        m_coprBatchBuffer.clear();
+
+        // Clean up old COPR resources to prevent memory accumulation
+        qDeleteAll(m_coprResources);
+        m_coprResources.clear();
 
         // Create and return a stream for COPR search results
         auto stream = PKResultsStream::create(this, QStringLiteral("COPR-search"));
@@ -1621,9 +1642,16 @@ void PackageKitBackend::searchCoprPackages(const QString &query)
     }
 
     qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "Searching COPR packages for query:" << query;
-    m_lastCoprSearchQuery = query; // Store the search query for relevance calculation
-    m_coprOffset = 0; // Reset offset for new search
-    m_coprClient->searchProjects(query, 20); // Search up to 20 projects for faster results
+    m_lastCoprSearchQuery = query;
+
+    // Batch load: 3 pages in parallel for better initial relevance sorting
+    m_coprBatchBuffer.clear();
+    m_coprBatchPending = 3;
+    m_coprOffset = 60; // 3 pages of 20 already requested
+
+    m_coprClient->searchProjects(query, 20, 0);
+    m_coprClient->searchProjects(query, 20, 20);
+    m_coprClient->searchProjects(query, 20, 40);
 }
 
 void PackageKitBackend::loadPopularCoprProjects()
@@ -1635,11 +1663,20 @@ void PackageKitBackend::loadPopularCoprProjects()
 
     qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "Loading COPR projects, offset:" << m_coprOffset;
 
-    // Load 30 projects at once for balanced speed and results
     // Start from offset 100 to skip test projects
-    m_coprClient->getLatestProjects(30, 100 + m_coprOffset);
-
-    m_coprOffset += 30;
+    if (m_coprOffset == 0) {
+        // First call: batch load 3 pages in parallel
+        m_coprBatchBuffer.clear();
+        m_coprBatchPending = 3;
+        m_coprClient->getLatestProjects(30, 100);
+        m_coprClient->getLatestProjects(30, 130);
+        m_coprClient->getLatestProjects(30, 160);
+        m_coprOffset = 90; // 3 pages of 30
+    } else {
+        // Subsequent calls: single page, append at bottom
+        m_coprClient->getLatestProjects(30, 100 + m_coprOffset);
+        m_coprOffset += 30;
+    }
 }
 
 void PackageKitBackend::loadMoreCoprProjects()
@@ -1654,16 +1691,10 @@ void PackageKitBackend::loadMoreCoprProjects()
 
     // Check if we're in search mode or browse mode
     if (!m_lastCoprSearchQuery.isEmpty()) {
-        // We're in search mode - load more search results
-        // Skip if offset is 0 as the initial search was already triggered
-        if (m_coprOffset == 0) {
-            qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "Skipping initial search request - already triggered";
-            m_coprOffset += 20; // Still increment for next batch
-            return;
-        }
+        // Search mode: single page append (initial batch already loaded 3 pages)
         qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "Loading more search results for query:" << m_lastCoprSearchQuery << "offset:" << m_coprOffset;
         m_coprClient->searchProjects(m_lastCoprSearchQuery, 20, m_coprOffset);
-        m_coprOffset += 20; // Increment offset for next batch
+        m_coprOffset += 20;
     } else {
         // We're in browse mode - load more popular projects
         loadPopularCoprProjects();
@@ -1674,14 +1705,29 @@ void PackageKitBackend::onCoprProjectsFound(const QList<CoprProjectInfo> &projec
 {
     qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "Found" << projects.size() << "COPR projects";
 
+    // Batch loading: accumulate results from parallel initial requests
+    if (m_coprBatchPending > 0) {
+        m_coprBatchBuffer.append(projects);
+        m_coprBatchPending--;
+        qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "COPR batch: accumulated" << projects.size() << "projects, pending:" << m_coprBatchPending;
+
+        if (m_coprBatchPending > 0) {
+            return; // Still waiting for more batch responses
+        }
+
+        qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "COPR batch complete:" << m_coprBatchBuffer.size() << "total projects";
+    }
+
+    // Use batch buffer if we just completed a batch, otherwise use incoming projects
+    const QList<CoprProjectInfo> &projectsToProcess = !m_coprBatchBuffer.isEmpty() ? m_coprBatchBuffer : projects;
+
     // Get the current search query if we're in search mode
     QString searchQuery = m_lastCoprSearchQuery;
 
-    // Create results only from THIS search response - don't mix with cached results
     QVector<StreamResult> results;
-    results.reserve(projects.size());
+    results.reserve(projectsToProcess.size());
 
-    for (const CoprProjectInfo &project : projects) {
+    for (const CoprProjectInfo &project : projectsToProcess) {
         QString key = QStringLiteral("%1/%2").arg(project.owner, project.name);
 
         // Calculate relevance score FIRST - filter out irrelevant results when searching
@@ -1758,7 +1804,7 @@ void PackageKitBackend::onCoprProjectsFound(const QList<CoprProjectInfo> &projec
 
             qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "Sending" << results.size() << "COPR results";
             Q_EMIT m_currentSearchStream->resourcesFound(results);
-        } else if (projects.isEmpty()) {
+        } else if (projectsToProcess.isEmpty()) {
             // No more projects from API - finish the stream to stop loading indicator
             qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "No more COPR projects, finishing stream";
             auto coprStream = qobject_cast<PKResultsStream *>(m_currentSearchStream.data());
@@ -1769,7 +1815,8 @@ void PackageKitBackend::onCoprProjectsFound(const QList<CoprProjectInfo> &projec
         // If projects were received but all filtered out, don't finish - try loading more
     }
 
-    qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "COPR: processed" << results.size() << "relevant results from" << projects.size() << "projects";
+    qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "COPR: processed" << results.size() << "relevant results from" << projectsToProcess.size() << "projects";
+    m_coprBatchBuffer.clear();
 }
 
 void PackageKitBackend::onCoprPackagesFound(const QList<CoprPackageInfo> &packages)

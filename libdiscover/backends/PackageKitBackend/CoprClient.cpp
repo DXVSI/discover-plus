@@ -88,7 +88,6 @@ void CoprClient::getLatestProjects(int limit, int offset)
 
 void CoprClient::getPopularProjects(int limit, int offset)
 {
-    // Deprecated - just use getLatestProjects instead
     getLatestProjects(limit, offset);
 }
 
@@ -127,102 +126,184 @@ void CoprClient::searchPackages(const QString &query, int limit)
 
 void CoprClient::cancelAllRequests()
 {
-    // Clear the request queue
     m_requestQueue.clear();
-    m_requestInProgress = false;
+    m_activeRequests = 0;
 
     qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "Cancelled all COPR pending requests";
 }
 
+void CoprClient::clearCache()
+{
+    m_cache.clear();
+    qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "COPR response cache cleared";
+}
+
 void CoprClient::queueRequest(const QUrl &url, const QString &requestType)
 {
+    QString urlString = url.toString();
+
+    // Check cache first
+    if (m_cache.contains(urlString)) {
+        const CacheEntry &entry = m_cache[urlString];
+        qint64 now = QDateTime::currentMSecsSinceEpoch();
+        if (now - entry.timestamp < CacheTtlMs) {
+            qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "COPR cache hit for:" << requestType;
+            QTimer::singleShot(0, this, [this, requestType, json = entry.data]() {
+                emitResultForRequest(requestType, json);
+            });
+            return;
+        }
+        m_cache.remove(urlString);
+    }
+
+    // Deduplication - skip if same URL already queued
+    for (const auto &queued : m_requestQueue) {
+        if (queued.first == url) {
+            qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "COPR request deduped:" << requestType;
+            return;
+        }
+    }
+
     m_requestQueue.enqueue(qMakePair(url, requestType));
     qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "Queued COPR request:" << requestType << "queue size:" << m_requestQueue.size();
 
-    if (!m_requestInProgress) {
+    if (m_activeRequests < MaxConcurrentRequests) {
         processNextRequest();
+    }
+}
+
+void CoprClient::emitResultForRequest(const QString &requestType, const QJsonObject &json)
+{
+    if (requestType == QStringLiteral("searchProjects") || requestType == QStringLiteral("getPopularProjects")
+        || requestType == QStringLiteral("getLatestProjects")) {
+        Q_EMIT projectsFound(parseProjectsResponse(json));
+    } else if (requestType == QStringLiteral("getProjectInfo")) {
+        Q_EMIT projectInfoReceived(parseProjectResponse(json));
+    } else if (requestType.startsWith(QStringLiteral("getProjectPackages:"))) {
+        QStringList parts = requestType.split(QLatin1Char(':'));
+        if (parts.size() >= 3) {
+            Q_EMIT packagesFound(parsePackagesResponse(json, parts[1], parts[2]));
+        }
     }
 }
 
 void CoprClient::processNextRequest()
 {
-    if (m_requestQueue.isEmpty()) {
-        m_requestInProgress = false;
+    if (m_requestQueue.isEmpty() || m_activeRequests >= MaxConcurrentRequests) {
         return;
     }
 
-    m_requestInProgress = true;
+    m_activeRequests++;
     auto request_data = m_requestQueue.dequeue();
     QUrl url = request_data.first;
     QString requestType = request_data.second;
+    QString urlString = url.toString();
 
-    qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "Processing COPR request via curl:" << requestType << "URL:" << url.toString();
+    qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "Processing COPR request via curl:" << requestType << "active:" << m_activeRequests
+                                                << "queued:" << m_requestQueue.size();
 
-    // Use curl to bypass TLS fingerprinting and anti-bot protection
     QProcess *curlProcess = new QProcess(this);
     curlProcess->setProperty("requestType", requestType);
 
-    connect(curlProcess, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), this, [this, curlProcess](int exitCode, QProcess::ExitStatus) {
-        QString requestType = curlProcess->property("requestType").toString();
-        QByteArray data = curlProcess->readAllStandardOutput();
+    connect(curlProcess,
+            QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished),
+            this,
+            [this, curlProcess, urlString](int exitCode, QProcess::ExitStatus) {
+                QString requestType = curlProcess->property("requestType").toString();
+                QByteArray data = curlProcess->readAllStandardOutput();
 
-        if (exitCode != 0 || data.isEmpty()) {
-            qWarning() << "COPR curl request failed for" << requestType << "exit code:" << exitCode;
-            if (requestType == QStringLiteral("searchProjects") || requestType == QStringLiteral("getPopularProjects")
-                || requestType == QStringLiteral("getLatestProjects")) {
-                Q_EMIT projectsFound(QList<CoprProjectInfo>());
-            } else if (requestType.startsWith(QStringLiteral("getProjectPackages:"))) {
-                Q_EMIT packagesFound(QList<CoprPackageInfo>());
-            }
-            curlProcess->deleteLater();
-            QTimer::singleShot(100, this, &CoprClient::processNextRequest);
-            return;
-        }
+                m_activeRequests--;
 
-        QJsonDocument doc = QJsonDocument::fromJson(data);
-        if (!doc.isObject()) {
-            qWarning() << "Invalid JSON from curl for" << requestType << "- data:" << data.left(200);
-            if (requestType == QStringLiteral("searchProjects") || requestType == QStringLiteral("getPopularProjects")
-                || requestType == QStringLiteral("getLatestProjects")) {
-                Q_EMIT projectsFound(QList<CoprProjectInfo>());
-            } else if (requestType.startsWith(QStringLiteral("getProjectPackages:"))) {
-                Q_EMIT packagesFound(QList<CoprPackageInfo>());
-            }
-            curlProcess->deleteLater();
-            QTimer::singleShot(100, this, &CoprClient::processNextRequest);
-            return;
-        }
+                if (exitCode != 0 || data.isEmpty()) {
+                    // curl exit code 28 = timeout
+                    QString errorMsg =
+                        exitCode == 28 ? QStringLiteral("COPR request timed out") : QStringLiteral("COPR request failed (exit code: %1)").arg(exitCode);
+                    qWarning() << errorMsg << "for" << requestType;
+                    Q_EMIT errorOccurred(errorMsg);
 
-        QJsonObject json = doc.object();
+                    if (requestType == QStringLiteral("searchProjects") || requestType == QStringLiteral("getPopularProjects")
+                        || requestType == QStringLiteral("getLatestProjects")) {
+                        Q_EMIT projectsFound(QList<CoprProjectInfo>());
+                    } else if (requestType.startsWith(QStringLiteral("getProjectPackages:"))) {
+                        Q_EMIT packagesFound(QList<CoprPackageInfo>());
+                    }
+                    curlProcess->deleteLater();
+                    processNextRequest();
+                    return;
+                }
 
-        if (requestType == QStringLiteral("searchProjects") || requestType == QStringLiteral("getPopularProjects")
-            || requestType == QStringLiteral("getLatestProjects")) {
-            QList<CoprProjectInfo> projects = parseProjectsResponse(json);
-            Q_EMIT projectsFound(projects);
-        } else if (requestType == QStringLiteral("getProjectInfo")) {
-            CoprProjectInfo project = parseProjectResponse(json);
-            Q_EMIT projectInfoReceived(project);
-        } else if (requestType.startsWith(QStringLiteral("getProjectPackages:"))) {
-            QStringList parts = requestType.split(QLatin1Char(':'));
-            if (parts.size() >= 3) {
-                QString owner = parts[1];
-                QString project = parts[2];
-                QList<CoprPackageInfo> packages = parsePackagesResponse(json, owner, project);
-                Q_EMIT packagesFound(packages);
-            }
-        }
+                QJsonDocument doc = QJsonDocument::fromJson(data);
+                if (!doc.isObject()) {
+                    qWarning() << "Invalid JSON from COPR for" << requestType << "- data:" << data.left(200);
+                    Q_EMIT errorOccurred(QStringLiteral("Invalid response from COPR API"));
 
-        curlProcess->deleteLater();
-        QTimer::singleShot(100, this, &CoprClient::processNextRequest);
-    });
+                    if (requestType == QStringLiteral("searchProjects") || requestType == QStringLiteral("getPopularProjects")
+                        || requestType == QStringLiteral("getLatestProjects")) {
+                        Q_EMIT projectsFound(QList<CoprProjectInfo>());
+                    } else if (requestType.startsWith(QStringLiteral("getProjectPackages:"))) {
+                        Q_EMIT packagesFound(QList<CoprPackageInfo>());
+                    }
+                    curlProcess->deleteLater();
+                    processNextRequest();
+                    return;
+                }
+
+                QJsonObject json = doc.object();
+
+                // Cache the successful response
+                m_cache[urlString] = CacheEntry{json, QDateTime::currentMSecsSinceEpoch()};
+
+                emitResultForRequest(requestType, json);
+
+                curlProcess->deleteLater();
+                processNextRequest();
+            });
 
     curlProcess->start(QStringLiteral("curl"),
                        {QStringLiteral("-s"),
                         QStringLiteral("-H"),
                         QStringLiteral("Accept: application/json"),
                         QStringLiteral("--max-time"),
-                        QStringLiteral("30"),
+                        QStringLiteral("15"),
                         url.toString()});
+
+    // Try to start more concurrent requests from the queue
+    if (!m_requestQueue.isEmpty() && m_activeRequests < MaxConcurrentRequests) {
+        processNextRequest();
+    }
+}
+
+QString CoprClient::convertMarkdownToHtml(const QString &markdown) const
+{
+    QString html = markdown;
+
+    // Convert image badges with nested links like [![alt](image)](url) to clickable images
+    html.replace(QRegularExpression(QStringLiteral("\\[!\\[([^\\]]*)\\]\\(([^\\)]+)\\)\\]\\(([^\\)]+)\\)")),
+                 QStringLiteral("<a href=\"\\3\"><img src=\"\\2\" alt=\"\\1\" height=\"20\"></a>"));
+
+    // Convert simple image badges like ![alt](url) to images
+    html.replace(QRegularExpression(QStringLiteral("!\\[([^\\]]*)\\]\\(([^\\)]+)\\)")), QStringLiteral("<img src=\"\\2\" alt=\"\\1\" height=\"20\">"));
+
+    // Convert markdown links [text](url) to HTML links
+    html.replace(QRegularExpression(QStringLiteral("\\[([^\\]]+)\\]\\(([^\\)]+)\\)")), QStringLiteral("<a href=\"\\2\">\\1</a>"));
+
+    // Convert headers (###, ##, #) to bold with sizes
+    html.replace(QRegularExpression(QStringLiteral("^#{3}\\s+(.*)$"), QRegularExpression::MultilineOption), QStringLiteral("<b>\\1</b>"));
+    html.replace(QRegularExpression(QStringLiteral("^#{2}\\s+(.*)$"), QRegularExpression::MultilineOption),
+                 QStringLiteral("<b style='font-size: 110%;'>\\1</b>"));
+    html.replace(QRegularExpression(QStringLiteral("^#\\s+(.*)$"), QRegularExpression::MultilineOption), QStringLiteral("<b style='font-size: 120%;'>\\1</b>"));
+
+    // Convert **text** to bold
+    html.replace(QRegularExpression(QStringLiteral("\\*\\*([^\\*]+)\\*\\*")), QStringLiteral("<b>\\1</b>"));
+
+    // Convert `code` to monospace
+    html.replace(QRegularExpression(QStringLiteral("`([^`]+)`")), QStringLiteral("<code>\\1</code>"));
+
+    // Convert line breaks, but keep paragraph spacing
+    html.replace(QStringLiteral("\n\n"), QStringLiteral("<br><br>"));
+    html.replace(QStringLiteral("\n"), QStringLiteral("<br>"));
+
+    return html;
 }
 
 QList<CoprProjectInfo> CoprClient::parseProjectsResponse(const QJsonObject &json)
@@ -237,65 +318,22 @@ QList<CoprProjectInfo> CoprClient::parseProjectsResponse(const QJsonObject &json
         CoprProjectInfo project;
         project.owner = obj.value(QStringLiteral("ownername")).toString();
         project.name = obj.value(QStringLiteral("name")).toString();
-
-        // The description from COPR API is in Markdown format
-        // We need to convert it to HTML for display
-        QString rawDesc = obj.value(QStringLiteral("description")).toString();
-
-        // Convert image badges with nested links like [![alt](image)](url) to clickable images
-        rawDesc.replace(QRegularExpression(QStringLiteral("\\[!\\[([^\\]]*)\\]\\(([^\\)]+)\\)\\]\\(([^\\)]+)\\)")),
-                       QStringLiteral("<a href=\"\\3\"><img src=\"\\2\" alt=\"\\1\" height=\"20\"></a>"));
-
-        // Convert simple image badges like ![alt](url) to images
-        rawDesc.replace(QRegularExpression(QStringLiteral("!\\[([^\\]]*)\\]\\(([^\\)]+)\\)")),
-                       QStringLiteral("<img src=\"\\2\" alt=\"\\1\" height=\"20\">"));
-
-        // Convert markdown links [text](url) to HTML links
-        rawDesc.replace(QRegularExpression(QStringLiteral("\\[([^\\]]+)\\]\\(([^\\)]+)\\)")),
-                       QStringLiteral("<a href=\"\\2\">\\1</a>"));
-
-        // Convert headers (###, ##, #) to bold with sizes
-        rawDesc.replace(QRegularExpression(QStringLiteral("^#{3}\\s+(.*)$"), QRegularExpression::MultilineOption),
-                       QStringLiteral("<b>\\1</b>"));
-        rawDesc.replace(QRegularExpression(QStringLiteral("^#{2}\\s+(.*)$"), QRegularExpression::MultilineOption),
-                       QStringLiteral("<b style='font-size: 110%;'>\\1</b>"));
-        rawDesc.replace(QRegularExpression(QStringLiteral("^#\\s+(.*)$"), QRegularExpression::MultilineOption),
-                       QStringLiteral("<b style='font-size: 120%;'>\\1</b>"));
-
-        // Convert **text** to bold
-        rawDesc.replace(QRegularExpression(QStringLiteral("\\*\\*([^\\*]+)\\*\\*")), QStringLiteral("<b>\\1</b>"));
-
-        // Convert `code` to monospace
-        rawDesc.replace(QRegularExpression(QStringLiteral("`([^`]+)`")), QStringLiteral("<code>\\1</code>"));
-
-        // Convert line breaks, but keep paragraph spacing
-        rawDesc.replace(QStringLiteral("\n\n"), QStringLiteral("<br><br>"));
-        rawDesc.replace(QStringLiteral("\n"), QStringLiteral("<br>"));
-
-        project.description = rawDesc;
-
+        project.description = convertMarkdownToHtml(obj.value(QStringLiteral("description")).toString());
         project.id = obj.value(QStringLiteral("id")).toInt();
         project.homepage = obj.value(QStringLiteral("homepage")).toString();
 
         // Try to get chroots from different possible fields
         QJsonObject chrootRepos = obj.value(QStringLiteral("chroot_repos")).toObject();
         if (!chrootRepos.isEmpty()) {
-            QStringList chrootKeys = chrootRepos.keys();
-            for (const QString &chroot : chrootKeys) {
-                project.chroots.append(chroot);
-            }
+            project.chroots = chrootRepos.keys();
         } else {
             // For search results, chroots might be in a different field
             QJsonArray chrootsArray = obj.value(QStringLiteral("chroots")).toArray();
-            if (!chrootsArray.isEmpty()) {
-                for (const QJsonValue &chrootVal : chrootsArray) {
-                    QString chrootName = chrootVal.toString();
-                    if (!chrootName.isEmpty()) {
-                        project.chroots.append(chrootName);
-                    }
+            for (const QJsonValue &chrootVal : chrootsArray) {
+                QString chrootName = chrootVal.toString();
+                if (!chrootName.isEmpty()) {
+                    project.chroots.append(chrootName);
                 }
-            } else {
-                qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "No chroots found for project:" << project.owner << "/" << project.name;
             }
         }
 
@@ -313,50 +351,11 @@ CoprProjectInfo CoprClient::parseProjectResponse(const QJsonObject &json)
 
     project.owner = obj.value(QStringLiteral("ownername")).toString();
     project.name = obj.value(QStringLiteral("name")).toString();
-
-    // The description from COPR API is in Markdown format
-    // We need to convert it to HTML for display
-    QString rawDesc = obj.value(QStringLiteral("description")).toString();
-
-    // Convert image badges with nested links like [![alt](image)](url) to clickable images
-    rawDesc.replace(QRegularExpression(QStringLiteral("\\[!\\[([^\\]]*)\\]\\(([^\\)]+)\\)\\]\\(([^\\)]+)\\)")),
-                   QStringLiteral("<a href=\"\\3\"><img src=\"\\2\" alt=\"\\1\" height=\"20\"></a>"));
-
-    // Convert simple image badges like ![alt](url) to images
-    rawDesc.replace(QRegularExpression(QStringLiteral("!\\[([^\\]]*)\\]\\(([^\\)]+)\\)")),
-                   QStringLiteral("<img src=\"\\2\" alt=\"\\1\" height=\"20\">"));
-
-    // Convert markdown links [text](url) to HTML links
-    rawDesc.replace(QRegularExpression(QStringLiteral("\\[([^\\]]+)\\]\\(([^\\)]+)\\)")),
-                   QStringLiteral("<a href=\"\\2\">\\1</a>"));
-
-    // Convert headers (###, ##, #) to bold with sizes
-    rawDesc.replace(QRegularExpression(QStringLiteral("^#{3}\\s+(.*)$"), QRegularExpression::MultilineOption),
-                   QStringLiteral("<b>\\1</b>"));
-    rawDesc.replace(QRegularExpression(QStringLiteral("^#{2}\\s+(.*)$"), QRegularExpression::MultilineOption),
-                   QStringLiteral("<b style='font-size: 110%;'>\\1</b>"));
-    rawDesc.replace(QRegularExpression(QStringLiteral("^#\\s+(.*)$"), QRegularExpression::MultilineOption),
-                   QStringLiteral("<b style='font-size: 120%;'>\\1</b>"));
-
-    // Convert **text** to bold
-    rawDesc.replace(QRegularExpression(QStringLiteral("\\*\\*([^\\*]+)\\*\\*")), QStringLiteral("<b>\\1</b>"));
-
-    // Convert `code` to monospace
-    rawDesc.replace(QRegularExpression(QStringLiteral("`([^`]+)`")), QStringLiteral("<code>\\1</code>"));
-
-    // Convert line breaks, but keep paragraph spacing
-    rawDesc.replace(QStringLiteral("\n\n"), QStringLiteral("<br><br>"));
-    rawDesc.replace(QStringLiteral("\n"), QStringLiteral("<br>"));
-
-    project.description = rawDesc;
-
+    project.description = convertMarkdownToHtml(obj.value(QStringLiteral("description")).toString());
     project.id = obj.value(QStringLiteral("id")).toInt();
     project.homepage = obj.value(QStringLiteral("homepage")).toString();
 
-    QStringList chrootKeys = obj.value(QStringLiteral("chroot_repos")).toObject().keys();
-    for (const QString &chroot : chrootKeys) {
-        project.chroots.append(chroot);
-    }
+    project.chroots = obj.value(QStringLiteral("chroot_repos")).toObject().keys();
 
     return project;
 }
@@ -396,7 +395,6 @@ QList<CoprPackageInfo> CoprClient::parsePackagesResponse(const QJsonObject &json
         // Get source info if available
         QJsonObject source = obj.value(QStringLiteral("source_dict")).toObject();
         if (!source.isEmpty()) {
-            QString sourceType = source.value(QStringLiteral("type")).toString();
             QString url = source.value(QStringLiteral("url")).toString();
             if (!url.isEmpty()) {
                 package.homepage = url;
