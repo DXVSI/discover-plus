@@ -582,40 +582,6 @@ DiscoverPage {
                     }
                 }
 
-                RowLayout {
-                    Layout.fillWidth: true
-                    spacing: Kirigami.Units.smallSpacing
-                    visible: listItem.model.extended
-
-                    QQC2.Label {
-                        Layout.leftMargin: Kirigami.Units.gridUnit
-                        text: i18n("Update from:")
-                        color: listItem.down ? Kirigami.Theme.highlightedTextColor : Kirigami.Theme.textColor
-                    }
-                    // Backend icon
-                    Kirigami.Icon {
-                        source: listItem.model.resource.sourceIcon
-                        implicitWidth: Kirigami.Units.iconSizes.smallMedium
-                        implicitHeight: Kirigami.Units.iconSizes.smallMedium
-                        selected: listItem.down
-                    }
-                    // Backend label and origin/remote
-                    QQC2.Label {
-                        Layout.fillWidth: true
-                        text: listItem.model.resource.displayOrigin.length === 0 ? listItem.model.resource.backend.displayName
-                                : listItem.model.resource.displayOrigin
-                        elide: Text.ElideRight
-                        color: listItem.down ? Kirigami.Theme.highlightedTextColor : Kirigami.Theme.textColor
-                    }
-
-                    QQC2.Button {
-                        id: moreInformationButton
-                        Layout.alignment: Qt.AlignRight
-                        text: i18n("More Information…")
-                        enabled: !resourcesUpdatesModel.isProgressing
-                        onClicked: Navigation.openApplication(listItem.model.resource)
-                    }
-                }
             }
 
             onClicked: {

@@ -133,6 +133,11 @@ int main(int argc, char **argv)
                     QStringLiteral("admin@leinir.dk"),
                     QStringLiteral("https://leinir.dk/"),
                     QStringLiteral("leinir"));
+    about.addAuthor(i18n("DXVSI"),
+                    i18n("Discover Plus fork maintainer"),
+                    QStringLiteral("dxvsi123@gmail.com"),
+                    QStringLiteral("https://t.me/dxvsi"),
+                    QStringLiteral("dxvsi"));
     about.setProductName("discover/discover");
     about.setProgramLogo(app.windowIcon());
 

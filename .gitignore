@@ -30,3 +30,6 @@ CMakeLists.txt.user*
 .idea
 .vscode
 /cmake-build*
+
+# Documentation (local only)
+/docs/
