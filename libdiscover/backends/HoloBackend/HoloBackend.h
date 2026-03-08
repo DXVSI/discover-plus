@@ -4,8 +4,8 @@
  *   SPDX-License-Identifier: GPL-2.0-only OR GPL-3.0-only OR LicenseRef-KDE-Accepted-GPL
  */
 
-#ifndef STEAMOSBACKEND_H
-#define STEAMOSBACKEND_H
+#ifndef HOLOBACKEND_H
+#define HOLOBACKEND_H
 
 #include <QDBusMessage>
 #include <QPointer>
@@ -15,14 +15,14 @@
 class ComSteampoweredAtomupd1Interface;
 class QDBusPendingCallWatcher;
 class StandardBackendUpdater;
-class SteamOSResource;
-class SteamOSTransaction;
+class HoloResource;
+class HoloTransaction;
 
-class SteamOSBackend : public AbstractResourcesBackend
+class HoloBackend : public AbstractResourcesBackend
 {
     Q_OBJECT
 public:
-    explicit SteamOSBackend(QObject *parent = nullptr);
+    explicit HoloBackend(QObject *parent = nullptr);
 
     // Status is one of these from the xml definition:
     //    0 = IDLE, the update has not been launched yet
@@ -44,7 +44,7 @@ public:
     AbstractBackendUpdater *backendUpdater() const override;
     AbstractReviewsBackend *reviewsBackend() const override;
     ResultsStream *search(const AbstractResourcesBackend::Filters &search) override;
-    QHash<QString, SteamOSResource *> resources() const;
+    QHash<QString, HoloResource *> resources() const;
     bool isValid() const override;
     Transaction *installApplication(AbstractResource *app) override;
     Transaction *installApplication(AbstractResource *app, const AddonList &addons) override;
@@ -75,9 +75,9 @@ private:
     bool fetchExistingTransaction();
 
     /* Helper to setup a Transaction and connect all signals/slots */
-    void setupTransaction(SteamOSResource *app);
+    void setupTransaction(HoloResource *app);
 
-    QHash<QString, SteamOSResource *> m_resources;
+    QHash<QString, HoloResource *> m_resources;
     StandardBackendUpdater *m_updater;
     uint m_fetching = 0;
 
@@ -85,15 +85,16 @@ private:
     QString m_updateBuildID; // Next build version.
     quint64 m_updateSize; // Estimated size of next update
 
-    QPointer<SteamOSResource> m_resource; // Since we only ever have one, cache it.
+    QPointer<HoloResource> m_resource; // Since we only ever have one, cache it.
 
     /* The current transaction in progress, if any */
-    SteamOSTransaction *m_transaction;
+    HoloTransaction *m_transaction;
 
     QPointer<ComSteampoweredAtomupd1Interface> m_interface; // Interface to atomupd dbus api
     QString m_currentVersion;
     QString m_currentBuildID;
+    QString m_label;
     bool m_testing;
 };
 
-#endif // STEAMOSBACKEND_H
+#endif // HOLOBACKEND_H

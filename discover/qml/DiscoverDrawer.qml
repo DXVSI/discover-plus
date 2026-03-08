@@ -170,22 +170,26 @@ Kirigami.GlobalDrawer {
         }
     ]
 
-    footer: ColumnLayout {
+    footer: QQC2.Control {
         readonly property int transactions: Discover.TransactionModel.count
         readonly property bool currentPageShowsTransactionProgressInline:
                applicationWindow().pageStack.currentItem instanceof ApplicationPage
             || applicationWindow().pageStack.currentItem instanceof ApplicationsListPage
             || applicationWindow().pageStack.currentItem instanceof UpdatesPage
 
-        spacing: 0
         visible: transactions > 1 || (transactions === 1 && !currentPageShowsTransactionProgressInline)
-
+        padding: Kirigami.Units.largeSpacing
         Kirigami.Separator {
             Layout.fillWidth: true
         }
 
-        ProgressView {
-            Layout.fillWidth: true
+        contentItem: ProgressView {}
+        Kirigami.Separator {
+            anchors {
+                left:parent.left
+                top: parent.top
+                right:parent.right
+            }
         }
 
         states: [

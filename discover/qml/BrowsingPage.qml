@@ -607,6 +607,55 @@ Kirigami.Page {
                 text: "KDE Plasma"
                 font.pixelSize: 12
                 color: "white"
+            wrapMode: Text.Wrap
+            visible: devRep.count > 0 && !featuredModel.isFetching
+        }
+
+        Repeater {
+            id: devRep
+            model: DiscoverApp.LimitedRowCountProxyModel {
+                pageSize: apps.maximumColumns
+                sourceModel: Discover.ResourcesProxyModel {
+                    filteredCategoryName: "Development"
+                    backendFilter: Discover.ResourcesModel.currentApplicationBackend
+                    sortRole: Discover.ResourcesProxyModel.SortableRatingRole
+                    sortOrder: Qt.DescendingOrder
+                }
+            }
+            delegate: GridApplicationDelegate {
+                visible: !featuredModel.isFetching
+                numberItemsOnPreviousLastRow: ((gamesHeading.visible && gamesRep.numberItemsOnLastRow) ||
+                                              (featuredHeading.visible && featuredRep.numberItemsOnLastRow) ||
+                                              (recentlyUpdatedHeading.visible && recentlyUpdatedRepeater.numberItemsOnLastRow) ||
+                                              (popHeading.visible && popRep.numberItemsOnLastRow) || 0)
+                count: devRep.count
+                columns: apps.columns
+                maxUp: 1
+                maxDown: 1
+            }
+            property int numberItemsOnLastRow: (count % apps.columns) || apps.columns
+        }
+
+        QQC2.Button {
+            text: i18nc("@action:button", "See More")
+            icon.name: Qt.application.layoutDirection === Qt.LeftToRight ? "go-next-symbolic" : "go-next-rtl-symbolic"
+            Layout.columnSpan: apps.columns
+            // Nicer to have the arrow on the side it's pointing to
+            LayoutMirroring.enabled: Qt.application.layoutDirection === Qt.LeftToRight
+            onClicked: Navigation.openCategory(Discover.CategoryModel.findCategoryByName("Development"))
+            visible: devRep.count > 0 && !featuredModel.isFetching
+            Keys.onUpPressed: {
+                var target = this
+                for (var i = 0; i<devRep.numberItemsOnLastRow; i++) {
+                    target = target.nextItemInFocusChain(false)
+                }
+                target.forceActiveFocus(Qt.TabFocusReason)
+            }
+            onFocusChanged: {
+                if (focus) {
+                    page.ensureVisible(this)
+                }
+>>>>>>> upstream/master
             }
         }
     }

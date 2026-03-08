@@ -444,9 +444,18 @@ DiscoverPage {
             }
 
             contentItem: ColumnLayout {
+                id: delegateLayout
+
+                readonly property int extraContentLeadingMargin:
+                    itemChecked.implicitWidth
+                    + itemIcon.implicitWidth
+                    + nameAndVersionColumn.Layout.leftMargin
+                    + (mainRow.spacing * 2)
+
                 spacing: Kirigami.Units.smallSpacing
 
                 RowLayout {
+                    id: mainRow
                     spacing: Kirigami.Units.smallSpacing
                     Layout.fillWidth: true
                     Layout.fillHeight: true
@@ -461,6 +470,7 @@ DiscoverPage {
                     }
 
                     Kirigami.Icon {
+                        id: itemIcon
                         Layout.preferredWidth: Kirigami.Units.iconSizes.medium
                         Layout.preferredHeight: Kirigami.Units.iconSizes.medium
                         source: listItem.model.decoration
@@ -469,6 +479,7 @@ DiscoverPage {
                     }
 
                     ColumnLayout {
+                        id: nameAndVersionColumn
                         Layout.fillWidth: true
                         Layout.leftMargin: Kirigami.Units.smallSpacing
                         Layout.alignment: Qt.AlignVCenter
@@ -507,8 +518,53 @@ DiscoverPage {
                     }
                 }
 
+                RowLayout {
+                    Layout.fillWidth: true
+                    Layout.leftMargin: delegateLayout.extraContentLeadingMargin
+                    spacing: 0
+                    visible: listItem.model.extended
+
+                    QQC2.Label {
+                        Layout.alignment: Qt.AlignTop
+                        Layout.rightMargin: Kirigami.Units.smallSpacing
+                        text: i18nc("@info This update is from the following source", "From:")
+                        color: listItem.down ? Kirigami.Theme.highlightedTextColor : Kirigami.Theme.textColor
+                        opacity: 0.75
+                    }
+                    // Backend icon
+                    Kirigami.Icon {
+                        Layout.alignment: Qt.AlignTop
+                        source: listItem.model.resource.sourceIcon
+                        implicitWidth: Kirigami.Units.iconSizes.smallMedium
+                        implicitHeight: Kirigami.Units.iconSizes.smallMedium
+                        selected: listItem.down
+                    }
+                    // Backend label and origin/remote
+                    QQC2.Label {
+                        Layout.fillWidth: true
+                        Layout.alignment: Qt.AlignTop
+                        text: listItem.model.resource.origin.length === 0 ? listItem.model.resource.backend.displayName
+                                : i18nc("%1 is the backend that provides this app, %2 is the specific repository or address within that backend","%1 (%2)",
+                                        listItem.model.resource.backend.displayName, listItem.model.resource.origin)
+                        wrapMode: Text.Wrap
+                        maximumLineCount: 2
+                        elide: Text.ElideRight
+                        color: listItem.down ? Kirigami.Theme.highlightedTextColor : Kirigami.Theme.textColor
+                        opacity: 0.75
+                    }
+
+                    QQC2.Button {
+                        id: moreInformationButton
+                        Layout.alignment: Qt.AlignRight
+                        text: i18nc("@action:button minimize the length of this label", "More Info…")
+                        enabled: !resourcesUpdatesModel.isProgressing
+                        onClicked: Navigation.openApplication(listItem.model.resource)
+                    }
+                }
+
                 QQC2.Frame {
                     Layout.fillWidth: true
+                    Layout.leftMargin: delegateLayout.extraContentLeadingMargin
                     implicitHeight: view.implicitHeight
                     visible: listItem.model.extended && listItem.model.changelog.length > 0
                     QQC2.Label {

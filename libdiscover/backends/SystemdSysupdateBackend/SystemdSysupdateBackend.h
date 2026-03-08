@@ -34,6 +34,16 @@ public:
         return m_fetchOperationCount > 0 ? 42 : 100;
     }
 
+    uint fetchingUpdatesProgressWeight() const override
+    {
+        return 55;
+    }
+
+    QNetworkAccessManager *networkAccess() const
+    {
+        return m_nam;
+    }
+
     void checkForUpdates() override;
     QString displayName() const override;
 

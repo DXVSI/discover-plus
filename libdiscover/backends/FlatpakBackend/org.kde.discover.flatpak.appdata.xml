@@ -41,7 +41,7 @@
   <name xml:lang="nn">Flatpak-motor</name>
   <name xml:lang="pa">ਫਲੈਟਪੈਕ ਬੈਕਐਡ</name>
   <name xml:lang="pl">Silnik Flatpak</name>
-  <name xml:lang="pt">Infra-estrutura do Flatpak</name>
+  <name xml:lang="pt">Infraestrutura Flatpak</name>
   <name xml:lang="pt-BR">Infraestrutura Flatpak</name>
   <name xml:lang="ro">Platformă Flatpak</name>
   <name xml:lang="ru">Модуль для работы с форматом Flatpak</name>
@@ -167,9 +167,9 @@
   <developer_name xml:lang="zh-TW">Aleix Pol Gonzalez</developer_name>
   <icon type="stock">system-software-install</icon>
   <releases>
-    <release version="6.5.4" date="2025-12-09"/>
-    <release version="6.5.3" date="2025-11-18"/>
-    <release version="6.5.2" date="2025-11-04"/>
-    <release version="6.5.1" date="2025-10-28"/>
+    <release version="6.6.2" date="2026-03-03"/>
+    <release version="6.6.1" date="2026-02-24"/>
+    <release version="6.6.0" date="2026-02-17"/>
+    <release version="6.5.5" date="2026-01-13"/>
   </releases>
 </component>

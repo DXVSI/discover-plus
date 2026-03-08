@@ -1,21 +1,23 @@
+# SPDX-FileCopyrightText: 2026 César A. P. Cláudio <cesarapclaudio@gmail.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: discover\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-11-17 11:53+0000\n"
-"PO-Revision-Date: 2022-08-26 02:39+0100\n"
-"Last-Translator: José Nuno Coelho Pires <zepires@gmail.com>\n"
-"Language-Team: Portuguese <kde-i18n-pt@kde.org>\n"
+"PO-Revision-Date: 2026-02-01 18:08+0000\n"
+"Last-Translator: César A. P. Cláudio <cesarapclaudio@gmail.com>\n"
+"Language-Team: pt\n"
 "Language: pt\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Lokalize 25.12.1\n"
 
 #: kcm/ui/main.qml:40
 #, kde-format
 msgid "Update software:"
-msgstr "Actualizar as aplicações:"
+msgstr "Atualizar aplicações:"
 
 #: kcm/ui/main.qml:41
 #, kde-format
@@ -35,22 +37,22 @@ msgid ""
 "available. Updates for applications will be installed immediately, while "
 "system updates will be installed the next time the computer is restarted."
 msgstr ""
-"As actualizações das aplicações serão transferidas automaticamente à medida "
-"que vão ficando disponíveis. As actualizações das aplicações serão "
-"instaladas de imediato, enquanto as actualizações do sistema serão "
-"instaladas da próxima vez que o computador for reiniciado."
+"As atualizações de 'software' serão transferidas automaticamente quando "
+"ficarem disponíveis. As atualizações para aplicações serão instaladas "
+"imediatamente, enquanto as atualizações do sistema serão instaladas na "
+"próxima vez que o computador for reiniciado."
 
 #: kcm/ui/main.qml:69
 #, kde-format
 msgctxt "@title:group"
 msgid "Update frequency:"
-msgstr "Frequência de actualização:"
+msgstr "Frequência de atualização:"
 
 #: kcm/ui/main.qml:69
 #, kde-format
 msgctxt "@title:group"
 msgid "Notification frequency:"
-msgstr "Frequência da notificação:"
+msgstr "Frequência de notificação:"
 
 #: kcm/ui/main.qml:72
 #, kde-format
@@ -79,7 +81,7 @@ msgstr "Nunca"
 #: kcm/ui/main.qml:119
 #, kde-format
 msgid "Apply system updates:"
-msgstr ""
+msgstr "Aplicar atualizações de sistema:"
 
 #: kcm/ui/main.qml:126
 #, kde-format
@@ -87,7 +89,7 @@ msgctxt ""
 "@option:radio part of the logical sentence 'Apply system updates after "
 "rebooting'"
 msgid "After rebooting"
-msgstr ""
+msgstr "Após reiniciar"
 
 #: kcm/ui/main.qml:133
 #, kde-format
@@ -95,14 +97,14 @@ msgctxt ""
 "@label The thing being recommended is to use the 'apply updates when "
 "rebooting' setting"
 msgid "Recommended to maximize system stability"
-msgstr ""
+msgstr "Recomendado para maximizar a estabilidade do sistema"
 
 #: kcm/ui/main.qml:139
 #, kde-format
 msgctxt ""
 "@option:radio part of the logical sentence 'Apply system updates immediately'"
 msgid "Immediately"
-msgstr ""
+msgstr "Imediatamente"
 
 #~ msgid "Use offline updates:"
 #~ msgstr "Usar as actualizações desligadas:"

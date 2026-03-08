@@ -103,7 +103,7 @@ SnapBackend::SnapBackend(QObject *parent)
 SnapBackend::~SnapBackend()
 {
     Q_EMIT shuttingDown();
-    m_threadPool.waitForDone(80000);
+    m_threadPool.waitForDone(1000);
     m_threadPool.clear();
 }
 

@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-11-17 11:53+0000\n"
-"PO-Revision-Date: 2024-08-19 20:56+0200\n"
+"PO-Revision-Date: 2026-03-05 20:29+0100\n"
 "Last-Translator: Karl Ove Hufthammer <karl@huftis.org>\n"
 "Language-Team: Norwegian Nynorsk <l10n-no@lister.huftis.org>\n"
 "Language: nn\n"
@@ -14,7 +14,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 24.11.70\n"
+"X-Generator: Lokalize 26.03.70\n"
 "X-Environment: kde\n"
 "X-Accelerator-Marker: &\n"
 "X-Text-Markup: kde4\n"
@@ -105,9 +105,9 @@ msgid "System update status notifier"
 msgstr "Varsling om systemoppdatering"
 
 #: notifier/main.cpp:43
-#, fuzzy, kde-format
+#, kde-format
 msgid "© 2010-2025 Plasma Development Team"
-msgstr "© 2010–2024 Utviklingslaget for Plasma"
+msgstr "© 2010–2025 Utviklingslaget for Plasma"
 
 #: notifier/main.cpp:47
 #, kde-format
@@ -142,18 +142,16 @@ msgid "Updates"
 msgstr "Oppdateringar"
 
 #: notifier/NotifierItem.cpp:36
-#, fuzzy, kde-format
-#| msgid "Open Discover…"
+#, kde-format
 msgctxt "@action:button Opens Discover's main UI to analyze the updates"
 msgid "Open Discover…"
 msgstr "Opna Discover …"
 
 #: notifier/NotifierItem.cpp:47
-#, fuzzy, kde-format
-#| msgid "Updates"
+#, kde-format
 msgctxt "@action:button Starts an update in the background"
 msgid "Start Update"
-msgstr "Oppdateringar"
+msgstr "Start oppdatering"
 
 #: notifier/NotifierItem.cpp:50
 #, kde-format

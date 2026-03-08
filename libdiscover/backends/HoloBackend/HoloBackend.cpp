@@ -4,9 +4,9 @@
  *   SPDX-License-Identifier: GPL-2.0-only OR GPL-3.0-only OR LicenseRef-KDE-Accepted-GPL
  */
 
-#include "SteamOSBackend.h"
-#include "SteamOSResource.h"
-#include "SteamOSTransaction.h"
+#include "HoloBackend.h"
+#include "HoloResource.h"
+#include "HoloTransaction.h"
 
 #include <Transaction/Transaction.h>
 #include <Transaction/TransactionModel.h>
@@ -16,6 +16,7 @@
 #include <KAboutData>
 #include <KConfigGroup>
 #include <KLocalizedString>
+#include <KOSRelease>
 #include <KPluginFactory>
 #include <KSharedConfig>
 
@@ -30,25 +31,25 @@
 #include <QTimer>
 
 #include "atomupd1.h"
-#include "libdiscover_steamos_debug.h"
+#include "libdiscover_holo_debug.h"
 
-DISCOVER_BACKEND_PLUGIN(SteamOSBackend)
+DISCOVER_BACKEND_PLUGIN(HoloBackend)
 
 // We expect 2 results, updates and later updates
 #define CHECK_UPDATES_RETURN_COUNT 2
 #define ATOMUPD_SERVICE_PATH "/usr/lib/systemd/system/atomupd.service"
 
-QString SteamOSBackend::service()
+QString HoloBackend::service()
 {
     return QStringLiteral("com.steampowered.Atomupd1");
 }
 
-QString SteamOSBackend::path()
+QString HoloBackend::path()
 {
     return QStringLiteral("/com/steampowered/Atomupd1");
 }
 
-SteamOSBackend::SteamOSBackend(QObject *parent)
+HoloBackend::HoloBackend(QObject *parent)
     : AbstractResourcesBackend(parent)
     , m_updater(new StandardBackendUpdater(this))
     , m_updateVersion()
@@ -58,14 +59,30 @@ SteamOSBackend::SteamOSBackend(QObject *parent)
     , m_testing(false)
 {
     qDBusRegisterMetaType<VariantMapMap>();
+    const KOSRelease os;
+    QString label = os.prettyName();
 
-    if (qEnvironmentVariableIsSet("STEAMOS_TEST_MODE")) {
-        const QString path = QStandardPaths::writableLocation(QStandardPaths::TempLocation) + QLatin1String("/discover-steamos-test");
-        qCDebug(LIBDISCOVER_BACKEND_STEAMOS_LOG) << "running steamos backend on test mode" << path;
+    // NOTE: Some translations have localised renditions of the core OS
+    // names (Holo and SteamOS).
+    // Arabic and Punjabi are current examples of this:
+    // NOTE: we explicitly check for these two names instead of just passing
+    // label so that the i18n framework knows they can be translated:
+    if (label == QStringLiteral("SteamOS"))
+        m_label = i18n("SteamOS");
+    else if (label == QStringLiteral("Holo"))
+        m_label = i18n("Holo");
+    else
+        m_label = label;
+
+    // Honour the old test mode variable so we don't trigger real updates
+    // on old test setups
+    if (qEnvironmentVariableIsSet("HOLO_TEST_MODE") || qEnvironmentVariableIsSet("STEAMOS_TEST_MODE")) {
+        const QString path = QStandardPaths::writableLocation(QStandardPaths::TempLocation) + QLatin1String("/discover-holo-test");
+        qCDebug(LIBDISCOVER_BACKEND_HOLO_LOG) << "running holo backend on test mode" << path;
         m_testing = true;
     }
 
-    connect(m_updater, &StandardBackendUpdater::updatesCountChanged, this, &SteamOSBackend::updatesCountChanged);
+    connect(m_updater, &StandardBackendUpdater::updatesCountChanged, this, &HoloBackend::updatesCountChanged);
 
     // Use the session bus when testing.
     if (m_testing) {
@@ -78,7 +95,7 @@ SteamOSBackend::SteamOSBackend(QObject *parent)
     // this could wake up the service
     m_currentVersion = m_interface->currentVersion();
     m_currentBuildID = m_interface->currentBuildID();
-    qCDebug(LIBDISCOVER_BACKEND_STEAMOS_LOG) << "steamos-backend: Current version from dbus api: " << m_currentVersion << " and build ID: " << m_currentBuildID;
+    qCDebug(LIBDISCOVER_BACKEND_HOLO_LOG) << "holo-backend: Current version from dbus api: " << m_currentVersion << " and build ID: " << m_currentBuildID;
 
     // If we got a version property, assume the service is responding and check for updates
     if (!m_currentVersion.isEmpty() && !m_currentBuildID.isEmpty()) {
@@ -88,27 +105,28 @@ SteamOSBackend::SteamOSBackend(QObject *parent)
 
         checkForUpdates();
     } else {
-        qCDebug(LIBDISCOVER_BACKEND_STEAMOS_LOG) << "steamos-backend: Unable to query atomupd for SteamOS Updates...";
+        qCDebug(LIBDISCOVER_BACKEND_HOLO_LOG) << "holo-backend: Unable to query atomupd for Holo Updates...";
         // Should never happen, since trying to open the interface above starts
-        // it, but if this plugin is on non steamos devices we should show something
-        Q_EMIT passiveMessage(i18n("SteamOS: Unable to query atomupd for SteamOS Updates..."));
+        // it, but if this plugin is on non holo devices we should show something
+        Q_EMIT passiveMessage(i18nc("%1 is the pretty name of the distro e.g. Holo or SteamOS", "Holo: Unable to query atomupd for %1 Updates...", m_label));
     }
 }
 
-void SteamOSBackend::hasUpdateChanged(bool hasUpdate)
+void HoloBackend::hasUpdateChanged(bool hasUpdate)
 {
     if (hasUpdate) {
         // Create or update resource from m_updateVersion, m_updateBuildID
         if (!m_resource) {
-            qCDebug(LIBDISCOVER_BACKEND_STEAMOS_LOG) << "steamos-backend: Creating new SteamOSResource with build id: " << m_updateBuildID;
-            m_resource = new SteamOSResource(m_updateVersion,
-                                             m_updateBuildID,
-                                             m_updateSize,
-                                             QStringLiteral("%1 - %2").arg(m_currentVersion).arg(m_currentBuildID),
-                                             this);
+            qCDebug(LIBDISCOVER_BACKEND_HOLO_LOG) << "holo-backend: Creating new HoloResource with build id: " << m_updateBuildID;
+            m_resource = new HoloResource(m_updateVersion,
+                                          m_label,
+                                          m_updateBuildID,
+                                          m_updateSize,
+                                          QStringLiteral("%1 - %2").arg(m_currentVersion).arg(m_currentBuildID),
+                                          this);
         } else {
-            qCDebug(LIBDISCOVER_BACKEND_STEAMOS_LOG) << "steamos-backend: Updating SteamOSResource with new version: " << m_updateVersion
-                                                     << " and new build id: " << m_updateBuildID;
+            qCDebug(LIBDISCOVER_BACKEND_HOLO_LOG) << "holo-backend: Updating HoloResource with new version: " << m_updateVersion
+                                                  << " and new build id: " << m_updateBuildID;
             m_resource->setVersion(m_updateVersion);
             m_resource->setBuild(m_updateBuildID);
             Q_EMIT m_resource->versionsChanged();
@@ -117,16 +135,16 @@ void SteamOSBackend::hasUpdateChanged(bool hasUpdate)
         // Clear or remove any previously created resource
     }
 
-    qCDebug(LIBDISCOVER_BACKEND_STEAMOS_LOG) << "steamos-backend: Updates count is now " << updatesCount();
+    qCDebug(LIBDISCOVER_BACKEND_HOLO_LOG) << "holo-backend: Updates count is now " << updatesCount();
 }
 
-void SteamOSBackend::needRebootChanged()
+void HoloBackend::needRebootChanged()
 {
     // Tell gui we need to reboot
     m_updater->setNeedsReboot(true);
 }
 
-void SteamOSBackend::acquireFetching(bool f)
+void HoloBackend::acquireFetching(bool f)
 {
     if (f) {
         m_fetching++;
@@ -141,26 +159,30 @@ void SteamOSBackend::acquireFetching(bool f)
     }
 }
 
-bool SteamOSBackend::fetchExistingTransaction()
+bool HoloBackend::fetchExistingTransaction()
 {
     // Do we already know that we have a transaction in progress?
     if (m_transaction) {
-        qInfo() << "steamos-backend: A transaction is already in progress";
+        qInfo() << "holo-backend: A transaction is already in progress";
         return true;
     }
 
     // Is there actually a transaction in progress we don't know about yet?
     uint status = m_interface->updateStatus();
     if (status != Idle) {
-        qInfo() << "steamos-backend: Found a transaction in progress";
+        qInfo() << "holo-backend: Found a transaction in progress";
         // We don't check that m_currentlyBootedDeployment is != nullptr here as we expect
         // that the backend is initialized when we're called.
         m_updateVersion = m_interface->updateVersion();
         m_updateBuildID = m_interface->updateBuildID();
         m_currentVersion = m_interface->currentVersion();
         m_currentBuildID = m_interface->currentBuildID();
-        m_resource =
-            new SteamOSResource(m_updateVersion, m_updateBuildID, m_updateSize, QStringLiteral("[%1] - %2").arg(m_currentVersion).arg(m_currentBuildID), this);
+        m_resource = new HoloResource(m_updateVersion,
+                                      m_label,
+                                      m_updateBuildID,
+                                      m_updateSize,
+                                      QStringLiteral("[%1] - %2").arg(m_currentVersion).arg(m_currentBuildID),
+                                      this);
         setupTransaction(m_resource);
         TransactionModel::global()->addTransaction(m_transaction);
         return true;
@@ -169,13 +191,13 @@ bool SteamOSBackend::fetchExistingTransaction()
     return false;
 }
 
-void SteamOSBackend::setupTransaction(SteamOSResource *app)
+void HoloBackend::setupTransaction(HoloResource *app)
 {
-    m_transaction = new SteamOSTransaction(app, Transaction::InstallRole, m_interface);
-    connect(m_transaction, &SteamOSTransaction::needReboot, this, &SteamOSBackend::needRebootChanged);
+    m_transaction = new HoloTransaction(app, Transaction::InstallRole, m_interface);
+    connect(m_transaction, &HoloTransaction::needReboot, this, &HoloBackend::needRebootChanged);
 }
 
-void SteamOSBackend::checkForUpdates()
+void HoloBackend::checkForUpdates()
 {
     if (m_fetching) {
         return;
@@ -188,31 +210,31 @@ void SteamOSBackend::checkForUpdates()
     }
 
     if (fetchExistingTransaction()) {
-        qInfo() << "steamos-backend: Not checking for updates while a transaction is in progress";
+        qInfo() << "holo-backend: Not checking for updates while a transaction is in progress";
         return;
     }
 
     acquireFetching(true);
 
-    qCDebug(LIBDISCOVER_BACKEND_STEAMOS_LOG) << "steamos-backend-backend::checkForUpdates asking DBus api";
+    qCDebug(LIBDISCOVER_BACKEND_HOLO_LOG) << "holo-backend-backend::checkForUpdates asking DBus api";
 
     // We don't send any options for now, dbus api doesn't do anything with them yet anyway
     QDBusPendingReply<VariantMapMap, VariantMapMap> reply = m_interface->CheckForUpdates({});
     QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(reply, this);
-    connect(watcher, &QDBusPendingCallWatcher::finished, this, &SteamOSBackend::checkForUpdatesFinished);
+    connect(watcher, &QDBusPendingCallWatcher::finished, this, &HoloBackend::checkForUpdatesFinished);
 }
 
-void SteamOSBackend::checkForUpdatesFinished(QDBusPendingCallWatcher *call)
+void HoloBackend::checkForUpdatesFinished(QDBusPendingCallWatcher *call)
 {
     QDBusPendingReply<VariantMapMap, VariantMapMap> reply = *call;
     //            qobject_cast<QDBusPendingReply<VariantMapMap, VariantMapMap>(*call);
     if (call->isError()) {
         Q_EMIT passiveMessage(call->error().message());
-        qCDebug(LIBDISCOVER_BACKEND_STEAMOS_LOG) << "steamos-backend: CheckForUpdates error: " << call->error().message();
+        qCDebug(LIBDISCOVER_BACKEND_HOLO_LOG) << "holo-backend: CheckForUpdates error: " << call->error().message();
     } else {
         // Valid response, parse it
         VariantMapMap versions = reply.argumentAt<0>();
-        qCDebug(LIBDISCOVER_BACKEND_STEAMOS_LOG) << "steamos-backend-backend: Versions available: " << versions;
+        qCDebug(LIBDISCOVER_BACKEND_HOLO_LOG) << "holo-backend-backend: Versions available: " << versions;
         VariantMapMap laterVersions = reply.argumentAt<1>();
 
         if (versions.isEmpty()) {
@@ -223,7 +245,7 @@ void SteamOSBackend::checkForUpdatesFinished(QDBusPendingCallWatcher *call)
             QVariantMap data = versions.value(m_updateBuildID);
             m_updateVersion = data.value(QLatin1String("version")).toString();
             m_updateSize = data.value(QLatin1String("estimated_size")).toUInt();
-            qCDebug(LIBDISCOVER_BACKEND_STEAMOS_LOG) << "steamos-backend: Data values: " << data.values();
+            qCDebug(LIBDISCOVER_BACKEND_HOLO_LOG) << "holo-backend: Data values: " << data.values();
             hasUpdateChanged(true);
         }
     }
@@ -232,71 +254,71 @@ void SteamOSBackend::checkForUpdatesFinished(QDBusPendingCallWatcher *call)
     call->deleteLater();
 }
 
-int SteamOSBackend::updatesCount() const
+int HoloBackend::updatesCount() const
 {
     return m_updater->updatesCount();
 }
 
-// SteamOS never has any searchable packages or anything, so just always
+// Holo never has any searchable packages or anything, so just always
 // give a void stream
-ResultsStream *SteamOSBackend::search(const AbstractResourcesBackend::Filters &filter)
+ResultsStream *HoloBackend::search(const AbstractResourcesBackend::Filters &filter)
 {
     // We only support updates. All targeted searches are not applicable.
     if (!filter.resourceUrl.isEmpty()) {
-        return new ResultsStream(QStringLiteral("SteamOS-empty"), {});
+        return new ResultsStream(QStringLiteral("Holo-empty"), {});
     }
 
     QVector<StreamResult> res;
     if (m_resource && m_resource->state() >= filter.state) {
         res << StreamResult{m_resource, 0};
     }
-    return new ResultsStream(QLatin1String("SteamOS-stream"), res);
+    return new ResultsStream(QLatin1String("Holo-stream"), res);
 }
 
-QHash<QString, SteamOSResource *> SteamOSBackend::resources() const
+QHash<QString, HoloResource *> HoloBackend::resources() const
 {
     return m_resources;
 }
 
-bool SteamOSBackend::isValid() const
+bool HoloBackend::isValid() const
 {
     if (m_testing)
         return true;
     return QFile(QStringLiteral(ATOMUPD_SERVICE_PATH)).exists();
 }
 
-AbstractBackendUpdater *SteamOSBackend::backendUpdater() const
+AbstractBackendUpdater *HoloBackend::backendUpdater() const
 {
     return m_updater;
 }
 
-AbstractReviewsBackend *SteamOSBackend::reviewsBackend() const
+AbstractReviewsBackend *HoloBackend::reviewsBackend() const
 {
     return nullptr;
 }
 
-Transaction *SteamOSBackend::installApplication(AbstractResource *app, const AddonList &addons)
+Transaction *HoloBackend::installApplication(AbstractResource *app, const AddonList &addons)
 {
     Q_UNUSED(addons);
     return installApplication(app);
 }
 
-Transaction *SteamOSBackend::installApplication(AbstractResource *app)
+Transaction *HoloBackend::installApplication(AbstractResource *app)
 {
-    setupTransaction(static_cast<SteamOSResource *>(app));
+    setupTransaction(static_cast<HoloResource *>(app));
     return m_transaction;
 }
 
-Transaction *SteamOSBackend::removeApplication(AbstractResource *)
+Transaction *HoloBackend::removeApplication(AbstractResource *)
 {
-    qWarning() << "steamos-backend: Unsupported operation:" << __PRETTY_FUNCTION__;
+    qWarning() << "holo-backend: Unsupported operation:" << __PRETTY_FUNCTION__;
     return nullptr;
 }
 
-QString SteamOSBackend::displayName() const
+QString HoloBackend::displayName() const
 {
-    return QStringLiteral("SteamOS");
+    return QStringLiteral("Holo");
 }
 
-#include "SteamOSBackend.moc"
-#include "moc_SteamOSBackend.cpp"
+#include "HoloBackend.moc"
+#include "moc_HoloBackend.cpp"

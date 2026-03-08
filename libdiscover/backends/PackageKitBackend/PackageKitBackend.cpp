@@ -440,6 +440,27 @@ PKResolveTransaction *PackageKitBackend::resolvePackages(const QStringList &pack
     return m_resolveTransaction;
 }
 
+void PackageKitBackend::setRefresher(PackageKit::Transaction *refresh)
+{
+    if (m_refresher) {
+        qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "Refreshing where there already was a refresh";
+    }
+    if (m_refresher == refresh) {
+        qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "Setting the same refresher twice, aborting. Should never happen!";
+        return;
+    }
+
+    m_refresher = refresh;
+    m_updater->setProgressing(true);
+    connect(refresh, &PackageKit::Transaction::percentageChanged, this, &PackageKitBackend::fetchingUpdatesProgressChanged);
+    connect(refresh, &PackageKit::Transaction::finished, this, [this] {
+        m_refresher = nullptr;
+        m_updater->setProgressing(false);
+        Q_EMIT fetchingUpdatesProgressChanged();
+    });
+    Q_EMIT fetchingUpdatesProgressChanged();
+}
+
 void PackageKitBackend::fetchUpdates()
 {
     if (m_updater->isProgressing()) {
@@ -452,10 +473,7 @@ void PackageKitBackend::fetchUpdates()
     connect(tUpdates, &PackageKit::Transaction::errorCode, this, &PackageKitBackend::transactionError);
     m_updatesPackageId.clear();
     m_hasSecurityUpdates = false;
-
-    m_updater->setProgressing(true);
-
-    Q_EMIT fetchingUpdatesProgressChanged();
+    setRefresher(tUpdates);
 }
 
 void PackageKitBackend::addPackageArch(PackageKit::Transaction::Info info, const QString &packageId, const QString &summary)
@@ -599,25 +617,20 @@ void PackageKitBackend::checkForUpdates()
 
     if (!m_refresher) {
         acquireFetching(true);
-        Q_EMIT m_updater->fetchingChanged();
         m_updater->clearDistroUpgrade();
-        m_refresher = PackageKit::Daemon::refreshCache(false);
+        auto refresh = PackageKit::Daemon::refreshCache(false);
         // Limit the cache-age so that we actually download new caches if necessary
-        m_refresher->setHints(globalHints() << QStringLiteral("cache-age=300" /* 5 minutes */));
+        refresh->setHints(globalHints() << QStringLiteral("cache-age=300" /* 5 minutes */));
+        setRefresher(refresh);
 
-        connect(m_refresher.data(), &PackageKit::Transaction::errorCode, this, &PackageKitBackend::transactionError);
-        connect(m_refresher.data(), &PackageKit::Transaction::percentageChanged, this, &PackageKitBackend::fetchingUpdatesProgressChanged);
-        connect(m_refresher.data(), &PackageKit::Transaction::finished, this, [this]() {
-            m_refresher = nullptr;
+        connect(refresh, &PackageKit::Transaction::errorCode, this, &PackageKitBackend::transactionError);
+        connect(refresh, &PackageKit::Transaction::finished, this, [this]() {
             fetchUpdates();
             acquireFetching(false);
-            Q_EMIT m_updater->fetchingChanged();
         });
     } else {
         qWarning() << "PackageKitBackend: Already resetting";
     }
-
-    Q_EMIT fetchingUpdatesProgressChanged();
 }
 
 AppStream::ComponentBox PackageKitBackend::componentsById(const QString &id) const
@@ -1357,8 +1370,6 @@ void PackageKitBackend::getUpdatesFinished(PackageKit::Transaction::Exit, uint)
         }));
     }
 
-    m_updater->setProgressing(false);
-
     includePackagesToAdd();
     if (!m_isFetching) {
         Q_EMIT updatesCountChanged();
@@ -1405,15 +1416,14 @@ void PackageKitBackend::foundNewMajorVersion(const AppStream::Release &release)
         }
 
         m_updatesPackageId.clear();
-        m_updater->setProgressing(true);
-        m_refresher = PackageKit::Daemon::upgradeSystem(upgradeVersion,
-                                                        PackageKit::Transaction::UpgradeKind::UpgradeKindComplete,
-                                                        PackageKit::Transaction::TransactionFlagSimulate);
-        m_refresher->setHints(globalHints() << QStringLiteral("cache-age=86400" /* 24*60*60 */));
-        connect(m_refresher, &PackageKit::Transaction::package, this, &PackageKitBackend::addPackageToUpdate);
-        connect(m_refresher, &PackageKit::Transaction::percentageChanged, this, &PackageKitBackend::fetchingUpdatesProgressChanged);
-        connect(m_refresher, &PackageKit::Transaction::errorCode, this, &PackageKitBackend::transactionError);
-        connect(m_refresher, &PackageKit::Transaction::finished, this, [this, release](PackageKit::Transaction::Exit e, uint x) {
+        auto upgrade = PackageKit::Daemon::upgradeSystem(upgradeVersion,
+                                                         PackageKit::Transaction::UpgradeKind::UpgradeKindComplete,
+                                                         PackageKit::Transaction::TransactionFlagSimulate);
+        upgrade->setHints(globalHints() << QStringLiteral("cache-age=86400" /* 24*60*60 */));
+        setRefresher(upgrade);
+        connect(upgrade, &PackageKit::Transaction::package, this, &PackageKitBackend::addPackageToUpdate);
+        connect(upgrade, &PackageKit::Transaction::errorCode, this, &PackageKitBackend::transactionError);
+        connect(upgrade, &PackageKit::Transaction::finished, this, [this, release](PackageKit::Transaction::Exit e, uint x) {
             m_updater->setDistroUpgrade(release);
             getUpdatesFinished(e, x);
         });

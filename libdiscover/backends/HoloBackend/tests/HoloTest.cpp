@@ -18,14 +18,14 @@
 #include <QStandardPaths>
 #include <QTest>
 
-#include "libdiscover_steamos_debug.h"
+#include "libdiscover_holo_debug.h"
 
 #include "atomupd1_adaptor.h"
 #include "mock_server.h"
 
-#include "SteamOSTest.h"
+#include "HoloTest.h"
 
-AbstractResourcesBackend *SteamOSTest::backendByName(ResourcesModel *m, const QString &name)
+AbstractResourcesBackend *HoloTest::backendByName(ResourcesModel *m, const QString &name)
 {
     const QVector<AbstractResourcesBackend *> backends = m->backends();
     for (AbstractResourcesBackend *backend : backends) {
@@ -36,10 +36,10 @@ AbstractResourcesBackend *SteamOSTest::backendByName(ResourcesModel *m, const QS
     return nullptr;
 }
 
-SteamOSTest::SteamOSTest(QObject *parent)
+HoloTest::HoloTest(QObject *parent)
     : QObject(parent)
 {
-    QDir(QStandardPaths::writableLocation(QStandardPaths::TempLocation) + QLatin1String("/discover-steamos-test")).removeRecursively();
+    QDir(QStandardPaths::writableLocation(QStandardPaths::TempLocation) + QLatin1String("/discover-holo-test")).removeRecursively();
 
     m_server = new MockServer();
     m_adaptor = new Atomupd1Adaptor(m_server);
@@ -47,12 +47,12 @@ SteamOSTest::SteamOSTest(QObject *parent)
     dbus.registerObject(QLatin1String("/com/steampowered/Atomupd1"), m_server);
     dbus.registerService(QLatin1String("com.steampowered.Atomupd1"));
     QStandardPaths::setTestModeEnabled(true);
-    qputenv("STEAMOS_TEST_MODE", "ON");
-    m_model = new ResourcesModel(QStringLiteral("steamos-backend"), this);
-    m_appBackend = backendByName(m_model, QStringLiteral("SteamOSBackend"));
+    qputenv("HOLO_TEST_MODE", "ON");
+    m_model = new ResourcesModel(QStringLiteral("holo-backend"), this);
+    m_appBackend = backendByName(m_model, QStringLiteral("HoloBackend"));
 }
 
-void SteamOSTest::initTestCase()
+void HoloTest::initTestCase()
 {
     QVERIFY(m_appBackend);
     if (!m_appBackend || !m_appBackend->isValid()) {
@@ -82,14 +82,14 @@ void SteamOSTest::initTestCase()
     }
 }
 
-void SteamOSTest::testUpdateInProgress()
+void HoloTest::testUpdateInProgress()
 {
     // Then change it and check change stuck.
     m_server->setUpdateStatus(AU_UPDATE_STATUS_IN_PROGRESS);
     Q_ASSERT(m_server->updateStatus() == AU_UPDATE_STATUS_IN_PROGRESS);
     Q_ASSERT(m_adaptor->updateStatus() == AU_UPDATE_STATUS_IN_PROGRESS);
 
-    // Now check the steamos backend's reaction matches
+    // Now check the holo backend's reaction matches
     QSignalSpy spyNewTransaction(TransactionModel::global(), &TransactionModel::transactionAdded);
     m_server->setUpdatesAvailable(true);
     m_appBackend->checkForUpdates();
@@ -98,4 +98,4 @@ void SteamOSTest::testUpdateInProgress()
 
     QCOMPARE(spyNewTransaction.count(), 1);
 }
-QTEST_GUILESS_MAIN(SteamOSTest)
+QTEST_GUILESS_MAIN(HoloTest)

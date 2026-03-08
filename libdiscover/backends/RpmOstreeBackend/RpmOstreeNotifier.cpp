@@ -49,7 +49,7 @@ RpmOstreeNotifier::RpmOstreeNotifier(QObject *parent)
         m_watcher->addPath(path);
         qCInfo(RPMOSTREE_LOG) << "Looking for new deployments in" << path;
     }
-    connect(m_watcher, &QFileSystemWatcher::directoryChanged, [this]() {
+    connect(m_watcher, &QFileSystemWatcher::directoryChanged, this, [this]() {
         m_timer->start();
     });
 
@@ -58,17 +58,17 @@ RpmOstreeNotifier::RpmOstreeNotifier(QObject *parent)
     m_stdout = QByteArray();
 
     // Display stderr
-    connect(m_process, &QProcess::readyReadStandardError, [this]() {
+    connect(m_process, &QProcess::readyReadStandardError, this, [this]() {
         qCWarning(RPMOSTREE_LOG) << "rpm-ostree (error):" << m_process->readAllStandardError();
     });
 
     // Store stdout to process as JSON
-    connect(m_process, &QProcess::readyReadStandardOutput, [this]() {
+    connect(m_process, &QProcess::readyReadStandardOutput, this, [this]() {
         m_stdout += m_process->readAllStandardOutput();
     });
 
     // Process command result
-    connect(m_process, &QProcess::finished, [this](int exitCode, QProcess::ExitStatus exitStatus) {
+    connect(m_process, &QProcess::finished, this, [this](int exitCode, QProcess::ExitStatus exitStatus) {
         m_process->deleteLater();
         m_process = nullptr;
         if (exitStatus != QProcess::NormalExit) {
@@ -164,19 +164,19 @@ void RpmOstreeNotifier::checkSystemUpdateClassic()
     m_stdout = QByteArray();
 
     // Display stderr
-    connect(m_process, &QProcess::readyReadStandardError, [this]() {
+    connect(m_process, &QProcess::readyReadStandardError, this, [this]() {
         qCWarning(RPMOSTREE_LOG) << "rpm-ostree (error):" << m_process->readAllStandardError();
     });
 
     // Display and store stdout
-    connect(m_process, &QProcess::readyReadStandardOutput, [this]() {
+    connect(m_process, &QProcess::readyReadStandardOutput, this, [this]() {
         QByteArray message = m_process->readAllStandardOutput();
         qCInfo(RPMOSTREE_LOG) << "rpm-ostree:" << message;
         m_stdout += message;
     });
 
     // Process command result
-    connect(m_process, &QProcess::finished, [this](int exitCode, QProcess::ExitStatus exitStatus) {
+    connect(m_process, &QProcess::finished, this, [this](int exitCode, QProcess::ExitStatus exitStatus) {
         m_process->deleteLater();
         m_process = nullptr;
         if (exitStatus != QProcess::NormalExit) {
@@ -246,17 +246,17 @@ void RpmOstreeNotifier::checkSystemUpdateOCI()
     m_stdout = QByteArray();
 
     // Display stderr
-    connect(m_process, &QProcess::readyReadStandardError, [this]() {
+    connect(m_process, &QProcess::readyReadStandardError, this, [this]() {
         qCWarning(RPMOSTREE_LOG) << "skopeo (error):" << m_process->readAllStandardError();
     });
 
     // Store stdout to process as JSON
-    connect(m_process, &QProcess::readyReadStandardOutput, [this]() {
+    connect(m_process, &QProcess::readyReadStandardOutput, this, [this]() {
         m_stdout += m_process->readAllStandardOutput();
     });
 
     // Process command result
-    connect(m_process, &QProcess::finished, [this](int exitCode, QProcess::ExitStatus exitStatus) {
+    connect(m_process, &QProcess::finished, this, [this](int exitCode, QProcess::ExitStatus exitStatus) {
         m_process->deleteLater();
         m_process = nullptr;
         if (exitStatus != QProcess::NormalExit) {
@@ -319,19 +319,19 @@ void RpmOstreeNotifier::checkForPendingDeployment()
     m_stdout = QByteArray();
 
     // Display stderr
-    connect(m_process, &QProcess::readyReadStandardError, [this]() {
+    connect(m_process, &QProcess::readyReadStandardError, this, [this]() {
         QByteArray message = m_process->readAllStandardError();
         qCWarning(RPMOSTREE_LOG) << "rpm-ostree (error):" << message;
     });
 
     // Store stdout to process as JSON
-    connect(m_process, &QProcess::readyReadStandardOutput, [this]() {
+    connect(m_process, &QProcess::readyReadStandardOutput, this, [this]() {
         QByteArray message = m_process->readAllStandardOutput();
         m_stdout += message;
     });
 
     // Process command result
-    connect(m_process, &QProcess::finished, [this](int exitCode, QProcess::ExitStatus exitStatus) {
+    connect(m_process, &QProcess::finished, this, [this](int exitCode, QProcess::ExitStatus exitStatus) {
         m_process->deleteLater();
         m_process = nullptr;
         if (exitStatus != QProcess::NormalExit) {

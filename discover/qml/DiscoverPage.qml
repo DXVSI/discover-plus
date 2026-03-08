@@ -40,16 +40,6 @@ Kirigami.ScrollablePage {
         }
     }
 
-    Shortcut {
-        sequences: [ StandardKey.Refresh ]
-        enabled: root.isCurrentPage && root.supportsRefreshing
-        onActivated: {
-            if (root.supportsRefreshing) {
-                root.refreshing = true
-            }
-        }
-    }
-
     Keys.onPressed: event => {
         const readableCharacters = /\w+/;
         if (event.text.length > 0 && event.modifiers === Qt.NoModifier && event.text.match(readableCharacters)) {

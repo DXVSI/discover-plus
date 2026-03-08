@@ -123,7 +123,7 @@ DiscoverPage {
             }
             Kirigami.Action {
                 QQC2.ActionGroup.group: sortGroup
-                text: i18n("Rating")
+                text: i18n("Popularity")
                 icon.name: "rating"
                 onTriggered: {
                     DiscoverApp.DiscoverSettings[page.sortProperty] = Discover.ResourcesProxyModel.SortableRatingRole
@@ -226,7 +226,7 @@ DiscoverPage {
                     text: i18nc("@action:button %1 is the name of an application", "Search the Web for \"%1\"", appsModel.search)
                     icon.name: "internet-web-browser"
                     onTriggered: {
-                        const searchTerm = encodeURIComponent("Linux " + appsModel.search);
+                        const searchTerm = encodeURIComponent(Qt.platform.os + " " + appsModel.search);
                         Qt.openUrlExternally(app.searchUrl(searchTerm));
                     }
                 }

@@ -90,6 +90,7 @@
   <summary xml:lang="lv">Instalējiet un noņemiet programmas un pielikumus</summary>
   <summary xml:lang="nl">Installeer en verwijder toepassingen en add-ons</summary>
   <summary xml:lang="pl">Wgrywaj i usuwaj aplikacje oraz dodatki do nich</summary>
+  <summary xml:lang="pt">Instalar e remover aplicações e suplementos</summary>
   <summary xml:lang="pt-BR">Instalar e remover programas e complementos</summary>
   <summary xml:lang="ro">Instalează și elimină aplicații și suplimente</summary>
   <summary xml:lang="ru">Установка и удаление приложений и дополнений</summary>
@@ -141,7 +142,7 @@
     <p xml:lang="nn">Discover hjelper deg å finna og installera program, spel og verktøy. Du kan søkja etter program eller bla gjennom program­kategoriar, sjå skjermbilete og lesa brukaromtalar for å finna det perfekte programmet.</p>
     <p xml:lang="pa">ਡਿਸਕਵਰ ਐਪ ਤੁਹਾਨੂੰ ਐਪਲੀਕੇਸ਼ਨਾਂ, ਖੇਡਾਂ ਅਤੇ ਟੂਲ ਲੱਭਣ ਅਤੇ ਇੰਸਟਾਲ ਕਰਨ ਲਈ ਮਦਦ ਕਰਦੀ ਹੈ। ਤੁਸੀਂ ਕੈਟਾਗਰੀ ਰਾਹੀਂ ਲੱਭ ਜਾਂ ਬਰਾਊਜ਼ ਕਰ, ਸਕਰੀਨਸ਼ਾਟ ਵੇਖ, ਅਤੇ ਆਪਣੇ ਲਈ ਸਭ ਤੋਂ ਢੁੱਕਵੀਂ ਐਪ ਲੱਭਣ ਲਈ ਮਦਦ ਵਾਸਤੇ ਪੜਤਾਲਾਂ ਵੇਖ ਸਕਦੇ ਹੋ।</p>
     <p xml:lang="pl">Discover pomaga znaleźć i wgrać aplikacje, gry oraz narzędzia. Można wyszukiwać lub przeglądać po kategorii. Można oglądać zrzuty ekranu i czytać oceny, aby wybrać najlepszą aplikację.</p>
-    <p xml:lang="pt">O Discover ajuda-o a instalar aplicações, jogos e ferramentas. Poderá pesquisar ou navegar por categoria, assim como ver as imagens e ler as revisões e comentários que o possam ajudar a escolher a aplicação perfeita.</p>
+    <p xml:lang="pt">O Discover ajuda-o a encontrar e instalar aplicações, jogos e ferramentas. Pode pesquisar ou navegar por categoria, e ver capturas de ecrã e ler avaliações para o ajudar a escolher a aplicação perfeita.</p>
     <p xml:lang="pt-BR">O Discover ajuda-o a encontrar e instalar aplicativos, jogos e ferramentas. Você pode pesquisar ou navegar por categoria, assim como ver as capturas de tela e ler as avaliações e comentários que o possam ajudá-lo a escolher o aplicativo perfeito.</p>
     <p xml:lang="ro">Discover vă permite să găsiți și să instalați aplicații, jocuri și unelte. Puteți căuta sau răsfoi după categorie, precum și să vedeți capturi de ecran și să citiți recenzii ce vă ajută la alegerea aplicației perfecte.</p>
     <p xml:lang="ru">Центр программ Discover предназначен для поиска, в числе по категориям и установки приложений и игр. Описания приложений содержат снимки экрана и отзывы других пользователей.</p>
@@ -191,7 +192,7 @@
     <p xml:lang="nl">Met Ontdekken kunt u software uit meerdere bronnen beheren, inclusief de repositories van uw besturingssysteem, Flatpak-repo's, de Snap store of zelfs AppImages uit store.kde.org.</p>
     <p xml:lang="nn">Men Discover kan du installera program frå ulike kjelder, blant anna standard pakkebrønnar for operativsystemet, Flatpak-depot, Snap-butikken og AppImages frå store.kde.org.</p>
     <p xml:lang="pl">Dzięki Discover, można zarządzać oprogramowaniem z wielu źródeł, uwzględniając w tym źródło oprogramowania systemu operacyjnego, repozytoria Flatpak, sklep Snap lub nawet AppImage z store.kde.org.</p>
-    <p xml:lang="pt">Com o Discover, poderá gerir aplicações de várias fontes, incluindo os repositórios de aplicações do seu sistema operativo, os repositórios do Flatpak, a loja do Snap ou mesmo AppImages do store.kde.org.</p>
+    <p xml:lang="pt">Com o Discover, pode gerir software de múltiplas fontes, incluindo o repositório do seu sistema operativo, repositórios Flatpak, a loja Snap ou mesmo AppImages de store.kde.org.</p>
     <p xml:lang="pt-BR">Com o Discover você poderá gerenciar aplicativos de várias origens, incluindo os repositórios de aplicativos do seu sistema operacional, os repositórios do Flatpak, a loja do Snap ou mesmo AppImages do store.kde.org.</p>
     <p xml:lang="ro">Cu Discover puteți gestiona programe  din surse diferite, inclusiv depozitul software al sistemului de operare, depozite Flatpak, magazinul Snap, sau chiar programe AppImage de la store.kde.org.</p>
     <p xml:lang="ru">Discover позволяет управлять приложениями, получаемыми из различных источников: репозиториев установленной системы, репозиториев Flatpak, магазина приложений Snap, и даже приложений AppImages, расположенных по адресу store.kde.org.</p>
@@ -243,7 +244,7 @@
     <p xml:lang="nn">Discover lèt deg òg finna, installera og handsama programtillegg for Plasma og andre KDE-program.</p>
     <p xml:lang="pa">ਆਖੀਰ ਵਿੱਚ ਡਿਸਕਵਰ ਤੁਹਾਨੂੰ ਪਲਾਜ਼ਮਾ ਅਤੇ ਤੁਹਾਡੇ ਸਭ ਮਨਪਸੰਦ KDE ਐਪੈਂ ਲਈ ਐਡ-ਆਨ ਲੱਭਣ, ਇੰਸਟਾਲ ਅਤੇ ਇੰਤਜ਼ਾਮ ਕਰਨ ਲਈ ਮਦਦਗਾਰ ਹੈ।</p>
     <p xml:lang="pl">Discover umożliwia także znalezienie, wgranie i zrządzanie dodatkami do Plazmy i innych ulubionych aplikacji KDE!</p>
-    <p xml:lang="pt">Finalmente, o Discover também lhe permite procurar, instalar e gerir as extensões do Plasma e de todas as suas aplicações favoritas do KDE!</p>
+    <p xml:lang="pt">Por fim, o Discover também permite encontrar, instalar e gerir suplementos para o Plasma e todas as suas aplicações KDE favoritas!</p>
     <p xml:lang="pt-BR">Finalmente, o Discover também lhe permite procurar, instalar e gerenciar as extensões do Plasma e de todos os seus aplicativos favoritos do KDE!</p>
     <p xml:lang="ro">De asemenea, Discover vă ajută să găsiți, instalați și gestionați suplimente pentru Plasma și toate aplicațiile KDE favorite!</p>
     <p xml:lang="ru">Кроме того, с помощью Discover возможно выполнять поиск, установку и управление дополнениями рабочей среды Plasma и приложений KDE.</p>
@@ -324,10 +325,10 @@
   </provides>
   <compulsory_for_desktop>KDE</compulsory_for_desktop>
   <releases>
-    <release version="6.5.4" date="2025-12-09"/>
-    <release version="6.5.3" date="2025-11-18"/>
-    <release version="6.5.2" date="2025-11-04"/>
-    <release version="6.5.1" date="2025-10-28"/>
+    <release version="6.6.2" date="2026-03-03"/>
+    <release version="6.6.1" date="2026-02-24"/>
+    <release version="6.6.0" date="2026-02-17"/>
+    <release version="6.5.5" date="2026-01-13"/>
   </releases>
   <content_rating type="oars-1.1"/>
 </component>

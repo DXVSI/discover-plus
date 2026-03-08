@@ -200,7 +200,7 @@ Kirigami.Dialog {
                 return "";
             }
             wrapMode: Text.WordWrap
-            opacity: 0.6
+            opacity: 0.75
             visible: text.length > 0
         }
     }

@@ -41,7 +41,7 @@
   <name xml:lang="nn">PackageKit-motor</name>
   <name xml:lang="pa">ਪੈਕੇਜਕਿਟ ਬੈਕਐਂਡ</name>
   <name xml:lang="pl">Silnik PackageKit</name>
-  <name xml:lang="pt">Infra-estrutura do PackageKit</name>
+  <name xml:lang="pt">Infraestrutura PackageKit</name>
   <name xml:lang="pt-BR">Infraestrutura PackageKit</name>
   <name xml:lang="ro">Platformă PackageKit</name>
   <name xml:lang="ru">Модуль поддержки PackageKit</name>
@@ -94,7 +94,7 @@
   <summary xml:lang="nn">Integrerer distribusjonsprogram i Discover</summary>
   <summary xml:lang="pa">ਵੰਡਣ ਵਾਲੀਆਂ ਐਪਲੀਕੇਸ਼ਨਾਂ ਨੂੰ ਡਿਸਕਵਰ ਵਿੱਚ ਜੋੜਦਾ ਹੈ</summary>
   <summary xml:lang="pl">Integruje aplikacje dystrybucji w Odkrywcy</summary>
-  <summary xml:lang="pt">Integra as aplicações da distribuição no Discover</summary>
+  <summary xml:lang="pt">Integra as aplicações da sua distribuição no Discover</summary>
   <summary xml:lang="pt-BR">Integra aplicativos da distribuição no Discover</summary>
   <summary xml:lang="ro">Integrează aplicațiile distribuției în Descoperă</summary>
   <summary xml:lang="ru">Добавление поддержки приложений из дистрибутива ОС в центр программ Discover</summary>
@@ -167,9 +167,9 @@
   <developer_name xml:lang="zh-TW">Aleix Pol Gonzalez</developer_name>
   <icon type="stock">system-software-install</icon>
   <releases>
-    <release version="6.5.4" date="2025-12-09"/>
-    <release version="6.5.3" date="2025-11-18"/>
-    <release version="6.5.2" date="2025-11-04"/>
-    <release version="6.5.1" date="2025-10-28"/>
+    <release version="6.6.2" date="2026-03-03"/>
+    <release version="6.6.1" date="2026-02-24"/>
+    <release version="6.6.0" date="2026-02-17"/>
+    <release version="6.5.5" date="2026-01-13"/>
   </releases>
 </component>

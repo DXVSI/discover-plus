@@ -48,7 +48,7 @@ RpmOstreeBackend::RpmOstreeBackend(QObject *parent)
     // Setup watcher for rpm-ostree DBus service
     m_watcher->setConnection(QDBusConnection::systemBus());
     m_watcher->addWatchedService(DBusServiceName);
-    connect(m_watcher, &QDBusServiceWatcher::serviceOwnerChanged, [this](const QString &serviceName, const QString &oldOwner, const QString &newOwner) {
+    connect(m_watcher, &QDBusServiceWatcher::serviceOwnerChanged, this, [this](const QString &serviceName, const QString &oldOwner, const QString &newOwner) {
         qCDebug(RPMOSTREE_LOG) << "Acting on DBus service owner change";
         if (serviceName != DBusServiceName) {
             // This should never happen
@@ -69,7 +69,7 @@ RpmOstreeBackend::RpmOstreeBackend(QObject *parent)
     m_dbusActivationTimer = new QTimer(this);
     m_dbusActivationTimer->setSingleShot(true);
     m_dbusActivationTimer->setInterval(1000);
-    connect(m_dbusActivationTimer, &QTimer::timeout, [this]() {
+    connect(m_dbusActivationTimer, &QTimer::timeout, this, [this]() {
         QDBusConnection::systemBus().interface()->startService(DBusServiceName);
         qCDebug(RPMOSTREE_LOG) << "DBus activating rpm-ostree service";
     });
@@ -114,7 +114,7 @@ void RpmOstreeBackend::initializeBackend()
         options[QLatin1String("id")] = QVariant{QStringLiteral("discover")};
         auto reply = m_interface->RegisterClient(options);
         QDBusPendingCallWatcher *callWatcher = new QDBusPendingCallWatcher(reply, this);
-        connect(callWatcher, &QDBusPendingCallWatcher::finished, [this, callWatcher]() {
+        connect(callWatcher, &QDBusPendingCallWatcher::finished, this, [this, callWatcher]() {
             QDBusPendingReply<> reply = *callWatcher;
             callWatcher->deleteLater();
             // Wait and retry if we encounter an error
@@ -268,7 +268,7 @@ void RpmOstreeBackend::checkForUpdates()
     // We're fetching updates
 
     setupTransaction(RpmOstreeTransaction::CheckForUpdate);
-    connect(m_transaction, &RpmOstreeTransaction::newVersionFound, [this](QString newVersion) {
+    connect(m_transaction, &RpmOstreeTransaction::newVersionFound, this, [this](QString newVersion) {
         // Mark that there is a newer version for the current deployment
         m_currentlyBootedDeployment->setNewVersion(newVersion);
 

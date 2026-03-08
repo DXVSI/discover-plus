@@ -75,6 +75,10 @@ public:
     {
         return m_fetching > 0 ? 42 : 100;
     }
+    uint fetchingUpdatesProgressWeight() const override
+    {
+        return 60;
+    }
 
 Q_SIGNALS:
     void initialized();

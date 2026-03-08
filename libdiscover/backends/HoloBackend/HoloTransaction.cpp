@@ -4,18 +4,18 @@
  *   SPDX-License-Identifier: GPL-2.0-only OR GPL-3.0-only OR LicenseRef-KDE-Accepted-GPL
  */
 
-#include "SteamOSTransaction.h"
-#include "SteamOSResource.h"
+#include "HoloTransaction.h"
+#include "HoloResource.h"
 #include <KLocalizedString>
 #include <QDebug>
 #include <QTimer>
 #include <QtGlobal>
 
-#include "SteamOSBackend.h"
+#include "HoloBackend.h"
 #include "dbusproperties_interface.h"
-#include "libdiscover_steamos_debug.h"
+#include "libdiscover_holo_debug.h"
 
-SteamOSTransaction::SteamOSTransaction(SteamOSResource *app, Transaction::Role role, ComSteampoweredAtomupd1Interface *interface)
+HoloTransaction::HoloTransaction(HoloResource *app, Transaction::Role role, ComSteampoweredAtomupd1Interface *interface)
     : Transaction(app->backend(), app, role, {})
     , m_app(app)
     , m_interface(interface)
@@ -23,12 +23,12 @@ SteamOSTransaction::SteamOSTransaction(SteamOSResource *app, Transaction::Role r
     setCancellable(true);
     setStatus(Status::SetupStatus);
 
-    auto steamosProperties = new OrgFreedesktopDBusPropertiesInterface(SteamOSBackend::service(), SteamOSBackend::path(), QDBusConnection::systemBus(), this);
-    connect(steamosProperties,
+    auto holoProperties = new OrgFreedesktopDBusPropertiesInterface(HoloBackend::service(), HoloBackend::path(), QDBusConnection::systemBus(), this);
+    connect(holoProperties,
             &OrgFreedesktopDBusPropertiesInterface::PropertiesChanged,
             this,
             [this](const QString &interface_name, const QVariantMap &changed_properties, const QStringList &invalidated_properties) {
-                if (interface_name != SteamOSBackend::service()) {
+                if (interface_name != HoloBackend::service()) {
                     return;
                 }
 
@@ -38,15 +38,15 @@ SteamOSTransaction::SteamOSTransaction(SteamOSResource *app, Transaction::Role r
                 if (changed(QLatin1String("ProgressPercentage"))) {
                     // Get percentage and pass on to gui
                     double percent = m_interface->progressPercentage();
-                    qCDebug(LIBDISCOVER_BACKEND_STEAMOS_LOG) << "steamos-backend: Progress percentage: " << percent;
+                    qCDebug(LIBDISCOVER_BACKEND_HOLO_LOG) << "holo-backend: Progress percentage: " << percent;
                     setProgress(qBound(0.0, percent, 100.0));
                 }
                 if (changed(QLatin1String("EstimatedCompletionTime"))) {
                     qulonglong estimatedCompletion = m_interface->estimatedCompletionTime();
                     QDateTime potentialEndTime = QDateTime::fromSecsSinceEpoch(estimatedCompletion);
-                    qCDebug(LIBDISCOVER_BACKEND_STEAMOS_LOG) << "steamos-backend: Estimated completion time:" << potentialEndTime.toString();
+                    qCDebug(LIBDISCOVER_BACKEND_HOLO_LOG) << "holo-backend: Estimated completion time:" << potentialEndTime.toString();
                     qulonglong secondsLeft = QDateTime::currentDateTimeUtc().secsTo(potentialEndTime);
-                    qCDebug(LIBDISCOVER_BACKEND_STEAMOS_LOG) << "Remaining seconds:" << secondsLeft;
+                    qCDebug(LIBDISCOVER_BACKEND_HOLO_LOG) << "Remaining seconds:" << secondsLeft;
                     setRemainingTime(secondsLeft);
                 }
                 if (changed(QLatin1String("UpdateStatus"))) {
@@ -58,11 +58,11 @@ SteamOSTransaction::SteamOSTransaction(SteamOSResource *app, Transaction::Role r
     refreshStatus();
 }
 
-void SteamOSTransaction::cancel()
+void HoloTransaction::cancel()
 {
     if (!m_interface) {
         // This should never happen
-        qWarning() << "steamos-backend: Error: No DBus interface provided to cancel. Please file a bug.";
+        qWarning() << "holo-backend: Error: No DBus interface provided to cancel. Please file a bug.";
         return;
     }
 
@@ -71,7 +71,7 @@ void SteamOSTransaction::cancel()
     setStatus(CancelledStatus);
 }
 
-void SteamOSTransaction::finishTransaction(bool installed)
+void HoloTransaction::finishTransaction(bool installed)
 {
     AbstractResource::State newState;
     if (installed) {
@@ -85,34 +85,34 @@ void SteamOSTransaction::finishTransaction(bool installed)
     deleteLater();
 }
 
-void SteamOSTransaction::refreshStatus()
+void HoloTransaction::refreshStatus()
 {
     // Get update state and update our state
     uint status = m_interface->updateStatus();
-    qCDebug(LIBDISCOVER_BACKEND_STEAMOS_LOG) << "steamos-backend: New state: " << status;
+    qCDebug(LIBDISCOVER_BACKEND_HOLO_LOG) << "holo-backend: New state: " << status;
 
     switch (status) {
-    case SteamOSBackend::Idle:
+    case HoloBackend::Idle:
         break;
-    case SteamOSBackend::InProgress:
+    case HoloBackend::InProgress:
         setStatus(Status::DownloadingStatus);
         break;
-    case SteamOSBackend::Paused:
+    case HoloBackend::Paused:
         setStatus(Status::QueuedStatus);
         break;
-    case SteamOSBackend::Successful: // SUCCESSFUL
+    case HoloBackend::Successful: // SUCCESSFUL
         setStatus(Status::DoneStatus);
         finishTransaction(true);
         break;
-    case SteamOSBackend::Failed: // FAILED
+    case HoloBackend::Failed: // FAILED
         setStatus(Status::DoneWithErrorStatus);
         finishTransaction(false);
         break;
-    case SteamOSBackend::Cancelled: // CANCELLED
+    case HoloBackend::Cancelled: // CANCELLED
         setStatus(Status::CancelledStatus);
         finishTransaction(false);
         break;
     }
 }
 
-#include "moc_SteamOSTransaction.cpp"
+#include "moc_HoloTransaction.cpp"

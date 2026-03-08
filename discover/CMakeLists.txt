@@ -12,6 +12,13 @@ if (TARGET KF6::UserFeedbackCore)
     kconfig_add_kcfg_files(plasma_discover_SRCS plasmauserfeedback.kcfgc GENERATE_MOC)
 endif()
 
+# Avoid problems with sign conversion by warning about them. Selectively in this file because we know there's been
+# problems in the past. Ideally we'd move towards applying this everywhere.
+# ES.100: Don’t mix signed and unsigned arithmetic
+# https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#res-mix
+# https://bugs.kde.org/show_bug.cgi?id=513676
+set_source_files_properties(DiscoverObject.cpp PROPERTIES COMPILE_OPTIONS "-Wsign-conversion")
+
 add_executable(plasma-discover ${plasma_discover_SRCS}
     main.cpp
     DiscoverObject.cpp

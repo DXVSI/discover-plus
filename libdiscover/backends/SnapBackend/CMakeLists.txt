@@ -1,3 +1,5 @@
+find_package(KF6Auth ${KF6_MIN_VERSION} CONFIG REQUIRED)
+
 add_subdirectory(libsnapclient)
 
 set(snap-backend_SRCS

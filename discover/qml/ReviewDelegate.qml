@@ -45,7 +45,7 @@ QQC2.ItemDelegate {
                 Layout.fillWidth: true
                 horizontalAlignment: Text.AlignRight
                 text: root.model.date.toLocaleDateString(Qt.locale(), "MMMM yyyy")
-                opacity: 0.6
+                opacity: 0.75
             }
         }
 
@@ -72,7 +72,7 @@ QQC2.ItemDelegate {
             Layout.fillWidth: true
             text: root.model.packageVersion ? i18n("Version: %1", root.model.packageVersion) : i18n("Version: unknown")
             elide: Text.ElideRight
-            opacity: 0.6
+            opacity: 0.75
         }
 
         Loader {

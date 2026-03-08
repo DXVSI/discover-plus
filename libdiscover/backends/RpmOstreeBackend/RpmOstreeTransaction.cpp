@@ -106,14 +106,14 @@ RpmOstreeTransaction::RpmOstreeTransaction(QObject *parent,
     m_process->setArguments(m_args);
 
     // Store stderr output for later
-    connect(m_process, &QProcess::readyReadStandardError, [this]() {
+    connect(m_process, &QProcess::readyReadStandardError, this, [this]() {
         QByteArray message = m_process->readAllStandardError();
         qCWarning(RPMOSTREE_LOG) << m_prog << QLatin1String("(error):") << message;
         m_stderr += message;
     });
 
     // Store stdout output for later and process it to fake progress
-    connect(m_process, &QProcess::readyReadStandardOutput, [this]() {
+    connect(m_process, &QProcess::readyReadStandardOutput, this, [this]() {
         QByteArray message = m_process->readAllStandardOutput();
         qCDebug(RPMOSTREE_LOG) << (m_prog + QStringLiteral(":")) << message;
         m_stdout += message;
@@ -282,7 +282,7 @@ void RpmOstreeTransaction::setupExternalTransaction()
     m_timer->setInterval(2000);
 
     // Update transaction status
-    connect(m_timer, &QTimer::timeout, [this]() {
+    connect(m_timer, &QTimer::timeout, this, [this]() {
         // Is the transaction finished?
         qCDebug(RPMOSTREE_LOG) << "External transaction update timer triggered";
         QString transaction = m_interface->activeTransactionPath();
@@ -377,7 +377,7 @@ void RpmOstreeTransaction::cancel()
     m_cancelled = true;
 
     QDBusPendingCallWatcher *callWatcher = new QDBusPendingCallWatcher(reply, this);
-    connect(callWatcher, &QDBusPendingCallWatcher::finished, [callWatcher]() {
+    connect(callWatcher, &QDBusPendingCallWatcher::finished, this, [callWatcher]() {
         callWatcher->deleteLater();
         QDBusConnection::disconnectFromPeer(TransactionConnection);
     });

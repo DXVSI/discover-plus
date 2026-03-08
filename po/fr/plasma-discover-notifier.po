@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-11-17 11:53+0000\n"
-"PO-Revision-Date: 2025-04-08 08:21+0200\n"
+"PO-Revision-Date: 2025-12-16 22:13+0100\n"
 "Last-Translator: Xavier Besnard <xavier.besnard@kde.org>\n"
 "Language-Team: French <French <kde-francophone@kde.org>>\n"
 "Language: fr\n"
@@ -20,7 +20,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Accelerator-Marker: &\n"
 "X-Environment: kde\n"
-"X-Generator: Lokalize 24.12.3\n"
+"X-Generator: Lokalize 25.12.0\n"
 "X-Text-Markup: kde4\n"
 
 #: notifier/DiscoverNotifier.cpp:218
@@ -56,7 +56,7 @@ msgstr "Hors-ligne"
 #: notifier/DiscoverNotifier.cpp:375
 #, kde-format
 msgid "Applying unattended updates…"
-msgstr "Applications des mises à jour non prévues..."
+msgstr "Application automatique des mises à jour..."
 
 #: notifier/DiscoverNotifier.cpp:400
 #, kde-format

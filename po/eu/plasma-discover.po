@@ -1,16 +1,16 @@
 # Translation for plasma-discover.po to Euskara/Basque (eu).
-# Copyright (C) 2017-2025 This file is copyright:
+# Copyright (C) 2017-2026 This file is copyright:
 # This file is distributed under the same license as the discover package.
-# SPDX-FileCopyrightText: 2023, 2024, 2025 KDE euskaratzeko proiektuaren arduraduna <xalba@ni.eus>
+# SPDX-FileCopyrightText: 2023, 2024, 2025, 2026 KDE euskaratzeko proiektuaren arduraduna <xalba@ni.eus>
 #
 # Translators:
-# Iñigo Salvador Azurmendi <xalba@ni.eus>, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025.
+# Iñigo Salvador Azurmendi <xalba@ni.eus>, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: discover\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-12-15 00:43+0000\n"
-"PO-Revision-Date: 2025-08-29 19:51+0200\n"
+"POT-Creation-Date: 2026-03-03 00:48+0000\n"
+"PO-Revision-Date: 2026-02-19 21:40+0100\n"
 "Last-Translator: Iñigo Salvador Azurmendi <xalba@ni.eus>\n"
 "Language-Team: Basque <kde-i18n-eu@kde.org>\n"
 "Language: eu\n"
@@ -18,18 +18,18 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 25.08.0\n"
+"X-Generator: Lokalize 25.12.2\n"
 
-#: discover/DiscoverObject.cpp:183
+#: discover/DiscoverObject.cpp:197
 #, kde-format
 msgctxt "@title %1 is the name"
 msgid ""
 "%1 is not configured for installing apps through Discover—only app add-ons"
 msgstr ""
-"%1 ez dago Discoveren bidez aplikazioak instalatzeko konfiguratuta—"
-"aplikazioen gehigarrietarako besterik ez"
+"%1 ez dago Discoverren bidez aplikazioak instalatzeko konfiguratuta—"
+"aplikazio gehigarrietarako bakarrik"
 
-#: discover/DiscoverObject.cpp:185
+#: discover/DiscoverObject.cpp:199
 #, kde-kuit-format
 msgctxt "@info:usagetip %2 is the name of the operating system"
 msgid ""
@@ -42,7 +42,7 @@ msgstr ""
 "bizkarraldekoak</interface> barruan.<nl/><nl/>Mesedez, <link url='%1'>eman "
 "arazo honen berri %2(e)ri.</link>"
 
-#: discover/DiscoverObject.cpp:192
+#: discover/DiscoverObject.cpp:206
 #, kde-kuit-format
 msgctxt ""
 "@info:usagetip %1 is the distro name; in this case it always contains 'Arch "
@@ -59,7 +59,7 @@ msgstr ""
 "archlinux.org/packages/extra/x86_64/discover/'>%1 Discover-rerako "
 "paketatzea</link>"
 
-#: discover/DiscoverObject.cpp:202
+#: discover/DiscoverObject.cpp:216
 #, kde-kuit-format
 msgctxt "@info:usagetip %1 is the distro name"
 msgid ""
@@ -77,17 +77,17 @@ msgstr ""
 "garatzaileek, paketeak kudeatzeko komando-lerroko <command>pacman</command> "
 "tresna erabiltzea gomendatzen dute.</para>"
 
-#: discover/DiscoverObject.cpp:291
+#: discover/DiscoverObject.cpp:305
 #, kde-format
 msgid "Could not find category '%1'"
 msgstr "Ez da aurkitu kategoria: '%1'"
 
-#: discover/DiscoverObject.cpp:313
+#: discover/DiscoverObject.cpp:327
 #, kde-format
 msgid "Trying to open inexisting file '%1'"
 msgstr "Existitzen ez den '%1' fitxategia irekitzea saiatzen"
 
-#: discover/DiscoverObject.cpp:335
+#: discover/DiscoverObject.cpp:349
 #, kde-format
 msgid ""
 "Cannot interact with flatpak resources without the flatpak backend %1. "
@@ -96,17 +96,17 @@ msgstr ""
 "Ezin da «flatpak» baliabideekin elkarreraginean aritu %1 «flatpak» "
 "bizkarraldekorik gabe. Aurrena hura instalatu."
 
-#: discover/DiscoverObject.cpp:339
+#: discover/DiscoverObject.cpp:353
 #, kde-format
 msgid "Could not open %1"
 msgstr "Ezin da %1 ireki"
 
-#: discover/DiscoverObject.cpp:404
+#: discover/DiscoverObject.cpp:418
 #, kde-format
 msgid "Please make sure Snap support is installed"
 msgstr "Mesedez, ziurtatu Snap euskarria instalatuta dagoela"
 
-#: discover/DiscoverObject.cpp:407
+#: discover/DiscoverObject.cpp:421
 #, kde-format
 msgid ""
 "The requested application could not be found in any available software "
@@ -114,7 +114,7 @@ msgid ""
 msgstr ""
 "Eskatutako aplikazioa ezin izan du aurkitu erabilgarri dauden gordetegietan."
 
-#: discover/DiscoverObject.cpp:410
+#: discover/DiscoverObject.cpp:424
 #, kde-kuit-format
 msgctxt ""
 "@info %1 is an additional error reference and %3 is the name of the "
@@ -126,13 +126,13 @@ msgstr ""
 "(Ez dago %1(e)rako sarrerarik)<nl/><nl/>Mesedez, <link url='%2'>eman arazo "
 "honen berri %3(e)ri.</link>"
 
-#: discover/DiscoverObject.cpp:473 discover/DiscoverObject.cpp:475
+#: discover/DiscoverObject.cpp:508 discover/DiscoverObject.cpp:510
 #: discover/main.cpp:120
 #, kde-format
 msgid "Discover"
 msgstr "Discover"
 
-#: discover/DiscoverObject.cpp:476
+#: discover/DiscoverObject.cpp:511
 #, kde-format
 msgid ""
 "Discover was closed before certain tasks were done, waiting for it to finish."
@@ -203,8 +203,8 @@ msgstr "Aplikazioen esploratzaile bat"
 
 #: discover/main.cpp:124
 #, kde-format
-msgid "© 2010-2025 Plasma Development Team"
-msgstr "© 2010-2025 Plasma Garapen Taldea"
+msgid "© 2010-2026 Plasma Development Team"
+msgstr "© 2010-2026 Plasma Garapen Taldea"
 
 #: discover/main.cpp:125
 #, kde-format
@@ -285,7 +285,7 @@ msgstr "Gehitu"
 
 #: discover/qml/AddSourceDialog.qml:50 discover/qml/DiscoverWindow.qml:281
 #: discover/qml/InstallApplicationButton.qml:51
-#: discover/qml/ProgressView.qml:152 discover/qml/SourcesPage.qml:201
+#: discover/qml/ProgressView.qml:153 discover/qml/SourcesPage.qml:201
 #: discover/qml/UpdatesPage.qml:303 discover/qml/WebflowDialog.qml:41
 #, kde-format
 msgid "Cancel"
@@ -379,7 +379,7 @@ msgid ""
 "url='%5'>%5</link>."
 msgstr ""
 "%1(e)k, <link url='%2'>Free Software Foundation</link>ek edo <link "
-"url='%3'>Open Source Initiative</link>k \"Software aske\" gisa ziurtatu ez "
+"url='%3'>Open Source Initiative</link>k “Software aske” gisa ziurtatu ez "
 "duen lizentzia bat edo gehiago erabiltzen ditu. Horrek esan nahi du hartatik "
 "ikasi, hura aldatu eta partekatzeko zure askatasuna eraren batean mugatuta "
 "egon daitekeela.<nl/><nl/>Irakurri ezazu lizentziaren testua eta ulertu izan "
@@ -406,7 +406,7 @@ msgid ""
 "against you in hidden ways.<nl/><nl/>Learn more at <link url='%4'>%4</link>."
 msgstr ""
 "%1(e)k, <link url='%2'>Free Software Foundation</link>ek edo <link "
-"url='%3'>Open Source Initiative</link>k \"Software aske\" gisa ziurtatu ez "
+"url='%3'>Open Source Initiative</link>k “Software aske” gisa ziurtatu ez "
 "duen lizentzia bat edo gehiago erabiltzen ditu. Horrek esan nahi du hartatik "
 "ikasi, hura aldatu eta partekatzeko zure askatasuna eraren batean mugatuta "
 "egon daitekeela.<nl/><nl/>Irakurri ezazu lizentziaren testua eta ulertu izan "
@@ -703,10 +703,10 @@ msgstr "Adierazgarritasuna"
 msgid "Name"
 msgstr "Izena"
 
-#: discover/qml/ApplicationsListPage.qml:126 discover/qml/Rating.qml:119
+#: discover/qml/ApplicationsListPage.qml:126
 #, kde-format
-msgid "Rating"
-msgstr "Balorazioa"
+msgid "Popularity"
+msgstr "Ospea"
 
 #: discover/qml/ApplicationsListPage.qml:137
 #, kde-format
@@ -801,13 +801,13 @@ msgctxt "@title:group"
 msgid "Highest-Rated Games"
 msgstr "Hobekien sailkatutako jokoak"
 
-#: discover/qml/BrowsingPage.qml:223 discover/qml/BrowsingPage.qml:278
+#: discover/qml/BrowsingPage.qml:223 discover/qml/BrowsingPage.qml:280
 #, kde-format
 msgctxt "@action:button"
 msgid "See More"
 msgstr "Ikusi gehiago"
 
-#: discover/qml/BrowsingPage.qml:247
+#: discover/qml/BrowsingPage.qml:249
 #, kde-format
 msgctxt "@title:group"
 msgid "Highest-Rated Developer Tools"
@@ -857,16 +857,14 @@ msgid "Next Screenshot"
 msgstr "Hurrengo pantaila-argazkia"
 
 #: discover/qml/DiscoverDrawer.qml:166
-#, fuzzy, kde-format
-#| msgid "Updates are available"
+#, kde-format
 msgid "Security updates available"
-msgstr "Eguneratzeak eskuragarri daude"
+msgstr "Segurtasun eguneratzeak erabilgarri"
 
 #: discover/qml/DiscoverDrawer.qml:167
-#, fuzzy, kde-format
-#| msgid "Updates are available"
+#, kde-format
 msgid "Updates available"
-msgstr "Eguneratzeak eskuragarri daude"
+msgstr "Eguneratzeak erabilgarri"
 
 #: discover/qml/DiscoverWindow.qml:47
 #, kde-format
@@ -895,10 +893,9 @@ msgid "&Updates (Fetching…)"
 msgstr "Eg&uneratzeak (Ekartzen…)"
 
 #: discover/qml/DiscoverWindow.qml:97
-#, fuzzy, kde-format
-#| msgid "Updates"
+#, kde-format
 msgid "&Updates"
-msgstr "Eguneratzeak"
+msgstr "Eg&uneratzeak"
 
 #: discover/qml/DiscoverWindow.qml:105
 #, kde-format
@@ -1065,33 +1062,38 @@ msgstr "Instalatuta"
 msgid "Resources for '%1'"
 msgstr "Honetarako baliabideak: '%1'"
 
-#: discover/qml/ProgressView.qml:19
+#: discover/qml/ProgressView.qml:20
 #, kde-format
 msgid "Tasks (%1%)"
 msgstr "Atazak (%%1)"
 
-#: discover/qml/ProgressView.qml:19 discover/qml/ProgressView.qml:49
+#: discover/qml/ProgressView.qml:20 discover/qml/ProgressView.qml:50
 #, kde-format
 msgid "Tasks"
 msgstr "Atazak"
 
-#: discover/qml/ProgressView.qml:126
+#: discover/qml/ProgressView.qml:127
 #, kde-format
 msgctxt "TransactioName - TransactionStatus: speed, remaining time"
 msgid "%1 - %2: %3, %4 remaining"
 msgstr "%1 - %2: %3, %4 amaitzeko"
 
-#: discover/qml/ProgressView.qml:134
+#: discover/qml/ProgressView.qml:135
 #, kde-format
 msgctxt "TransactioName - TransactionStatus: speed"
 msgid "%1 - %2: %3"
 msgstr "%1 - %2: %3"
 
-#: discover/qml/ProgressView.qml:141
+#: discover/qml/ProgressView.qml:142
 #, kde-format
 msgctxt "TransactioName - TransactionStatus"
 msgid "%1 - %2"
 msgstr "%1 - %2"
+
+#: discover/qml/Rating.qml:119
+#, kde-format
+msgid "Rating"
+msgstr "Balorazioa"
 
 #: discover/qml/ReviewDelegate.qml:58
 #, kde-format
@@ -1520,17 +1522,18 @@ msgctxt "@action:button"
 msgid "Restart and Install Updates"
 msgstr "Berrabiarazi eta eguneratzeak instalatu"
 
-#: discover/qml/UpdatesPage.qml:503
+#: discover/qml/UpdatesPage.qml:514
 #, kde-format
 msgid "Installing"
 msgstr "Instalatzen"
 
-#: discover/qml/UpdatesPage.qml:536
+#: discover/qml/UpdatesPage.qml:530
 #, kde-format
-msgid "Update from:"
-msgstr "Eguneratu hemendik:"
+msgctxt "@info This update is from the following source"
+msgid "From:"
+msgstr "Nondik:"
 
-#: discover/qml/UpdatesPage.qml:550
+#: discover/qml/UpdatesPage.qml:547
 #, kde-format
 msgctxt ""
 "%1 is the backend that provides this app, %2 is the specific repository or "
@@ -1540,52 +1543,56 @@ msgstr "%1 (%2)"
 
 #: discover/qml/UpdatesPage.qml:559
 #, kde-format
-msgid "More Information…"
+msgctxt "@action:button minimize the length of this label"
+msgid "More Info…"
 msgstr "Informazio gehiago…"
 
-#: discover/qml/UpdatesPage.qml:587
+#: discover/qml/UpdatesPage.qml:607
 #, kde-format
 msgctxt "@info"
 msgid "Fetching updates…"
 msgstr "Eguneratzeak ekartzen…"
 
-#: discover/qml/UpdatesPage.qml:602
+#: discover/qml/UpdatesPage.qml:622
 #, kde-format
 msgctxt "@info"
 msgid "Updates"
 msgstr "Eguneratzeak"
 
-#: discover/qml/UpdatesPage.qml:612
+#: discover/qml/UpdatesPage.qml:632
 #, kde-format
 msgctxt "@info"
 msgid "Updates will be installed after the system is restarted"
 msgstr "Eguneratzeak sistema berrabiatu ondoren instalatuko dira"
 
-#: discover/qml/UpdatesPage.qml:614
+#: discover/qml/UpdatesPage.qml:634
 #, kde-format
 msgctxt "@info"
 msgid "You can keep using the system if you're not ready to restart yet."
 msgstr ""
 "Sistema erabiltzen jarrai dezakezu oraindik berrabiatzeko prest ez bazaude."
 
-#: discover/qml/UpdatesPage.qml:628 discover/qml/UpdatesPage.qml:635
-#: discover/qml/UpdatesPage.qml:642
+#: discover/qml/UpdatesPage.qml:648 discover/qml/UpdatesPage.qml:655
+#: discover/qml/UpdatesPage.qml:662
 #, kde-format
 msgctxt "@info"
 msgid "Up to date"
 msgstr "Eguneratua"
 
-#: discover/qml/UpdatesPage.qml:649
+#: discover/qml/UpdatesPage.qml:669
 #, kde-format
 msgctxt "@info"
 msgid "Should check for updates"
 msgstr "Eguneratzeak dauden egiaztatu beharko litzateke"
 
-#: discover/qml/UpdatesPage.qml:656
+#: discover/qml/UpdatesPage.qml:676
 #, kde-format
 msgctxt "@info"
 msgid "Time of last update unknown"
 msgstr "Azken eguneratze ordua ezezaguna"
+
+#~ msgid "Update from:"
+#~ msgstr "Eguneratu hemendik:"
 
 #~ msgid "&Updates (%1)"
 #~ msgstr "Eg&uneratzeak (%1)"

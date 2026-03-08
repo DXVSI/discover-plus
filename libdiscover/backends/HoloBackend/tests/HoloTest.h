@@ -14,18 +14,18 @@
 #include <resources/ResourcesProxyModel.h>
 #include <resources/SourcesModel.h>
 
-#include "libdiscover_steamos_debug.h"
+#include "libdiscover_holo_debug.h"
 
 class Atomupd1Adaptor;
 class MockServer;
 
-class SteamOSTest : public QObject
+class HoloTest : public QObject
 {
     Q_OBJECT
 public:
     AbstractResourcesBackend *backendByName(ResourcesModel *m, const QString &name);
 
-    SteamOSTest(QObject *parent = nullptr);
+    HoloTest(QObject *parent = nullptr);
 
 private Q_SLOTS:
     void initTestCase();

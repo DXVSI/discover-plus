@@ -1,41 +1,33 @@
 # Copyright (C) 2023 This file is copyright:
 # This file is distributed under the same license as the discover package.
 #
-# SPDX-FileCopyrightText: 2021, 2022, 2023, 2024, 2025 Kishore G <kishore96@gmail.com>
+# SPDX-FileCopyrightText: 2021, 2022, 2023, 2024, 2025, 2026 Kishore G <kishore96@gmail.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: discover\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-12-15 00:43+0000\n"
-"PO-Revision-Date: 2025-03-09 17:29+0530\n"
+"POT-Creation-Date: 2026-03-03 00:48+0000\n"
+"PO-Revision-Date: 2026-02-01 18:59+0530\n"
 "Last-Translator: Kishore G <kishore96@gmail.com>\n"
-"Language-Team: Tamil <kde-i18n-doc@kde.org>\n"
+"Language-Team: Tamil <kde-l10n-ta@kde.org>\n"
 "Language: ta\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 24.12.3\n"
+"X-Generator: Lokalize 25.12.1\n"
 
-#: discover/DiscoverObject.cpp:183
-#, fuzzy, kde-format
-#| msgctxt "@title %1 is the distro name"
-#| msgid ""
-#| "%1 is not configured for installing apps through Discover—only app add-ons"
+#: discover/DiscoverObject.cpp:197
+#, kde-format
 msgctxt "@title %1 is the name"
 msgid ""
 "%1 is not configured for installing apps through Discover—only app add-ons"
 msgstr ""
-"டிஸ்கவர் மூலம் செயலிகளை நிறுவுமாறு %1 அமைக்கபடவில்லை—செயலிகளுக்கான துணைநிரல்கள் "
-"மட்டுமே"
+"டிஸ்கவர் மூலம் செயலிகளை நிறுவுமாறு %1 அமைக்கபடவில்லை—செயலிகளுக்கான துணைநிரல்களை "
+"மட்டுமே நிறுவ முடியும்."
 
-#: discover/DiscoverObject.cpp:185
-#, fuzzy, kde-kuit-format
-#| msgctxt "@info:usagetip %1 is the distro name"
-#| msgid ""
-#| "To use Discover for apps, install your preferred module on the "
-#| "<interface>Settings</interface> page, under <interface>Missing Backends</"
-#| "interface>."
+#: discover/DiscoverObject.cpp:199
+#, kde-kuit-format
 msgctxt "@info:usagetip %2 is the name of the operating system"
 msgid ""
 "To use Discover for apps, install your preferred module on the "
@@ -44,8 +36,9 @@ msgid ""
 msgstr ""
 "டிஸ்கவர் மூலம் செயலிகளை நிறுவ, <interface>அமைப்புகள்</interface> பக்கத்திலுள்ள "
 "<interface>இல்லாத பின்நிலைகள்</interface> பகுதியில் நீங்கள் விரும்பும் கூறை நிறுவ‍வும்."
+"nl/><nl/>இந்த சிக்கலை %2-க்கு <link url='%1'>தெரிவிக்கவும்</link>."
 
-#: discover/DiscoverObject.cpp:192
+#: discover/DiscoverObject.cpp:206
 #, kde-kuit-format
 msgctxt ""
 "@info:usagetip %1 is the distro name; in this case it always contains 'Arch "
@@ -61,7 +54,7 @@ msgstr ""
 "மேலாளியால் நிறுவ‍வும்.<nl/><nl/><link url='https://archlinux.org/packages/extra/"
 "x86_64/discover/'>டிஸ்கவருக்கு %1 வழங்கும் தொகுப்பை</link> பார்க்கவும்."
 
-#: discover/DiscoverObject.cpp:202
+#: discover/DiscoverObject.cpp:216
 #, kde-kuit-format
 msgctxt "@info:usagetip %1 is the distro name"
 msgid ""
@@ -73,17 +66,17 @@ msgid ""
 "packages.</para>"
 msgstr ""
 
-#: discover/DiscoverObject.cpp:291
+#: discover/DiscoverObject.cpp:305
 #, kde-format
 msgid "Could not find category '%1'"
 msgstr "'%1 என்ற பகுப்பை கண்டுபிடிக்க முடியவில்லை"
 
-#: discover/DiscoverObject.cpp:313
+#: discover/DiscoverObject.cpp:327
 #, kde-format
 msgid "Trying to open inexisting file '%1'"
 msgstr "'%1' எனும் இல்லாத கோப்பின் திறப்பு முயற்சிக்கப்பட்டது"
 
-#: discover/DiscoverObject.cpp:335
+#: discover/DiscoverObject.cpp:349
 #, kde-format
 msgid ""
 "Cannot interact with flatpak resources without the flatpak backend %1. "
@@ -92,28 +85,24 @@ msgstr ""
 "%1 எனும் flatpak பின்நிலை இல்லாமல் ஃபலாட்பாக்குகளைக் கையாள முடியாது. அதை முதலில் "
 "நிறுவுங்கள்."
 
-#: discover/DiscoverObject.cpp:339
+#: discover/DiscoverObject.cpp:353
 #, kde-format
 msgid "Could not open %1"
 msgstr "%1 தனை திறக்க முடியவில்லை"
 
-#: discover/DiscoverObject.cpp:404
+#: discover/DiscoverObject.cpp:418
 #, kde-format
 msgid "Please make sure Snap support is installed"
 msgstr "Snap ஆதரவு நிறுவப்பட்டுள்ளதா என்பதை சரிபாருங்கள்"
 
-#: discover/DiscoverObject.cpp:407
-#, fuzzy, kde-format
-#| msgid ""
-#| "Could not open %1 because it was not found in any available software "
-#| "repositories."
+#: discover/DiscoverObject.cpp:421
+#, kde-format
 msgid ""
 "The requested application could not be found in any available software "
 "repositories"
-msgstr ""
-"%1 என்பது இயக்கப்பட்டுள்ள நிரல்கிடங்குகளில் கண்டுபிடிக்கப்படாத‍தால் அதைத் திறக்க முடியவில்லை."
+msgstr "கோரிய செயலியை இயக்கப்பட்டுள்ள நிரல்கிடங்குகளில் கண்டுபிடிக்க முடியவில்லை."
 
-#: discover/DiscoverObject.cpp:410
+#: discover/DiscoverObject.cpp:424
 #, kde-kuit-format
 msgctxt ""
 "@info %1 is an additional error reference and %3 is the name of the "
@@ -122,14 +111,16 @@ msgid ""
 "(No entry for %1)<nl/><nl/>Please <link url='%2'>report this issue to %3.</"
 "link>"
 msgstr ""
+"(%1 என்பதற்கு எந்த பதிவும் இல்லை)<nl/><nl/>இதை %3-க்கு <link url='%2'>தெரிவிக்கவும்</"
+"link>."
 
-#: discover/DiscoverObject.cpp:473 discover/DiscoverObject.cpp:475
+#: discover/DiscoverObject.cpp:508 discover/DiscoverObject.cpp:510
 #: discover/main.cpp:120
 #, kde-format
 msgid "Discover"
 msgstr "டிஸ்கவர்"
 
-#: discover/DiscoverObject.cpp:476
+#: discover/DiscoverObject.cpp:511
 #, kde-format
 msgid ""
 "Discover was closed before certain tasks were done, waiting for it to finish."
@@ -185,7 +176,7 @@ msgstr "பயனர் பின்னூட்டத்துக்கு உ�
 #: discover/main.cpp:43
 #, kde-format
 msgid "Starts an update automatically, headless"
-msgstr ""
+msgstr "வரைகலை இடைமுகப்பு இல்லாமல் தானியக்க புதுப்பிப்பைத் துவக்கும்"
 
 #: discover/main.cpp:45
 #, kde-format
@@ -199,8 +190,8 @@ msgstr "செயலி உலாவி"
 
 #: discover/main.cpp:124
 #, kde-format
-msgid "© 2010-2025 Plasma Development Team"
-msgstr "© 2010-2025 பிளாஸ்மா நிரலாக்க குழு"
+msgid "© 2010-2026 Plasma Development Team"
+msgstr "© 2010-2026 பிளாஸ்மா நிரலாக்க குழு"
 
 #: discover/main.cpp:125
 #, kde-format
@@ -281,7 +272,7 @@ msgstr "சேர்"
 
 #: discover/qml/AddSourceDialog.qml:50 discover/qml/DiscoverWindow.qml:281
 #: discover/qml/InstallApplicationButton.qml:51
-#: discover/qml/ProgressView.qml:152 discover/qml/SourcesPage.qml:201
+#: discover/qml/ProgressView.qml:153 discover/qml/SourcesPage.qml:201
 #: discover/qml/UpdatesPage.qml:303 discover/qml/WebflowDialog.qml:41
 #, kde-format
 msgid "Cancel"
@@ -504,9 +495,7 @@ msgid ","
 msgstr ","
 
 #: discover/qml/ApplicationPage.qml:509
-#, fuzzy, kde-format
-#| msgid "See more…"
-#| msgid_plural "See more…"
+#, kde-format
 msgctxt "Show all licenses of the package"
 msgid "See more…"
 msgstr "மேலும் காட்டு…"
@@ -565,11 +554,10 @@ msgstr "%1 என்பதற்கான விமர்சனங்கள் �
 #, kde-format
 msgctxt "@Info placeholder message"
 msgid "No reviews posted yet"
-msgstr ""
+msgstr "எந்த விமர்சனமும் இல்லை"
 
 #: discover/qml/ApplicationPage.qml:774
-#, fuzzy, kde-format
-#| msgid "Install to Write a Review"
+#, kde-format
 msgctxt "@info placeholder explanation"
 msgid "Install to write a review"
 msgstr "விமர்சனம் எழுத நிறுவ‍வும்"
@@ -690,10 +678,12 @@ msgstr "பொருத்தும்"
 msgid "Name"
 msgstr "பெயர்"
 
-#: discover/qml/ApplicationsListPage.qml:126 discover/qml/Rating.qml:119
-#, kde-format
-msgid "Rating"
-msgstr "மதிப்பீடு"
+#: discover/qml/ApplicationsListPage.qml:126
+#, fuzzy, kde-format
+#| msgctxt "@title:group"
+#| msgid "Most Popular"
+msgid "Popularity"
+msgstr "மக்கள் விரும்புபவை"
 
 #: discover/qml/ApplicationsListPage.qml:137
 #, kde-format
@@ -788,13 +778,13 @@ msgctxt "@title:group"
 msgid "Highest-Rated Games"
 msgstr "அதிகமாக மதிப்பிடப்பட்டுள்ள ஆட்டங்கள்"
 
-#: discover/qml/BrowsingPage.qml:223 discover/qml/BrowsingPage.qml:278
+#: discover/qml/BrowsingPage.qml:223 discover/qml/BrowsingPage.qml:280
 #, kde-format
 msgctxt "@action:button"
 msgid "See More"
 msgstr "மேலும் காட்டு"
 
-#: discover/qml/BrowsingPage.qml:247
+#: discover/qml/BrowsingPage.qml:249
 #, kde-format
 msgctxt "@title:group"
 msgid "Highest-Rated Developer Tools"
@@ -844,14 +834,12 @@ msgid "Next Screenshot"
 msgstr "அடுத்த திரைப்பிடிப்பு"
 
 #: discover/qml/DiscoverDrawer.qml:166
-#, fuzzy, kde-format
-#| msgid "Updates are available"
+#, kde-format
 msgid "Security updates available"
-msgstr "புதுப்பிப்புகள் உள்ளன"
+msgstr "பாதுகாப்பு புதுப்பிப்புகள் உள்ளன"
 
 #: discover/qml/DiscoverDrawer.qml:167
-#, fuzzy, kde-format
-#| msgid "Updates are available"
+#, kde-format
 msgid "Updates available"
 msgstr "புதுப்பிப்புகள் உள்ளன"
 
@@ -881,8 +869,7 @@ msgid "&Updates (Fetching…)"
 msgstr "&புதுப்பிப்புகள் (பெறப்படுகின்றன…)"
 
 #: discover/qml/DiscoverWindow.qml:97
-#, fuzzy, kde-format
-#| msgid "Updates"
+#, kde-format
 msgid "&Updates"
 msgstr "புதுப்பிப்புகள்"
 
@@ -913,12 +900,10 @@ msgid "Proceed"
 msgstr "தொடர்"
 
 #: discover/qml/DiscoverWindow.qml:326
-#, fuzzy, kde-format
-#| msgctxt "@action:button %1 is the distro name"
-#| msgid "Report This Issue to %1"
+#, kde-format
 msgctxt "@info %1 is the name of the operating system"
 msgid "Report this issue to %1"
-msgstr "%1-க்கு இச்சிக்கலை தெரிவி"
+msgstr "%1-க்கு இச்சிக்கலை தெரிவிக்கவும்"
 
 #: discover/qml/DiscoverWindow.qml:348
 #, kde-format
@@ -1051,33 +1036,38 @@ msgstr "நிறுவியுள்ளவை"
 msgid "Resources for '%1'"
 msgstr "'%1' -இற்கானவை"
 
-#: discover/qml/ProgressView.qml:19
+#: discover/qml/ProgressView.qml:20
 #, kde-format
 msgid "Tasks (%1%)"
 msgstr "பணிகள் (%1%)"
 
-#: discover/qml/ProgressView.qml:19 discover/qml/ProgressView.qml:49
+#: discover/qml/ProgressView.qml:20 discover/qml/ProgressView.qml:50
 #, kde-format
 msgid "Tasks"
 msgstr "பணிகள்"
 
-#: discover/qml/ProgressView.qml:126
+#: discover/qml/ProgressView.qml:127
 #, kde-format
 msgctxt "TransactioName - TransactionStatus: speed, remaining time"
 msgid "%1 - %2: %3, %4 remaining"
 msgstr "%1 - %2: %3, இன்னும் %4"
 
-#: discover/qml/ProgressView.qml:134
+#: discover/qml/ProgressView.qml:135
 #, kde-format
 msgctxt "TransactioName - TransactionStatus: speed"
 msgid "%1 - %2: %3"
 msgstr "%1 - %2: %3"
 
-#: discover/qml/ProgressView.qml:141
+#: discover/qml/ProgressView.qml:142
 #, kde-format
 msgctxt "TransactioName - TransactionStatus"
 msgid "%1 - %2"
 msgstr "%1 - %2"
+
+#: discover/qml/Rating.qml:119
+#, kde-format
+msgid "Rating"
+msgstr "மதிப்பீடு"
 
 #: discover/qml/ReviewDelegate.qml:58
 #, kde-format
@@ -1502,24 +1492,27 @@ msgid "Total size: %1"
 msgstr "மொத்த அளவு: %1"
 
 #: discover/qml/UpdatesPage.qml:323
-#, fuzzy, kde-format
-#| msgctxt "@action:button"
-#| msgid "Restart to Install Updates Now"
+#, kde-format
 msgctxt "@action:button"
 msgid "Restart and Install Updates"
-msgstr "புதுப்பிப்புகளை நிறுவ இப்போது மீள்துவக்கு"
+msgstr "மீள்துவக்கி புதுப்பிப்புகளை நிறுவு"
 
-#: discover/qml/UpdatesPage.qml:503
+#: discover/qml/UpdatesPage.qml:514
 #, kde-format
 msgid "Installing"
 msgstr "நிறுவப்படுகிறது"
 
-#: discover/qml/UpdatesPage.qml:536
-#, kde-format
-msgid "Update from:"
-msgstr "இங்கிருந்து புதுப்பி:"
+#: discover/qml/UpdatesPage.qml:530
+#, fuzzy, kde-format
+#| msgctxt ""
+#| "@item:inlistbox %1 is the name of an app source e.g. \"Flathub\" or "
+#| "\"Ubuntu\""
+#| msgid "From %1"
+msgctxt "@info This update is from the following source"
+msgid "From:"
+msgstr "வழங்குபவர் %1"
 
-#: discover/qml/UpdatesPage.qml:550
+#: discover/qml/UpdatesPage.qml:547
 #, kde-format
 msgctxt ""
 "%1 is the backend that provides this app, %2 is the specific repository or "
@@ -1528,54 +1521,57 @@ msgid "%1 (%2)"
 msgstr "%1 (%2)"
 
 #: discover/qml/UpdatesPage.qml:559
-#, kde-format
-msgid "More Information…"
+#, fuzzy, kde-format
+#| msgid "More Information…"
+msgctxt "@action:button minimize the length of this label"
+msgid "More Info…"
 msgstr "மேலும் விவரங்கள்…"
 
-#: discover/qml/UpdatesPage.qml:587
+#: discover/qml/UpdatesPage.qml:607
 #, kde-format
 msgctxt "@info"
 msgid "Fetching updates…"
 msgstr "புதுப்பிப்புகளின் பட்டியல் பதிவிறக்கப்படுகிறது…"
 
-#: discover/qml/UpdatesPage.qml:602
+#: discover/qml/UpdatesPage.qml:622
 #, kde-format
 msgctxt "@info"
 msgid "Updates"
 msgstr "புதுப்பிப்புகள்"
 
-#: discover/qml/UpdatesPage.qml:612
-#, fuzzy, kde-format
-#| msgctxt "@info"
-#| msgid "The updates will be installed the next time the system is restarted"
+#: discover/qml/UpdatesPage.qml:632
+#, kde-format
 msgctxt "@info"
 msgid "Updates will be installed after the system is restarted"
-msgstr "அடுத்த முறை கணினி மீள்துவக்கப்படும்போது இப்புதுப்பிப்புகள் நிறுவப்படும்"
+msgstr "கணினி மீள்துவக்கப்படும்போது இப்புதுப்பிப்புகள் நிறுவப்படும்"
 
-#: discover/qml/UpdatesPage.qml:614
+#: discover/qml/UpdatesPage.qml:634
 #, kde-format
 msgctxt "@info"
 msgid "You can keep using the system if you're not ready to restart yet."
-msgstr ""
+msgstr "உடனே மீள்துவக்க வேண்டுமென்று அவசியமில்லை."
 
-#: discover/qml/UpdatesPage.qml:628 discover/qml/UpdatesPage.qml:635
-#: discover/qml/UpdatesPage.qml:642
+#: discover/qml/UpdatesPage.qml:648 discover/qml/UpdatesPage.qml:655
+#: discover/qml/UpdatesPage.qml:662
 #, kde-format
 msgctxt "@info"
 msgid "Up to date"
 msgstr "புதுப்பிப்புகள் இல்லை"
 
-#: discover/qml/UpdatesPage.qml:649
+#: discover/qml/UpdatesPage.qml:669
 #, kde-format
 msgctxt "@info"
 msgid "Should check for updates"
 msgstr "புதுப்பிப்புகள் உள்ளனவா என்று பார்க்க வேண்டும்"
 
-#: discover/qml/UpdatesPage.qml:656
+#: discover/qml/UpdatesPage.qml:676
 #, kde-format
 msgctxt "@info"
 msgid "Time of last update unknown"
 msgstr "கடைசியாக புதுப்பித்த நேரம் தெரியாத‍து"
+
+#~ msgid "Update from:"
+#~ msgstr "இங்கிருந்து புதுப்பி:"
 
 #~ msgid "&Updates (%1)"
 #~ msgstr "&புதுப்பிப்புகள் (%1)"

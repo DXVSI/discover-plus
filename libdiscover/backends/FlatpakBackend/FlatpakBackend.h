@@ -52,6 +52,10 @@ public:
     ResultsStream *findResourceByPackageName(const QUrl &search);
     bool isValid() const override;
     int fetchingUpdatesProgress() const override;
+    uint fetchingUpdatesProgressWeight() const override
+    {
+        return 50; // Same as packagekit
+    }
 
     Transaction *installApplication(AbstractResource *app) override;
     Transaction *installApplication(AbstractResource *app, const AddonList &addons) override;

@@ -76,10 +76,10 @@ Q_SIGNALS:
     void updateSizeChanged();
 
 private:
-    void resourceDataChanged(AbstractResource *res, const QVector<QByteArray> &properties);
     void integrateChangelog(const QString &changelog);
     QModelIndex indexFromItem(UpdateItem *item) const;
-    UpdateItem *itemFromResource(AbstractResource *res);
+    UpdateItem *itemFromResource(AbstractResource *res) const;
+    QModelIndex indexFromResource(AbstractResource *res) const;
     void resourceHasProgressed(AbstractResource *res, qreal progress, AbstractBackendUpdater::State state);
     void activityChanged();
 
