@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: l 10n\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-12-15 00:43+0000\n"
-"PO-Revision-Date: 2025-09-06 18:07+0300\n"
+"POT-Creation-Date: 2026-03-03 00:48+0000\n"
+"PO-Revision-Date: 2026-02-22 01:58+0200\n"
 "Last-Translator: Moo\n"
 "Language-Team: Lithuanian <kde-i18n-lt@kde.org>\n"
 "Language: lt\n"
@@ -21,9 +21,9 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=(n==1 ? 0 : n%10>=2 && (n%100<10 || n"
 "%100>=20) ? 1 : n%10==0 || (n%100>10 && n%100<20) ? 2 : 3);\n"
-"X-Generator: Poedit 3.6\n"
+"X-Generator: Poedit 3.8\n"
 
-#: discover/DiscoverObject.cpp:183
+#: discover/DiscoverObject.cpp:197
 #, kde-format
 msgctxt "@title %1 is the name"
 msgid ""
@@ -32,7 +32,7 @@ msgstr ""
 "%1 nėra sukonfigūruota programų diegimui per Discover – tik programų "
 "papildinių"
 
-#: discover/DiscoverObject.cpp:185
+#: discover/DiscoverObject.cpp:199
 #, kde-kuit-format
 msgctxt "@info:usagetip %2 is the name of the operating system"
 msgid ""
@@ -45,7 +45,7 @@ msgstr ""
 "pusių</interface> sekcijoje įsidiekite pageidaujamą modulį.<nl/><nl/><link "
 "url='%1'>Praneškite apie šią klaidą %2.</link>"
 
-#: discover/DiscoverObject.cpp:192
+#: discover/DiscoverObject.cpp:206
 #, kde-kuit-format
 msgctxt ""
 "@info:usagetip %1 is the distro name; in this case it always contains 'Arch "
@@ -62,7 +62,7 @@ msgstr ""
 "url='https://archlinux.org/packages/extra/x86_64/discover/'>Discover "
 "pakavimą, kurį teikia %1</link>"
 
-#: discover/DiscoverObject.cpp:202
+#: discover/DiscoverObject.cpp:216
 #, kde-kuit-format
 msgctxt "@info:usagetip %1 is the distro name"
 msgid ""
@@ -80,17 +80,17 @@ msgstr ""
 "<para>Vietoj to, %1 prižiūrėtojai rekomendavo paketų tvarkymui naudoti "
 "<command>pacman</command> komandų eilutės įrankį.</para>"
 
-#: discover/DiscoverObject.cpp:291
+#: discover/DiscoverObject.cpp:305
 #, kde-format
 msgid "Could not find category '%1'"
 msgstr "Nepavyko rasti kategorijos „%1“"
 
-#: discover/DiscoverObject.cpp:313
+#: discover/DiscoverObject.cpp:327
 #, kde-format
 msgid "Trying to open inexisting file '%1'"
 msgstr "Bandoma atverti failą, kurio nėra „%1“"
 
-#: discover/DiscoverObject.cpp:335
+#: discover/DiscoverObject.cpp:349
 #, kde-format
 msgid ""
 "Cannot interact with flatpak resources without the flatpak backend %1. "
@@ -99,17 +99,17 @@ msgstr ""
 "Nepavyksta sąveikauti su flatpak ištekliais be flatpak vidinės pusės %1. Iš "
 "pradžių, ją įdiekite."
 
-#: discover/DiscoverObject.cpp:339
+#: discover/DiscoverObject.cpp:353
 #, kde-format
 msgid "Could not open %1"
 msgstr "Nepavyko atverti %1"
 
-#: discover/DiscoverObject.cpp:404
+#: discover/DiscoverObject.cpp:418
 #, kde-format
 msgid "Please make sure Snap support is installed"
 msgstr "Įsitikinkite, kad Snap yra įdiegta"
 
-#: discover/DiscoverObject.cpp:407
+#: discover/DiscoverObject.cpp:421
 #, kde-format
 msgid ""
 "The requested application could not be found in any available software "
@@ -118,7 +118,7 @@ msgstr ""
 "Užklaustos programos nepavyko rasti jokiose prieinamose programinės įrangos "
 "saugyklose"
 
-#: discover/DiscoverObject.cpp:410
+#: discover/DiscoverObject.cpp:424
 #, kde-kuit-format
 msgctxt ""
 "@info %1 is an additional error reference and %3 is the name of the "
@@ -130,13 +130,13 @@ msgstr ""
 "(Nėra įrašo, skirto %1)<nl/><nl/><link url='%2'>Praneškite apie šią klaidą "
 "%3.</link>"
 
-#: discover/DiscoverObject.cpp:473 discover/DiscoverObject.cpp:475
+#: discover/DiscoverObject.cpp:508 discover/DiscoverObject.cpp:510
 #: discover/main.cpp:120
 #, kde-format
 msgid "Discover"
 msgstr "Discover"
 
-#: discover/DiscoverObject.cpp:476
+#: discover/DiscoverObject.cpp:511
 #, kde-format
 msgid ""
 "Discover was closed before certain tasks were done, waiting for it to finish."
@@ -208,8 +208,8 @@ msgstr "Programų paieškos įrankis"
 
 #: discover/main.cpp:124
 #, kde-format
-msgid "© 2010-2025 Plasma Development Team"
-msgstr "© 2010–2025 Plasma plėtojimo komanda"
+msgid "© 2010-2026 Plasma Development Team"
+msgstr "© 2010–2026 Plasma plėtojimo komanda"
 
 #: discover/main.cpp:125
 #, kde-format
@@ -290,7 +290,7 @@ msgstr "Pridėti"
 
 #: discover/qml/AddSourceDialog.qml:50 discover/qml/DiscoverWindow.qml:281
 #: discover/qml/InstallApplicationButton.qml:51
-#: discover/qml/ProgressView.qml:152 discover/qml/SourcesPage.qml:201
+#: discover/qml/ProgressView.qml:153 discover/qml/SourcesPage.qml:201
 #: discover/qml/UpdatesPage.qml:303 discover/qml/WebflowDialog.qml:41
 #, kde-format
 msgid "Cancel"
@@ -720,10 +720,10 @@ msgstr "Atitikimas"
 msgid "Name"
 msgstr "Pavadinimas"
 
-#: discover/qml/ApplicationsListPage.qml:126 discover/qml/Rating.qml:119
+#: discover/qml/ApplicationsListPage.qml:126
 #, kde-format
-msgid "Rating"
-msgstr "Įvertinimas"
+msgid "Popularity"
+msgstr "Populiarumas"
 
 #: discover/qml/ApplicationsListPage.qml:137
 #, kde-format
@@ -818,13 +818,13 @@ msgctxt "@title:group"
 msgid "Highest-Rated Games"
 msgstr "Aukščiausio įvertinimo žaidimai"
 
-#: discover/qml/BrowsingPage.qml:223 discover/qml/BrowsingPage.qml:278
+#: discover/qml/BrowsingPage.qml:223 discover/qml/BrowsingPage.qml:280
 #, kde-format
 msgctxt "@action:button"
 msgid "See More"
 msgstr "Rodyti daugiau"
 
-#: discover/qml/BrowsingPage.qml:247
+#: discover/qml/BrowsingPage.qml:249
 #, kde-format
 msgctxt "@title:group"
 msgid "Highest-Rated Developer Tools"
@@ -874,14 +874,12 @@ msgid "Next Screenshot"
 msgstr "Kita ekrano kopija"
 
 #: discover/qml/DiscoverDrawer.qml:166
-#, fuzzy, kde-format
-#| msgid "Updates are available"
+#, kde-format
 msgid "Security updates available"
-msgstr "Yra prieinami atnaujinimai"
+msgstr "Yra prieinami saugumo atnaujinimai"
 
 #: discover/qml/DiscoverDrawer.qml:167
-#, fuzzy, kde-format
-#| msgid "Updates are available"
+#, kde-format
 msgid "Updates available"
 msgstr "Yra prieinami atnaujinimai"
 
@@ -913,10 +911,9 @@ msgid "&Updates (Fetching…)"
 msgstr "Atn&aujinimai (Gaunami…)"
 
 #: discover/qml/DiscoverWindow.qml:97
-#, fuzzy, kde-format
-#| msgid "Updates"
+#, kde-format
 msgid "&Updates"
-msgstr "Atnaujinimai"
+msgstr "Atna&ujinimai"
 
 #: discover/qml/DiscoverWindow.qml:105
 #, kde-format
@@ -1083,33 +1080,38 @@ msgstr "Įdiegta"
 msgid "Resources for '%1'"
 msgstr "„%1“ ištekliai"
 
-#: discover/qml/ProgressView.qml:19
+#: discover/qml/ProgressView.qml:20
 #, kde-format
 msgid "Tasks (%1%)"
 msgstr "Užduotys (%1%)"
 
-#: discover/qml/ProgressView.qml:19 discover/qml/ProgressView.qml:49
+#: discover/qml/ProgressView.qml:20 discover/qml/ProgressView.qml:50
 #, kde-format
 msgid "Tasks"
 msgstr "Užduotys"
 
-#: discover/qml/ProgressView.qml:126
+#: discover/qml/ProgressView.qml:127
 #, kde-format
 msgctxt "TransactioName - TransactionStatus: speed, remaining time"
 msgid "%1 - %2: %3, %4 remaining"
 msgstr "%1 - %2: %3, liko %4"
 
-#: discover/qml/ProgressView.qml:134
+#: discover/qml/ProgressView.qml:135
 #, kde-format
 msgctxt "TransactioName - TransactionStatus: speed"
 msgid "%1 - %2: %3"
 msgstr "%1 - %2: %3"
 
-#: discover/qml/ProgressView.qml:141
+#: discover/qml/ProgressView.qml:142
 #, kde-format
 msgctxt "TransactioName - TransactionStatus"
 msgid "%1 - %2"
 msgstr "%1 - %2"
+
+#: discover/qml/Rating.qml:119
+#, kde-format
+msgid "Rating"
+msgstr "Įvertinimas"
 
 #: discover/qml/ReviewDelegate.qml:58
 #, kde-format
@@ -1537,17 +1539,18 @@ msgctxt "@action:button"
 msgid "Restart and Install Updates"
 msgstr "Paleisti iš naujo ir įdiegti atnaujinimus"
 
-#: discover/qml/UpdatesPage.qml:503
+#: discover/qml/UpdatesPage.qml:514
 #, kde-format
 msgid "Installing"
 msgstr "Įdiegiama"
 
-#: discover/qml/UpdatesPage.qml:536
+#: discover/qml/UpdatesPage.qml:530
 #, kde-format
-msgid "Update from:"
-msgstr "Atnaujinti iš:"
+msgctxt "@info This update is from the following source"
+msgid "From:"
+msgstr "Iš:"
 
-#: discover/qml/UpdatesPage.qml:550
+#: discover/qml/UpdatesPage.qml:547
 #, kde-format
 msgctxt ""
 "%1 is the backend that provides this app, %2 is the specific repository or "
@@ -1557,28 +1560,29 @@ msgstr "%1 (%2)"
 
 #: discover/qml/UpdatesPage.qml:559
 #, kde-format
-msgid "More Information…"
+msgctxt "@action:button minimize the length of this label"
+msgid "More Info…"
 msgstr "Daugiau informacijos…"
 
-#: discover/qml/UpdatesPage.qml:587
+#: discover/qml/UpdatesPage.qml:607
 #, kde-format
 msgctxt "@info"
 msgid "Fetching updates…"
 msgstr "Gaunami atnaujinimai…"
 
-#: discover/qml/UpdatesPage.qml:602
+#: discover/qml/UpdatesPage.qml:622
 #, kde-format
 msgctxt "@info"
 msgid "Updates"
 msgstr "Atnaujinimai"
 
-#: discover/qml/UpdatesPage.qml:612
+#: discover/qml/UpdatesPage.qml:632
 #, kde-format
 msgctxt "@info"
 msgid "Updates will be installed after the system is restarted"
 msgstr "Atnaujinimai bus įdiegti po to, kai sistema bus paleista iš naujo"
 
-#: discover/qml/UpdatesPage.qml:614
+#: discover/qml/UpdatesPage.qml:634
 #, kde-format
 msgctxt "@info"
 msgid "You can keep using the system if you're not ready to restart yet."
@@ -1586,24 +1590,27 @@ msgstr ""
 "Galite ir toliau naudotis sistema, jei dar nesate pasiruošę paleisti iš "
 "naujo."
 
-#: discover/qml/UpdatesPage.qml:628 discover/qml/UpdatesPage.qml:635
-#: discover/qml/UpdatesPage.qml:642
+#: discover/qml/UpdatesPage.qml:648 discover/qml/UpdatesPage.qml:655
+#: discover/qml/UpdatesPage.qml:662
 #, kde-format
 msgctxt "@info"
 msgid "Up to date"
 msgstr "Atnaujinta"
 
-#: discover/qml/UpdatesPage.qml:649
+#: discover/qml/UpdatesPage.qml:669
 #, kde-format
 msgctxt "@info"
 msgid "Should check for updates"
 msgstr "Turėtų būti tikrinama ar yra atnaujinimų"
 
-#: discover/qml/UpdatesPage.qml:656
+#: discover/qml/UpdatesPage.qml:676
 #, kde-format
 msgctxt "@info"
 msgid "Time of last update unknown"
 msgstr "Paskutinio atnaujinimo laikas nežinomas"
+
+#~ msgid "Update from:"
+#~ msgstr "Atnaujinti iš:"
 
 #~ msgid "&Updates (%1)"
 #~ msgstr "Atna&ujinimai (%1)"
@@ -2038,9 +2045,6 @@ msgstr "Paskutinio atnaujinimo laikas nežinomas"
 #~ msgstr ""
 #~ "<p style='margin: 0 0 0 0'><b>%1</b> įvertino %2</p><p style='margin: 0 0 "
 #~ "0 0'>%3</p><p style='margin: 0 0 0 0'>%4</p>"
-
-#~ msgid "Popularity"
-#~ msgstr "Populiarumas"
 
 #~ msgid "Buzz"
 #~ msgstr "Kumštelėjimas"

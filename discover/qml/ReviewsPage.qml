@@ -118,7 +118,7 @@ Kirigami.OverlaySheet {
                         text: i18n("Install this app to write a review")
                         wrapMode: Text.WordWrap
                         visible: !reviewButton.enabled
-                        opacity: 0.6
+                        opacity: 0.75
                         TextMetrics {
                             id: messageLabelMetrics
                             font: messageLabel.font

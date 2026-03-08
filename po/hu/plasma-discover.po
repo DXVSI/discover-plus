@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-12-15 00:43+0000\n"
+"POT-Creation-Date: 2026-03-03 00:48+0000\n"
 "PO-Revision-Date: 2025-10-15 20:38+0200\n"
 "Last-Translator: Kristof Kiszel <ulysses@fsf.hu>\n"
 "Language-Team: Hungarian <kde-l10n-hu@kde.org>\n"
@@ -20,7 +20,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Lokalize 25.08.2\n"
 
-#: discover/DiscoverObject.cpp:183
+#: discover/DiscoverObject.cpp:197
 #, kde-format
 msgctxt "@title %1 is the name"
 msgid ""
@@ -29,7 +29,7 @@ msgstr ""
 "A(z) %1 nincs beállítva alkalmazások telepítésére Discoverrel - csak "
 "alkalmazások bővítményeire"
 
-#: discover/DiscoverObject.cpp:185
+#: discover/DiscoverObject.cpp:199
 #, kde-kuit-format
 msgctxt "@info:usagetip %2 is the name of the operating system"
 msgid ""
@@ -42,7 +42,7 @@ msgstr ""
 "háttérprogramok</interface> alatt.<nl/><nl/>Jelentse <link url='%1'>ezt a "
 "hibát a(z) %2 operációs rendszernek</link>."
 
-#: discover/DiscoverObject.cpp:192
+#: discover/DiscoverObject.cpp:206
 #, kde-kuit-format
 msgctxt ""
 "@info:usagetip %1 is the distro name; in this case it always contains 'Arch "
@@ -59,7 +59,7 @@ msgstr ""
 "url='https://archlinux.org/packages/extra/x86_64/discover/'>%1 Discover "
 "csomagját</link>"
 
-#: discover/DiscoverObject.cpp:202
+#: discover/DiscoverObject.cpp:216
 #, kde-kuit-format
 msgctxt "@info:usagetip %1 is the distro name"
 msgid ""
@@ -76,17 +76,17 @@ msgstr ""
 "csak Flatpakot, Snapet és bővítményeket kezelni.<para>A(z) %1 karbantartók "
 "inkább a <command>pacman</command> csomagkezelő használatát ajánlják.</para>"
 
-#: discover/DiscoverObject.cpp:291
+#: discover/DiscoverObject.cpp:305
 #, kde-format
 msgid "Could not find category '%1'"
 msgstr "Nem található kategória: „%1”"
 
-#: discover/DiscoverObject.cpp:313
+#: discover/DiscoverObject.cpp:327
 #, kde-format
 msgid "Trying to open inexisting file '%1'"
 msgstr "A(z) „%1” nem létező fájl megnyitására tett kísérlet"
 
-#: discover/DiscoverObject.cpp:335
+#: discover/DiscoverObject.cpp:349
 #, kde-format
 msgid ""
 "Cannot interact with flatpak resources without the flatpak backend %1. "
@@ -95,17 +95,17 @@ msgstr ""
 "Nem lehet dolgozni Flatpak erőforrásokkal a(z) %1 backend nélkül. Kérjük, "
 "telepítse azt."
 
-#: discover/DiscoverObject.cpp:339
+#: discover/DiscoverObject.cpp:353
 #, kde-format
 msgid "Could not open %1"
 msgstr "A(z) %1 nem nyitható meg"
 
-#: discover/DiscoverObject.cpp:404
+#: discover/DiscoverObject.cpp:418
 #, kde-format
 msgid "Please make sure Snap support is installed"
 msgstr "Ellenőrizze, hogy a Snap támogatás telepítve van-e"
 
-#: discover/DiscoverObject.cpp:407
+#: discover/DiscoverObject.cpp:421
 #, kde-format
 msgid ""
 "The requested application could not be found in any available software "
@@ -113,7 +113,7 @@ msgid ""
 msgstr ""
 "A kért alkalmazás nem található meg egyik elérhető szoftvertárolóban sem"
 
-#: discover/DiscoverObject.cpp:410
+#: discover/DiscoverObject.cpp:424
 #, kde-kuit-format
 msgctxt ""
 "@info %1 is an additional error reference and %3 is the name of the "
@@ -125,13 +125,13 @@ msgstr ""
 "(Nincs bejegyzés ehhez: %1)<nl/><nl/>Jelentse <link url='%2'>ezt a hibát "
 "a(z) %3 operációs rendszernek</link>"
 
-#: discover/DiscoverObject.cpp:473 discover/DiscoverObject.cpp:475
+#: discover/DiscoverObject.cpp:508 discover/DiscoverObject.cpp:510
 #: discover/main.cpp:120
 #, kde-format
 msgid "Discover"
 msgstr "Discover"
 
-#: discover/DiscoverObject.cpp:476
+#: discover/DiscoverObject.cpp:511
 #, kde-format
 msgid ""
 "Discover was closed before certain tasks were done, waiting for it to finish."
@@ -203,8 +203,9 @@ msgid "An application explorer"
 msgstr "Egy alkalmazásfelfedező"
 
 #: discover/main.cpp:124
-#, kde-format
-msgid "© 2010-2025 Plasma Development Team"
+#, fuzzy, kde-format
+#| msgid "© 2010-2025 Plasma Development Team"
+msgid "© 2010-2026 Plasma Development Team"
 msgstr "© A Plasma fejlesztői, 2010-2025."
 
 #: discover/main.cpp:125
@@ -286,7 +287,7 @@ msgstr "Hozzáadás"
 
 #: discover/qml/AddSourceDialog.qml:50 discover/qml/DiscoverWindow.qml:281
 #: discover/qml/InstallApplicationButton.qml:51
-#: discover/qml/ProgressView.qml:152 discover/qml/SourcesPage.qml:201
+#: discover/qml/ProgressView.qml:153 discover/qml/SourcesPage.qml:201
 #: discover/qml/UpdatesPage.qml:303 discover/qml/WebflowDialog.qml:41
 #, kde-format
 msgid "Cancel"
@@ -704,10 +705,10 @@ msgstr "Relevancia"
 msgid "Name"
 msgstr "Név"
 
-#: discover/qml/ApplicationsListPage.qml:126 discover/qml/Rating.qml:119
+#: discover/qml/ApplicationsListPage.qml:126
 #, kde-format
-msgid "Rating"
-msgstr "Értékelés"
+msgid "Popularity"
+msgstr "Népszerűség"
 
 #: discover/qml/ApplicationsListPage.qml:137
 #, kde-format
@@ -802,13 +803,13 @@ msgctxt "@title:group"
 msgid "Highest-Rated Games"
 msgstr "Legjobbra értékelt játékok"
 
-#: discover/qml/BrowsingPage.qml:223 discover/qml/BrowsingPage.qml:278
+#: discover/qml/BrowsingPage.qml:223 discover/qml/BrowsingPage.qml:280
 #, kde-format
 msgctxt "@action:button"
 msgid "See More"
 msgstr "Több"
 
-#: discover/qml/BrowsingPage.qml:247
+#: discover/qml/BrowsingPage.qml:249
 #, kde-format
 msgctxt "@title:group"
 msgid "Highest-Rated Developer Tools"
@@ -1065,33 +1066,38 @@ msgstr "Telepített"
 msgid "Resources for '%1'"
 msgstr "Erőforrások ehhez: „%1”"
 
-#: discover/qml/ProgressView.qml:19
+#: discover/qml/ProgressView.qml:20
 #, kde-format
 msgid "Tasks (%1%)"
 msgstr "Feladatok (%1%)"
 
-#: discover/qml/ProgressView.qml:19 discover/qml/ProgressView.qml:49
+#: discover/qml/ProgressView.qml:20 discover/qml/ProgressView.qml:50
 #, kde-format
 msgid "Tasks"
 msgstr "Feladatok"
 
-#: discover/qml/ProgressView.qml:126
+#: discover/qml/ProgressView.qml:127
 #, kde-format
 msgctxt "TransactioName - TransactionStatus: speed, remaining time"
 msgid "%1 - %2: %3, %4 remaining"
 msgstr "%1 - %2: %3, %4 van hátra"
 
-#: discover/qml/ProgressView.qml:134
+#: discover/qml/ProgressView.qml:135
 #, kde-format
 msgctxt "TransactioName - TransactionStatus: speed"
 msgid "%1 - %2: %3"
 msgstr "%1 - %2: %3"
 
-#: discover/qml/ProgressView.qml:141
+#: discover/qml/ProgressView.qml:142
 #, kde-format
 msgctxt "TransactioName - TransactionStatus"
 msgid "%1 - %2"
 msgstr "%1 - %2"
+
+#: discover/qml/Rating.qml:119
+#, kde-format
+msgid "Rating"
+msgstr "Értékelés"
 
 #: discover/qml/ReviewDelegate.qml:58
 #, kde-format
@@ -1517,17 +1523,22 @@ msgctxt "@action:button"
 msgid "Restart and Install Updates"
 msgstr "Újraindítás és a frissítések telepítése"
 
-#: discover/qml/UpdatesPage.qml:503
+#: discover/qml/UpdatesPage.qml:514
 #, kde-format
 msgid "Installing"
 msgstr "Telepítés"
 
-#: discover/qml/UpdatesPage.qml:536
-#, kde-format
-msgid "Update from:"
-msgstr "Frissítés innen:"
+#: discover/qml/UpdatesPage.qml:530
+#, fuzzy, kde-format
+#| msgctxt ""
+#| "@item:inlistbox %1 is the name of an app source e.g. \"Flathub\" or "
+#| "\"Ubuntu\""
+#| msgid "From %1"
+msgctxt "@info This update is from the following source"
+msgid "From:"
+msgstr "Forrás: %1"
 
-#: discover/qml/UpdatesPage.qml:550
+#: discover/qml/UpdatesPage.qml:547
 #, kde-format
 msgctxt ""
 "%1 is the backend that provides this app, %2 is the specific repository or "
@@ -1536,53 +1547,58 @@ msgid "%1 (%2)"
 msgstr "%1 (%2)"
 
 #: discover/qml/UpdatesPage.qml:559
-#, kde-format
-msgid "More Information…"
+#, fuzzy, kde-format
+#| msgid "More Information…"
+msgctxt "@action:button minimize the length of this label"
+msgid "More Info…"
 msgstr "További információk…"
 
-#: discover/qml/UpdatesPage.qml:587
+#: discover/qml/UpdatesPage.qml:607
 #, kde-format
 msgctxt "@info"
 msgid "Fetching updates…"
 msgstr "Frissítések letöltése…"
 
-#: discover/qml/UpdatesPage.qml:602
+#: discover/qml/UpdatesPage.qml:622
 #, kde-format
 msgctxt "@info"
 msgid "Updates"
 msgstr "Frissítések"
 
-#: discover/qml/UpdatesPage.qml:612
+#: discover/qml/UpdatesPage.qml:632
 #, kde-format
 msgctxt "@info"
 msgid "Updates will be installed after the system is restarted"
 msgstr "A frissítések a rendszer újraindítása után kerülnek telepítésre"
 
-#: discover/qml/UpdatesPage.qml:614
+#: discover/qml/UpdatesPage.qml:634
 #, kde-format
 msgctxt "@info"
 msgid "You can keep using the system if you're not ready to restart yet."
 msgstr ""
 "Tovább használhatja a rendszert, ha még nem áll készen az újraindításra."
 
-#: discover/qml/UpdatesPage.qml:628 discover/qml/UpdatesPage.qml:635
-#: discover/qml/UpdatesPage.qml:642
+#: discover/qml/UpdatesPage.qml:648 discover/qml/UpdatesPage.qml:655
+#: discover/qml/UpdatesPage.qml:662
 #, kde-format
 msgctxt "@info"
 msgid "Up to date"
 msgstr "Naprakész"
 
-#: discover/qml/UpdatesPage.qml:649
+#: discover/qml/UpdatesPage.qml:669
 #, kde-format
 msgctxt "@info"
 msgid "Should check for updates"
 msgstr "Frissítések keresése szükséges"
 
-#: discover/qml/UpdatesPage.qml:656
+#: discover/qml/UpdatesPage.qml:676
 #, kde-format
 msgctxt "@info"
 msgid "Time of last update unknown"
 msgstr "Az utolsó frissítés időpontja ismeretlen"
+
+#~ msgid "Update from:"
+#~ msgstr "Frissítés innen:"
 
 #~ msgid "&Updates (%1)"
 #~ msgstr "F&rissítések (%1)"
@@ -2039,9 +2055,6 @@ msgstr "Az utolsó frissítés időpontja ismeretlen"
 #~ msgstr ""
 #~ "<p style='margin: 0 0 0 0'><b>%1</b> - %2</p><p style='margin: 0 0 0 0'>"
 #~ "%3</p><p style='margin: 0 0 0 0'>%4</p>"
-
-#~ msgid "Popularity"
-#~ msgstr "Népszerűség"
 
 #~ msgid "Buzz"
 #~ msgstr "Kulcsszó"

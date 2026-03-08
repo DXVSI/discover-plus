@@ -1,7 +1,7 @@
 #
 # Translators:
 #
-# SPDX-FileCopyrightText: 2022, 2023, 2024, 2025 Emir SARI <emir_sari@icloud.com>
+# SPDX-FileCopyrightText: 2022, 2023, 2024, 2025, 2026 Emir SARI <emir_sari@icloud.com>
 # obsoleteman <tulliana@gmail.com>, 2012.
 # Volkan Gezer <volkangezer@gmail.com>, 2013-2014, 2017, 2021.
 # Kaan Ozdincer <kaanozdincer@gmail.com>, 2014, 2015.
@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: extragear-sysadmin-kde4\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-12-15 00:43+0000\n"
-"PO-Revision-Date: 2025-08-30 18:37+0300\n"
+"POT-Creation-Date: 2026-03-03 00:48+0000\n"
+"PO-Revision-Date: 2026-02-03 19:28+0300\n"
 "Last-Translator: Emir SARI <emir_sari@îcloud.com>\n"
 "Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
 "Language: tr\n"
@@ -19,9 +19,9 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Lokalize 25.08.0\n"
+"X-Generator: Lokalize 25.12.1\n"
 
-#: discover/DiscoverObject.cpp:183
+#: discover/DiscoverObject.cpp:197
 #, kde-format
 msgctxt "@title %1 is the name"
 msgid ""
@@ -30,7 +30,7 @@ msgstr ""
 "%1, Keşfet üzerinden uygulama kurmak için yapılandırılmamış; yalnızca "
 "uygulama eklentileri kullanılabilir."
 
-#: discover/DiscoverObject.cpp:185
+#: discover/DiscoverObject.cpp:199
 #, kde-kuit-format
 msgctxt "@info:usagetip %2 is the name of the operating system"
 msgid ""
@@ -43,7 +43,7 @@ msgstr ""
 "modülü kurun.<nl/><nl/>Lütfen bu sorunu <link url='%1'>%2 yayımcısına "
 "bildirin.</link>"
 
-#: discover/DiscoverObject.cpp:192
+#: discover/DiscoverObject.cpp:206
 #, kde-kuit-format
 msgctxt ""
 "@info:usagetip %1 is the distro name; in this case it always contains 'Arch "
@@ -60,7 +60,7 @@ msgstr ""
 "org/packages/extra/x86_64/discover/'>%1 sisteminin Keşfet için olan</link> "
 "paketlemesini gözden geçirin."
 
-#: discover/DiscoverObject.cpp:202
+#: discover/DiscoverObject.cpp:216
 #, kde-kuit-format
 msgctxt "@info:usagetip %1 is the distro name"
 msgid ""
@@ -78,17 +78,17 @@ msgstr ""
 "önerilir. %1 bakımcıları, bunun yerine paket yönetimi için <command>pacman</"
 "command> yazılımını kullanmanızı öneriyorlar."
 
-#: discover/DiscoverObject.cpp:291
+#: discover/DiscoverObject.cpp:305
 #, kde-format
 msgid "Could not find category '%1'"
 msgstr "“%1” kategorisi bulunamadı"
 
-#: discover/DiscoverObject.cpp:313
+#: discover/DiscoverObject.cpp:327
 #, kde-format
 msgid "Trying to open inexisting file '%1'"
 msgstr "Var olmayan “%1” dosyası açılmaya çalışılıyor"
 
-#: discover/DiscoverObject.cpp:335
+#: discover/DiscoverObject.cpp:349
 #, kde-format
 msgid ""
 "Cannot interact with flatpak resources without the flatpak backend %1. "
@@ -97,17 +97,17 @@ msgstr ""
 "%1 flatpak arka ucu olmadan flatpak kaynaklarıyla etkileşim kurulamıyor. "
 "Lütfen önce kurun."
 
-#: discover/DiscoverObject.cpp:339
+#: discover/DiscoverObject.cpp:353
 #, kde-format
 msgid "Could not open %1"
 msgstr "%1 açılamadı"
 
-#: discover/DiscoverObject.cpp:404
+#: discover/DiscoverObject.cpp:418
 #, kde-format
 msgid "Please make sure Snap support is installed"
 msgstr "Lütfen Snap desteğinin kurulu olduğundan emin olun"
 
-#: discover/DiscoverObject.cpp:407
+#: discover/DiscoverObject.cpp:421
 #, kde-format
 msgid ""
 "The requested application could not be found in any available software "
@@ -115,7 +115,7 @@ msgid ""
 msgstr ""
 "İstenen uygulama, herhangi bir kullanılabilir uygulama deposunda bulunamıyor."
 
-#: discover/DiscoverObject.cpp:410
+#: discover/DiscoverObject.cpp:424
 #, kde-kuit-format
 msgctxt ""
 "@info %1 is an additional error reference and %3 is the name of the "
@@ -127,13 +127,13 @@ msgstr ""
 "(%1 için girdi yok)<nl/><nl/>Lütfen bu sorunu <link url='%2'>%3 yayımcısına "
 "bildirin.</link>"
 
-#: discover/DiscoverObject.cpp:473 discover/DiscoverObject.cpp:475
+#: discover/DiscoverObject.cpp:508 discover/DiscoverObject.cpp:510
 #: discover/main.cpp:120
 #, kde-format
 msgid "Discover"
 msgstr "Keşfet"
 
-#: discover/DiscoverObject.cpp:476
+#: discover/DiscoverObject.cpp:511
 #, kde-format
 msgid ""
 "Discover was closed before certain tasks were done, waiting for it to finish."
@@ -203,8 +203,8 @@ msgstr "Uygulama kâşifi"
 
 #: discover/main.cpp:124
 #, kde-format
-msgid "© 2010-2025 Plasma Development Team"
-msgstr "© 2010–2025 Plasma Geliştirme Takımı"
+msgid "© 2010-2026 Plasma Development Team"
+msgstr "© 2010–2026 Plasma Geliştirme Takımı"
 
 #: discover/main.cpp:125
 #, kde-format
@@ -285,7 +285,7 @@ msgstr "Ekle"
 
 #: discover/qml/AddSourceDialog.qml:50 discover/qml/DiscoverWindow.qml:281
 #: discover/qml/InstallApplicationButton.qml:51
-#: discover/qml/ProgressView.qml:152 discover/qml/SourcesPage.qml:201
+#: discover/qml/ProgressView.qml:153 discover/qml/SourcesPage.qml:201
 #: discover/qml/UpdatesPage.qml:303 discover/qml/WebflowDialog.qml:41
 #, kde-format
 msgid "Cancel"
@@ -706,10 +706,10 @@ msgstr "Uygunluk"
 msgid "Name"
 msgstr "Ad"
 
-#: discover/qml/ApplicationsListPage.qml:126 discover/qml/Rating.qml:119
+#: discover/qml/ApplicationsListPage.qml:126
 #, kde-format
-msgid "Rating"
-msgstr "Derecelendirme"
+msgid "Popularity"
+msgstr "Popülerlik"
 
 #: discover/qml/ApplicationsListPage.qml:137
 #, kde-format
@@ -804,13 +804,13 @@ msgctxt "@title:group"
 msgid "Highest-Rated Games"
 msgstr "En Çok Beğenilen Oyunlar"
 
-#: discover/qml/BrowsingPage.qml:223 discover/qml/BrowsingPage.qml:278
+#: discover/qml/BrowsingPage.qml:223 discover/qml/BrowsingPage.qml:280
 #, kde-format
 msgctxt "@action:button"
 msgid "See More"
 msgstr "Daha Fazlasını Gör"
 
-#: discover/qml/BrowsingPage.qml:247
+#: discover/qml/BrowsingPage.qml:249
 #, kde-format
 msgctxt "@title:group"
 msgid "Highest-Rated Developer Tools"
@@ -862,14 +862,12 @@ msgstr "Sonraki Ekran Görüntüsü"
 #: discover/qml/DiscoverDrawer.qml:166
 #, kde-format
 msgid "Security updates available"
-msgstr ""
+msgstr "Güvenlik güncellemeleri kullanılabilir"
 
 #: discover/qml/DiscoverDrawer.qml:167
-#, fuzzy, kde-format
-#| msgctxt "@action:button as in, 'update all items'"
-#| msgid "Update All"
+#, kde-format
 msgid "Updates available"
-msgstr "Tümünü Güncelle"
+msgstr "Güncellemeler kullanılabilir"
 
 #: discover/qml/DiscoverWindow.qml:47
 #, kde-format
@@ -897,10 +895,9 @@ msgid "&Updates (Fetching…)"
 msgstr "&Güncellemeler (Getiriliyor…)"
 
 #: discover/qml/DiscoverWindow.qml:97
-#, fuzzy, kde-format
-#| msgid "Updates"
+#, kde-format
 msgid "&Updates"
-msgstr "Güncellemeler"
+msgstr "&Güncellemeler"
 
 #: discover/qml/DiscoverWindow.qml:105
 #, kde-format
@@ -1067,33 +1064,38 @@ msgstr "Kurulu"
 msgid "Resources for '%1'"
 msgstr "“%1” için kaynaklar"
 
-#: discover/qml/ProgressView.qml:19
+#: discover/qml/ProgressView.qml:20
 #, kde-format
 msgid "Tasks (%1%)"
 msgstr "Görevler (%​%1)"
 
-#: discover/qml/ProgressView.qml:19 discover/qml/ProgressView.qml:49
+#: discover/qml/ProgressView.qml:20 discover/qml/ProgressView.qml:50
 #, kde-format
 msgid "Tasks"
 msgstr "Görevler"
 
-#: discover/qml/ProgressView.qml:126
+#: discover/qml/ProgressView.qml:127
 #, kde-format
 msgctxt "TransactioName - TransactionStatus: speed, remaining time"
 msgid "%1 - %2: %3, %4 remaining"
 msgstr "%1 — %2: %3, %4 kaldı"
 
-#: discover/qml/ProgressView.qml:134
+#: discover/qml/ProgressView.qml:135
 #, kde-format
 msgctxt "TransactioName - TransactionStatus: speed"
 msgid "%1 - %2: %3"
 msgstr "%1 — %2: %3"
 
-#: discover/qml/ProgressView.qml:141
+#: discover/qml/ProgressView.qml:142
 #, kde-format
 msgctxt "TransactioName - TransactionStatus"
 msgid "%1 - %2"
 msgstr "%1 — %2"
+
+#: discover/qml/Rating.qml:119
+#, kde-format
+msgid "Rating"
+msgstr "Derecelendirme"
 
 #: discover/qml/ReviewDelegate.qml:58
 #, kde-format
@@ -1520,17 +1522,18 @@ msgctxt "@action:button"
 msgid "Restart and Install Updates"
 msgstr "Yeniden Başlat ve Kur"
 
-#: discover/qml/UpdatesPage.qml:503
+#: discover/qml/UpdatesPage.qml:514
 #, kde-format
 msgid "Installing"
 msgstr "Kuruluyor"
 
-#: discover/qml/UpdatesPage.qml:536
+#: discover/qml/UpdatesPage.qml:530
 #, kde-format
-msgid "Update from:"
-msgstr "Güncelleme konumu:"
+msgctxt "@info This update is from the following source"
+msgid "From:"
+msgstr "Kaynak:"
 
-#: discover/qml/UpdatesPage.qml:550
+#: discover/qml/UpdatesPage.qml:547
 #, kde-format
 msgctxt ""
 "%1 is the backend that provides this app, %2 is the specific repository or "
@@ -1540,28 +1543,29 @@ msgstr "%1 (%2)"
 
 #: discover/qml/UpdatesPage.qml:559
 #, kde-format
-msgid "More Information…"
-msgstr "Daha Fazla Bilgi…"
+msgctxt "@action:button minimize the length of this label"
+msgid "More Info…"
+msgstr "Ek Bilgi…"
 
-#: discover/qml/UpdatesPage.qml:587
+#: discover/qml/UpdatesPage.qml:607
 #, kde-format
 msgctxt "@info"
 msgid "Fetching updates…"
 msgstr "Güncellemeler alınıyor…"
 
-#: discover/qml/UpdatesPage.qml:602
+#: discover/qml/UpdatesPage.qml:622
 #, kde-format
 msgctxt "@info"
 msgid "Updates"
 msgstr "Güncellemeler"
 
-#: discover/qml/UpdatesPage.qml:612
+#: discover/qml/UpdatesPage.qml:632
 #, kde-format
 msgctxt "@info"
 msgid "Updates will be installed after the system is restarted"
 msgstr "Güncellemeler sistem yeniden başlatıldıktan sonra kurulacak."
 
-#: discover/qml/UpdatesPage.qml:614
+#: discover/qml/UpdatesPage.qml:634
 #, kde-format
 msgctxt "@info"
 msgid "You can keep using the system if you're not ready to restart yet."
@@ -1569,72 +1573,21 @@ msgstr ""
 "Henüz yeniden başlatmaya hazır değilseniz sisteminizi kullanmayı "
 "sürdürebilirsiniz."
 
-#: discover/qml/UpdatesPage.qml:628 discover/qml/UpdatesPage.qml:635
-#: discover/qml/UpdatesPage.qml:642
+#: discover/qml/UpdatesPage.qml:648 discover/qml/UpdatesPage.qml:655
+#: discover/qml/UpdatesPage.qml:662
 #, kde-format
 msgctxt "@info"
 msgid "Up to date"
 msgstr "Sisteminiz güncel"
 
-#: discover/qml/UpdatesPage.qml:649
+#: discover/qml/UpdatesPage.qml:669
 #, kde-format
 msgctxt "@info"
 msgid "Should check for updates"
 msgstr "Güncellemeler denetlenmeli"
 
-#: discover/qml/UpdatesPage.qml:656
+#: discover/qml/UpdatesPage.qml:676
 #, kde-format
 msgctxt "@info"
 msgid "Time of last update unknown"
 msgstr "Son güncelleme zamanı bilinmiyor"
-
-#~ msgid "&Updates (%1)"
-#~ msgstr "Gün&cellemeler (%1)"
-
-#, fuzzy
-#~| msgid "Please report this issue to the packagers of your distribution."
-#~ msgctxt "@info %1 is an additional error reference"
-#~ msgid ""
-#~ "Please report this issue to the packagers of your distribution.<nl/>(%1)"
-#~ msgstr "Lütfen bu sorunu dağıtımınızın paketleyicilerine bildirin."
-
-#~ msgid "Report This Issue"
-#~ msgstr "Bu Sorunu Bildir"
-
-#~ msgid "Report this issue"
-#~ msgstr "Bu Sorunu Bildir"
-
-#~ msgctxt "@info"
-#~ msgid "Restart the system to complete the update process"
-#~ msgstr "Güncelleme sürecini tamamlamak için sistemi yeniden başlatın"
-
-#~ msgctxt ""
-#~ "If appropriate, localize this URL to be something more relevant to the "
-#~ "language. %1 is the text that will be searched for."
-#~ msgid "https://duckduckgo.com/?q=%1"
-#~ msgstr "https://duckduckgo.com/?q=%1"
-
-#~ msgid "Documentation"
-#~ msgstr "Belgelendirme"
-
-#~ msgid "Website"
-#~ msgstr "Web Sitesi"
-
-#~ msgid "Donate"
-#~ msgstr "Bağış Yap"
-
-#~ msgid "Support and thank the developers by donating to their project"
-#~ msgstr ""
-#~ "Projeye bağışta bulunarak geliştiricileri destekleyin ve onlara teşekkür "
-#~ "edin"
-
-#~ msgid "Log an issue you found to help get it fixed"
-#~ msgstr "Düzeltilmesine yardımcı olmak için bir hata bildirin"
-
-#~ msgid "Contribute"
-#~ msgstr "Katkıda Bulun"
-
-#~ msgid "Help the developers by coding, designing, testing, or translating"
-#~ msgstr ""
-#~ "Geliştiricilere; kod yazarak, tasarım yaparak, sınayarak veya çeviri "
-#~ "yaparak yardımcı olun"

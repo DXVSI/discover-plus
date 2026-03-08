@@ -1,13 +1,13 @@
 # Copyright (C) YEAR This_file_is_part_of_KDE
 # This file is distributed under the same license as the PACKAGE package.
 #
-# SPDX-FileCopyrightText: 2016, 2020, 2021, 2022, 2023, 2024, 2025 Giovanni Sora <g.sora@tiscali.it>
+# SPDX-FileCopyrightText: 2016, 2020, 2021, 2022, 2023, 2024, 2025, 2026 Giovanni Sora <g.sora@tiscali.it>
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-12-15 00:43+0000\n"
-"PO-Revision-Date: 2025-09-24 17:22+0200\n"
+"POT-Creation-Date: 2026-03-03 00:48+0000\n"
+"PO-Revision-Date: 2026-02-11 12:40+0100\n"
 "Last-Translator: giovanni <g.sora@tiscali.it>\n"
 "Language-Team: Interlingua <kde-i18n-doc@kde.org>\n"
 "Language: ia\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Lokalize 23.08.5\n"
 
-#: discover/DiscoverObject.cpp:183
+#: discover/DiscoverObject.cpp:197
 #, kde-format
 msgctxt "@title %1 is the name"
 msgid ""
@@ -26,7 +26,7 @@ msgstr ""
 "%1 non es configurate per installar apps  con Discover---solmente add-ons de "
 "app"
 
-#: discover/DiscoverObject.cpp:185
+#: discover/DiscoverObject.cpp:199
 #, kde-kuit-format
 msgctxt "@info:usagetip %2 is the name of the operating system"
 msgid ""
@@ -39,7 +39,7 @@ msgstr ""
 "mancante</interface>.<nl></nl>Pro favor <link url='%1'> tu reporta iste "
 "question a %2.</link>"
 
-#: discover/DiscoverObject.cpp:192
+#: discover/DiscoverObject.cpp:206
 #, kde-kuit-format
 msgctxt ""
 "@info:usagetip %1 is the distro name; in this case it always contains 'Arch "
@@ -55,7 +55,7 @@ msgstr ""
 "<command>pacman</command>.<nl/><nl/> Revide <link url='https://archlinux.org/"
 "packages/extra/x86_64/discover/'> le pacchettos  de %1 per Discover</link>"
 
-#: discover/DiscoverObject.cpp:202
+#: discover/DiscoverObject.cpp:216
 #, kde-kuit-format
 msgctxt "@info:usagetip %1 is the distro name"
 msgid ""
@@ -73,17 +73,17 @@ msgstr ""
 "recommendava in loco usar le instrumento in linea de commando "
 "<command>pacman</command> per gerer pacchettos.</para>"
 
-#: discover/DiscoverObject.cpp:291
+#: discover/DiscoverObject.cpp:305
 #, kde-format
 msgid "Could not find category '%1'"
 msgstr "Non pote trovar categoria '%1'"
 
-#: discover/DiscoverObject.cpp:313
+#: discover/DiscoverObject.cpp:327
 #, kde-format
 msgid "Trying to open inexisting file '%1'"
 msgstr "Essayante a aperir file inexistente '%1'"
 
-#: discover/DiscoverObject.cpp:335
+#: discover/DiscoverObject.cpp:349
 #, kde-format
 msgid ""
 "Cannot interact with flatpak resources without the flatpak backend %1. "
@@ -92,17 +92,17 @@ msgstr ""
 "Non pote interager con ressources de flatpak sin le retroadministration de "
 "flatpak %1. Pro favor tu installa illo prime."
 
-#: discover/DiscoverObject.cpp:339
+#: discover/DiscoverObject.cpp:353
 #, kde-format
 msgid "Could not open %1"
 msgstr "Non pote aperir %1."
 
-#: discover/DiscoverObject.cpp:404
+#: discover/DiscoverObject.cpp:418
 #, kde-format
 msgid "Please make sure Snap support is installed"
 msgstr "Pro favor assecura te  que le supporto de Snap es installate"
 
-#: discover/DiscoverObject.cpp:407
+#: discover/DiscoverObject.cpp:421
 #, kde-format
 msgid ""
 "The requested application could not be found in any available software "
@@ -111,7 +111,7 @@ msgstr ""
 "Le application requirite non poteva esser trovate in ulle repositorios "
 "disponibile de software."
 
-#: discover/DiscoverObject.cpp:410
+#: discover/DiscoverObject.cpp:424
 #, kde-kuit-format
 msgctxt ""
 "@info %1 is an additional error reference and %3 is the name of the "
@@ -123,13 +123,13 @@ msgstr ""
 "(Nulle entrata per %1)<nl/><nl/>Pro favor <link url='%2'> reporta iste "
 "question a %3.</link>"
 
-#: discover/DiscoverObject.cpp:473 discover/DiscoverObject.cpp:475
+#: discover/DiscoverObject.cpp:508 discover/DiscoverObject.cpp:510
 #: discover/main.cpp:120
 #, kde-format
 msgid "Discover"
 msgstr "Discover (Discoperi)"
 
-#: discover/DiscoverObject.cpp:476
+#: discover/DiscoverObject.cpp:511
 #, kde-format
 msgid ""
 "Discover was closed before certain tasks were done, waiting for it to finish."
@@ -198,13 +198,13 @@ msgstr "Supporta appstream: url schema"
 #: discover/main.cpp:122
 #, kde-format
 msgid "An application explorer"
-msgstr "Un explrator de application"
+msgstr "Un explorator de application"
 
 #: discover/main.cpp:124
 #, kde-format
-msgid "© 2010-2025 Plasma Development Team"
+msgid "© 2010-2026 Plasma Development Team"
 msgstr ""
-"© 2010-2025 Plasma Development Team -Equipa de disveloppamento de Plasma"
+"© 2010-2026 Plasma Development Team -Equipa de disveloppamento de Plasma"
 
 #: discover/main.cpp:125
 #, kde-format
@@ -285,7 +285,7 @@ msgstr "Adde"
 
 #: discover/qml/AddSourceDialog.qml:50 discover/qml/DiscoverWindow.qml:281
 #: discover/qml/InstallApplicationButton.qml:51
-#: discover/qml/ProgressView.qml:152 discover/qml/SourcesPage.qml:201
+#: discover/qml/ProgressView.qml:153 discover/qml/SourcesPage.qml:201
 #: discover/qml/UpdatesPage.qml:303 discover/qml/WebflowDialog.qml:41
 #, kde-format
 msgid "Cancel"
@@ -700,10 +700,10 @@ msgstr "Pertinentia"
 msgid "Name"
 msgstr "Nomine"
 
-#: discover/qml/ApplicationsListPage.qml:126 discover/qml/Rating.qml:119
+#: discover/qml/ApplicationsListPage.qml:126
 #, kde-format
-msgid "Rating"
-msgstr "Evalutation"
+msgid "Popularity"
+msgstr "Popularitate"
 
 #: discover/qml/ApplicationsListPage.qml:137
 #, kde-format
@@ -798,13 +798,13 @@ msgctxt "@title:group"
 msgid "Highest-Rated Games"
 msgstr "Jocos de plus alte classification"
 
-#: discover/qml/BrowsingPage.qml:223 discover/qml/BrowsingPage.qml:278
+#: discover/qml/BrowsingPage.qml:223 discover/qml/BrowsingPage.qml:280
 #, kde-format
 msgctxt "@action:button"
 msgid "See More"
 msgstr "Vide plus"
 
-#: discover/qml/BrowsingPage.qml:247
+#: discover/qml/BrowsingPage.qml:249
 #, kde-format
 msgctxt "@title:group"
 msgid "Highest-Rated Developer Tools"
@@ -854,16 +854,14 @@ msgid "Next Screenshot"
 msgstr "Proxime Instantanee de schermo"
 
 #: discover/qml/DiscoverDrawer.qml:166
-#, fuzzy, kde-format
-#| msgid "Updates are available"
+#, kde-format
 msgid "Security updates available"
-msgstr "Actualisationes es disponibile"
+msgstr "Actualisationes de securitate disponibile"
 
 #: discover/qml/DiscoverDrawer.qml:167
-#, fuzzy, kde-format
-#| msgid "Updates are available"
+#, kde-format
 msgid "Updates available"
-msgstr "Actualisationes es disponibile"
+msgstr "Actualisationes disponibile"
 
 #: discover/qml/DiscoverWindow.qml:47
 #, kde-format
@@ -891,10 +889,9 @@ msgid "&Updates (Fetching…)"
 msgstr "Act&ualisationes (Reportante ...)"
 
 #: discover/qml/DiscoverWindow.qml:97
-#, fuzzy, kde-format
-#| msgid "Updates"
+#, kde-format
 msgid "&Updates"
-msgstr "Actualisationes"
+msgstr "Act&ualisationes"
 
 #: discover/qml/DiscoverWindow.qml:105
 #, kde-format
@@ -1061,33 +1058,38 @@ msgstr "Installate"
 msgid "Resources for '%1'"
 msgstr "Ressources for '%1'"
 
-#: discover/qml/ProgressView.qml:19
+#: discover/qml/ProgressView.qml:20
 #, kde-format
 msgid "Tasks (%1%)"
 msgstr "Cargas (%1%)"
 
-#: discover/qml/ProgressView.qml:19 discover/qml/ProgressView.qml:49
+#: discover/qml/ProgressView.qml:20 discover/qml/ProgressView.qml:50
 #, kde-format
 msgid "Tasks"
 msgstr "Cargas"
 
-#: discover/qml/ProgressView.qml:126
+#: discover/qml/ProgressView.qml:127
 #, kde-format
 msgctxt "TransactioName - TransactionStatus: speed, remaining time"
 msgid "%1 - %2: %3, %4 remaining"
 msgstr "%1 - %2: %3, %4 remanente"
 
-#: discover/qml/ProgressView.qml:134
+#: discover/qml/ProgressView.qml:135
 #, kde-format
 msgctxt "TransactioName - TransactionStatus: speed"
 msgid "%1 - %2: %3"
 msgstr "%1 - %2: %3"
 
-#: discover/qml/ProgressView.qml:141
+#: discover/qml/ProgressView.qml:142
 #, kde-format
 msgctxt "TransactioName - TransactionStatus"
 msgid "%1 - %2"
 msgstr "%1 - %2"
+
+#: discover/qml/Rating.qml:119
+#, kde-format
+msgid "Rating"
+msgstr "Evalutation"
 
 #: discover/qml/ReviewDelegate.qml:58
 #, kde-format
@@ -1515,17 +1517,18 @@ msgctxt "@action:button"
 msgid "Restart and Install Updates"
 msgstr "Restarta e Installa actualisationes"
 
-#: discover/qml/UpdatesPage.qml:503
+#: discover/qml/UpdatesPage.qml:514
 #, kde-format
 msgid "Installing"
 msgstr "Installante"
 
-#: discover/qml/UpdatesPage.qml:536
+#: discover/qml/UpdatesPage.qml:530
 #, kde-format
-msgid "Update from:"
-msgstr "Actualisa ex:"
+msgctxt "@info This update is from the following source"
+msgid "From:"
+msgstr "Ex:"
 
-#: discover/qml/UpdatesPage.qml:550
+#: discover/qml/UpdatesPage.qml:547
 #, kde-format
 msgctxt ""
 "%1 is the backend that provides this app, %2 is the specific repository or "
@@ -1535,52 +1538,56 @@ msgstr "%1 (%2)"
 
 #: discover/qml/UpdatesPage.qml:559
 #, kde-format
-msgid "More Information…"
-msgstr "Altere information..."
+msgctxt "@action:button minimize the length of this label"
+msgid "More Info…"
+msgstr "Plus Info..."
 
-#: discover/qml/UpdatesPage.qml:587
+#: discover/qml/UpdatesPage.qml:607
 #, kde-format
 msgctxt "@info"
 msgid "Fetching updates…"
 msgstr "Reportante Actualisationes..."
 
-#: discover/qml/UpdatesPage.qml:602
+#: discover/qml/UpdatesPage.qml:622
 #, kde-format
 msgctxt "@info"
 msgid "Updates"
 msgstr "Actualisationes"
 
-#: discover/qml/UpdatesPage.qml:612
+#: discover/qml/UpdatesPage.qml:632
 #, kde-format
 msgctxt "@info"
 msgid "Updates will be installed after the system is restarted"
 msgstr "Le actualisationes essera installate post que le systema es restartate"
 
-#: discover/qml/UpdatesPage.qml:614
+#: discover/qml/UpdatesPage.qml:634
 #, kde-format
 msgctxt "@info"
 msgid "You can keep using the system if you're not ready to restart yet."
 msgstr ""
 "Tu pote mantener le systema in uso si tu non es ancora preste per restartar."
 
-#: discover/qml/UpdatesPage.qml:628 discover/qml/UpdatesPage.qml:635
-#: discover/qml/UpdatesPage.qml:642
+#: discover/qml/UpdatesPage.qml:648 discover/qml/UpdatesPage.qml:655
+#: discover/qml/UpdatesPage.qml:662
 #, kde-format
 msgctxt "@info"
 msgid "Up to date"
 msgstr "Actualisate"
 
-#: discover/qml/UpdatesPage.qml:649
+#: discover/qml/UpdatesPage.qml:669
 #, kde-format
 msgctxt "@info"
 msgid "Should check for updates"
 msgstr "Deberea verificar actualisationes"
 
-#: discover/qml/UpdatesPage.qml:656
+#: discover/qml/UpdatesPage.qml:676
 #, kde-format
 msgctxt "@info"
 msgid "Time of last update unknown"
 msgstr "Tempore del ultime actualisation incognite"
+
+#~ msgid "Update from:"
+#~ msgstr "Actualisa ex:"
 
 #~ msgid "&Updates (%1)"
 #~ msgstr "&Actualisationes (%1)"

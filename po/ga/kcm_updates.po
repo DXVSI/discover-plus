@@ -1,0 +1,107 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR This file is copyright:
+# This file is distributed under the same license as the discover package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: discover\n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2025-11-17 11:53+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: Irish Gaelic <kde-i18n-doc@kde.org>\n"
+"Language: ga\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=5; plural=n==1 ? 0 : n==2 ? 1 : n<7 ? 2 : n < 11 ? "
+"3 : 4\n"
+
+#: kcm/ui/main.qml:40
+#, kde-format
+msgid "Update software:"
+msgstr ""
+
+#: kcm/ui/main.qml:41
+#, kde-format
+msgid "Manually"
+msgstr ""
+
+#: kcm/ui/main.qml:51
+#, kde-format
+msgid "Automatically"
+msgstr ""
+
+#: kcm/ui/main.qml:58
+#, kde-kuit-format
+msgctxt "@info"
+msgid ""
+"Software updates will be downloaded automatically when they become "
+"available. Updates for applications will be installed immediately, while "
+"system updates will be installed the next time the computer is restarted."
+msgstr ""
+
+#: kcm/ui/main.qml:69
+#, kde-format
+msgctxt "@title:group"
+msgid "Update frequency:"
+msgstr ""
+
+#: kcm/ui/main.qml:69
+#, kde-format
+msgctxt "@title:group"
+msgid "Notification frequency:"
+msgstr ""
+
+#: kcm/ui/main.qml:72
+#, kde-format
+msgctxt "@item:inlistbox"
+msgid "Daily"
+msgstr ""
+
+#: kcm/ui/main.qml:73
+#, kde-format
+msgctxt "@item:inlistbox"
+msgid "Weekly"
+msgstr ""
+
+#: kcm/ui/main.qml:74
+#, kde-format
+msgctxt "@item:inlistbox"
+msgid "Monthly"
+msgstr ""
+
+#: kcm/ui/main.qml:75
+#, kde-format
+msgctxt "@item:inlistbox"
+msgid "Never"
+msgstr ""
+
+#: kcm/ui/main.qml:119
+#, kde-format
+msgid "Apply system updates:"
+msgstr ""
+
+#: kcm/ui/main.qml:126
+#, kde-format
+msgctxt ""
+"@option:radio part of the logical sentence 'Apply system updates after "
+"rebooting'"
+msgid "After rebooting"
+msgstr ""
+
+#: kcm/ui/main.qml:133
+#, kde-format
+msgctxt ""
+"@label The thing being recommended is to use the 'apply updates when "
+"rebooting' setting"
+msgid "Recommended to maximize system stability"
+msgstr ""
+
+#: kcm/ui/main.qml:139
+#, kde-format
+msgctxt ""
+"@option:radio part of the logical sentence 'Apply system updates immediately'"
+msgid "Immediately"
+msgstr ""

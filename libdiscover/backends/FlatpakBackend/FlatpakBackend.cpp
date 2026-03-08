@@ -578,9 +578,27 @@ FlatpakResource *FlatpakBackend::getAppForInstalledRef(FlatpakInstallation *inst
         *freshResource = true;
     }
 
-    Q_ASSERT_X(resource->uniqueId() == idForInstalledRef(ref) || resource->uniqueId() == idForInstalledRef(ref, QStringLiteral(".desktop")),
-               "getAppForInstalledRef",
-               flatpak_ref_format_ref_cached(FLATPAK_REF(ref)));
+    Q_ASSERT_X(
+        [&] {
+            if (resource->uniqueId() == idForInstalledRef(ref) || resource->uniqueId() == idForInstalledRef(ref, QStringLiteral(".desktop"))) {
+                return true;
+            }
+            // When an app changes appstream ID we may have the old installed but resolve the regular ids will not match.
+            // What we need to do is collect all possible IDs for the component and see if any matches.
+            QStringList cidIds = {cid.id()};
+            const auto provided = cid.provided();
+            for (const auto &provide : provided) {
+                if (provide.kind() == AppStream::Provided::KindId) {
+                    cidIds += provide.items();
+                }
+            }
+            return std::ranges::any_of(cidIds, [&resource](const QString &cidId) {
+                const auto id = resource->uniqueId().id;
+                return id == cidId || id == cidId + ".desktop"_L1;
+            });
+        }(),
+        "getAppForInstalledRef",
+        flatpak_ref_format_ref_cached(FLATPAK_REF(ref)));
     return resource;
 }
 
@@ -1685,10 +1703,9 @@ ResultsStream *FlatpakBackend::search(const AbstractResourcesBackend::Filters &f
                         bool fresh = false;
                         const QLatin1String id(flatpak_ref_get_name(FLATPAK_REF(ref)));
                         if (isFlatpakSubRef(id)) {
-                            g_autoptr(GError) localError = nullptr;
-
                             const QByteArray parentId(id.constData(), id.lastIndexOf(QLatin1Char('.')));
 
+                            g_autoptr(GError) appError = nullptr;
                             // We need to bruteforce the API as we don't know from here if ref's parent is an app or a runtime 🙄
                             auto parentRef = flatpak_installation_get_installed_ref(installation,
                                                                                     FLATPAK_REF_KIND_APP,
@@ -1696,17 +1713,19 @@ ResultsStream *FlatpakBackend::search(const AbstractResourcesBackend::Filters &f
                                                                                     flatpak_ref_get_arch(FLATPAK_REF(ref)),
                                                                                     flatpak_ref_get_branch(FLATPAK_REF(ref)),
                                                                                     cancellable,
-                                                                                    &localError);
+                                                                                    &appError);
+
+                            g_autoptr(GError) runtimeError = nullptr;
                             if (!parentRef) {
-                                g_clear_error(&localError);
                                 parentRef = flatpak_installation_get_installed_ref(installation,
                                                                                    FLATPAK_REF_KIND_RUNTIME,
                                                                                    parentId.constData(),
                                                                                    flatpak_ref_get_arch(FLATPAK_REF(ref)),
                                                                                    flatpak_ref_get_branch(FLATPAK_REF(ref)),
                                                                                    cancellable,
-                                                                                   &localError);
+                                                                                   &runtimeError);
                             }
+
                             if (parentRef) {
                                 if (auto resource = self->getAppForInstalledRef(installation, parentRef)) {
                                     resource->addRefToUpdate(flatpak_ref_format_ref_cached(FLATPAK_REF(parentRef)));
@@ -1717,6 +1736,10 @@ ResultsStream *FlatpakBackend::search(const AbstractResourcesBackend::Filters &f
                                     }
                                     continue;
                                 }
+                            } else {
+                                qCWarning(LIBDISCOVER_BACKEND_FLATPAK_LOG) << "Failed to get parent ref" << parentId << "for subref" << id //
+                                                                           << "\n  AppError:" << appError->message //
+                                                                           << "\n  RuntimeError:" << runtimeError->message;
                             }
                         }
                         auto resource = self->getAppForInstalledRef(installation, ref, &fresh);

@@ -60,9 +60,9 @@ set_package_properties(Snapd PROPERTIES
     TYPE OPTIONAL
 )
 
-option(BUILD_SteamOSBackend "Build SteamOS support." "OFF")
-if (BUILD_SteamOSBackend)
-    add_subdirectory(SteamOSBackend)
+option(BUILD_HoloBackend "Build Holo support." "OFF")
+if (BUILD_HoloBackend)
+    add_subdirectory(HoloBackend)
 endif()
 
 option(BUILD_SystemdSysupdateBackend "Build support for Systemd's SysUpdate." "OFF")

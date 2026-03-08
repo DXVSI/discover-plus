@@ -102,9 +102,8 @@ void ResourcesModel::init(bool load)
     m_updateAction = new DiscoverAction(this);
     m_updateAction->setIconName(QStringLiteral("system-software-update"));
     m_updateAction->setText(i18n("Refresh"));
-    connect(this, &ResourcesModel::fetchingChanged, m_updateAction, [this](bool fetching) {
-        m_updateAction->setEnabled(!fetching);
-        m_fetchingUpdatesProgress.reevaluate();
+    connect(this, &ResourcesModel::fetchingUpdatesProgressChanged, m_updateAction, [this](int fetchingProgress) {
+        m_updateAction->setEnabled(fetchingProgress == 100);
     });
     connect(m_updateAction, &DiscoverAction::triggered, this, &ResourcesModel::checkForUpdates);
 

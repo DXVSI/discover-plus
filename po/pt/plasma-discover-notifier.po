@@ -1,57 +1,57 @@
-# SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR This_file_is_part_of_KDE
 # This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
+# SPDX-FileCopyrightText: 2026 César A. P. Cláudio <cesarapclaudio@gmail.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: muon-notifier\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2025-11-17 11:53+0000\n"
-"PO-Revision-Date: 2022-03-26 22:21+0000\n"
-"Last-Translator: José Nuno Coelho Pires <zepires@gmail.com>\n"
-"Language-Team: Portuguese <kde-i18n-pt@kde.org>\n"
+"PO-Revision-Date: 2026-02-02 21:54+0000\n"
+"Last-Translator: César A. P. Cláudio <cesarapclaudio@gmail.com>\n"
+"Language-Team: pt\n"
 "Language: pt\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-POFile-SpellExtra: Discover\n"
+"X-Generator: Lokalize 25.12.1\n"
 
 #: notifier/DiscoverNotifier.cpp:218
 #, kde-format
 msgid "View Updates"
-msgstr "Ver as Actualizações"
+msgstr "Ver atualizações"
 
 #: notifier/DiscoverNotifier.cpp:365
 #, kde-format
 msgid "Security updates available"
-msgstr "Actualizações do sistema disponíveis"
+msgstr "Atualizações de segurança disponíveis"
 
 #: notifier/DiscoverNotifier.cpp:367
 #, kde-format
 msgid "Updates available"
-msgstr "Actualizações disponíveis"
+msgstr "Atualizações disponíveis"
 
 #: notifier/DiscoverNotifier.cpp:369
 #, kde-format
 msgid "System up to date"
-msgstr "Sistema actualizado"
+msgstr "Sistema atualizado"
 
 #: notifier/DiscoverNotifier.cpp:371
 #, kde-format
 msgid "Computer needs to restart"
-msgstr "É necessário reiniciar o computador"
+msgstr "O computador precisa de ser reiniciado"
 
 #: notifier/DiscoverNotifier.cpp:373
 #, kde-format
 msgid "Offline"
-msgstr "Desligado"
+msgstr "Sem ligação à rede"
 
 #: notifier/DiscoverNotifier.cpp:375
 #, kde-format
 msgid "Applying unattended updates…"
-msgstr "A aplicar as actualizações automáticas…"
+msgstr "A aplicar atualizações automáticas…"
 
 #: notifier/DiscoverNotifier.cpp:400
 #, kde-format
@@ -61,65 +61,64 @@ msgstr "É necessário reiniciar"
 #: notifier/DiscoverNotifier.cpp:401
 #, kde-format
 msgid "The system needs to be restarted for the updates to take effect."
-msgstr "É necessário reiniciar o sistema para as actualizações fazerem efeito."
+msgstr ""
+"O sistema precisa de ser reiniciado para que as atualizações tenham efeito."
 
 #: notifier/DiscoverNotifier.cpp:406
-#, fuzzy, kde-format
-#| msgid "Computer needs to restart"
+#, kde-format
 msgctxt "@action:button"
 msgid "Update and Restart"
-msgstr "É necessário reiniciar o computador"
+msgstr "Atualizar e reiniciar"
 
 #: notifier/DiscoverNotifier.cpp:407
 #, kde-format
 msgctxt "@action:button"
 msgid "Update and Shut Down"
-msgstr ""
+msgstr "Atualizar e encerrar"
 
 #: notifier/DiscoverNotifier.cpp:451
 #, kde-format
 msgid "Upgrade available"
-msgstr "Actualização disponível"
+msgstr "Atualização disponível"
 
 #: notifier/DiscoverNotifier.cpp:452
 #, kde-format
 msgctxt "A new distro release (name and version) is available for upgrade"
 msgid "%1 is now available."
-msgstr ""
+msgstr "%1 já está disponível."
 
 #: notifier/DiscoverNotifier.cpp:455
 #, kde-format
 msgctxt "@action:button"
 msgid "Upgrade"
-msgstr "Actualização"
+msgstr "Atualização"
 
 #: notifier/main.cpp:39
 #, kde-format
 msgid "Discover Notifier"
-msgstr "Notificação do Discover"
+msgstr "Notificador do Discover"
 
 #: notifier/main.cpp:41
 #, kde-format
 msgid "System update status notifier"
-msgstr "Notificação do estado de actualização do sistema"
+msgstr "Notificador do estado da atualização de sistema"
 
 #: notifier/main.cpp:43
-#, fuzzy, kde-format
-#| msgid "© 2010-2022 Plasma Development Team"
+#, kde-format
 msgid "© 2010-2025 Plasma Development Team"
-msgstr "© 2010-2022 da Equipa de Desenvolvimento do Plasma"
+msgstr "© 2010-2025 Equipa de Desenvolvimento do Plasma"
 
 #: notifier/main.cpp:47
 #, kde-format
 msgctxt "NAME OF TRANSLATORS"
 msgid "Your names"
-msgstr "José Nuno Pires"
+msgstr "César A. P. Cláudio, José Nuno Pires"
 
 #: notifier/main.cpp:47
 #, kde-format
 msgctxt "EMAIL OF TRANSLATORS"
 msgid "Your emails"
-msgstr "zepires@gmail.com"
+msgstr "cesarapclaudio@gmail.com"
 
 #: notifier/main.cpp:54
 #, kde-format
@@ -134,51 +133,49 @@ msgstr "Não mostrar a notificação"
 #: notifier/main.cpp:58
 #, kde-format
 msgid "hidden"
-msgstr "escondida"
+msgstr "oculto"
 
 #: notifier/NotifierItem.cpp:22 notifier/NotifierItem.cpp:23
 #, kde-format
 msgid "Updates"
-msgstr "Actualizações"
+msgstr "Atualizações"
 
 #: notifier/NotifierItem.cpp:36
-#, fuzzy, kde-format
-#| msgid "Open Discover…"
+#, kde-format
 msgctxt "@action:button Opens Discover's main UI to analyze the updates"
 msgid "Open Discover…"
-msgstr "Abrir o Discover…"
+msgstr "Abrir o Discover..."
 
 #: notifier/NotifierItem.cpp:47
-#, fuzzy, kde-format
-#| msgid "Updates"
+#, kde-format
 msgctxt "@action:button Starts an update in the background"
 msgid "Start Update"
-msgstr "Actualizações"
+msgstr "Iniciar atualização"
 
 #: notifier/NotifierItem.cpp:50
 #, kde-format
 msgid "Refresh…"
-msgstr "Actualizar…"
+msgstr "Procurar atualizações..."
 
 #: notifier/NotifierItem.cpp:56
 #, kde-format
 msgid "Install Updates and Restart…"
-msgstr ""
+msgstr "Instalar atualizações e reiniciar..."
 
 #: notifier/NotifierItem.cpp:59
 #, kde-format
 msgid "Install Updates and Shut Down…"
-msgstr ""
+msgstr "Instalar atualizações e encerrar"
 
 #: notifier/NotifierItem.cpp:64
 #, kde-format
 msgid "Restart to apply installed updates"
-msgstr "Reiniciar para aplicar as actualizações instaladas"
+msgstr "Reiniciar para aplicar as atualizações instaladas"
 
 #: notifier/NotifierItem.cpp:65
 #, kde-format
 msgid "Click to restart the device"
-msgstr "Carregue para reiniciar o dispositivo"
+msgstr "Clique aqui para reiniciar o dispositivo"
 
 #~ msgid "See Updates…"
 #~ msgstr "Ver as Actualizações…"

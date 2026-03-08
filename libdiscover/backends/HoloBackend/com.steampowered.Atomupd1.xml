@@ -105,10 +105,11 @@
         String that represents the chosen update variant that is currently
         being tracked.
         This value is updated every time a new variant is chosen with
-        `SwitchToVariant` method or via the CLI tool steamos-select-branch.
+        `SwitchToVariant` method or via the CLI tool `atomupd-manager switch-branch …`
         A typical value is `steamdeck`.
-        It defaults to the variant value from the steamos-atomupd manifest JSON
+        It defaults to the variant value from the holo-atomupd manifest JSON
         if the text file is empty or missing.
+        NOTE: holo-atomupd used to be called steamos-atomupd.
     -->
     <property name="Variant" type="s" access="read">
       <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
@@ -120,8 +121,9 @@
         String that represents the chosen update branch that is currently
         being tracked.
         Typical values include `stable` and `beta`.
-        It defaults to the branch value from the steamos-atomupd manifest JSON
+        It defaults to the branch value from the holo-atomupd manifest JSON
         if a branch was never explicitly chosen.
+        NOTE: holo-atomupd used to be called steamos-atomupd.
     -->
     <property name="Branch" type="s" access="read">
       <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="true"/>
@@ -282,8 +284,8 @@
         @variant: Desired update variant. A typical value is `steamdeck`
 
         Change the update variant to @variant.
-        This value is stored in the same text file that the CLI tool
-        steamos-select-branch uses.
+        This value is stored in the same text file that the CLI
+        `atomupd-manager switch-branch` uses.
     -->
     <method name="SwitchToVariant">
       <arg type="s" name="variant" direction="in"/>
@@ -295,8 +297,8 @@
           `stable` and `beta`
 
         Change the update branch to @branch.
-        This value is stored in the same text file that the CLI tool
-        steamos-select-branch uses.
+        This value is stored in the same text file that the CLI
+        `atomupd-manager switch-branch` uses.
     -->
     <method name="SwitchToBranch">
       <arg type="s" name="branch" direction="in"/>

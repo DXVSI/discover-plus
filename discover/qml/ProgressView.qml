@@ -7,9 +7,10 @@ import org.kde.discover as Discover
 import org.kde.kirigami as Kirigami
 import org.kde.kitemmodels as KItemModels
 
-QQC2.ItemDelegate {
+QQC2.ToolButton {
     id: listItem
 
+    padding: Kirigami.Units.largeSpacing
     contentItem: ColumnLayout {
         spacing: 0
 

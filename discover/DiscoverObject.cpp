@@ -74,6 +74,20 @@
 
 using namespace Qt::StringLiterals;
 
+namespace
+{
+template<typename Out, typename In>
+Out to_unsigned(In in)
+{
+    static_assert(std::is_signed_v<In>, "In must be signed");
+    static_assert(std::is_unsigned_v<Out>, "Out must be unsigned");
+    Q_ASSERT(in >= 0);
+    auto out = static_cast<Out>(in);
+    Q_ASSERT(std::cmp_equal(in, out));
+    return out;
+}
+} // namespace
+
 class CachedNetworkAccessManagerFactory : public QQmlNetworkAccessManagerFactory
 {
     virtual QNetworkAccessManager *create(QObject *parent) override
@@ -95,7 +109,7 @@ DiscoverObject::DiscoverObject(const QVariantMap &initialProperties)
     , m_networkAccessManagerFactory(std::make_unique<CachedNetworkAccessManagerFactory>())
 {
     setObjectName(QStringLiteral("DiscoverMain"));
-    m_engine->rootContext()->setContextObject(new KLocalizedQmlContext(m_engine.get()));
+    KLocalization::setupLocalizedContext(m_engine.get());
     auto factory = m_engine->networkAccessManagerFactory();
     m_engine->setNetworkAccessManagerFactory(nullptr);
     delete factory;
@@ -434,25 +448,46 @@ public:
     {
         // no-op, this is just observing
 
-        setTotalAmount(Items, TransactionModel::global()->rowCount());
-        setPercent(TransactionModel::global()->progress());
+        setTotalAmount(Items, to_unsigned<qulonglong>(TransactionModel::global()->rowCount()));
+        setPercent(to_unsigned<unsigned long>(TransactionModel::global()->progress()));
         connect(TransactionModel::global(), &TransactionModel::lastTransactionFinished, this, &TransactionsJob::emitResult);
-        connect(TransactionModel::global(), &TransactionModel::transactionRemoved, this, &TransactionsJob::refreshInfo);
+        connect(TransactionModel::global(), &TransactionModel::transactionAdded, this, &TransactionsJob::onTransactionAdded);
+        connect(TransactionModel::global(), &TransactionModel::transactionRemoved, this, &TransactionsJob::onTransactionRemoved);
         connect(TransactionModel::global(), &TransactionModel::progressChanged, this, [this] {
-            setPercent(TransactionModel::global()->progress());
+            setPercent(to_unsigned<unsigned long>(TransactionModel::global()->progress()));
         });
-        refreshInfo();
+        updateDescription();
     }
 
-    void refreshInfo()
+    void onTransactionAdded()
     {
-        if (TransactionModel::global()->rowCount() == 0) {
-            return;
-        }
+        const auto oldAmount = totalAmount(Items);
+        // Very unlikely to happen but let's be safe. We don't want to overflow.
+        Q_ASSERT(oldAmount < std::numeric_limits<qulonglong>::max());
+        const auto newAmount = oldAmount + 1;
+        setTotalAmount(Items, newAmount);
+    }
 
-        setProcessedAmount(Items, totalAmount(Items) - TransactionModel::global()->rowCount() + 1);
-        auto firstTransaction = TransactionModel::global()->transactions().constFirst();
-        Q_EMIT description(this, firstTransaction->name());
+    void onTransactionRemoved()
+    {
+        const auto oldAmount = totalAmount(Items);
+        // In an ideal world we'd not do subtractions on unsigned values as they could underflow. Unfortunately we deal
+        // with 64bit unsigned here, so doing a safe subtraction is difficult. Be assertive instead.
+        Q_ASSERT(oldAmount > 0);
+        // We get called with a single transaction. Subtract exactly one! Do not query the model again to avoid
+        // unexpectedly increasing the amount implicitly.
+        const auto newAmount = oldAmount - 1;
+        setProcessedAmount(Items, newAmount);
+
+        updateDescription();
+    }
+
+    void updateDescription()
+    {
+        if (TransactionModel::global()->rowCount() > 0) {
+            auto firstTransaction = TransactionModel::global()->transactions().constFirst();
+            Q_EMIT description(this, firstTransaction->name());
+        }
     }
 
     void cancel()
@@ -499,9 +534,16 @@ void DiscoverObject::restore()
         disconnect(TransactionModel::global(), &TransactionModel::countChanged, this, &DiscoverObject::reconsiderQuit);
         disconnect(m_sni.get(), &KStatusNotifierItem::activateRequested, this, &DiscoverObject::restore);
         m_sni.reset();
+        // Set window to topmost one when using SNI
+        if (m_mainWindow) {
+            m_mainWindow->show();
+            m_mainWindow->raise();
+            return;
+        }
     }
+    // Otherwise, just alert the user
     if (m_mainWindow) {
-        m_mainWindow->show();
+        m_mainWindow->alert(0);
     }
 }
 

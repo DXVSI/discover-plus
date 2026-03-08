@@ -329,6 +329,24 @@
         </And>
       </Include>
     </Menu>
+    <Menu>
+      <Name>Launchers</Name>
+      <Icon>applications-games</Icon>
+      <Include>
+        <And>
+          <Category>LauncherStore</Category>
+        </And>
+      </Include>
+    </Menu>
+    <Menu>
+      <Name>Tools</Name>
+      <Icon>applications-games</Icon>
+      <Include>
+        <And>
+          <Category>GameTool</Category>
+        </And>
+      </Include>
+    </Menu>
 
   </Menu>
 
@@ -555,7 +573,7 @@
 
   <Menu>
     <Name>Fonts</Name>
-    <Icon>preferences-desktop-font-installer</Icon>
+    <Icon>font</Icon>
     <Fonts />
     <Include>
       <And>

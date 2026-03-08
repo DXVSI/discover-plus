@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-12-15 00:43+0000\n"
+"POT-Creation-Date: 2026-03-03 00:48+0000\n"
 "PO-Revision-Date: 2025-11-10 11:49+0100\n"
 "Last-Translator: Vit Pelcak <vit@pelcak.org>\n"
 "Language-Team: Czech <kde-i18n-doc@kde.org>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 "X-Generator: Lokalize 25.08.2\n"
 
-#: discover/DiscoverObject.cpp:183
+#: discover/DiscoverObject.cpp:197
 #, kde-format
 msgctxt "@title %1 is the name"
 msgid ""
@@ -26,7 +26,7 @@ msgstr ""
 "%1 není nakonfigurován pro instalaci aplikací přes Discover, ale pouze pro "
 "doplňky aplikací"
 
-#: discover/DiscoverObject.cpp:185
+#: discover/DiscoverObject.cpp:199
 #, kde-kuit-format
 msgctxt "@info:usagetip %2 is the name of the operating system"
 msgid ""
@@ -39,7 +39,7 @@ msgstr ""
 "podpůrné vrstvy</interface>.<nl/><nl/>Prosím, <link url='%1'>nahlaste tento "
 "problém distribuci %2.</link>"
 
-#: discover/DiscoverObject.cpp:192
+#: discover/DiscoverObject.cpp:206
 #, kde-kuit-format
 msgctxt ""
 "@info:usagetip %1 is the distro name; in this case it always contains 'Arch "
@@ -56,7 +56,7 @@ msgstr ""
 "url='https://archlinux.org/packages/extra/x86_64/discover/'>balíček Discover "
 "v distribuci %1</link>"
 
-#: discover/DiscoverObject.cpp:202
+#: discover/DiscoverObject.cpp:216
 #, kde-kuit-format
 msgctxt "@info:usagetip %1 is the distro name"
 msgid ""
@@ -74,17 +74,17 @@ msgstr ""
 "používat pro správu balíčků nástroj příkazového řádku <command>pacman</"
 "command>.</para>"
 
-#: discover/DiscoverObject.cpp:291
+#: discover/DiscoverObject.cpp:305
 #, kde-format
 msgid "Could not find category '%1'"
 msgstr "Nelze nalézt kategorii '%1'"
 
-#: discover/DiscoverObject.cpp:313
+#: discover/DiscoverObject.cpp:327
 #, kde-format
 msgid "Trying to open inexisting file '%1'"
 msgstr "Dialog pro otevření neexistujícího souboru '%1'"
 
-#: discover/DiscoverObject.cpp:335
+#: discover/DiscoverObject.cpp:349
 #, kde-format
 msgid ""
 "Cannot interact with flatpak resources without the flatpak backend %1. "
@@ -93,17 +93,17 @@ msgstr ""
 "Nelze pracovat se zdroji Flatpak bez podpůrné vrstvy Flatpak %1. Prosím, "
 "nejprve ji nainstalujte."
 
-#: discover/DiscoverObject.cpp:339
+#: discover/DiscoverObject.cpp:353
 #, kde-format
 msgid "Could not open %1"
 msgstr "Nelze otevřít %1"
 
-#: discover/DiscoverObject.cpp:404
+#: discover/DiscoverObject.cpp:418
 #, kde-format
 msgid "Please make sure Snap support is installed"
 msgstr "Prosím zkontrolujte, zda je Snap správně nainstalován."
 
-#: discover/DiscoverObject.cpp:407
+#: discover/DiscoverObject.cpp:421
 #, kde-format
 msgid ""
 "The requested application could not be found in any available software "
@@ -112,7 +112,7 @@ msgstr ""
 "Požadovanou aplikaci nelze nalézt v žádném z dostupných softwarových "
 "repozitářů"
 
-#: discover/DiscoverObject.cpp:410
+#: discover/DiscoverObject.cpp:424
 #, kde-kuit-format
 msgctxt ""
 "@info %1 is an additional error reference and %3 is the name of the "
@@ -124,13 +124,13 @@ msgstr ""
 "(Žádný záznam pro %1)<nl/><nl/>Prosím, <link url='%2'>nahlaste tento problém "
 "distribuci %3.</link>"
 
-#: discover/DiscoverObject.cpp:473 discover/DiscoverObject.cpp:475
+#: discover/DiscoverObject.cpp:508 discover/DiscoverObject.cpp:510
 #: discover/main.cpp:120
 #, kde-format
 msgid "Discover"
 msgstr "Discover"
 
-#: discover/DiscoverObject.cpp:476
+#: discover/DiscoverObject.cpp:511
 #, kde-format
 msgid ""
 "Discover was closed before certain tasks were done, waiting for it to finish."
@@ -203,8 +203,9 @@ msgid "An application explorer"
 msgstr "Prohlížeč aplikací"
 
 #: discover/main.cpp:124
-#, kde-format
-msgid "© 2010-2025 Plasma Development Team"
+#, fuzzy, kde-format
+#| msgid "© 2010-2025 Plasma Development Team"
+msgid "© 2010-2026 Plasma Development Team"
 msgstr "© 2010–2025 Vývojový tým Plasma"
 
 #: discover/main.cpp:125
@@ -286,7 +287,7 @@ msgstr "Přidat"
 
 #: discover/qml/AddSourceDialog.qml:50 discover/qml/DiscoverWindow.qml:281
 #: discover/qml/InstallApplicationButton.qml:51
-#: discover/qml/ProgressView.qml:152 discover/qml/SourcesPage.qml:201
+#: discover/qml/ProgressView.qml:153 discover/qml/SourcesPage.qml:201
 #: discover/qml/UpdatesPage.qml:303 discover/qml/WebflowDialog.qml:41
 #, kde-format
 msgid "Cancel"
@@ -706,10 +707,10 @@ msgstr "Relevance"
 msgid "Name"
 msgstr "Název"
 
-#: discover/qml/ApplicationsListPage.qml:126 discover/qml/Rating.qml:119
+#: discover/qml/ApplicationsListPage.qml:126
 #, kde-format
-msgid "Rating"
-msgstr "Hodnocení"
+msgid "Popularity"
+msgstr "Popularita"
 
 #: discover/qml/ApplicationsListPage.qml:137
 #, kde-format
@@ -804,13 +805,13 @@ msgctxt "@title:group"
 msgid "Highest-Rated Games"
 msgstr "Nejlépe hodnocené hry"
 
-#: discover/qml/BrowsingPage.qml:223 discover/qml/BrowsingPage.qml:278
+#: discover/qml/BrowsingPage.qml:223 discover/qml/BrowsingPage.qml:280
 #, kde-format
 msgctxt "@action:button"
 msgid "See More"
 msgstr "Více"
 
-#: discover/qml/BrowsingPage.qml:247
+#: discover/qml/BrowsingPage.qml:249
 #, kde-format
 msgctxt "@title:group"
 msgid "Highest-Rated Developer Tools"
@@ -862,14 +863,12 @@ msgstr "Následující snímek obrazovky"
 #: discover/qml/DiscoverDrawer.qml:166
 #, kde-format
 msgid "Security updates available"
-msgstr ""
+msgstr "Jsou dostupné bezpečnostní aktualizace"
 
 #: discover/qml/DiscoverDrawer.qml:167
-#, fuzzy, kde-format
-#| msgctxt "@action:button as in, 'update all items'"
-#| msgid "Update All"
+#, kde-format
 msgid "Updates available"
-msgstr "Aktualizovat vše"
+msgstr "Jsou dostupné aktualizace"
 
 #: discover/qml/DiscoverWindow.qml:47
 #, kde-format
@@ -897,10 +896,9 @@ msgid "&Updates (Fetching…)"
 msgstr "Akt&ualizace (stahování…)"
 
 #: discover/qml/DiscoverWindow.qml:97
-#, fuzzy, kde-format
-#| msgid "Updates"
+#, kde-format
 msgid "&Updates"
-msgstr "Aktualizace"
+msgstr "Akt&ualizace"
 
 #: discover/qml/DiscoverWindow.qml:105
 #, kde-format
@@ -1067,33 +1065,38 @@ msgstr "Nainstalováno"
 msgid "Resources for '%1'"
 msgstr "Zdroje pro '%1'"
 
-#: discover/qml/ProgressView.qml:19
+#: discover/qml/ProgressView.qml:20
 #, kde-format
 msgid "Tasks (%1%)"
 msgstr "Úkoly (%1%)"
 
-#: discover/qml/ProgressView.qml:19 discover/qml/ProgressView.qml:49
+#: discover/qml/ProgressView.qml:20 discover/qml/ProgressView.qml:50
 #, kde-format
 msgid "Tasks"
 msgstr "Úkoly"
 
-#: discover/qml/ProgressView.qml:126
+#: discover/qml/ProgressView.qml:127
 #, kde-format
 msgctxt "TransactioName - TransactionStatus: speed, remaining time"
 msgid "%1 - %2: %3, %4 remaining"
 msgstr "%1 - %2: %3, %4  zbývá"
 
-#: discover/qml/ProgressView.qml:134
+#: discover/qml/ProgressView.qml:135
 #, kde-format
 msgctxt "TransactioName - TransactionStatus: speed"
 msgid "%1 - %2: %3"
 msgstr "%1 - %2: %3"
 
-#: discover/qml/ProgressView.qml:141
+#: discover/qml/ProgressView.qml:142
 #, kde-format
 msgctxt "TransactioName - TransactionStatus"
 msgid "%1 - %2"
 msgstr "%1 - %2"
+
+#: discover/qml/Rating.qml:119
+#, kde-format
+msgid "Rating"
+msgstr "Hodnocení"
 
 #: discover/qml/ReviewDelegate.qml:58
 #, kde-format
@@ -1519,17 +1522,22 @@ msgctxt "@action:button"
 msgid "Restart and Install Updates"
 msgstr "Restartovat a nainstalovat aktualizace"
 
-#: discover/qml/UpdatesPage.qml:503
+#: discover/qml/UpdatesPage.qml:514
 #, kde-format
 msgid "Installing"
 msgstr "Instaluje se"
 
-#: discover/qml/UpdatesPage.qml:536
-#, kde-format
-msgid "Update from:"
-msgstr "Aktualizace z:"
+#: discover/qml/UpdatesPage.qml:530
+#, fuzzy, kde-format
+#| msgctxt ""
+#| "@item:inlistbox %1 is the name of an app source e.g. \"Flathub\" or "
+#| "\"Ubuntu\""
+#| msgid "From %1"
+msgctxt "@info This update is from the following source"
+msgid "From:"
+msgstr "Z %1"
 
-#: discover/qml/UpdatesPage.qml:550
+#: discover/qml/UpdatesPage.qml:547
 #, kde-format
 msgctxt ""
 "%1 is the backend that provides this app, %2 is the specific repository or "
@@ -1538,53 +1546,55 @@ msgid "%1 (%2)"
 msgstr "%1 (%2)"
 
 #: discover/qml/UpdatesPage.qml:559
-#, kde-format
-msgid "More Information…"
+#, fuzzy, kde-format
+#| msgid "More Information…"
+msgctxt "@action:button minimize the length of this label"
+msgid "More Info…"
 msgstr "Více informací…"
 
-#: discover/qml/UpdatesPage.qml:587
+#: discover/qml/UpdatesPage.qml:607
 #, kde-format
 msgctxt "@info"
 msgid "Fetching updates…"
 msgstr "Získávají se aktualizace…"
 
-#: discover/qml/UpdatesPage.qml:602
+#: discover/qml/UpdatesPage.qml:622
 #, kde-format
 msgctxt "@info"
 msgid "Updates"
 msgstr "Aktualizace"
 
-#: discover/qml/UpdatesPage.qml:612
+#: discover/qml/UpdatesPage.qml:632
 #, kde-format
 msgctxt "@info"
 msgid "Updates will be installed after the system is restarted"
 msgstr "Aktualizace budou nainstalovány po restartu systému"
 
-#: discover/qml/UpdatesPage.qml:614
+#: discover/qml/UpdatesPage.qml:634
 #, kde-format
 msgctxt "@info"
 msgid "You can keep using the system if you're not ready to restart yet."
 msgstr ""
 "Systém můžete nadále používat, pokud ještě nejste připraveni na restart."
 
-#: discover/qml/UpdatesPage.qml:628 discover/qml/UpdatesPage.qml:635
-#: discover/qml/UpdatesPage.qml:642
+#: discover/qml/UpdatesPage.qml:648 discover/qml/UpdatesPage.qml:655
+#: discover/qml/UpdatesPage.qml:662
 #, kde-format
 msgctxt "@info"
 msgid "Up to date"
 msgstr "Aktuální"
 
-#: discover/qml/UpdatesPage.qml:649
+#: discover/qml/UpdatesPage.qml:669
 #, kde-format
 msgctxt "@info"
 msgid "Should check for updates"
 msgstr "Měli byste zkontrolovat aktualizace"
 
-#: discover/qml/UpdatesPage.qml:656
+#: discover/qml/UpdatesPage.qml:676
 #, kde-format
 msgctxt "@info"
 msgid "Time of last update unknown"
 msgstr "Čas poslední aktualizace neznám"
 
-#~ msgid "&Updates (%1)"
-#~ msgstr "Akt&ualizace (%1)"
+#~ msgid "Update from:"
+#~ msgstr "Aktualizace z:"

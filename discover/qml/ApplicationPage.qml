@@ -364,7 +364,7 @@ DiscoverPage {
                             visible: !appInfo.isTechnicalPackage
 
                             Rating {
-                                value: appInfo.application.rating.sortableRating
+                                value: appInfo.application.rating.rating
                                 starSize: author.font.pointSize
                                 precision: Rating.Precision.HalfStar
                             }

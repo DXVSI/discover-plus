@@ -4,17 +4,22 @@
  *   SPDX-License-Identifier: GPL-2.0-only OR GPL-3.0-only OR LicenseRef-KDE-Accepted-GPL
  */
 
-#ifndef STEAMOSRESOURCE_H
-#define STEAMOSRESOURCE_H
+#ifndef HOLORESOURCE_H
+#define HOLORESOURCE_H
 
 #include <resources/AbstractResource.h>
 
 class AddonList;
-class SteamOSResource : public AbstractResource
+class HoloResource : public AbstractResource
 {
     Q_OBJECT
 public:
-    explicit SteamOSResource(const QString &version, const QString &build, quint64 size, const QString &currentVersion, AbstractResourcesBackend *parent);
+    explicit HoloResource(const QString &version,
+                          const QString &name,
+                          const QString &build,
+                          quint64 size,
+                          const QString &currentVersion,
+                          AbstractResourcesBackend *parent);
 
     QString appstreamId() const override;
     QList<PackageState> addonsInformation() override;
@@ -39,7 +44,7 @@ public:
     bool isRemovable() const override;
     AbstractResource::Type type() const override;
     bool canExecute() const override;
-    void invokeApplication() const override{};
+    void invokeApplication() const override { };
     void fetchChangelog() override;
     QUrl url() const override;
     QString author() const override;
@@ -65,4 +70,4 @@ public:
     quint64 m_size;
 };
 
-#endif // STEAMOSRESOURCE_H
+#endif // HOLORESOURCE_H

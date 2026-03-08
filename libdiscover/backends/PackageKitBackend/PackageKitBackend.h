@@ -10,7 +10,6 @@
 
 #include <PackageKit/Offline>
 #include <PackageKit/Transaction>
-#include <QFile>
 #include <QPointer>
 #include <QSet>
 #include <QSharedPointer>
@@ -91,7 +90,7 @@ public:
     Transaction *removeApplication(AbstractResource *app) override;
     bool isValid() const override
     {
-        return !QFile::exists(QStringLiteral("/run/ostree-booted"));
+        return true;
     }
     QSet<AbstractResource *> upgradeablePackages() const;
 
@@ -194,6 +193,7 @@ private:
     AppPackageKitResource *addComponent(const AppStream::Component &component) const;
     void updateProxy();
     void foundNewMajorVersion(const AppStream::Release &release);
+    void setRefresher(PackageKit::Transaction *refresh);
 
     QScopedPointer<AppStream::ConcurrentPool> m_appdata;
     bool m_appdataLoaded = false;
@@ -223,4 +223,8 @@ private:
     QPointer<PKResultsStream> m_currentSearchStream;
     int m_coprOffset = 0;
     QString m_lastCoprSearchQuery;
+
+    // Batch loading: accumulate results from parallel initial requests
+    QList<CoprProjectInfo> m_coprBatchBuffer;
+    int m_coprBatchPending = 0;
 };

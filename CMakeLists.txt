@@ -1,10 +1,10 @@
 cmake_minimum_required(VERSION 3.16)
 
 project(discover)
-set(PROJECT_VERSION "6.5.80")
+set(PROJECT_VERSION "6.6.80")
 
-set(QT_MIN_VERSION "6.9.0")
-set(KF6_MIN_VERSION "6.18.0")
+set(QT_MIN_VERSION "6.10.0")
+set(KF6_MIN_VERSION "6.22.0")
 set(KDE_COMPILERSETTINGS_LEVEL "5.85")
 
 set(CMAKE_CXX_STANDARD 20)
@@ -33,7 +33,7 @@ find_package(Qt6 ${QT_MIN_VERSION} CONFIG OPTIONAL_COMPONENTS WebView)
 
 find_package(PkgConfig REQUIRED)
 
-find_package(KF6 ${KF6_MIN_VERSION} REQUIRED Kirigami CoreAddons Config Crash DBusAddons I18n Archive XmlGui KIO KCMUtils IdleTime Notifications Purpose Auth StatusNotifierItem IconThemes)
+find_package(KF6 ${KF6_MIN_VERSION} REQUIRED Kirigami CoreAddons Config Crash DBusAddons I18n Archive XmlGui KIO KCMUtils IdleTime Notifications Purpose StatusNotifierItem IconThemes)
 find_package(KF6 ${KF6_MIN_VERSION} OPTIONAL_COMPONENTS UserFeedback)
 
 find_package(packagekitqt6 1.0.1 CONFIG)

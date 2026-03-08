@@ -353,7 +353,7 @@ QString DiscoverNotifier::iconName() const
     case Offline:
         return QStringLiteral("offline");
     case Busy:
-        return QStringLiteral("state-download");
+        return QStringLiteral("update-busy");
     }
     return QString();
 }

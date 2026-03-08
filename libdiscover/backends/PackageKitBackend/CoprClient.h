@@ -1,6 +1,8 @@
 #ifndef COPRCLIENT_H
 #define COPRCLIENT_H
 
+#include <QDateTime>
+#include <QHash>
 #include <QJsonArray>
 #include <QJsonObject>
 #include <QObject>
@@ -50,6 +52,7 @@ public:
     void getProjectPackages(const QString &owner, const QString &project);
     void searchPackages(const QString &query, int limit = 50);
     void cancelAllRequests();
+    void clearCache();
 
 Q_SIGNALS:
     void projectsFound(const QList<CoprProjectInfo> &projects);
@@ -61,6 +64,8 @@ private:
     QList<CoprProjectInfo> parseProjectsResponse(const QJsonObject &json);
     CoprProjectInfo parseProjectResponse(const QJsonObject &json);
     QList<CoprPackageInfo> parsePackagesResponse(const QJsonObject &json, const QString &owner, const QString &project);
+    QString convertMarkdownToHtml(const QString &markdown) const;
+    void emitResultForRequest(const QString &requestType, const QJsonObject &json);
 
     void processNextRequest();
     void queueRequest(const QUrl &url, const QString &requestType);
@@ -69,9 +74,18 @@ private:
     QString m_fedoraVersion;
     QString m_currentChroot;
 
-    // Request queue to prevent parallel requests (anti-bot protection)
+    // Request queue with limited concurrency
     QQueue<QPair<QUrl, QString>> m_requestQueue;
-    bool m_requestInProgress = false;
+    int m_activeRequests = 0;
+    static constexpr int MaxConcurrentRequests = 3;
+
+    // Response cache with TTL
+    struct CacheEntry {
+        QJsonObject data;
+        qint64 timestamp;
+    };
+    QHash<QString, CacheEntry> m_cache;
+    static constexpr int CacheTtlMs = 300000; // 5 minutes
 };
 
 #endif // COPRCLIENT_H

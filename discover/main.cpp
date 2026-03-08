@@ -24,7 +24,7 @@
 #include <qtwebviewfunctions.h>
 #endif
 
-#include <KirigamiApp>
+#include <KirigamiAppDefaults>
 #include <QProcessEnvironment>
 
 std::unique_ptr<QCommandLineParser> createParser()
@@ -110,8 +110,8 @@ int main(int argc, char **argv)
     QtWebView::initialize();
 #endif
 
-    KirigamiApp::App app(argc, argv);
-    KirigamiApp kapp;
+    QApplication app(argc, argv);
+    KirigamiAppDefaults::apply(&app);
 
     app.setWindowIcon(QIcon::fromTheme(QStringLiteral("plasmadiscover")));
     app.setQuitLockEnabled(false);
@@ -121,7 +121,7 @@ int main(int argc, char **argv)
                      version,
                      i18n("An application explorer"),
                      KAboutLicense::GPL,
-                     i18n("© 2010-2025 Plasma Development Team"));
+                     i18n("© 2010-2026 Plasma Development Team"));
     about.addAuthor(i18n("Aleix Pol Gonzalez"), QString(), QStringLiteral("aleixpol@kde.org"), QStringLiteral("https://proli.net"), QStringLiteral("apol"));
     about.addAuthor(i18n("Nate Graham"),
                     i18n("Quality Assurance, Design and Usability"),
@@ -133,6 +133,11 @@ int main(int argc, char **argv)
                     QStringLiteral("admin@leinir.dk"),
                     QStringLiteral("https://leinir.dk/"),
                     QStringLiteral("leinir"));
+    about.addAuthor(i18n("DXVSI"),
+                    i18n("Discover Plus fork maintainer"),
+                    QStringLiteral("dxvsi123@gmail.com"),
+                    QStringLiteral("https://t.me/dxvsi"),
+                    QStringLiteral("dxvsi"));
     about.setProductName("discover/discover");
     about.setProgramLogo(app.windowIcon());
 
