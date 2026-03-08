@@ -7,56 +7,40 @@ Enhanced KDE Discover with extended RPM package support and COPR integration for
 <details>
 <summary><b>Click to view UI Gallery</b></summary>
 
-### Main Interface
+### Home Page & Installed Apps
 <p align="center">
-  <img src="screen/image1.png" width="48%" alt="Main Window" />
-  <img src="screen/image2.png" width="48%" alt="Application Page" />
+  <img src="screen/image1.png" width="48%" alt="Home Page" />
+  <img src="screen/image2.png" width="48%" alt="Installed Applications" />
 </p>
 
-### Updates & Package Management
+### Repository Labels & Source Selection
 <p align="center">
-  <img src="screen/image3.png" width="48%" alt="Updates Page" />
-  <img src="screen/image4.png" width="48%" alt="Package Details" />
+  <img src="screen/image3.png" width="48%" alt="Repository Labels - RPM Fusion, Fedora, Flatpak, Flathub" />
+  <img src="screen/image4.png" width="48%" alt="Source Selection - RPM Fusion or Flathub" />
 </p>
 
-### Settings & COPR Integration
+### COPR Search & Package Info
 <p align="center">
-  <img src="screen/image5.png" width="48%" alt="Settings" />
-  <img src="screen/image6.png" width="48%" alt="COPR Packages" />
+  <img src="screen/image5.png" width="48%" alt="COPR Search - Zen Browser" />
+  <img src="screen/image6.png" width="48%" alt="COPR Package Details" />
 </p>
 
-### Browse & Search
+### First-Run Setup & Updates
 <p align="center">
-  <img src="screen/image7.png" width="80%" alt="Browse Applications" />
+  <img src="screen/image7.png" width="48%" alt="First Run Setup - Welcome to Discover" />
+  <img src="screen/image8.png" width="48%" alt="Updates Page" />
 </p>
 
 </details>
 
-## Modern UI Redesign
-
-> **Note:** The modern UI redesign is available in the `ui-redesign` branch.
-> To use it: `git checkout ui-redesign`
-
-The redesigned interface features:
-- **Modern Cards** - Application cards with gradients, shadows, and smooth hover effects
-- **Enhanced Visual Feedback** - Animated transitions and interactive elements
-- **Clean Updates Page** - Simplified layout without cluttered section headers
-- **Styled Action Buttons** - Color-coded buttons with gradient backgrounds
-- **Improved Spacing** - Better content distribution and readability
-
-### First-Run Setup
-<p align="center">
-  <img src="img/Снимок экрана_20260308_232215.png" width="50%" alt="First Run Setup" />
-</p>
-
 ## Key Features
 
-* **COPR Repository Integration** - Browse and install packages from Fedora COPR (Community Projects)
-* **Full RPM Fusion Support** - All RPM Fusion packages are now visible in Discover
+* **COPR Repository Integration** - Browse and install packages from Fedora COPR with cached responses, parallel requests and relevance-based search
+* **First-Run System Setup** - One-click configuration of DNF, RPM Fusion, Flathub, NVIDIA drivers, Steam, Chrome
+* **Full RPM Fusion Support** - All RPM Fusion packages are visible in Discover
 * **Enhanced Package Search** - Fallback search via PackageKit for packages without AppStream metadata
 * **Repository Labels** - Shows repository source for each package (Fedora Linux, RPM Fusion, COPR, etc.)
-* **Proper Icons** - Uses package-specific icons instead of generic ones
-* **Fixed UI Layout** - Install button consistently positioned regardless of rating presence
+* **Search History** - Recent searches are saved and available as suggestions
 
 ## What's New
 
@@ -69,14 +53,15 @@ The redesigned interface features:
 * Single authentication prompt for all operations
 
 ### COPR Integration
-* New COPR category in the sidebar
+* Dedicated COPR category in the sidebar
 * Search and browse COPR packages directly in Discover
-* Automatic pagination when scrolling
-* Smart relevance-based search results
+* Response caching (5 min TTL) for instant repeated queries
+* Up to 3 parallel API requests for faster loading
+* Batch initial loading (60 projects) with relevance sorting
+* Request deduplication to prevent redundant API calls
 * Markdown to HTML description conversion
 * One-click install with automatic repository enabling
 * Clean uninstall with repository removal
-* Launch button for installed applications
 
 ## Installation
 
@@ -125,7 +110,7 @@ cmake .. \
     -DBUILD_AlpineApkBackend=ON \
     -DBUILD_DummyBackend=OFF \
     -DBUILD_RpmOstreeBackend=OFF \
-    -DBUILD_SteamOSBackend=OFF \
+    -DBUILD_HoloBackend=OFF \
     -DBUILD_WITH_QT6=ON
 make -j$(nproc)
 ```
