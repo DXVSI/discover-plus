@@ -44,6 +44,11 @@ The redesigned interface features:
 - **Styled Action Buttons** - Color-coded buttons with gradient backgrounds
 - **Improved Spacing** - Better content distribution and readability
 
+### First-Run Setup
+<p align="center">
+  <img src="img/Снимок экрана_20260308_232215.png" width="50%" alt="First Run Setup" />
+</p>
+
 ## Key Features
 
 * **COPR Repository Integration** - Browse and install packages from Fedora COPR (Community Projects)
@@ -54,6 +59,14 @@ The redesigned interface features:
 * **Fixed UI Layout** - Install button consistently positioned regardless of rating presence
 
 ## What's New
+
+### First-Run System Setup
+* DNF optimization (parallel downloads, fastest mirror, keepcache)
+* Cisco OpenH264 repo disable (blocked in Russia, causes timeouts)
+* RPM Fusion Free & Nonfree one-click install
+* Flathub repository setup
+* NVIDIA Driver, Steam, Google Chrome repo toggles
+* Single authentication prompt for all operations
 
 ### COPR Integration
 * New COPR category in the sidebar
