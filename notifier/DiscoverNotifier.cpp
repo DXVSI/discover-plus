@@ -368,7 +368,7 @@ QString DiscoverNotifier::message() const
     case NoUpdates:
         return i18n("System up to date");
     case RebootRequired:
-        return i18n("Computer needs to restart");
+        return i18n("System will install updates when restarted");
     case Offline:
         return i18n("Offline");
     case Busy:

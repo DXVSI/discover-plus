@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: discover\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-17 11:53+0000\n"
+"POT-Creation-Date: 2026-04-02 00:45+0000\n"
 "PO-Revision-Date: 2024-12-24 20:39+0530\n"
 "Last-Translator: kali <shreekantkalwar@gmail.com>\n"
 "Language-Team: Sanskrit <kde-i18n-doc@kde.org>\n"
@@ -40,9 +40,10 @@ msgid "System up to date"
 msgstr "तन्त्रं अद्यतनम् अस्ति"
 
 #: notifier/DiscoverNotifier.cpp:371
-#, kde-format
-msgid "Computer needs to restart"
-msgstr "सङ्गणकस्य पुनः आरम्भस्य आवश्यकता वर्तते"
+#, fuzzy, kde-format
+#| msgid "Install Updates and Restart…"
+msgid "System will install updates when restarted"
+msgstr "अद्यतनं संस्थाप्य पुनः आरम्भं कुर्वन्तु…"
 
 #: notifier/DiscoverNotifier.cpp:373
 #, kde-format
@@ -176,9 +177,13 @@ msgid "Restart to apply installed updates"
 msgstr "संस्थापितानि अद्यतनानि प्रयोक्तुं पुनः आरभत"
 
 #: notifier/NotifierItem.cpp:65
-#, kde-format
-msgid "Click to restart the device"
+#, fuzzy, kde-format
+#| msgid "Click to restart the device"
+msgid "Click to restart the system"
 msgstr "यन्त्रं पुनः आरभ्यतुं नोदनम् कुर्वन्तु"
+
+#~ msgid "Computer needs to restart"
+#~ msgstr "सङ्गणकस्य पुनः आरम्भस्य आवश्यकता वर्तते"
 
 #~ msgid "See Updates…"
 #~ msgstr "अद्यतनं पश्यन्तु…"

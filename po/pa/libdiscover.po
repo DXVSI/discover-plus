@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-02-28 00:45+0000\n"
+"POT-Creation-Date: 2026-04-18 00:46+0000\n"
 "PO-Revision-Date: 2024-02-10 10:00-0600\n"
 "Last-Translator: A S Alam <aalam@punlinux.org>\n"
 "Language-Team: Punjabi <kde-i18n-doc@kde.org>\n"
@@ -629,19 +629,15 @@ msgstr ""
 "<para>ਇਹ ਐਪਲੀਕੇਸ਼ਨ \"%1\" (<link>%2</link> ਉੱਤੇ ਹੋਸਟ ਹੈ) ਤੋਂ ਮਿਲਦੀ ਹੈ। ਇਸ ਰਿਪੋਜ਼ਟਰੀ ਵਿੱਚ "
 "ਹੋਰ ਸਾਫਟਵੇਅਰ ਵੀ ਡਿਸਕਵਰ ਵਿੱਚ ਮੌਜੂਦ ਹੋਣਗੇ, ਜਦ ਇਹ ਐਪਲੀਕੇਸ਼ਨ ਇੰਸਟਾਲ ਹੁੰਦੀ ਹੈ।</para>"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:470
-#, kde-format
-msgid "Retrieving size information"
-msgstr "ਆਕਾਰ ਦੀ ਜਾਣਕਾਰੀ ਲਈ ਜਾ ਰਹੀ ਹੈ"
-
 #: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:472
+#: libdiscover/backends/RpmOstreeBackend/RpmOstreeResource.cpp:419
 #, kde-format
 msgctxt "@label app size"
 msgid "Unknown"
 msgstr "ਅਣਪਛਾਤਾ"
 
 #: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:528
-#: libdiscover/backends/PackageKitBackend/PackageKitResource.cpp:495
+#: libdiscover/backends/PackageKitBackend/PackageKitResource.cpp:467
 #: libdiscover/backends/PackageKitBackend/PackageKitSourcesBackend.cpp:70
 #, kde-format
 msgid "Failed to start '%1': %2"
@@ -2170,13 +2166,6 @@ msgstr "ਮੁੜ-ਸ਼ੁਰੂ ਕਰੋ:"
 msgid "Vendor:"
 msgstr "ਵੇਂਡਰ:"
 
-#: libdiscover/backends/PackageKitBackend/PackageKitResource.cpp:448
-#, kde-format
-msgid "%2 (plus %1 dependency)"
-msgid_plural "%2 (plus %1 dependencies)"
-msgstr[0] "%2 (ਤੇ %1 ਨਿਰਭਰਤਾ)"
-msgstr[1] "%2 (ਤੇ %1 ਨਿਰਭਰਤਾਵਾਂ)"
-
 #: libdiscover/backends/PackageKitBackend/PackageKitSourcesBackend.cpp:105
 #, kde-format
 msgid "Repository URL:"
@@ -2429,6 +2418,21 @@ msgstr "ਤਬਦੀਲ ਕੀਤੇ ਪੈਕੇਜ:"
 msgid "Removed packages:"
 msgstr "ਹਟਾਉਣਯੋਗ ਪੈਕੇਜ:"
 
+#: libdiscover/backends/RpmOstreeBackend/RpmOstreeResource.cpp:346
+#, kde-format
+msgctxt "@label OS updater message"
+msgid ""
+"<br/>This version is pinned and won't be automatically removed on updates."
+msgstr ""
+
+#: libdiscover/backends/RpmOstreeBackend/RpmOstreeResource.cpp:360
+#: libdiscover/backends/RpmOstreeBackend/RpmOstreeResource.cpp:373
+#: libdiscover/backends/RpmOstreeBackend/RpmOstreeResource.cpp:391
+#, kde-format
+msgctxt "@label OS vendor"
+msgid "Fedora Project"
+msgstr ""
+
 #: libdiscover/backends/RpmOstreeBackend/RpmOstreeResource.cpp:400
 #, kde-format
 msgid "Currently booted version (pinned)"
@@ -2590,7 +2594,7 @@ msgstr ""
 #, kde-format
 msgid ""
 "This Snap application is not compatible with security sandboxing and will "
-"have full access to this computer. Install it anyway?"
+"have full access to this system. Install it anyway?"
 msgstr ""
 
 #: libdiscover/backends/SystemdSysupdateBackend/SystemdSysupdateBackend.cpp:149
@@ -2779,6 +2783,14 @@ msgstr "ਸਿਸਟਮ ਸਾਫਟਵੇਅਰ"
 msgctxt "@item:inlistbox"
 msgid "Addons"
 msgstr "ਐਡ-ਆਨ"
+
+#~ msgid "Retrieving size information"
+#~ msgstr "ਆਕਾਰ ਦੀ ਜਾਣਕਾਰੀ ਲਈ ਜਾ ਰਹੀ ਹੈ"
+
+#~ msgid "%2 (plus %1 dependency)"
+#~ msgid_plural "%2 (plus %1 dependencies)"
+#~ msgstr[0] "%2 (ਤੇ %1 ਨਿਰਭਰਤਾ)"
+#~ msgstr[1] "%2 (ਤੇ %1 ਨਿਰਭਰਤਾਵਾਂ)"
 
 #~ msgid "ostree remotes"
 #~ msgstr "ostree remotes"

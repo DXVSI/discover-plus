@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: discover\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-17 11:53+0000\n"
+"POT-Creation-Date: 2026-04-02 00:45+0000\n"
 "PO-Revision-Date: 2023-05-09 21:39+0200\n"
 "Last-Translator: Enol P. <enolp@softastur.org>\n"
 "Language-Team: \n"
@@ -39,7 +39,7 @@ msgstr "El sistema ta anováu"
 
 #: notifier/DiscoverNotifier.cpp:371
 #, kde-format
-msgid "Computer needs to restart"
+msgid "System will install updates when restarted"
 msgstr ""
 
 #: notifier/DiscoverNotifier.cpp:373
@@ -171,6 +171,7 @@ msgid "Restart to apply installed updates"
 msgstr ""
 
 #: notifier/NotifierItem.cpp:65
-#, kde-format
-msgid "Click to restart the device"
+#, fuzzy, kde-format
+#| msgid "Click to restart the device"
+msgid "Click to restart the system"
 msgstr "Calca pa reaniciar el preséu"

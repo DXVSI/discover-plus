@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdeorg\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-17 11:53+0000\n"
+"POT-Creation-Date: 2026-04-02 00:45+0000\n"
 "PO-Revision-Date: 2025-09-21 13:07+0900\n"
 "Last-Translator: Yuma Kakei <yumasansansan@gmail.com>\n"
 "Language-Team: Japanese <kde-jp@kde.org>\n"
@@ -40,9 +40,10 @@ msgid "System up to date"
 msgstr "システムは最新です"
 
 #: notifier/DiscoverNotifier.cpp:371
-#, kde-format
-msgid "Computer needs to restart"
-msgstr "コンピュータを再起動する必要があります。"
+#, fuzzy, kde-format
+#| msgid "Install Updates and Restart…"
+msgid "System will install updates when restarted"
+msgstr "更新をインストールして再起動…"
 
 #: notifier/DiscoverNotifier.cpp:373
 #, kde-format
@@ -173,6 +174,10 @@ msgid "Restart to apply installed updates"
 msgstr "再起動してインストールされた更新を適用"
 
 #: notifier/NotifierItem.cpp:65
-#, kde-format
-msgid "Click to restart the device"
+#, fuzzy, kde-format
+#| msgid "Click to restart the device"
+msgid "Click to restart the system"
 msgstr "クリックしてデバイスを再起動"
+
+#~ msgid "Computer needs to restart"
+#~ msgstr "コンピュータを再起動する必要があります。"

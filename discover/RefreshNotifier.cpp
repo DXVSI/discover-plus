@@ -41,3 +41,5 @@ void RefreshNotifier::onNotify()
 {
     ResourcesModel::global()->checkForUpdates();
 }
+
+#include "moc_RefreshNotifier.cpp"

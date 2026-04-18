@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: discover\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-17 11:53+0000\n"
+"POT-Creation-Date: 2026-04-02 00:45+0000\n"
 "PO-Revision-Date: 2021-10-29 12:53+0200\n"
 "Last-Translator: Edward Wornar <edi.werner@gmx.de>\n"
 "Language-Team: Upper Sorbian <kde-i18n-doc@kde.org>\n"
@@ -39,8 +39,8 @@ msgstr "Sytem je na aktualnym stawje"
 
 #: notifier/DiscoverNotifier.cpp:371
 #, kde-format
-msgid "Computer needs to restart"
-msgstr "Kompjuter dyrbi so znowa startować"
+msgid "System will install updates when restarted"
+msgstr ""
 
 #: notifier/DiscoverNotifier.cpp:373
 #, kde-format
@@ -175,9 +175,13 @@ msgid "Restart to apply installed updates"
 msgstr "Znowa startować za nałoženje instalowanych aktualizowanjow"
 
 #: notifier/NotifierItem.cpp:65
-#, kde-format
-msgid "Click to restart the device"
+#, fuzzy, kde-format
+#| msgid "Click to restart the device"
+msgid "Click to restart the system"
 msgstr "Klikńće, zo byšće grat znowa startowali"
+
+#~ msgid "Computer needs to restart"
+#~ msgstr "Kompjuter dyrbi so znowa startować"
 
 #~ msgid "See Updates…"
 #~ msgstr "Pokaž aktualizowanja…"

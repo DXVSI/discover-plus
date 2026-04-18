@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-02-28 00:45+0000\n"
-"PO-Revision-Date: 2026-01-28 20:05+0400\n"
+"POT-Creation-Date: 2026-04-18 00:46+0000\n"
+"PO-Revision-Date: 2026-04-09 10:05+0400\n"
 "Last-Translator: Zayed Al-Saidi <zayed.alsaidi@gmail.com>\n"
 "Language-Team: ar\n"
 "Language: ar\n"
@@ -613,19 +613,15 @@ msgstr ""
 "<para>يأتي هذا التطبيق من \"%1\" (مستضاف في <link>%2 </link>). سيوفر برامج "
 "أخرى أيضًا من هذا المستودع في المستكشف عند تثبيت التطبيق.</para>"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:470
-#, kde-format
-msgid "Retrieving size information"
-msgstr "يجلب معلومات الحجم"
-
 #: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:472
+#: libdiscover/backends/RpmOstreeBackend/RpmOstreeResource.cpp:419
 #, kde-format
 msgctxt "@label app size"
 msgid "Unknown"
 msgstr "مجهول"
 
 #: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:528
-#: libdiscover/backends/PackageKitBackend/PackageKitResource.cpp:495
+#: libdiscover/backends/PackageKitBackend/PackageKitResource.cpp:467
 #: libdiscover/backends/PackageKitBackend/PackageKitSourcesBackend.cpp:70
 #, kde-format
 msgid "Failed to start '%1': %2"
@@ -1545,12 +1541,12 @@ msgstr "لم يُعثر على التّحديث"
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:121
 #, kde-format
 msgid "Cannot install from unsigned repo"
-msgstr "لا يمكن التّثبيت من مستودع غير موقّع"
+msgstr "لا يمكن التّثبيت من مستودع غير موقع"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:123
 #, kde-format
 msgid "Cannot update from unsigned repo"
-msgstr "لا يمكن التّحديث من مستودع غير موقّع"
+msgstr "لا يمكن التّحديث من مستودع غير موقع"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:125
 #, kde-format
@@ -2181,17 +2177,6 @@ msgstr "إعادة التّشغيل"
 msgid "Vendor:"
 msgstr "البائع:"
 
-#: libdiscover/backends/PackageKitBackend/PackageKitResource.cpp:448
-#, kde-format
-msgid "%2 (plus %1 dependency)"
-msgid_plural "%2 (plus %1 dependencies)"
-msgstr[0] "‏%2 فقط"
-msgstr[1] "‏%2 (واعتماديّة واحدة)"
-msgstr[2] "‏%2 (واعتماديّتان)"
-msgstr[3] "‏%2 (و%1 اعتماديّات)"
-msgstr[4] "‏%2 (و%1 اعتماديّة)"
-msgstr[5] "‏%2 (و%1 اعتماديّة)"
-
 #: libdiscover/backends/PackageKitBackend/PackageKitSourcesBackend.cpp:105
 #, kde-format
 msgid "Repository URL:"
@@ -2467,6 +2452,21 @@ msgstr "الحزم المستبدلة:"
 msgid "Removed packages:"
 msgstr "الحزم المزالة:"
 
+#: libdiscover/backends/RpmOstreeBackend/RpmOstreeResource.cpp:346
+#, kde-format
+msgctxt "@label OS updater message"
+msgid ""
+"<br/>This version is pinned and won't be automatically removed on updates."
+msgstr "<br/>هذه النسخة مثبتة ولن تزال آليًا عند إجراء التحديثات."
+
+#: libdiscover/backends/RpmOstreeBackend/RpmOstreeResource.cpp:360
+#: libdiscover/backends/RpmOstreeBackend/RpmOstreeResource.cpp:373
+#: libdiscover/backends/RpmOstreeBackend/RpmOstreeResource.cpp:391
+#, kde-format
+msgctxt "@label OS vendor"
+msgid "Fedora Project"
+msgstr "مشروع فيدورا"
+
 #: libdiscover/backends/RpmOstreeBackend/RpmOstreeResource.cpp:400
 #, kde-format
 msgid "Currently booted version (pinned)"
@@ -2620,10 +2620,10 @@ msgstr "الناشر المميز على snapcraft.io"
 #, kde-format
 msgid ""
 "This Snap application is not compatible with security sandboxing and will "
-"have full access to this computer. Install it anyway?"
+"have full access to this system. Install it anyway?"
 msgstr ""
 "تطبيق سناب هذا غير متوافق مع المعزل الآمن وسيكون له حق الوصول الكامل إلى هذا "
-"الحاسوب. أتثبته على أي حال؟"
+"النظام. أتثبته على أي حال؟"
 
 #: libdiscover/backends/SystemdSysupdateBackend/SystemdSysupdateBackend.cpp:149
 #, kde-kuit-format
@@ -2806,6 +2806,18 @@ msgstr "برمجيّات النظام"
 msgctxt "@item:inlistbox"
 msgid "Addons"
 msgstr "الإضافات"
+
+#~ msgid "Retrieving size information"
+#~ msgstr "يجلب معلومات الحجم"
+
+#~ msgid "%2 (plus %1 dependency)"
+#~ msgid_plural "%2 (plus %1 dependencies)"
+#~ msgstr[0] "‏%2 فقط"
+#~ msgstr[1] "‏%2 (واعتماديّة واحدة)"
+#~ msgstr[2] "‏%2 (واعتماديّتان)"
+#~ msgstr[3] "‏%2 (و%1 اعتماديّات)"
+#~ msgstr[4] "‏%2 (و%1 اعتماديّة)"
+#~ msgstr[5] "‏%2 (و%1 اعتماديّة)"
 
 #~ msgid "ostree remotes"
 #~ msgstr "‏ostree البعيدة"

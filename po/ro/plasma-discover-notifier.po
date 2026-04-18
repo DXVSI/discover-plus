@@ -1,13 +1,13 @@
 # Copyright (C) YEAR This_file_is_part_of_KDE
 # This file is distributed under the same license as the PACKAGE package.
-# SPDX-FileCopyrightText: 2015, 2020, 2021, 2022, 2024, 2025 Sergiu Bivol <sergiu@cip.md>
+# SPDX-FileCopyrightText: 2015, 2020, 2021, 2022, 2024, 2025, 2026 Sergiu Bivol <sergiu@cip.md>
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-17 11:53+0000\n"
-"PO-Revision-Date: 2025-12-12 11:32+0000\n"
+"POT-Creation-Date: 2026-04-02 00:45+0000\n"
+"PO-Revision-Date: 2026-04-13 13:22+0100\n"
 "Last-Translator: Sergiu Bivol <sergiu@cip.md>\n"
 "Language-Team: Romanian <kde-i18n-ro@kde.org>\n"
 "Language: ro\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n==1 ? 0 : (n==0 || (n%100 > 0 && n%100 < "
 "20)) ? 1 : 2;\n"
-"X-Generator: Lokalize 25.08.1\n"
+"X-Generator: Lokalize 25.12.3\n"
 
 #: notifier/DiscoverNotifier.cpp:218
 #, kde-format
@@ -40,8 +40,8 @@ msgstr "Sistem la zi"
 
 #: notifier/DiscoverNotifier.cpp:371
 #, kde-format
-msgid "Computer needs to restart"
-msgstr "Calculatorul trebuie repornit"
+msgid "System will install updates when restarted"
+msgstr "Sistemul va instala actualizări când e repornit"
 
 #: notifier/DiscoverNotifier.cpp:373
 #, kde-format
@@ -173,8 +173,11 @@ msgstr "Reporniți pentru a aplica actualizările instalate"
 
 #: notifier/NotifierItem.cpp:65
 #, kde-format
-msgid "Click to restart the device"
-msgstr "Apăsați pentru a reporni dispozitivul"
+msgid "Click to restart the system"
+msgstr "Apăsați pentru a reporni sistemul"
+
+#~ msgid "Computer needs to restart"
+#~ msgstr "Calculatorul trebuie repornit"
 
 #~ msgid "See Updates…"
 #~ msgstr "Vezi actualizările…"

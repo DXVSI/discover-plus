@@ -143,6 +143,12 @@ Kirigami.ApplicationWindow {
         shortcut: StandardKey.Preferences
     }
 
+    Shortcut {
+        id: refreshKey
+        autoRepeat: false
+        sequence: StandardKey.Refresh
+        onActivated: refreshAction.trigger()
+    }
     Kirigami.Action {
         id: refreshAction
         readonly property Discover.DiscoverAction action: Discover.ResourcesModel.updateAction
@@ -154,14 +160,8 @@ Kirigami.ApplicationWindow {
         // on the view to refresh, which is the common and expected behavior
         // on that platform - but is not possible on desktop
         visible: !Kirigami.Settings.isMobile
-        tooltip: shortcut.nativeText
-
-        // Need to define an explicit Shortcut object so we can get its text
-        // using shortcut.nativeText
-        shortcut: Shortcut {
-            sequences: [ StandardKey.Refresh ]
-            onActivated: refreshAction.trigger()
-        }
+        tooltip: action.toolTip
+        shortcut: refreshKey.nativeText
     }
 
     Connections {

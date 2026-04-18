@@ -5,13 +5,13 @@
 # Jeff Huang <s8321414@gmail.com>, 2016, 2020.
 # pan93412 <pan93412@gmail.com>, 2018, 2019, 2020.
 # Chaoting Liu <brli@chakralinux.org>, 2021.
-# SPDX-FileCopyrightText: 2022, 2023, 2024, 2025 Kisaragi Hiu <mail@kisaragi-hiu.com>
+# SPDX-FileCopyrightText: 2022-2026 Kisaragi Hiu <mail@kisaragi-hiu.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-17 11:53+0000\n"
-"PO-Revision-Date: 2025-06-17 09:42+0900\n"
+"POT-Creation-Date: 2026-04-02 00:45+0000\n"
+"PO-Revision-Date: 2026-04-08 23:40+0900\n"
 "Last-Translator: Kisaragi Hiu <mail@kisaragi-hiu.com>\n"
 "Language-Team: Traditional Chinese <zh-l10n@lists.slat.org>\n"
 "Language: zh_TW\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Lokalize 25.07.70\n"
+"X-Generator: Lokalize 26.07.70\n"
 
 #: notifier/DiscoverNotifier.cpp:218
 #, kde-format
@@ -43,8 +43,8 @@ msgstr "系統已更新至最新"
 
 #: notifier/DiscoverNotifier.cpp:371
 #, kde-format
-msgid "Computer needs to restart"
-msgstr "電腦需要重新開機"
+msgid "System will install updates when restarted"
+msgstr "系統將在重新啟動時安裝更新"
 
 #: notifier/DiscoverNotifier.cpp:373
 #, kde-format
@@ -176,8 +176,11 @@ msgstr "重新啟動電腦以套用已安裝的更新"
 
 #: notifier/NotifierItem.cpp:65
 #, kde-format
-msgid "Click to restart the device"
-msgstr "按我以重新啟動電腦"
+msgid "Click to restart the system"
+msgstr "點擊以重新啟動系統"
+
+#~ msgid "Computer needs to restart"
+#~ msgstr "電腦需要重新開機"
 
 #~ msgid "See Updates…"
 #~ msgstr "檢視更新…"

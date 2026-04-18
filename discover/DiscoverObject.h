@@ -69,6 +69,7 @@ public Q_SLOTS:
     void promptReboot();
     void rebootNow();
     void shutdownNow();
+    void reconsiderQuit();
 
 private Q_SLOTS:
     void switchApplicationLanguage();
@@ -89,7 +90,6 @@ private:
     bool isBusy() const;
     void showLoadingPage();
     void initMainWindow(QQuickWindow *mainWindow);
-    void reconsiderQuit();
     QQmlApplicationEngine *engine() const
     {
         return m_engine.get();

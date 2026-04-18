@@ -62,7 +62,7 @@ void NotifierItem::setupNotifierItem()
 
     auto f = [this]() {
         m_item->setTitle(i18n("Restart to apply installed updates"));
-        m_item->setToolTipTitle(i18n("Click to restart the device"));
+        m_item->setToolTipTitle(i18n("Click to restart the system"));
         m_item->setIconByName(QStringLiteral("system-reboot-update"));
     };
     if (m_notifier.needsReboot())

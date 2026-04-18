@@ -1,22 +1,22 @@
 # Copyright (C) YEAR This_file_is_part_of_KDE
 # This file is distributed under the same license as the PACKAGE package.
-# SPDX-FileCopyrightText: 2015, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025 Łukasz Wojniłowicz <lukasz.wojnilowicz@gmail.com>
+# SPDX-FileCopyrightText: 2015, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026 Łukasz Wojniłowicz <lukasz.wojnilowicz@gmail.com>
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-17 11:53+0000\n"
-"PO-Revision-Date: 2025-05-24 08:29+0200\n"
+"POT-Creation-Date: 2026-04-02 00:45+0000\n"
+"PO-Revision-Date: 2026-04-04 19:14+0200\n"
 "Last-Translator: Łukasz Wojniłowicz <lukasz.wojnilowicz@gmail.com>\n"
-"Language-Team: Polish <kde-i18n-doc@kde.org>\n"
+"Language-Team: pl\n"
 "Language: pl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
 "|| n%100>=20) ? 1 : 2);\n"
-"X-Generator: Lokalize 24.12.3\n"
+"X-Generator: Lokalize 25.08.2\n"
 
 #: notifier/DiscoverNotifier.cpp:218
 #, kde-format
@@ -40,8 +40,8 @@ msgstr "Twój system jest aktualny"
 
 #: notifier/DiscoverNotifier.cpp:371
 #, kde-format
-msgid "Computer needs to restart"
-msgstr "Komputer wymaga ponownego uruchomienia"
+msgid "System will install updates when restarted"
+msgstr "System wgra uaktualnienia, gdy uruchomisz go ponownie"
 
 #: notifier/DiscoverNotifier.cpp:373
 #, kde-format
@@ -173,8 +173,11 @@ msgstr "Uruchom ponownie, aby zastosować wgrane uaktualnienia"
 
 #: notifier/NotifierItem.cpp:65
 #, kde-format
-msgid "Click to restart the device"
-msgstr "Naciśnij, aby uruchomić urządzenie ponownie"
+msgid "Click to restart the system"
+msgstr "Naciśnij, aby uruchomić system ponownie"
+
+#~ msgid "Computer needs to restart"
+#~ msgstr "Komputer wymaga ponownego uruchomienia"
 
 #~ msgid "See Updates…"
 #~ msgstr "Obejrzyj uaktualnienia..."

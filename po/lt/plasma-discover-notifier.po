@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: trunk-kf 5\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-17 11:53+0000\n"
-"PO-Revision-Date: 2025-09-06 13:53+0300\n"
+"POT-Creation-Date: 2026-04-02 00:45+0000\n"
+"PO-Revision-Date: 2026-04-11 00:42+0300\n"
 "Last-Translator: Moo\n"
 "Language-Team: Lithuanian <kde-i18n-lt@kde.org>\n"
 "Language: lt\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=(n==1 ? 0 : n%10>=2 && (n%100<10 || n"
 "%100>=20) ? 1 : n%10==0 || (n%100>10 && n%100<20) ? 2 : 3);\n"
-"X-Generator: Poedit 3.6\n"
+"X-Generator: Poedit 3.8\n"
 
 #: notifier/DiscoverNotifier.cpp:218
 #, kde-format
@@ -43,8 +43,8 @@ msgstr "Sistema pilnai atnaujinta"
 
 #: notifier/DiscoverNotifier.cpp:371
 #, kde-format
-msgid "Computer needs to restart"
-msgstr "Reikia paleisti kompiuterį iš naujo"
+msgid "System will install updates when restarted"
+msgstr "Sistema įdiegs atnaujinimus, kai bus paleista iš naujo"
 
 #: notifier/DiscoverNotifier.cpp:373
 #, kde-format
@@ -176,8 +176,11 @@ msgstr "Paleiskite iš naujo, kad pritaikytumėte įdiegtus atnaujinimus"
 
 #: notifier/NotifierItem.cpp:65
 #, kde-format
-msgid "Click to restart the device"
-msgstr "Spustelėkite, norėdami įrenginį iš naujo"
+msgid "Click to restart the system"
+msgstr "Spustelėkite norėdami paleisti sistemą iš naujo"
+
+#~ msgid "Computer needs to restart"
+#~ msgstr "Reikia paleisti kompiuterį iš naujo"
 
 #~ msgid "See Updates…"
 #~ msgstr "Rodyti atnaujinimus…"

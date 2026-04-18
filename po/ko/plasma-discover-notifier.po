@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-17 11:53+0000\n"
+"POT-Creation-Date: 2026-04-02 00:45+0000\n"
 "PO-Revision-Date: 2025-04-15 23:19+0200\n"
 "Last-Translator: Shinjo Park <kde@peremen.name>\n"
 "Language-Team: Korean <kde-kr@kde.org>\n"
@@ -38,9 +38,10 @@ msgid "System up to date"
 msgstr "시스템이 최신 상태임"
 
 #: notifier/DiscoverNotifier.cpp:371
-#, kde-format
-msgid "Computer needs to restart"
-msgstr "컴퓨터를 다시 시작해야 함"
+#, fuzzy, kde-format
+#| msgid "Install Updates and Restart…"
+msgid "System will install updates when restarted"
+msgstr "업데이트 설치 후 다시 시작…"
 
 #: notifier/DiscoverNotifier.cpp:373
 #, kde-format
@@ -171,9 +172,13 @@ msgid "Restart to apply installed updates"
 msgstr "설치한 업데이트를 적용하려면 시스템을 다시 시작해야 함"
 
 #: notifier/NotifierItem.cpp:65
-#, kde-format
-msgid "Click to restart the device"
+#, fuzzy, kde-format
+#| msgid "Click to restart the device"
+msgid "Click to restart the system"
 msgstr "장치를 다시 시작하려면 클릭하십시오"
+
+#~ msgid "Computer needs to restart"
+#~ msgstr "컴퓨터를 다시 시작해야 함"
 
 #~ msgid "See Updates…"
 #~ msgstr "업데이트 보기…"

@@ -448,7 +448,7 @@ public:
     {
         // no-op, this is just observing
 
-        setTotalAmount(Items, to_unsigned<qulonglong>(TransactionModel::global()->rowCount()));
+        setTotalAmount(Items, to_unsigned<qulonglong>(TransactionModel::global()->visibleTransactionCount()));
         setPercent(to_unsigned<unsigned long>(TransactionModel::global()->progress()));
         connect(TransactionModel::global(), &TransactionModel::lastTransactionFinished, this, &TransactionsJob::emitResult);
         connect(TransactionModel::global(), &TransactionModel::transactionAdded, this, &TransactionsJob::onTransactionAdded);

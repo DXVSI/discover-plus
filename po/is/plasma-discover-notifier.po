@@ -2,21 +2,21 @@
 # This file is distributed under the same license as the discover package.
 #
 # SPDX-FileCopyrightText: 2023, 2025 Guðmundur Erlingsson <gudmundure@gmail.com>
-# Sveinn í Felli <sv1@fellsnet.is>, 2024.
+# SPDX-FileCopyrightText: 2024, 2026 Sveinn í Felli <sv1@fellsnet.is>
 msgid ""
 msgstr ""
 "Project-Id-Version: discover\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-17 11:53+0000\n"
-"PO-Revision-Date: 2025-05-31 12:02+0000\n"
-"Last-Translator: Gummi <gudmundure@gmail.com>\n"
-"Language-Team: Icelandic <kde-i18n-doc@kde.org>\n"
+"POT-Creation-Date: 2026-04-02 00:45+0000\n"
+"PO-Revision-Date: 2026-04-13 18:38+0000\n"
+"Last-Translator: Sveinn í Felli <sv1@fellsnet.is>\n"
+"Language-Team: Icelandic\n"
 "Language: is\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 24.12.3\n"
+"X-Generator: Lokalize 23.08.5\n"
 
 #: notifier/DiscoverNotifier.cpp:218
 #, kde-format
@@ -40,8 +40,8 @@ msgstr "Tölvan er uppfærð"
 
 #: notifier/DiscoverNotifier.cpp:371
 #, kde-format
-msgid "Computer needs to restart"
-msgstr "Það þarf að endurræsa tölvuna"
+msgid "System will install updates when restarted"
+msgstr "Kerfið mun setja upp uppfærslur þegar það er endurræst"
 
 #: notifier/DiscoverNotifier.cpp:373
 #, kde-format
@@ -173,8 +173,11 @@ msgstr "Endurræstu til að virkja uppsettar uppfærslur"
 
 #: notifier/NotifierItem.cpp:65
 #, kde-format
-msgid "Click to restart the device"
-msgstr "Smelltu til að endurræsa tölvuna"
+msgid "Click to restart the system"
+msgstr "Smelltu til að endurræsa kerfið"
+
+#~ msgid "Computer needs to restart"
+#~ msgstr "Það þarf að endurræsa tölvuna"
 
 #~ msgid "See Updates…"
 #~ msgstr "Sjá uppfærslur…"

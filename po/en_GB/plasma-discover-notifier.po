@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-17 11:53+0000\n"
+"POT-Creation-Date: 2026-04-02 00:45+0000\n"
 "PO-Revision-Date: 2024-08-24 11:45+0100\n"
 "Last-Translator: Steve Allewell <steve.allewell@gmail.com>\n"
 "Language-Team: British English\n"
@@ -38,9 +38,10 @@ msgid "System up to date"
 msgstr "System up to date"
 
 #: notifier/DiscoverNotifier.cpp:371
-#, kde-format
-msgid "Computer needs to restart"
-msgstr "Computer needs to restart"
+#, fuzzy, kde-format
+#| msgid "Install Updates and Restart…"
+msgid "System will install updates when restarted"
+msgstr "Install Updates and Restart…"
 
 #: notifier/DiscoverNotifier.cpp:373
 #, kde-format
@@ -174,9 +175,13 @@ msgid "Restart to apply installed updates"
 msgstr "Restart to apply installed updates"
 
 #: notifier/NotifierItem.cpp:65
-#, kde-format
-msgid "Click to restart the device"
+#, fuzzy, kde-format
+#| msgid "Click to restart the device"
+msgid "Click to restart the system"
 msgstr "Click to restart the device"
+
+#~ msgid "Computer needs to restart"
+#~ msgstr "Computer needs to restart"
 
 #~ msgid "See Updates…"
 #~ msgstr "See Updates…"

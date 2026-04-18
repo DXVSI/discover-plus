@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: muon-notifier\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-17 11:53+0000\n"
+"POT-Creation-Date: 2026-04-02 00:45+0000\n"
 "PO-Revision-Date: 2026-02-02 21:54+0000\n"
 "Last-Translator: César A. P. Cláudio <cesarapclaudio@gmail.com>\n"
 "Language-Team: pt\n"
@@ -39,9 +39,10 @@ msgid "System up to date"
 msgstr "Sistema atualizado"
 
 #: notifier/DiscoverNotifier.cpp:371
-#, kde-format
-msgid "Computer needs to restart"
-msgstr "O computador precisa de ser reiniciado"
+#, fuzzy, kde-format
+#| msgid "Install Updates and Restart…"
+msgid "System will install updates when restarted"
+msgstr "Instalar atualizações e reiniciar..."
 
 #: notifier/DiscoverNotifier.cpp:373
 #, kde-format
@@ -173,9 +174,13 @@ msgid "Restart to apply installed updates"
 msgstr "Reiniciar para aplicar as atualizações instaladas"
 
 #: notifier/NotifierItem.cpp:65
-#, kde-format
-msgid "Click to restart the device"
+#, fuzzy, kde-format
+#| msgid "Click to restart the device"
+msgid "Click to restart the system"
 msgstr "Clique aqui para reiniciar o dispositivo"
+
+#~ msgid "Computer needs to restart"
+#~ msgstr "O computador precisa de ser reiniciado"
 
 #~ msgid "See Updates…"
 #~ msgstr "Ver as Actualizações…"

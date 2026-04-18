@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: extragear-sysadmin-kde4\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-02-28 00:45+0000\n"
-"PO-Revision-Date: 2026-02-18 18:00+0300\n"
+"POT-Creation-Date: 2026-04-18 00:46+0000\n"
+"PO-Revision-Date: 2026-04-08 12:24+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: Turkish <kde-l10n-tr@kde.org>\n"
 "Language: tr\n"
@@ -614,19 +614,15 @@ msgstr ""
 "barındırılır). Uygulama kurulduğunda bu depodaki diğer uygulamalar da Keşfet "
 "üzerinden erişilebilir olacaktır.</para>"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:470
-#, kde-format
-msgid "Retrieving size information"
-msgstr "Boyut bilgisi alınıyor"
-
 #: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:472
+#: libdiscover/backends/RpmOstreeBackend/RpmOstreeResource.cpp:419
 #, kde-format
 msgctxt "@label app size"
 msgid "Unknown"
 msgstr "Bilinmiyor"
 
 #: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:528
-#: libdiscover/backends/PackageKitBackend/PackageKitResource.cpp:495
+#: libdiscover/backends/PackageKitBackend/PackageKitResource.cpp:467
 #: libdiscover/backends/PackageKitBackend/PackageKitSourcesBackend.cpp:70
 #, kde-format
 msgid "Failed to start '%1': %2"
@@ -2075,7 +2071,7 @@ msgstr "Sürümü Düşür"
 #: libdiscover/backends/PackageKitBackend/PackageKitNotifier.cpp:132
 #, kde-format
 msgid "Failed Offline Update"
-msgstr "Başarısız Çevrimdışı Güncelleme"
+msgstr "Başarısız Çevrim Dışı Güncelleme"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitNotifier.cpp:133
 #, kde-format
@@ -2108,7 +2104,7 @@ msgstr "Sistemi Onar"
 #: libdiscover/backends/PackageKitBackend/PackageKitNotifier.cpp:146
 #, kde-format
 msgid "Repairing failed offline update"
-msgstr "Başarısız çevrimdışı güncelleme onarılıyor"
+msgstr "Başarısız çevrim dışı güncelleme onarılıyor"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitNotifier.cpp:153
 #, kde-format
@@ -2130,7 +2126,7 @@ msgstr "Başarıyla Onarıldı"
 #: libdiscover/backends/PackageKitBackend/PackageKitNotifier.cpp:183
 #, kde-format
 msgid "Offline Updates"
-msgstr "Çevrimdışı Güncellemeler"
+msgstr "Çevrim Dışı Güncellemeler"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitNotifier.cpp:184
 #, kde-format
@@ -2185,13 +2181,6 @@ msgstr "Yeniden başlat:"
 #, kde-format
 msgid "Vendor:"
 msgstr "Satıcı:"
-
-#: libdiscover/backends/PackageKitBackend/PackageKitResource.cpp:448
-#, kde-format
-msgid "%2 (plus %1 dependency)"
-msgid_plural "%2 (plus %1 dependencies)"
-msgstr[0] "%2 (ve %1 bağımlılık)"
-msgstr[1] "%2 (ve %1 bağımlılık)"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitSourcesBackend.cpp:105
 #, kde-format
@@ -2461,6 +2450,22 @@ msgstr "Değiştirilen paketler:"
 msgid "Removed packages:"
 msgstr "Kaldırılan paketler:"
 
+#: libdiscover/backends/RpmOstreeBackend/RpmOstreeResource.cpp:346
+#, kde-format
+msgctxt "@label OS updater message"
+msgid ""
+"<br/>This version is pinned and won't be automatically removed on updates."
+msgstr ""
+"<br/>Bu sürüm sabitlenmiş ve güncellemelerde otomatik olarak kaldırılmayacak."
+
+#: libdiscover/backends/RpmOstreeBackend/RpmOstreeResource.cpp:360
+#: libdiscover/backends/RpmOstreeBackend/RpmOstreeResource.cpp:373
+#: libdiscover/backends/RpmOstreeBackend/RpmOstreeResource.cpp:391
+#, kde-format
+msgctxt "@label OS vendor"
+msgid "Fedora Project"
+msgstr "Fedora Projesi"
+
 #: libdiscover/backends/RpmOstreeBackend/RpmOstreeResource.cpp:400
 #, kde-format
 msgid "Currently booted version (pinned)"
@@ -2626,10 +2631,10 @@ msgstr "snapcraft.io Üzerinde Yıldızlı Yayımcı"
 #, kde-format
 msgid ""
 "This Snap application is not compatible with security sandboxing and will "
-"have full access to this computer. Install it anyway?"
+"have full access to this system. Install it anyway?"
 msgstr ""
-"Bu Snap uygulaması güvenlik yalıtımı ile uyumlu değildir ve bu bilgisayarda "
-"tam erişime sahip olacaktır. Yine de kurulsun mu?"
+"Bu Snap uygulaması güvenlik yalıtımı ile uyumlu değildir ve bu sistemde tam "
+"erişime sahip olacaktır. Yine de kurulsun mu?"
 
 #: libdiscover/backends/SystemdSysupdateBackend/SystemdSysupdateBackend.cpp:149
 #, kde-kuit-format
@@ -2815,6 +2820,14 @@ msgstr "Sistem Yazılımı"
 msgctxt "@item:inlistbox"
 msgid "Addons"
 msgstr "Eklentiler"
+
+#~ msgid "Retrieving size information"
+#~ msgstr "Boyut bilgisi alınıyor"
+
+#~ msgid "%2 (plus %1 dependency)"
+#~ msgid_plural "%2 (plus %1 dependencies)"
+#~ msgstr[0] "%2 (ve %1 bağımlılık)"
+#~ msgstr[1] "%2 (ve %1 bağımlılık)"
 
 #~ msgid "ostree remotes"
 #~ msgstr "ostree uzak konumları"

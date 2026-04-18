@@ -343,7 +343,7 @@ QString RpmOstreeResource::longDescription()
         QTextStream(&desc) << "</ul>\n";
     }
     if (m_pinned) {
-        desc += QStringLiteral("<br/>This version is pinned and won't be automatically removed on updates.");
+        desc += i18nc("@label OS updater message", "<br/>This version is pinned and won't be automatically removed on updates.");
     }
     return desc;
 }
@@ -357,7 +357,7 @@ QString RpmOstreeResource::origin() const
 {
     if (m_ostreeFormat->isClassic()) {
         if (m_ostreeFormat->remote() == QLatin1String("fedora")) {
-            return QStringLiteral("Fedora Project");
+            return i18nc("@label OS vendor", "Fedora Project");
         } else {
             return m_ostreeFormat->remote();
         }
@@ -370,7 +370,7 @@ QString RpmOstreeResource::origin() const
 QString RpmOstreeResource::packageName() const
 {
     if (m_osname == QLatin1String("fedora")) {
-        return QStringLiteral("Fedora Kinoite");
+        return i18nc("@label OS vendor", "Fedora Project");
     }
     return m_osname;
 }
@@ -388,7 +388,7 @@ AbstractResource::State RpmOstreeResource::state()
 QString RpmOstreeResource::author() const
 {
     if (m_osname == QLatin1String("fedora")) {
-        return QStringLiteral("Fedora Project");
+        return i18nc("@label OS vendor", "Fedora Project");
     }
     return i18n("Unknown");
 }
@@ -416,7 +416,7 @@ quint64 RpmOstreeResource::size()
 
 QString RpmOstreeResource::sizeDescription()
 {
-    return QStringLiteral("Unknown");
+    return i18nc("@label app size", "Unknown");
 }
 
 QDate RpmOstreeResource::releaseDate() const

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: discover\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-17 11:53+0000\n"
+"POT-Creation-Date: 2026-04-02 00:45+0000\n"
 "PO-Revision-Date: 2021-09-26 16:02+0000\n"
 "Last-Translator: Subin Siby <subins2000@gmail.com>\n"
 "Language-Team: Malayalam <https://kde.smc.org.in/projects/discover/plasma-"
@@ -41,8 +41,8 @@ msgstr "സിസ്റ്റം കാലികമാണ്"
 
 #: notifier/DiscoverNotifier.cpp:371
 #, kde-format
-msgid "Computer needs to restart"
-msgstr "കമ്പ്യൂട്ടർ പുനരാരംഭിക്കേണ്ടതുണ്ട്"
+msgid "System will install updates when restarted"
+msgstr ""
 
 #: notifier/DiscoverNotifier.cpp:373
 #, kde-format
@@ -177,9 +177,13 @@ msgid "Restart to apply installed updates"
 msgstr "ഇൻസ്റ്റാൾ ചെയ്ത അപ്ഡേറ്റുകൾ പ്രയോഗിക്കാൻ പുനരാരംഭിക്കുക"
 
 #: notifier/NotifierItem.cpp:65
-#, kde-format
-msgid "Click to restart the device"
+#, fuzzy, kde-format
+#| msgid "Click to restart the device"
+msgid "Click to restart the system"
 msgstr "ഉപകരണം പുനരാരംഭിക്കാൻ ക്ലിക്കുചെയ്യുക"
+
+#~ msgid "Computer needs to restart"
+#~ msgstr "കമ്പ്യൂട്ടർ പുനരാരംഭിക്കേണ്ടതുണ്ട്"
 
 #~ msgid "See Updates…"
 #~ msgstr "അപ്ഡേറ്റുകൾ കാണുക…"

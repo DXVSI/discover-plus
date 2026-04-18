@@ -500,27 +500,6 @@ PackageKitBackend *PackageKitResource::backend() const
     return qobject_cast<PackageKitBackend *>(parent());
 }
 
-QString PackageKitResource::sizeDescription()
-{
-    auto baseDescription = AbstractResource::sizeDescription();
-
-    if (state() != AbstractResource::State::None) {
-        return baseDescription;
-    }
-
-    if (!m_dependencies.hasFetchedDependencies()) {
-        fetchDetails();
-        updatePackageIdForDependencies();
-        return baseDescription;
-    }
-
-    const auto dependenciesCount = m_dependencies.dependencies().count();
-    if (dependenciesCount == 0) {
-        return baseDescription;
-    }
-    return i18np("%2 (plus %1 dependency)", "%2 (plus %1 dependencies)", dependenciesCount, baseDescription);
-}
-
 QString PackageKitResource::sourceIcon() const
 {
     // Get repository name from package ID
@@ -553,13 +532,6 @@ QStringList PackageKitResource::topObjects() const
 QStringList PackageKitResource::bottomObjects() const
 {
     return s_bottomObjects;
-}
-
-void PackageKitResource::updatePackageIdForDependencies()
-{
-    const auto packageId = isInstalled() ? installedPackageId() : availablePackageId();
-    m_dependencies.setPackageId(packageId);
-    m_dependencies.refresh(); // In case packageId didn't actually change.
 }
 
 bool PackageKitResource::extendsItself() const

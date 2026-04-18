@@ -476,7 +476,7 @@ QString FlatpakResource::sizeDescription()
 {
     if (propertyState(InstalledSize) == NotKnownYet || propertyState(InstalledSize) == Fetching) {
         backend()->updateAppSize(this);
-        return i18n("Retrieving size information");
+        return QStringLiteral("🗘");
     } else if (propertyState(InstalledSize) == UnknownOrFailed) {
         return i18nc("@label app size", "Unknown");
     } else {

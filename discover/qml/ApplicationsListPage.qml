@@ -123,7 +123,18 @@ DiscoverPage {
             }
             Kirigami.Action {
                 QQC2.ActionGroup.group: sortGroup
-                text: i18n("Popularity")
+                text: i18n("Number of reviews")
+                icon.name: "view-pages-overview-symbolic"
+                onTriggered: {
+                    DiscoverApp.DiscoverSettings[page.sortProperty] = Discover.ResourcesProxyModel.RatingCountRole
+                    appsModel.tempSortRole = -1
+                }
+                checkable: true
+                checked: appsModel.sortRole === Discover.ResourcesProxyModel.RatingCountRole
+            }
+            Kirigami.Action {
+                QQC2.ActionGroup.group: sortGroup
+                text: i18nc("@item:inmenu sort by highest-rated apps", "Rating")
                 icon.name: "rating"
                 onTriggered: {
                     DiscoverApp.DiscoverSettings[page.sortProperty] = Discover.ResourcesProxyModel.SortableRatingRole
@@ -186,7 +197,6 @@ DiscoverPage {
         }
 
         delegate: ApplicationDelegate {
-            compact: !applicationWindow().wideScreen
             showRating: page.showRating
             showSize: page.showSize
         }

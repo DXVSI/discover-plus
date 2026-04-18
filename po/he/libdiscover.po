@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libdiscover\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-02-28 00:45+0000\n"
-"PO-Revision-Date: 2026-01-24 21:21+0200\n"
+"POT-Creation-Date: 2026-04-18 00:46+0000\n"
+"PO-Revision-Date: 2026-04-09 08:46+0300\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: צוות התרגום של KDE ישראל\n"
 "Language: he\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=(n == 1) ? 0 : ((n == 2) ? 1 : ((n > 10 && "
 "n % 10 == 0) ? 2 : 3));\n"
-"X-Generator: Lokalize 25.12.1\n"
+"X-Generator: Lokalize 25.12.3\n"
 
 #, kde-format
 msgctxt "NAME OF TRANSLATORS"
@@ -614,19 +614,15 @@ msgstr ""
 "<para>מקור היישומון הוא „%1” (מתארח אצל <link>%2</link>). תוכנות נוספות "
 "שבמאגר הזה תהיינה זמינות גם כן ב־Discover עם התקנת היישום.</para>"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:470
-#, kde-format
-msgid "Retrieving size information"
-msgstr "המידע על הגודל מתקבל"
-
 #: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:472
+#: libdiscover/backends/RpmOstreeBackend/RpmOstreeResource.cpp:419
 #, kde-format
 msgctxt "@label app size"
 msgid "Unknown"
 msgstr "לא ידוע"
 
 #: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:528
-#: libdiscover/backends/PackageKitBackend/PackageKitResource.cpp:495
+#: libdiscover/backends/PackageKitBackend/PackageKitResource.cpp:467
 #: libdiscover/backends/PackageKitBackend/PackageKitSourcesBackend.cpp:70
 #, kde-format
 msgid "Failed to start '%1': %2"
@@ -1404,7 +1400,7 @@ msgstr "הנעת ההעברה נכשלה"
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:69
 #, kde-format
 msgid "Config parsing failed"
-msgstr "פענוח ההגדרות נכשל"
+msgstr "פיענוח ההגדרות נכשל"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:71
 #, kde-format
@@ -2162,15 +2158,6 @@ msgstr "הפעלה מחדש:"
 msgid "Vendor:"
 msgstr "יצרן:"
 
-#: libdiscover/backends/PackageKitBackend/PackageKitResource.cpp:448
-#, kde-format
-msgid "%2 (plus %1 dependency)"
-msgid_plural "%2 (plus %1 dependencies)"
-msgstr[0] "%2 (ועוד תלות)"
-msgstr[1] "%2 (ועוד שתי תלויות)"
-msgstr[2] "%2 (ועוד %1 תלויות)"
-msgstr[3] "%2 (ועוד %1 תלויות)"
-
 #: libdiscover/backends/PackageKitBackend/PackageKitSourcesBackend.cpp:105
 #, kde-format
 msgid "Repository URL:"
@@ -2435,6 +2422,21 @@ msgstr "חבילות שהוחלפו:"
 msgid "Removed packages:"
 msgstr "חבילות שהוסרו:"
 
+#: libdiscover/backends/RpmOstreeBackend/RpmOstreeResource.cpp:346
+#, kde-format
+msgctxt "@label OS updater message"
+msgid ""
+"<br/>This version is pinned and won't be automatically removed on updates."
+msgstr "<br/>הגרסה הזאת נעוצה ולא תוסר אוטומטית עם עדכונים"
+
+#: libdiscover/backends/RpmOstreeBackend/RpmOstreeResource.cpp:360
+#: libdiscover/backends/RpmOstreeBackend/RpmOstreeResource.cpp:373
+#: libdiscover/backends/RpmOstreeBackend/RpmOstreeResource.cpp:391
+#, kde-format
+msgctxt "@label OS vendor"
+msgid "Fedora Project"
+msgstr "מיזם פדורה"
+
 #: libdiscover/backends/RpmOstreeBackend/RpmOstreeResource.cpp:400
 #, kde-format
 msgid "Currently booted version (pinned)"
@@ -2591,9 +2593,9 @@ msgstr "מפיץ מוביל ב־snapcraft.io"
 #, kde-format
 msgid ""
 "This Snap application is not compatible with security sandboxing and will "
-"have full access to this computer. Install it anyway?"
+"have full access to this system. Install it anyway?"
 msgstr ""
-"יישום Snap זה לא תואם לדגם בידוד האבטחה ותהיה לו גישה מלאה למחשב. להתקין "
+"יישום Snap זה לא תואם לדגם בידוד האבטחה ותהיה לו גישה מלאה למערכת. להתקין "
 "אותו בכל זאת?"
 
 #: libdiscover/backends/SystemdSysupdateBackend/SystemdSysupdateBackend.cpp:149
@@ -2620,7 +2622,7 @@ msgstr "משיכת העדכונים מ־<a href='%1'>%1</a> נכשלה.<nl/><nl/
 #, kde-kuit-format
 msgctxt "@info:status"
 msgid "Failed to parse update metadata.<nl/><nl/>Error message: %1"
-msgstr "פענוח נתוני־על של עדכון נכשל.<nl/><nl/>הודעת שגיאה: %1"
+msgstr "פיענוח נתוני־על של עדכון נכשל.<nl/><nl/>הודעת שגיאה: %1"
 
 #: libdiscover/backends/SystemdSysupdateBackend/SystemdSysupdateBackend.cpp:187
 #, kde-format
@@ -2777,6 +2779,16 @@ msgstr "תוכנת מערכת"
 msgctxt "@item:inlistbox"
 msgid "Addons"
 msgstr "תוספים"
+
+#~ msgid "Retrieving size information"
+#~ msgstr "המידע על הגודל מתקבל"
+
+#~ msgid "%2 (plus %1 dependency)"
+#~ msgid_plural "%2 (plus %1 dependencies)"
+#~ msgstr[0] "%2 (ועוד תלות)"
+#~ msgstr[1] "%2 (ועוד שתי תלויות)"
+#~ msgstr[2] "%2 (ועוד %1 תלויות)"
+#~ msgstr[3] "%2 (ועוד %1 תלויות)"
 
 #~ msgid "ostree remotes"
 #~ msgstr "מקורות מרוחקים של ostree"

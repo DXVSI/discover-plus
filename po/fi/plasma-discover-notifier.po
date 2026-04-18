@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-17 11:53+0000\n"
+"POT-Creation-Date: 2026-04-02 00:45+0000\n"
 "PO-Revision-Date: 2025-05-25 08:31+0300\n"
 "Last-Translator: Tommi Nieminen <translator@legisign.org>\n"
 "Language-Team: Finnish <kde-i18n-doc@kde.org>\n"
@@ -42,9 +42,10 @@ msgid "System up to date"
 msgstr "Järjestelmä on ajan tasalla"
 
 #: notifier/DiscoverNotifier.cpp:371
-#, kde-format
-msgid "Computer needs to restart"
-msgstr "Tietokone on käynnistettävä uudelleen"
+#, fuzzy, kde-format
+#| msgid "Install Updates and Restart…"
+msgid "System will install updates when restarted"
+msgstr "Asenna päivitykset ja käynnistä uudelleen…"
 
 #: notifier/DiscoverNotifier.cpp:373
 #, kde-format
@@ -175,9 +176,13 @@ msgid "Restart to apply installed updates"
 msgstr "Käynnistä tietokone ja asennetut päivitykset otetaan käyttöön"
 
 #: notifier/NotifierItem.cpp:65
-#, kde-format
-msgid "Click to restart the device"
+#, fuzzy, kde-format
+#| msgid "Click to restart the device"
+msgid "Click to restart the system"
 msgstr "Käynnistä laite uudelleen napsauttamalla"
+
+#~ msgid "Computer needs to restart"
+#~ msgstr "Tietokone on käynnistettävä uudelleen"
 
 #~ msgid "See Updates…"
 #~ msgstr "Näytä päivitykset…"

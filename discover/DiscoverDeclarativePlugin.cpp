@@ -120,3 +120,5 @@ void DiscoverDeclarativePlugin::registerTypes(const char * /*uri*/)
 }
 
 #include "DiscoverDeclarativePlugin.moc"
+
+#include "moc_DiscoverDeclarativePlugin.cpp"

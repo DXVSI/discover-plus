@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: discover\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-17 11:53+0000\n"
+"POT-Creation-Date: 2026-04-02 00:45+0000\n"
 "PO-Revision-Date: 2025-09-26 01:05+0330\n"
 "Last-Translator: Sohrab Behdani <behdanisohrab@proton.me>\n"
 "Language-Team: fa\n"
@@ -38,9 +38,10 @@ msgid "System up to date"
 msgstr "سامانه به‌روز است"
 
 #: notifier/DiscoverNotifier.cpp:371
-#, kde-format
-msgid "Computer needs to restart"
-msgstr "رایانه نیاز به راه‌اندازی مجدد دارد"
+#, fuzzy, kde-format
+#| msgid "Install Updates and Restart…"
+msgid "System will install updates when restarted"
+msgstr "نصب به‌روزرسانی‌ها و راه‌اندازی مجدد..."
 
 #: notifier/DiscoverNotifier.cpp:373
 #, kde-format
@@ -171,6 +172,10 @@ msgid "Restart to apply installed updates"
 msgstr "راه‌اندازی مجدد برای اعمال به‌روزرسانی‌های نصب شده"
 
 #: notifier/NotifierItem.cpp:65
-#, kde-format
-msgid "Click to restart the device"
+#, fuzzy, kde-format
+#| msgid "Click to restart the device"
+msgid "Click to restart the system"
 msgstr "برای راه‌اندازی مجدد دستگاه کلیک کنید"
+
+#~ msgid "Computer needs to restart"
+#~ msgstr "رایانه نیاز به راه‌اندازی مجدد دارد"

@@ -58,6 +58,8 @@ public:
 
     QString mainTransactionText() const;
 
+    int visibleTransactionCount() const;
+
 private:
     QVector<Transaction *> m_transactions;
 

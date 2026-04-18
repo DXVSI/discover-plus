@@ -221,4 +221,13 @@ QString TransactionModel::mainTransactionText() const
     return m_transactions.isEmpty() ? QString() : m_transactions.constFirst()->name();
 }
 
+int TransactionModel::visibleTransactionCount() const
+{
+    const auto iterator = std::count_if(m_transactions.constBegin(), m_transactions.constEnd(), [](const Transaction *transaction) {
+        return transaction->isVisible();
+    });
+
+    return iterator;
+}
+
 #include "moc_TransactionModel.cpp"

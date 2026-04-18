@@ -1,14 +1,14 @@
 # Copyright (C) YEAR This_file_is_part_of_KDE
 # This file is distributed under the same license as the PACKAGE package.
 # Safa Alfulaij <safa1996alfulaij@gmail.com>, 2015, 2017, 2018.
-# SPDX-FileCopyrightText: 2021, 2022, 2024, 2025 Zayed Al-Saidi <zayed.alsaidi@gmail.com>
+# SPDX-FileCopyrightText: 2021, 2022, 2024, 2025, 2026 Zayed Al-Saidi <zayed.alsaidi@gmail.com>
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-17 11:53+0000\n"
-"PO-Revision-Date: 2025-06-28 17:09+0400\n"
+"POT-Creation-Date: 2026-04-02 00:45+0000\n"
+"PO-Revision-Date: 2026-04-09 10:08+0400\n"
 "Last-Translator: Zayed Al-Saidi <zayed.alsaidi@gmail.com>\n"
 "Language-Team: ar\n"
 "Language: ar\n"
@@ -41,8 +41,8 @@ msgstr "النّظام محدّث"
 
 #: notifier/DiscoverNotifier.cpp:371
 #, kde-format
-msgid "Computer needs to restart"
-msgstr "الحاسوب بحاجة لإعادة تشغيل"
+msgid "System will install updates when restarted"
+msgstr "سيُثبت النظام التحديثات عند إعادة تشغيله"
 
 #: notifier/DiscoverNotifier.cpp:373
 #, kde-format
@@ -174,8 +174,11 @@ msgstr "أعد التشغيل لتطبق التحديثات المثبتة"
 
 #: notifier/NotifierItem.cpp:65
 #, kde-format
-msgid "Click to restart the device"
-msgstr "انقر لتعيد تشغيل الجهاز"
+msgid "Click to restart the system"
+msgstr "انقر لتعيد تشغيل النظام"
+
+#~ msgid "Computer needs to restart"
+#~ msgstr "الحاسوب بحاجة لإعادة تشغيل"
 
 #~ msgid "See Updates…"
 #~ msgstr "اعرض التحديثات..."

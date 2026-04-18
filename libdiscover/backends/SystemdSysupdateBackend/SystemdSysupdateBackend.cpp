@@ -243,3 +243,5 @@ QDBusConnection SystemdSysupdateBackend::OUR_BUS()
 }
 
 #include "SystemdSysupdateBackend.moc"
+
+#include "moc_SystemdSysupdateBackend.cpp"

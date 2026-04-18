@@ -288,7 +288,7 @@ void OdrsReviewsBackend::parseRatings()
 
             const auto rating = Rating(packageName, ratingCount, ratingMap);
             const auto finder = [&rating](const Rating &review) {
-                return review.ratingPoints() < rating.ratingPoints();
+                return review.ratingCount() < rating.ratingCount();
             };
             const auto topIt = std::find_if(state.top.begin(), state.top.end(), finder);
             if (topIt == state.top.end()) {
@@ -304,6 +304,24 @@ void OdrsReviewsBackend::parseRatings()
 
             state.ratings.insert(packageName, rating);
         }
+
+        // Filter out non-apps, to match behavior of lists backed by ResourcesProxyModel
+        AppStream::Pool appstreamData;
+        appstreamData.load();
+
+        QMutableListIterator<Rating> iterator(state.top);
+        while (iterator.hasNext()) {
+            const auto components = appstreamData.componentsById(iterator.next().packageName());
+
+            for (const auto &component : components) {
+                const bool isDesktopApp = component.kind() == AppStream::Component::KindDesktopApp;
+                const bool isLaunchable = component.launchable(AppStream::Launchable::KindDesktopId).entries().count() > 0;
+                if (!isDesktopApp || !isLaunchable) {
+                    iterator.remove();
+                }
+            }
+        }
+
         return state;
     }));
 }

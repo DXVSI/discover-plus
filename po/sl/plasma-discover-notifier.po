@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-17 11:53+0000\n"
-"PO-Revision-Date: 2025-04-07 07:10+0200\n"
+"POT-Creation-Date: 2026-04-02 00:45+0000\n"
+"PO-Revision-Date: 2026-04-02 06:25+0200\n"
 "Last-Translator: Matjaž Jeran <matjaz.jeran@amis.net>\n"
 "Language-Team: Slovenian <lugos-slo@lugos.si>\n"
 "Language: sl\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || n"
 "%100==4 ? 3 : 0);\n"
 "Translator: Andrej Mernik <andrejm@ubuntu.si>\n"
-"X-Generator: Poedit 3.5\n"
+"X-Generator: Poedit 3.9\n"
 
 #: notifier/DiscoverNotifier.cpp:218
 #, kde-format
@@ -42,8 +42,8 @@ msgstr "Sistem je posodobljen"
 
 #: notifier/DiscoverNotifier.cpp:371
 #, kde-format
-msgid "Computer needs to restart"
-msgstr "Računalnik je potrebno ponovno zagnati"
+msgid "System will install updates when restarted"
+msgstr "Sistem bo namestil posodobitve ob ponovnem zagonu"
 
 #: notifier/DiscoverNotifier.cpp:373
 #, kde-format
@@ -175,8 +175,11 @@ msgstr "Ponovni zagon za uveljavitev nameščenih posodobitev"
 
 #: notifier/NotifierItem.cpp:65
 #, kde-format
-msgid "Click to restart the device"
-msgstr "Kliknite za ponovni zagon računalnika"
+msgid "Click to restart the system"
+msgstr "Kliknite za ponovni zagon sistema"
+
+#~ msgid "Computer needs to restart"
+#~ msgstr "Računalnik je potrebno ponovno zagnati"
 
 #~ msgid "See Updates…"
 #~ msgstr "Poglej posodobitve…"

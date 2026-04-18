@@ -31,7 +31,7 @@ JOB_INTERFACE = "org.freedesktop.sysupdate1.Job"
 FAILURE_WRONGURL = False
 
 class MockJob(dbus.service.Object):
-    def __init__(self, bus, path, job_id, manager, job_type="update", offline=False):
+    def __init__(self, bus, path, job_id, manager, job_type, offline=False):
         super().__init__(bus, path)
         self._id = job_id
         self._type = job_type
@@ -186,12 +186,22 @@ class MockTarget(dbus.service.Object):
         return ""
 
     @dbus.service.method(TARGET_INTERFACE, in_signature='st', out_signature='sto')
-    def Update(self, new_version, flags):
+    def Acquire(self, new_version, flags):
         job_id = int(time.time() * 1000)
         job_path = f"/org/freedesktop/sysupdate1/job/{job_id}"
 
         if self._manager:
-            job = MockJob(self._bus, job_path, job_id, self._manager, "update", bool(flags & 1))
+            job = MockJob(self._bus, job_path, job_id, self._manager, "acquire", bool(flags & 1))
+            self._manager._jobs[job_id] = (job, job_path)
+        return (new_version, dbus.UInt64(job_id), dbus.ObjectPath(job_path))
+
+    @dbus.service.method(TARGET_INTERFACE, in_signature='st', out_signature='sto')
+    def Install(self, new_version, flags):
+        job_id = int(time.time() * 1000)
+        job_path = f"/org/freedesktop/sysupdate1/job/{job_id}"
+
+        if self._manager:
+            job = MockJob(self._bus, job_path, job_id, self._manager, "install", bool(flags & 1))
             self._manager._jobs[job_id] = (job, job_path)
         return (new_version, dbus.UInt64(job_id), dbus.ObjectPath(job_path))
 

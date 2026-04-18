@@ -203,3 +203,5 @@ void Atomupd1Adaptor::SwitchToVariant(const QString &variant)
     // handle method call com.steampowered.Atomupd1.SwitchToVariant
     QMetaObject::invokeMethod(parent(), "SwitchToVariant", Q_ARG(QString, variant));
 }
+
+#include "moc_atomupd1_adaptor.cpp"

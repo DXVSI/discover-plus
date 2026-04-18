@@ -64,3 +64,5 @@ bool LimitedRowCountProxyModel::filterAcceptsRow(int source_row, [[maybe_unused]
 {
     return source_row >= 0 && source_row < m_pageSize;
 }
+
+#include "moc_LimitedRowCountProxyModel.cpp"

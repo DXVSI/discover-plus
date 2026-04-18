@@ -55,3 +55,5 @@ void LazyIconResolver::customEvent(QEvent *event)
     }
     QObject::customEvent(event);
 }
+
+#include "moc_LazyIconResolver.cpp"

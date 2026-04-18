@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libmuon\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-02-28 00:45+0000\n"
-"PO-Revision-Date: 2026-01-24 22:45+0200\n"
+"POT-Creation-Date: 2026-04-18 00:46+0000\n"
+"PO-Revision-Date: 2026-04-11 00:45+0300\n"
 "Last-Translator: Moo\n"
 "Language-Team: Lithuanian <kde-i18n-lt@kde.org>\n"
 "Language: lt\n"
@@ -617,19 +617,15 @@ msgstr ""
 "programą, kita programinė įranga iš šios saugyklos irgi taps prieinama "
 "Discover.</para>"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:470
-#, kde-format
-msgid "Retrieving size information"
-msgstr "Gaunama dydžio informacija"
-
 #: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:472
+#: libdiscover/backends/RpmOstreeBackend/RpmOstreeResource.cpp:419
 #, kde-format
 msgctxt "@label app size"
 msgid "Unknown"
 msgstr "Nežinomas"
 
 #: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:528
-#: libdiscover/backends/PackageKitBackend/PackageKitResource.cpp:495
+#: libdiscover/backends/PackageKitBackend/PackageKitResource.cpp:467
 #: libdiscover/backends/PackageKitBackend/PackageKitSourcesBackend.cpp:70
 #, kde-format
 msgid "Failed to start '%1': %2"
@@ -2199,15 +2195,6 @@ msgstr "Paleidimas iš naujo:"
 msgid "Vendor:"
 msgstr "Tiekėjas:"
 
-#: libdiscover/backends/PackageKitBackend/PackageKitResource.cpp:448
-#, kde-format
-msgid "%2 (plus %1 dependency)"
-msgid_plural "%2 (plus %1 dependencies)"
-msgstr[0] "%2 (ir dar %1 priklausomybė)"
-msgstr[1] "%2 (ir dar %1 priklausomybės)"
-msgstr[2] "%2 (ir dar %1 priklausomybių)"
-msgstr[3] "%2 (ir dar %1 priklausomybė)"
-
 #: libdiscover/backends/PackageKitBackend/PackageKitSourcesBackend.cpp:105
 #, kde-format
 msgid "Repository URL:"
@@ -2485,6 +2472,23 @@ msgstr "Pakeisti paketai:"
 msgid "Removed packages:"
 msgstr "Pašalinti paketai:"
 
+#: libdiscover/backends/RpmOstreeBackend/RpmOstreeResource.cpp:346
+#, kde-format
+msgctxt "@label OS updater message"
+msgid ""
+"<br/>This version is pinned and won't be automatically removed on updates."
+msgstr ""
+"<br/>Ši versija yra prisegta ir atnaujinimų metu nebus automatiškai "
+"pašalinta."
+
+#: libdiscover/backends/RpmOstreeBackend/RpmOstreeResource.cpp:360
+#: libdiscover/backends/RpmOstreeBackend/RpmOstreeResource.cpp:373
+#: libdiscover/backends/RpmOstreeBackend/RpmOstreeResource.cpp:391
+#, kde-format
+msgctxt "@label OS vendor"
+msgid "Fedora Project"
+msgstr "„Fedora Project“"
+
 #: libdiscover/backends/RpmOstreeBackend/RpmOstreeResource.cpp:400
 #, kde-format
 msgid "Currently booted version (pinned)"
@@ -2649,10 +2653,10 @@ msgstr "Žvaigždute pažymėtas leidėjas snapcraft.io svetainėje"
 #, kde-format
 msgid ""
 "This Snap application is not compatible with security sandboxing and will "
-"have full access to this computer. Install it anyway?"
+"have full access to this system. Install it anyway?"
 msgstr ""
-"Ši Snap programa yra nesuderinama su saugumo smėliadėže ir turės pilną "
-"prieigą prie šio kompiuterio. Ar vis tiek ją įdiegti?"
+"Ši Snap programa yra nesuderinama su saugumo smėliadėže ir turės visą "
+"prieigą prie šios sistemos. Ar vis tiek ją įdiegti?"
 
 #: libdiscover/backends/SystemdSysupdateBackend/SystemdSysupdateBackend.cpp:149
 #, kde-kuit-format
@@ -2844,6 +2848,16 @@ msgstr "Sistemos programinė įranga"
 msgctxt "@item:inlistbox"
 msgid "Addons"
 msgstr "Papildiniai"
+
+#~ msgid "Retrieving size information"
+#~ msgstr "Gaunama dydžio informacija"
+
+#~ msgid "%2 (plus %1 dependency)"
+#~ msgid_plural "%2 (plus %1 dependencies)"
+#~ msgstr[0] "%2 (ir dar %1 priklausomybė)"
+#~ msgstr[1] "%2 (ir dar %1 priklausomybės)"
+#~ msgstr[2] "%2 (ir dar %1 priklausomybių)"
+#~ msgstr[3] "%2 (ir dar %1 priklausomybė)"
 
 #~ msgid "ostree remotes"
 #~ msgstr "ostree nuotolinės saugyklos"

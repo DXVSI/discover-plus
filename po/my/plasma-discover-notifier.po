@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: discover\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-17 11:53+0000\n"
+"POT-Creation-Date: 2026-04-02 00:45+0000\n"
 "PO-Revision-Date: 2021-09-19 20:01+0630\n"
 "Last-Translator: ဇေယျာလွင် <lw1nzayar@yandex.com>\n"
 "Language-Team: Burmese <kde-i18n-doc@kde.org>\n"
@@ -40,8 +40,8 @@ msgstr "နောက်ဆုံးပေါ် စစ်စတမ်"
 
 #: notifier/DiscoverNotifier.cpp:371
 #, kde-format
-msgid "Computer needs to restart"
-msgstr "စစ်စတမ်ပြန်စတင်ရန်လိုအပ်သည်"
+msgid "System will install updates when restarted"
+msgstr ""
 
 #: notifier/DiscoverNotifier.cpp:373
 #, kde-format
@@ -176,9 +176,13 @@ msgid "Restart to apply installed updates"
 msgstr "စစ်စတမ်ပြန်လည်စတင်ပါ"
 
 #: notifier/NotifierItem.cpp:65
-#, kde-format
-msgid "Click to restart the device"
+#, fuzzy, kde-format
+#| msgid "Click to restart the device"
+msgid "Click to restart the system"
 msgstr "စစ်စတမ်ပြန်စတင်ရန် နှိပ်ပါ"
+
+#~ msgid "Computer needs to restart"
+#~ msgstr "စစ်စတမ်ပြန်စတင်ရန်လိုအပ်သည်"
 
 #~ msgid "See Updates…"
 #~ msgstr "အပ်ဒိတ်များ ကြည့်မည်..."

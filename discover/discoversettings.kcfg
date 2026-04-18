@@ -2,7 +2,7 @@
 <kcfg xmlns="http://www.kde.org/standards/kcfg/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.kde.org/standards/kcfg/1.0 http://www.kde.org/standards/kcfg/1.0/kcfg.xsd">
   <kcfgfile arg="true"/>
   <group name="DiscoverUI">
-    <entry name="appsListPageSorting" type="Int"><default>ResourcesProxyModel::SortableRatingRole</default></entry>
+    <entry name="appsListPageSorting" type="Int"><default>ResourcesProxyModel::RatingCountRole</default></entry>
     <entry name="installedPageSorting" type="Int"><default>ResourcesProxyModel::NameRole</default></entry>
   </group>
 </kcfg>

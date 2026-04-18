@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: discover\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-02-28 00:45+0000\n"
-"PO-Revision-Date: 2026-02-02 13:23+0000\n"
+"POT-Creation-Date: 2026-04-18 00:46+0000\n"
+"PO-Revision-Date: 2026-04-15 10:06+0000\n"
 "Last-Translator: Sveinn í Felli <sv1@fellsnet.is>\n"
 "Language-Team: Icelandic\n"
 "Language: is\n"
@@ -612,19 +612,15 @@ msgstr ""
 "þessu safni verða einnig gerð tiltæk í Discover þegar forritið er sett upp.</"
 "para>"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:470
-#, kde-format
-msgid "Retrieving size information"
-msgstr "Sæki upplýsingar um stærð"
-
 #: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:472
+#: libdiscover/backends/RpmOstreeBackend/RpmOstreeResource.cpp:419
 #, kde-format
 msgctxt "@label app size"
 msgid "Unknown"
 msgstr "Óþekkt"
 
 #: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:528
-#: libdiscover/backends/PackageKitBackend/PackageKitResource.cpp:495
+#: libdiscover/backends/PackageKitBackend/PackageKitResource.cpp:467
 #: libdiscover/backends/PackageKitBackend/PackageKitSourcesBackend.cpp:70
 #, kde-format
 msgid "Failed to start '%1': %2"
@@ -2177,13 +2173,6 @@ msgstr "Endurræsa:"
 msgid "Vendor:"
 msgstr "Framleiðandi:"
 
-#: libdiscover/backends/PackageKitBackend/PackageKitResource.cpp:448
-#, kde-format
-msgid "%2 (plus %1 dependency)"
-msgid_plural "%2 (plus %1 dependencies)"
-msgstr[0] "%2 (auk %1 kerfisákvæðis)"
-msgstr[1] "%2 (auk %1 kerfisákvæða)"
-
 #: libdiscover/backends/PackageKitBackend/PackageKitSourcesBackend.cpp:105
 #, kde-format
 msgid "Repository URL:"
@@ -2452,6 +2441,22 @@ msgstr "Pakkar sem er skipt út: "
 msgid "Removed packages:"
 msgstr "Fjarlægðir pakkar:"
 
+#: libdiscover/backends/RpmOstreeBackend/RpmOstreeResource.cpp:346
+#, kde-format
+msgctxt "@label OS updater message"
+msgid ""
+"<br/>This version is pinned and won't be automatically removed on updates."
+msgstr ""
+"<br/>Þessi útgáfa er fest og verður ekki fjarlægð sjálfkrafa við uppfærslur."
+
+#: libdiscover/backends/RpmOstreeBackend/RpmOstreeResource.cpp:360
+#: libdiscover/backends/RpmOstreeBackend/RpmOstreeResource.cpp:373
+#: libdiscover/backends/RpmOstreeBackend/RpmOstreeResource.cpp:391
+#, kde-format
+msgctxt "@label OS vendor"
+msgid "Fedora Project"
+msgstr "Fedora-verkefnið"
+
 #: libdiscover/backends/RpmOstreeBackend/RpmOstreeResource.cpp:400
 #, kde-format
 msgid "Currently booted version (pinned)"
@@ -2608,10 +2613,10 @@ msgstr "Stjörnumerktur útgefandi á snapcraft.io"
 #, kde-format
 msgid ""
 "This Snap application is not compatible with security sandboxing and will "
-"have full access to this computer. Install it anyway?"
+"have full access to this system. Install it anyway?"
 msgstr ""
 "Þetta Snap-forrit er ekki samhæft við öryggissandkassa og mun hafa fullan "
-"aðgang að tölvunni. Viltu samt setja það upp?"
+"aðgang að kerfinu. Viltu samt setja það upp?"
 
 #: libdiscover/backends/SystemdSysupdateBackend/SystemdSysupdateBackend.cpp:149
 #, kde-kuit-format
@@ -2798,6 +2803,14 @@ msgstr "Kerfishugbúnaður"
 msgctxt "@item:inlistbox"
 msgid "Addons"
 msgstr "Viðbætur"
+
+#~ msgid "Retrieving size information"
+#~ msgstr "Sæki upplýsingar um stærð"
+
+#~ msgid "%2 (plus %1 dependency)"
+#~ msgid_plural "%2 (plus %1 dependencies)"
+#~ msgstr[0] "%2 (auk %1 kerfisákvæðis)"
+#~ msgstr[1] "%2 (auk %1 kerfisákvæða)"
 
 #~ msgid "ostree remotes"
 #~ msgstr "ostree fjartengingar (remotes)"

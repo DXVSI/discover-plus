@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: discover\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-17 11:53+0000\n"
+"POT-Creation-Date: 2026-04-02 00:45+0000\n"
 "PO-Revision-Date: 2020-08-24 22:54+0500\n"
 "Last-Translator: Victor Ibragimov <victor.ibragimov@gmail.com>\n"
 "Language-Team: English <kde-i18n-doc@kde.org>\n"
@@ -39,8 +39,8 @@ msgstr "Низом нав аст"
 
 #: notifier/DiscoverNotifier.cpp:371
 #, kde-format
-msgid "Computer needs to restart"
-msgstr "Компютер бояд аз нав оғоз карда шавад"
+msgid "System will install updates when restarted"
+msgstr ""
 
 #: notifier/DiscoverNotifier.cpp:373
 #, kde-format
@@ -178,8 +178,11 @@ msgstr "Барои татбиқ кардани навсозиҳо низомро
 #: notifier/NotifierItem.cpp:65
 #, fuzzy, kde-format
 #| msgid "Click to restart the computer"
-msgid "Click to restart the device"
+msgid "Click to restart the system"
 msgstr "Зер кунед, то ки компютер аз нав оғоз карда шавад"
+
+#~ msgid "Computer needs to restart"
+#~ msgstr "Компютер бояд аз нав оғоз карда шавад"
 
 #, fuzzy
 #~| msgid "See Updates..."

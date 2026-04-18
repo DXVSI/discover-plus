@@ -4,13 +4,13 @@
 # Elkana Bardugo <ttv200@gmail.com>, 2016.
 # Elkana Bardugo <ttv200@gmail.com>, 2017. #zanata.
 # Omer I.S. <omeritzicschwartz@gmail.com>, 2020.
-# SPDX-FileCopyrightText: 2023, 2024, 2025 Yaron Shahrabani <sh.yaron@gmail.com>
+# SPDX-FileCopyrightText: 2023, 2024, 2025, 2026 Yaron Shahrabani <sh.yaron@gmail.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: plasma-discover-notifier\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-17 11:53+0000\n"
-"PO-Revision-Date: 2025-04-07 08:15+0300\n"
+"POT-Creation-Date: 2026-04-02 00:45+0000\n"
+"PO-Revision-Date: 2026-04-02 08:47+0300\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: צוות התרגום של KDE ישראל\n"
 "Language: he\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=(n == 1) ? 0 : ((n == 2) ? 1 : ((n > 10 && "
 "n % 10 == 0) ? 2 : 3));\n"
-"X-Generator: Lokalize 24.12.2\n"
+"X-Generator: Lokalize 25.12.3\n"
 
 #: notifier/DiscoverNotifier.cpp:218
 #, kde-format
@@ -43,8 +43,8 @@ msgstr "המערכת מעודכנת"
 
 #: notifier/DiscoverNotifier.cpp:371
 #, kde-format
-msgid "Computer needs to restart"
-msgstr "צריך להפעיל את המחשב מחדש"
+msgid "System will install updates when restarted"
+msgstr "המערכת תתקין עדכונים עם הפעלתה מחדש"
 
 #: notifier/DiscoverNotifier.cpp:373
 #, kde-format
@@ -176,8 +176,11 @@ msgstr "יש להפעיל מחדש כדי להחיל את העדכונים הנ�
 
 #: notifier/NotifierItem.cpp:65
 #, kde-format
-msgid "Click to restart the device"
-msgstr "לחיצה כאן תפעיל את המכשיר מחדש"
+msgid "Click to restart the system"
+msgstr "לחיצה תפעיל את המערכת מחדש"
+
+#~ msgid "Computer needs to restart"
+#~ msgstr "צריך להפעיל את המחשב מחדש"
 
 #~ msgid "See Updates…"
 #~ msgstr "הצגת העדכונים…"

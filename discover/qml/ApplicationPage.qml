@@ -409,7 +409,16 @@ DiscoverPage {
                         text: i18n("Size:")
                         Layout.alignment: Qt.AlignRight
                     }
+                    QQC2.BusyIndicator {
+                        readonly property int size: Kirigami.Units.iconSizes.sizeForLabels
+                        Layout.preferredWidth: size
+                        Layout.preferredHeight: size
+                        visible: !appSizeDescription.visible
+                        running: visible
+                    }
                     QQC2.Label {
+                        id: appSizeDescription
+                        visible: appInfo.application.size != 0
                         text: appInfo.application.sizeDescription
                         wrapMode: Text.Wrap
                         maximumLineCount: 3
