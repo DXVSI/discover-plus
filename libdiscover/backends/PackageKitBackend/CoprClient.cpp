@@ -126,6 +126,14 @@ void CoprClient::searchPackages(const QString &query, int limit)
 
 void CoprClient::cancelAllRequests()
 {
+    for (auto &proc : std::as_const(m_activeProcesses)) {
+        if (proc) {
+            proc->disconnect();
+            proc->kill();
+            proc->deleteLater();
+        }
+    }
+    m_activeProcesses.clear();
     m_requestQueue.clear();
     m_activeRequests = 0;
 
@@ -204,11 +212,14 @@ void CoprClient::processNextRequest()
 
     QProcess *curlProcess = new QProcess(this);
     curlProcess->setProperty("requestType", requestType);
+    m_activeProcesses.append(curlProcess);
 
     connect(curlProcess,
             QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished),
             this,
             [this, curlProcess, urlString](int exitCode, QProcess::ExitStatus) {
+                m_activeProcesses.removeAll(curlProcess);
+
                 QString requestType = curlProcess->property("requestType").toString();
                 QByteArray data = curlProcess->readAllStandardOutput();
 

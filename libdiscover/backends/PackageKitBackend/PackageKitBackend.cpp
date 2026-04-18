@@ -813,10 +813,11 @@ ResultsStream *PackageKitBackend::search(const AbstractResourcesBackend::Filters
             m_coprOffset = 0;
             m_coprBatchPending = 0;
             m_coprBatchBuffer.clear();
-
-            // Clean up old COPR resources to prevent memory accumulation
-            qDeleteAll(m_coprResources);
-            m_coprResources.clear();
+            // Note: m_coprResources intentionally NOT cleared here.
+            // This branch fires when Discover calls search("","",nullptr) internally
+            // (e.g. on detail-page open). Emitting resourceRemoved here would drop all
+            // COPR entries from the ProxyModel while the user is just viewing details,
+            // causing null-delegate TypeErrors and an empty list on back-navigation.
         }
     }
 
@@ -847,7 +848,11 @@ ResultsStream *PackageKitBackend::search(const AbstractResourcesBackend::Filters
         m_coprBatchBuffer.clear();
 
         // Clean up old COPR resources to prevent memory accumulation
-        qDeleteAll(m_coprResources);
+        for (auto it = m_coprResources.cbegin(); it != m_coprResources.cend(); ++it) {
+            m_packages.packages.remove(makeAppId(it.key()));
+            Q_EMIT resourceRemoved(it.value());
+            it.value()->deleteLater();
+        }
         m_coprResources.clear();
 
         // Load popular projects asynchronously
@@ -877,7 +882,11 @@ ResultsStream *PackageKitBackend::search(const AbstractResourcesBackend::Filters
         m_coprBatchBuffer.clear();
 
         // Clean up old COPR resources to prevent memory accumulation
-        qDeleteAll(m_coprResources);
+        for (auto it = m_coprResources.cbegin(); it != m_coprResources.cend(); ++it) {
+            m_packages.packages.remove(makeAppId(it.key()));
+            Q_EMIT resourceRemoved(it.value());
+            it.value()->deleteLater();
+        }
         m_coprResources.clear();
 
         // Create and return a stream for COPR search results

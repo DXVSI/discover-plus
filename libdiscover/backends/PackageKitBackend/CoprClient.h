@@ -5,8 +5,10 @@
 #include <QHash>
 #include <QJsonArray>
 #include <QJsonObject>
+#include <QList>
 #include <QObject>
 #include <QPair>
+#include <QPointer>
 #include <QProcess>
 #include <QQueue>
 #include <QString>
@@ -78,6 +80,9 @@ private:
     QQueue<QPair<QUrl, QString>> m_requestQueue;
     int m_activeRequests = 0;
     static constexpr int MaxConcurrentRequests = 3;
+
+    // Active curl processes (for cancellation)
+    QList<QPointer<QProcess>> m_activeProcesses;
 
     // Response cache with TTL
     struct CacheEntry {

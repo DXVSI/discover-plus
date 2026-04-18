@@ -19,8 +19,8 @@ CoprResource::CoprResource(const CoprPackageInfo &packageInfo, AbstractResources
     , m_isAvailableForCurrentFedora(packageInfo.isAvailableForCurrentFedora)
     , m_homepage(packageInfo.homepage)
 {
-    // Check if the package is already installed
-    checkInstalledState();
+    // Check if the package is already installed (deferred to avoid blocking the UI during batch creation)
+    QMetaObject::invokeMethod(this, &CoprResource::checkInstalledState, Qt::QueuedConnection);
 }
 
 CoprResource::~CoprResource()
