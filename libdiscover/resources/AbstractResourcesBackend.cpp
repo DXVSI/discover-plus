@@ -100,35 +100,36 @@ void AbstractResourcesBackend::emitRatingsReady()
     Q_EMIT allDataChanged({"rating", "ratingPoints", "ratingCount", "sortableRating"});
 }
 
-bool AbstractResourcesBackend::Filters::shouldFilter(AbstractResource *resourse) const
+bool AbstractResourcesBackend::Filters::shouldFilter(AbstractResource *resource) const
 {
-    Q_ASSERT(resourse);
+    Q_ASSERT(resource);
 
-    if (!extends.isEmpty() && !resourse->extends().contains(extends)) {
+    if (!extends.isEmpty() && !resource->extends().contains(extends)) {
         return false;
     }
 
     if (!origin.isEmpty()) {
-        const QString resourceOrigin = resourse->origin();
+        const QString resourceOrigin = resource->origin();
+        const QString resourceDisambiguatedOrigin = resource->disambiguatedOrigin();
         // Use contains for partial matching (e.g., "rpmfusion" matches "rpmfusion-free-updates")
         // But exact match for special cases like "COPR"
         if (origin == QStringLiteral("COPR")) {
-            if (resourceOrigin != origin) {
+            if (resourceOrigin != origin && resourceDisambiguatedOrigin != origin) {
                 return false;
             }
         } else {
-            if (!resourceOrigin.contains(origin, Qt::CaseInsensitive)) {
+            if (resourceDisambiguatedOrigin != origin && !resourceOrigin.contains(origin, Qt::CaseInsensitive)) {
                 return false;
             }
         }
     }
 
-    bool stateCheck = filterMinimumState ? (resourse->state() < state) : (resourse->state() != state);
+    const bool stateCheck = filterMinimumState ? (resource->state() < state) : (resource->state() != state);
     if (stateCheck) {
         return false;
     }
 
-    if (!mimetype.isEmpty() && !resourse->mimetypes().contains(mimetype)) {
+    if (!mimetype.isEmpty() && !resource->mimetypes().contains(mimetype)) {
         return false;
     }
 
@@ -143,7 +144,7 @@ bool AbstractResourcesBackend::Filters::shouldFilter(AbstractResource *resourse)
         }
 
         // For subcategories, apply category filter
-        if (!resourse->categoryMatches(category)) {
+        if (!resource->categoryMatches(category)) {
             return false;
         }
     }

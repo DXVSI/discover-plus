@@ -226,6 +226,7 @@ void ResourcesUpdatesModel::updateAll()
             return u->hasUpdates();
         });
         if (updaters.isEmpty()) {
+            qCWarning(LIBDISCOVER_LOG) << "Nothing to update";
             return;
         }
 
@@ -244,6 +245,8 @@ void ResourcesUpdatesModel::updateAll()
                 m_transaction->slotProgressingChanged();
             },
             Qt::QueuedConnection);
+    } else {
+        qCWarning(LIBDISCOVER_LOG) << "No updaters!";
     }
 }
 

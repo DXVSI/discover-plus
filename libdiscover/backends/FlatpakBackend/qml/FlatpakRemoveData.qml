@@ -16,7 +16,7 @@ Kirigami.InlineMessage {
     Discover.Activatable.active: resource.hasData && query.count.number === 0
 
     Layout.fillWidth: true
-    text: i18nd("libdiscover", "%1 is not installed but it still has data present.", resource.name)
+    text: i18nd("libdiscover", "%1 is not installed but it still has user data and settings present.", resource.name)
     height: visible ? implicitHeight : 0
 
     Discover.ResourcesProxyModel {
@@ -41,8 +41,8 @@ Kirigami.InlineMessage {
 
     actions: [
         Kirigami.Action {
-            icon.name: "delete"
-            text: i18nd("libdiscover", "Delete settings and user data")
+            icon.name: "trash-empty-symbolic"
+            text: i18nd("libdiscover", "Move to Trash")
             onTriggered: {
                 enabled = false
                 root.text = i18nd("libdiscover", "Clearing settings and user data…")

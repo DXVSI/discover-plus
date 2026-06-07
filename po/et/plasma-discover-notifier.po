@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-04-02 00:45+0000\n"
+"POT-Creation-Date: 2026-04-23 00:45+0000\n"
 "PO-Revision-Date: 2022-11-15 20:51+0100\n"
 "Last-Translator: Mihkel Tõnnov <mihhkel@gmail.com>\n"
 "Language-Team: Estonian <>\n"
@@ -23,71 +23,71 @@ msgstr ""
 msgid "View Updates"
 msgstr "Vaata uuendusi"
 
-#: notifier/DiscoverNotifier.cpp:365
+#: notifier/DiscoverNotifier.cpp:363
 #, kde-format
 msgid "Security updates available"
 msgstr "Saadaval on turvauuendused"
 
-#: notifier/DiscoverNotifier.cpp:367
+#: notifier/DiscoverNotifier.cpp:365
 #, kde-format
 msgid "Updates available"
 msgstr "Saadaval on uuendused"
 
-#: notifier/DiscoverNotifier.cpp:369
+#: notifier/DiscoverNotifier.cpp:367
 #, kde-format
 msgid "System up to date"
 msgstr "Süsteem on täiesti ajakohane"
 
-#: notifier/DiscoverNotifier.cpp:371
+#: notifier/DiscoverNotifier.cpp:369
 #, kde-format
 msgid "System will install updates when restarted"
 msgstr ""
 
-#: notifier/DiscoverNotifier.cpp:373
+#: notifier/DiscoverNotifier.cpp:371
 #, kde-format
 msgid "Offline"
 msgstr "Pole võrgus"
 
-#: notifier/DiscoverNotifier.cpp:375
+#: notifier/DiscoverNotifier.cpp:373
 #, kde-format
 msgid "Applying unattended updates…"
 msgstr ""
 
-#: notifier/DiscoverNotifier.cpp:400
+#: notifier/DiscoverNotifier.cpp:398
 #, kde-format
 msgid "Restart is required"
 msgstr "Vajalik on taaskäivitus"
 
-#: notifier/DiscoverNotifier.cpp:401
+#: notifier/DiscoverNotifier.cpp:399
 #, kde-format
 msgid "The system needs to be restarted for the updates to take effect."
 msgstr "Uuenduste jõustamiseks tuleb süsteem uuesti käivitada."
 
-#: notifier/DiscoverNotifier.cpp:406
+#: notifier/DiscoverNotifier.cpp:404
 #, fuzzy, kde-format
 #| msgid "Computer needs to restart"
 msgctxt "@action:button"
 msgid "Update and Restart"
 msgstr "Arvuti vajab taaskäivitust"
 
-#: notifier/DiscoverNotifier.cpp:407
+#: notifier/DiscoverNotifier.cpp:405
 #, kde-format
 msgctxt "@action:button"
 msgid "Update and Shut Down"
 msgstr ""
 
-#: notifier/DiscoverNotifier.cpp:451
+#: notifier/DiscoverNotifier.cpp:449
 #, kde-format
 msgid "Upgrade available"
 msgstr "Saadaval on uuendus"
 
-#: notifier/DiscoverNotifier.cpp:452
+#: notifier/DiscoverNotifier.cpp:450
 #, kde-format
 msgctxt "A new distro release (name and version) is available for upgrade"
 msgid "%1 is now available."
 msgstr ""
 
-#: notifier/DiscoverNotifier.cpp:455
+#: notifier/DiscoverNotifier.cpp:453
 #, kde-format
 msgctxt "@action:button"
 msgid "Upgrade"

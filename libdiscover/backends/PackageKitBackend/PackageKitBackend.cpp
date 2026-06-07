@@ -919,49 +919,51 @@ ResultsStream *PackageKitBackend::search(const AbstractResourcesBackend::Filters
         return deferredResultStream(u"PackageKitStream-installed"_s, [this, filter = filter](PKResultsStream *stream) {
             loadAllPackagesHybrid();
 
-            const auto toResolve = kFilter<QVector<AbstractResource *>>(m_packages.packages, needsResolveFilter);
-
             auto installedAndNameFilter = [filter](AbstractResource *resource) {
-                return resource->state() >= AbstractResource::Installed && !qobject_cast<PackageKitResource *>(resource)->isCritical()
-                    && (resource->name().contains(filter.search, Qt::CaseInsensitive)
+                auto pkResource = qobject_cast<PackageKitResource *>(resource);
+                return pkResource && resource->state() >= AbstractResource::Installed && !pkResource->isCritical()
+                    && (filter.search.isEmpty() || resource->name().contains(filter.search, Qt::CaseInsensitive)
                         || resource->packageName().compare(filter.search, Qt::CaseInsensitive) == 0);
             };
-            bool furtherSearch = false;
-            if (!toResolve.isEmpty()) {
-                resolvePackages(kTransform<QStringList>(toResolve, [](AbstractResource *resource) {
-                    return resource->packageName();
-                }));
-                connect(m_resolveTransaction, &PKResolveTransaction::allFinished, this, [stream, toResolve, installedAndNameFilter] {
-                    const auto resolved = kFilter<QVector<AbstractResource *>>(toResolve, installedAndNameFilter);
-                    if (!resolved.isEmpty()) {
-                        Q_EMIT stream->resourcesFound(kTransform<QVector<StreamResult>>(resolved, [](auto resource) {
-                            return StreamResult(resource, 0);
-                        }));
-                    }
-                    stream->finish();
-                });
-                furtherSearch = true;
+
+            auto installedResources = std::make_shared<QSet<AbstractResource *>>();
+            installedResources->reserve(m_packages.packages.size());
+            for (auto resource : std::as_const(m_packages.packages)) {
+                if (installedAndNameFilter(resource)) {
+                    installedResources->insert(resource);
+                }
             }
 
-            const auto resolved = kFilter<QVector<AbstractResource *>>(m_packages.packages, installedAndNameFilter);
-            if (!resolved.isEmpty()) {
-                QTimer::singleShot(0, stream, [resolved, toResolve, stream]() {
-                    if (!resolved.isEmpty()) {
-                        Q_EMIT stream->resourcesFound(kTransform<QVector<StreamResult>>(resolved, [](auto resource) {
-                            return StreamResult(resource, 0);
-                        }));
-                    }
+            auto pkTransaction = PackageKit::Daemon::getPackages(PackageKit::Transaction::FilterInstalled | PackageKit::Transaction::FilterNotSource);
+            QPointer<PKResultsStream> streamPtr(stream);
+            connect(pkTransaction,
+                    &PackageKit::Transaction::package,
+                    this,
+                    [this, installedResources, installedAndNameFilter](PackageKit::Transaction::Info info, const QString &packageId, const QString &summary) {
+                        addPackageNotArch(info, packageId, summary);
 
-                    if (toResolve.isEmpty()) {
-                        stream->finish();
-                    }
-                });
-                furtherSearch = true;
-            }
+                        const QString packageName = PackageKit::Daemon::packageName(packageId);
+                        const auto resources = resourcesByPackageName(packageName);
+                        for (auto resource : resources) {
+                            if (installedAndNameFilter(resource)) {
+                                installedResources->insert(resource);
+                            }
+                        }
+                    });
+            connect(pkTransaction, &PackageKit::Transaction::errorCode, this, &PackageKitBackend::transactionError);
+            connect(pkTransaction, &PackageKit::Transaction::finished, this, [this, streamPtr, installedResources] {
+                includePackagesToAdd();
+                if (!streamPtr) {
+                    return;
+                }
 
-            if (!furtherSearch) {
-                stream->finish();
-            }
+                QVector<StreamResult> results;
+                results.reserve(installedResources->size());
+                for (auto resource : std::as_const(*installedResources)) {
+                    results << StreamResult(resource, 0);
+                }
+                streamPtr->sendResources(results);
+            });
         });
     } else if (filter.search.isEmpty() && !filter.category) {
         return deferredResultStream(u"PackageKitStream-all"_s, [this](PKResultsStream *stream) {

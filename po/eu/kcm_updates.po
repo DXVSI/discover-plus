@@ -1,16 +1,16 @@
 # Translation for kcm_updates to Euskara/Basque (eu).
-# Copyright (C) 2020-2023 This file is copyright:
+# Copyright (C) 2020-2026 This file is copyright:
 # This file is distributed under the same license as the discover package.
-# SPDX-FileCopyrightText: 2023 KDE euskaratzeko proiektuko arduraduna <xalba@ni.eus>
+# SPDX-FileCopyrightText: 2023, 2026 KDE euskaratzeko proiektuaren arduraduna <xalba@ni.eus>
 #
 # Translators:
-# Iñigo Salvador Azurmendi <xalba@ni.eus>, 2020, 2021, 2022, 2023.
+# Iñigo Salvador Azurmendi <xalba@ni.eus>, 2020, 2021, 2022, 2023, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: discover\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-04-02 00:45+0000\n"
-"PO-Revision-Date: 2023-09-28 19:17+0200\n"
+"PO-Revision-Date: 2026-04-19 14:28+0200\n"
 "Last-Translator: Iñigo Salvador Azurmendi <xalba@ni.eus>\n"
 "Language-Team: Basque <kde-i18n-eu@kde.org>\n"
 "Language: eu\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 23.08.1\n"
+"X-Generator: Lokalize 26.04.0\n"
 
 #: kcm/ui/main.qml:40
 #, kde-format
@@ -36,12 +36,7 @@ msgid "Automatically"
 msgstr "Automatikoki"
 
 #: kcm/ui/main.qml:58
-#, fuzzy, kde-kuit-format
-#| msgctxt "@info"
-#| msgid ""
-#| "Software updates will be downloaded automatically when they become "
-#| "available. Updates for applications will be installed immediately, while "
-#| "system updates will be installed the next time the computer is restarted."
+#, kde-kuit-format
 msgctxt "@info"
 msgid ""
 "Software updates will be downloaded automatically when they become "
@@ -49,9 +44,8 @@ msgid ""
 "updates for the system will be installed the next time it’s restarted."
 msgstr ""
 "Software eguneratzeak, erabilgarri daudenean, automatikoki zama-jaitsiko "
-"dira. Aplikazioen eguneratzeak berehala instalatuko dira, sistema-"
-"eguneratzeak, berriz, ordenagailua berrabiatzen den hurrengo aldian "
-"instalatuko dira."
+"dira. Aplikazioen eguneratzeak berehala instalatuko dira, sistemaren "
+"eguneratzeak, berriz, berrabiatzen den hurrengo aldian instalatuko dira."
 
 #: kcm/ui/main.qml:69
 #, kde-format

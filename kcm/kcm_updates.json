@@ -50,6 +50,7 @@
         "Description[sv]": "Anpassa beteende för uppdateringar av programvara",
         "Description[ta]": "மென்பொருள் புதுப்பிப்புகளின் நடத்தையை அமையுங்கள்",
         "Description[tr]": "Yazılım güncelleme davranışını yapılandır",
+        "Description[ug]": "يۇمشاق دېتال يېڭىلاش قىلمىشىنى سەپلەيدۇ",
         "Description[uk]": "Налаштовування поведінки при оновленні програм",
         "Description[zh_CN]": "配置软件更新行为",
         "Description[zh_TW]": "設定軟體更新行為",
@@ -111,6 +112,7 @@
         "Name[ta]": "மென்பொருள் புதுப்பிப்புகள்",
         "Name[tg]": "Навсозии нармафзор",
         "Name[tr]": "Yazılım Güncelleme",
+        "Name[ug]": "يۇمشاق دېتال يېڭىلاش",
         "Name[uk]": "Оновлення програм",
         "Name[zh_CN]": "软件更新",
         "Name[zh_TW]": "軟體更新"

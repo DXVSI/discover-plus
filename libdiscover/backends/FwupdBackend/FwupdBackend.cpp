@@ -12,6 +12,7 @@
 #include "FwupdTransaction.h"
 #include <QtConcurrent/QtConcurrentRun>
 #include <Transaction/Transaction.h>
+#include <Transaction/TransactionModel.h>
 #include <resources/SourcesModel.h>
 #include <resources/StandardBackendUpdater.h>
 
@@ -46,6 +47,7 @@ FwupdBackend::FwupdBackend(QObject *parent)
         }
         fwupd_client_set_user_agent_for_package(client, "plasma-discover", version.data());
         connect(m_updater, &StandardBackendUpdater::updatesCountChanged, this, &FwupdBackend::updatesCountChanged);
+        connect(TransactionModel::global(), &TransactionModel::lastTransactionFinished, this, &FwupdBackend::checkForUpdates);
 
         SourcesModel::global()->addSourcesBackend(new FwupdSourcesBackend(this));
         QTimer::singleShot(0, this, &FwupdBackend::checkForUpdates);
@@ -127,6 +129,11 @@ void FwupdBackend::addUpdates()
         g_autoptr(GError) error2 = nullptr;
         g_autoptr(GPtrArray) rels = fwupd_client_get_upgrades(client, fwupd_device_get_id(device), m_cancellable, &error2);
         if (rels) {
+            if ((fwupd_device_get_flags(device) & FWUPD_DEVICE_FLAG_NEEDS_REBOOT) && fwupd_device_get_update_state(device) == FWUPD_UPDATE_STATE_SUCCESS) {
+                m_updater->setNeedsReboot(true);
+                continue;
+            }
+
             fwupd_device_add_release(device, (FwupdRelease *)g_ptr_array_index(rels, 0));
             auto res = createApp(device);
             if (!res) {

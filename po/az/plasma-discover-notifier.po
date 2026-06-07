@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: discover\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-04-02 00:45+0000\n"
+"POT-Creation-Date: 2026-04-23 00:45+0000\n"
 "PO-Revision-Date: 2025-06-02 16:32+0400\n"
 "Last-Translator: linux <xxmn77@gmail.com>\n"
 "Language-Team: Azerbaijani <kde-i18n-doc@kde.org>\n"
@@ -25,71 +25,71 @@ msgstr ""
 msgid "View Updates"
 msgstr "Yenilənmələrə baxış"
 
-#: notifier/DiscoverNotifier.cpp:365
+#: notifier/DiscoverNotifier.cpp:363
 #, kde-format
 msgid "Security updates available"
 msgstr "Təhlükəsizlik yenilənmələri mövcuddur"
 
-#: notifier/DiscoverNotifier.cpp:367
+#: notifier/DiscoverNotifier.cpp:365
 #, kde-format
 msgid "Updates available"
 msgstr "Yenilənmələr mövcuddur"
 
-#: notifier/DiscoverNotifier.cpp:369
+#: notifier/DiscoverNotifier.cpp:367
 #, kde-format
 msgid "System up to date"
 msgstr "Sistem yenilənib"
 
-#: notifier/DiscoverNotifier.cpp:371
+#: notifier/DiscoverNotifier.cpp:369
 #, fuzzy, kde-format
 #| msgid "Install Updates and Restart…"
 msgid "System will install updates when restarted"
 msgstr "Yenilənmələri quraşdırmaq və yenidən başlatmaq..."
 
-#: notifier/DiscoverNotifier.cpp:373
+#: notifier/DiscoverNotifier.cpp:371
 #, kde-format
 msgid "Offline"
 msgstr "Şəbəkədən kənar"
 
-#: notifier/DiscoverNotifier.cpp:375
+#: notifier/DiscoverNotifier.cpp:373
 #, kde-format
 msgid "Applying unattended updates…"
 msgstr "Nəzarətsiz yenilənmələr tətbiq edilir..."
 
-#: notifier/DiscoverNotifier.cpp:400
+#: notifier/DiscoverNotifier.cpp:398
 #, kde-format
 msgid "Restart is required"
 msgstr "Yenidən başlatmaq tələb edilir"
 
-#: notifier/DiscoverNotifier.cpp:401
+#: notifier/DiscoverNotifier.cpp:399
 #, kde-format
 msgid "The system needs to be restarted for the updates to take effect."
 msgstr "Yenilənmələrin tətbiqi üçün sistemi yenidən başlatmaq lazımdır."
 
-#: notifier/DiscoverNotifier.cpp:406
+#: notifier/DiscoverNotifier.cpp:404
 #, kde-format
 msgctxt "@action:button"
 msgid "Update and Restart"
 msgstr "Yeniləmək və yenidən başlatmaq"
 
-#: notifier/DiscoverNotifier.cpp:407
+#: notifier/DiscoverNotifier.cpp:405
 #, kde-format
 msgctxt "@action:button"
 msgid "Update and Shut Down"
 msgstr "Yeniləmək və söndürmək"
 
-#: notifier/DiscoverNotifier.cpp:451
+#: notifier/DiscoverNotifier.cpp:449
 #, kde-format
 msgid "Upgrade available"
 msgstr "Yenilənmələr mövcuddur"
 
-#: notifier/DiscoverNotifier.cpp:452
+#: notifier/DiscoverNotifier.cpp:450
 #, kde-format
 msgctxt "A new distro release (name and version) is available for upgrade"
 msgid "%1 is now available."
 msgstr "%1 indi əlçatandır."
 
-#: notifier/DiscoverNotifier.cpp:455
+#: notifier/DiscoverNotifier.cpp:453
 #, kde-format
 msgctxt "@action:button"
 msgid "Upgrade"

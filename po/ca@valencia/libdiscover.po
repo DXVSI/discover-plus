@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: discover\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-04-18 00:46+0000\n"
-"PO-Revision-Date: 2026-04-08 08:51+0200\n"
+"POT-Creation-Date: 2026-05-30 00:47+0000\n"
+"PO-Revision-Date: 2026-05-30 09:10+0200\n"
 "Last-Translator: Josep M. Ferrer <txemaq@gmail.com>\n"
 "Language-Team: Catalan <kde-i18n-ca@kde.org>\n"
 "Language: ca@valencia\n"
@@ -572,39 +572,39 @@ msgctxt "Category"
 msgid "System"
 msgstr "Sistema"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakBackend.cpp:196
+#: libdiscover/backends/FlatpakBackend/FlatpakBackend.cpp:208
 #, kde-format
 msgctxt "user denotes this as user-scoped flatpak repo"
 msgid "%1 (user)"
 msgstr "%1 (usuari)"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakBackend.cpp:799
+#: libdiscover/backends/FlatpakBackend/FlatpakBackend.cpp:811
 #, kde-format
 msgid "Local bundle"
 msgstr "Paquet local"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakBackend.cpp:1951
+#: libdiscover/backends/FlatpakBackend/FlatpakBackend.cpp:1963
 #: libdiscover/backends/PackageKitBackend/PackageKitBackend.cpp:852
 #, kde-format
 msgid "Malformed appstream url '%1'"
 msgstr "URL d'«appstream» amb format incorrecte «%1»"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakBackend.cpp:2081
+#: libdiscover/backends/FlatpakBackend/FlatpakBackend.cpp:2093
 #, kde-format
 msgid "Failed to add source '%1': %2"
 msgstr "Ha fallat mentre s'afegia la font «%1»: %2"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakBackend.cpp:2208
+#: libdiscover/backends/FlatpakBackend/FlatpakBackend.cpp:2220
 #, kde-format
 msgid "There are no Flatpak sources."
 msgstr "No hi ha cap font de Flatpak."
 
-#: libdiscover/backends/FlatpakBackend/FlatpakBackend.cpp:2212
+#: libdiscover/backends/FlatpakBackend/FlatpakBackend.cpp:2224
 #, kde-format
 msgid "Failed to load \"%1\" source"
 msgstr "Ha fallat mentre es carregava la font «%1»"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:378
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:383
 #, kde-kuit-format
 msgctxt "@info"
 msgid ""
@@ -616,73 +616,73 @@ msgstr ""
 "estiga instal·lada l'aplicació també es farà disponible en Discover un altre "
 "programari en este repositori.</para>"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:472
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:481
 #: libdiscover/backends/RpmOstreeBackend/RpmOstreeResource.cpp:419
 #, kde-format
 msgctxt "@label app size"
 msgid "Unknown"
 msgstr "Desconeguda"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:528
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:537
 #: libdiscover/backends/PackageKitBackend/PackageKitResource.cpp:467
 #: libdiscover/backends/PackageKitBackend/PackageKitSourcesBackend.cpp:70
 #, kde-format
 msgid "Failed to start '%1': %2"
 msgstr "No s'ha pogut iniciar «%1»: %2"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:769
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:778
 #, kde-format
 msgid "All Files"
 msgstr "Tots els fitxers"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:771
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:780
 #, kde-format
 msgid "Home"
 msgstr "Inici"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:773
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:782
 #, kde-format
 msgid "Downloads"
 msgstr "Baixades"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:775
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:784
 #, kde-format
 msgid "Music"
 msgstr "Música"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:853
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:862
 #: libdiscover/backends/KNSBackend/KNSBackend.cpp:451
 #, kde-format
 msgid "%1: %2"
 msgstr "%1: %2"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:871
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:880
 #, kde-format
 msgid "Network Access"
 msgstr "Accés a xarxes"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:872
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:881
 #, kde-format
 msgid "Can access the internet"
 msgstr "Pot accedir a Internet"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:881
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:890
 #, kde-format
 msgid "Sound system access"
 msgstr "Accés al sistema de so"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:882
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:891
 #, kde-format
 msgid "Can play and record audio"
 msgstr "Pot reproduir i gravar àudio"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:886
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:1030
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:895
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:1039
 #, kde-format
 msgid "Session Bus Access"
 msgstr "Accés al bus de la sessió"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:887
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:896
 #, kde-format
 msgid ""
 "Can communicate with all other applications and processes run in this user "
@@ -691,56 +691,56 @@ msgstr ""
 "Pot comunicar-se amb totes les altres aplicacions i processos que s'executen "
 "en este compte d'usuari"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:892
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:1042
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:901
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:1051
 #, kde-format
 msgid "System Bus Access"
 msgstr "Accés al bus del sistema"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:893
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:902
 #, kde-format
 msgid "Can communicate with all other applications and processes on the system"
 msgstr ""
 "Pot comunicar-se amb totes les altres aplicacions i processos en el sistema"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:898
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:907
 #, kde-format
 msgid "Remote Login Access"
 msgstr "Accés a inici remot de sessió"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:899
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:908
 #, kde-format
 msgid "Can initiate remote login requests using the SSH protocol"
 msgstr ""
 "Pot iniciar sol·licituds d'inici de sessió remot utilitzant el protocol SSH"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:903
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:912
 #, kde-format
 msgid "Smart Card Access"
 msgstr "Accés a targeta intel·ligent"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:904
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:913
 #, kde-format
 msgid "Can integrate and communicate with smart cards"
 msgstr "Pot integrar i comunicar-se amb targetes intel·ligents"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:908
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:917
 #, kde-format
 msgid "Printer Access"
 msgstr "Accés a les impressores"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:909
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:918
 #, kde-format
 msgid "Can integrate and communicate with printers"
 msgstr "Pot integrar i comunicar-se amb impressores"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:913
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:922
 #, kde-format
 msgid "GPG Agent"
 msgstr "Agent de GPG"
 
 # skip-rule: punctuation-period-no
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:914
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:923
 #, kde-format
 msgid ""
 "Allows access to the GPG cryptography service, generally used for signing "
@@ -749,73 +749,73 @@ msgstr ""
 "Permet accedir al servei de criptografia GPG, utilitzat generalment per a "
 "signar i llegir documents signats."
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:920
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:929
 #, kde-format
 msgid "Bluetooth Access"
 msgstr "Accés a Bluetooth"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:921
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:930
 #, kde-format
 msgid "Can integrate and communicate with Bluetooth devices"
 msgstr "Pot integrar i comunicar-se amb dispositius Bluetooth"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:925
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:934
 #, kde-format
 msgid "Low-Level System Access"
 msgstr "Accés a baix nivell del sistema"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:926
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:935
 #, kde-format
 msgid "Can make low-level system calls (e.g. ptrace)"
 msgstr "Pot fer crides de baix nivell al sistema (p. ex., «ptrace»)"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:932
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:941
 #, kde-format
 msgid "Device Access"
 msgstr "Accés a dispositius"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:933
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:942
 #, kde-format
 msgid "Can communicate with and control built-in or connected hardware devices"
 msgstr ""
 "Pot comunicar-se i controlar dispositius de maquinari integrats o connectats"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:937
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:946
 #, kde-format
 msgid "Kernel-based Virtual Machine Access"
 msgstr "Accés a màquina virtual basada en el nucli"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:938
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:947
 #, kde-format
 msgid "Allows running other operating systems as guests in virtual machines"
 msgstr ""
 "Permet executar altres sistemes operatius com a convidats en màquines "
 "virtuals"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:965
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:977
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:974
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:986
 #, kde-format
 msgid "%1 (read-only)"
 msgstr "%1 (només de lectura)"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:968
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:980
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:977
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:989
 #, kde-format
 msgid "%1 (can create files)"
 msgstr "%1 (pot crear fitxers)"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:971
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:989
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:980
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:998
 #, kde-format
 msgid "%1 (read & write) "
 msgstr "%1 (lectura i escriptura) "
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:998
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:1007
 #, kde-format
 msgid "Home Folder Access"
 msgstr "Accés a la carpeta d'inici"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:1001
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:1010
 #, kde-format
 msgid ""
 "Can read, write, and create files in the following locations in your home "
@@ -824,7 +824,7 @@ msgstr ""
 "Pot llegir, escriure i crear fitxers en les ubicacions següents de la vostra "
 "carpeta d'inici sense abans demanar permís: %1"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:1003
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:1012
 #, kde-format
 msgid ""
 "Can read and write files in the following locations in your home folder "
@@ -833,7 +833,7 @@ msgstr ""
 "Pot llegir i escriure fitxers en les ubicacions següents de la vostra "
 "carpeta d'inici sense abans demanar permís: %1"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:1005
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:1014
 #, kde-format
 msgid ""
 "Can read files in the following locations in your home folder without asking "
@@ -842,7 +842,7 @@ msgstr ""
 "Pot llegir fitxers en les ubicacions següents de la vostra carpeta d'inici "
 "sense abans demanar permís: %1"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:1007
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:1016
 #, kde-format
 msgid ""
 "Can access files in the following locations in your home folder without "
@@ -851,12 +851,12 @@ msgstr ""
 "Pot accedir a fitxers en les ubicacions següents de la vostra carpeta "
 "d'inici sense abans demanar permís: %1"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:1013
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:1022
 #, kde-format
 msgid "System Folder Access"
 msgstr "Accés a carpetes del sistema"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:1015
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:1024
 #, kde-format
 msgid ""
 "Can read, write, and create system files in the following locations without "
@@ -865,7 +865,7 @@ msgstr ""
 "Pot llegir, escriure i crear fitxers del sistema en les ubicacions següents "
 "sense abans demanar permís: %1"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:1017
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:1026
 #, kde-format
 msgid ""
 "Can read and write system files in the following locations without asking "
@@ -874,7 +874,7 @@ msgstr ""
 "Pot llegir i escriure fitxers del sistema en les ubicacions següents sense "
 "abans demanar permís: %1"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:1019
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:1028
 #, kde-format
 msgid ""
 "Can read system files in the following locations without asking permission "
@@ -883,7 +883,7 @@ msgstr ""
 "Pot llegir fitxers del sistema en les ubicacions següents sense abans "
 "demanar permís: %1"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:1021
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:1030
 #, kde-format
 msgid ""
 "Can access system files in the following locations without asking permission "
@@ -892,7 +892,7 @@ msgstr ""
 "Pot accedir a fitxers del sistema en les ubicacions següents sense abans "
 "demanar permís: %1"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:1032
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:1041
 #, kde-format
 msgid ""
 "Can communicate with other applications and processes in the same desktop "
@@ -901,7 +901,7 @@ msgstr ""
 "Pot comunicar-se amb altres aplicacions i processos en la mateixa sessió "
 "d'escriptori utilitzant els protocols de comunicació següents: %1"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:1044
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:1053
 #, kde-format
 msgid ""
 "Can communicate with all applications and system services using the "
@@ -910,22 +910,22 @@ msgstr ""
 "Pot comunicar-se amb totes les aplicacions i serveis del sistema utilitzant "
 "els protocols de comunicació següents: %1"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:1136
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:1151
 #, kde-format
 msgid "App Verified on %1 as shipped by its author %2"
 msgstr "Aplicació verificada %1 com a distribuïda pel seu autor %2"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakSourcesBackend.cpp:97
+#: libdiscover/backends/FlatpakBackend/FlatpakSourcesBackend.cpp:98
 #, kde-format
 msgid "Add Flathub"
 msgstr "Afig Flathub"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakSourcesBackend.cpp:98
+#: libdiscover/backends/FlatpakBackend/FlatpakSourcesBackend.cpp:99
 #, kde-format
 msgid "Apply Changes"
 msgstr "Aplica els canvis"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakSourcesBackend.cpp:102
+#: libdiscover/backends/FlatpakBackend/FlatpakSourcesBackend.cpp:103
 #, kde-format
 msgid ""
 "Changes to the priority of Flatpak sources must be applied before they will "
@@ -934,7 +934,7 @@ msgstr ""
 "Cal aplicar els canvis en la prioritat de les fonts de Flatpak abans que "
 "tinguen efecte."
 
-#: libdiscover/backends/FlatpakBackend/FlatpakSourcesBackend.cpp:106
+#: libdiscover/backends/FlatpakBackend/FlatpakSourcesBackend.cpp:107
 #, kde-format
 msgid ""
 "Makes it possible to easily install the applications listed in https://"
@@ -943,17 +943,17 @@ msgstr ""
 "Fa possible instal·lar amb facilitat les aplicacions llistades a https://"
 "flathub.org"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakSourcesBackend.cpp:174
+#: libdiscover/backends/FlatpakBackend/FlatpakSourcesBackend.cpp:175
 #, kde-format
 msgid "Could not add the source %1"
 msgstr "No s'ha pogut afegir la font %1"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakSourcesBackend.cpp:294
+#: libdiscover/backends/FlatpakBackend/FlatpakSourcesBackend.cpp:297
 #, kde-format
 msgid "Removing '%1'"
 msgstr "S'està eliminant «%1»"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakSourcesBackend.cpp:295
+#: libdiscover/backends/FlatpakBackend/FlatpakSourcesBackend.cpp:298
 #, kde-format
 msgid ""
 "To remove this repository, the following applications must be uninstalled:"
@@ -962,22 +962,22 @@ msgstr ""
 "Per a eliminar este repositori, s'han de desinstal·lar les aplicacions "
 "següents:<ul><li>%1</li></ul>"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakSourcesBackend.cpp:313
+#: libdiscover/backends/FlatpakBackend/FlatpakSourcesBackend.cpp:316
 #, kde-format
 msgid "Failed to remove %1 remote repository: %2"
 msgstr "Ha fallat mentre s'eliminava el repositori remot %1: %2"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakSourcesBackend.cpp:317
+#: libdiscover/backends/FlatpakBackend/FlatpakSourcesBackend.cpp:320
 #, kde-format
 msgid "Could not find %1"
 msgstr "No s'ha pogut trobar %1"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakSourcesBackend.cpp:349
+#: libdiscover/backends/FlatpakBackend/FlatpakSourcesBackend.cpp:354
 #, kde-format
 msgid "%1 (user)"
 msgstr "%1 (usuari)"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakSourcesBackend.cpp:411
+#: libdiscover/backends/FlatpakBackend/FlatpakSourcesBackend.cpp:417
 #, kde-format
 msgid "Enter a Flatpak repository URI (*.flatpakrepo):"
 msgstr "Introduïu l'URI d'un repositori Flatpak (*.flatpakrepo):"
@@ -1020,18 +1020,25 @@ msgctxt ""
 "though)"
 msgid ""
 "<resource>%1</resource> is no longer receiving updates.<nl/><nl/>Replace it "
-"with the supported version provided by <resource>%2</resource>?"
+"with the supported version provided by <resource>%2</resource>?<nl/><nl/"
+">Your settings and data will be automatically transferred to the new "
+"application.<nl/><nl/>If the old application is in your panel or Application "
+"Launcher favorites, you will need to remove it and manually add the new one "
+"there."
 msgstr ""
 "<resource>%1</resource> ja no rep actualitzacions.<nl/><nl/>El substituïsc "
-"per la versió mantinguda proporcionada per <resource>%2</resource>?"
+"per la versió mantinguda proporcionada per <resource>%2</resource>?<nl/><nl/"
+">La vostra configuració i dades es transferiran cap a l'aplicació nova.<nl/"
+"><nl/>Si l'aplicació antiga és al quadro o als preferits de l'iniciador "
+"d'aplicacions, haureu d'eliminar-la i afegir-hi manualment la nova."
 
-#: libdiscover/backends/FlatpakBackend/FlatpakTransactionThread.cpp:470
+#: libdiscover/backends/FlatpakBackend/FlatpakTransactionThread.cpp:472
 #, kde-format
 msgctxt "@title"
 msgid "Automatic Removal"
 msgstr "Eliminació automàtica"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakTransactionThread.cpp:472
+#: libdiscover/backends/FlatpakBackend/FlatpakTransactionThread.cpp:474
 #, kde-kuit-format
 msgctxt ""
 "@info %1 is a flatpak id e.g. org.kde.krita (can be rather lengthy though)"
@@ -1066,13 +1073,15 @@ msgstr "Visualitza la versió estable a %1"
 
 #: libdiscover/backends/FlatpakBackend/qml/FlatpakRemoveData.qml:19
 #, kde-format
-msgid "%1 is not installed but it still has data present."
-msgstr "%1 no està instal·lada, però encara té dades presents."
+msgid "%1 is not installed but it still has user data and settings present."
+msgstr ""
+"%1 no està instal·lada, però encara té dades presents d'usuari i de "
+"configuració."
 
 #: libdiscover/backends/FlatpakBackend/qml/FlatpakRemoveData.qml:45
 #, kde-format
-msgid "Delete settings and user data"
-msgstr "Suprimix la configuració i les dades d'usuari"
+msgid "Move to Trash"
+msgstr "Mou cap a dins de la paperera"
 
 #: libdiscover/backends/FlatpakBackend/qml/FlatpakRemoveData.qml:48
 #, kde-format
@@ -1092,7 +1101,7 @@ msgstr "Permisos"
 msgid "Configure permissions…"
 msgstr "Configura els permisos…"
 
-#: libdiscover/backends/FwupdBackend/FwupdBackend.cpp:486
+#: libdiscover/backends/FwupdBackend/FwupdBackend.cpp:493
 #: libdiscover/backends/FwupdBackend/FwupdResource.cpp:116
 #, kde-format
 msgid "Firmware Updates"
@@ -2436,6 +2445,11 @@ msgid "Missing remote ref for rebase operation. Please file a bug."
 msgstr ""
 "Falta la «ref» remota per a l'operació de «rebase». Informeu de l'error."
 
+#: libdiscover/backends/RpmOstreeBackend/RpmOstreeBackend.cpp:553
+#, kde-format
+msgid "Operating System"
+msgstr "Sistema operatiu"
+
 #: libdiscover/backends/RpmOstreeBackend/RpmOstreeResource.cpp:301
 #, kde-format
 msgid "GPL and other licenses"
@@ -2745,13 +2759,37 @@ msgstr "Comproveu la connectivitat amb Internet"
 msgid "Refresh"
 msgstr "Actualitza la llista"
 
-#: libdiscover/resources/ResourcesModel.cpp:405
+#: libdiscover/resources/ResourcesModel.cpp:401
 #, kde-format
 msgctxt "@info:status %1 is the name of a source of updates"
 msgid "Refreshing %1"
 msgstr "S'està actualitzant %1"
 
-#: libdiscover/resources/ResourcesProxyModel.cpp:787
+#: libdiscover/resources/ResourcesProxyModel.cpp:561
+#, kde-format
+msgctxt "@label"
+msgid "Applications"
+msgstr "Aplicacions"
+
+#: libdiscover/resources/ResourcesProxyModel.cpp:563
+#, kde-format
+msgctxt "@label"
+msgid "Addons"
+msgstr "Complements"
+
+#: libdiscover/resources/ResourcesProxyModel.cpp:565
+#, kde-format
+msgctxt "@label"
+msgid "Application Support"
+msgstr "Suport d'aplicacions"
+
+#: libdiscover/resources/ResourcesProxyModel.cpp:567
+#, kde-format
+msgctxt "@label"
+msgid "System"
+msgstr "Sistema"
+
+#: libdiscover/resources/ResourcesProxyModel.cpp:809
 #, kde-format
 msgctxt "an approximation number, like 3000+"
 msgid "%1+"
@@ -2767,12 +2805,6 @@ msgstr "Actualitzacions"
 msgctxt "@label Download rate"
 msgid "%1/s"
 msgstr "%1/s"
-
-#: libdiscover/Transaction/TransactionModel.cpp:77
-#, kde-format
-msgctxt "@info:status"
-msgid "Starting"
-msgstr "Iniciant"
 
 #: libdiscover/Transaction/TransactionModel.cpp:79
 #, kde-format
@@ -2845,11 +2877,3 @@ msgstr "Programari del sistema"
 msgctxt "@item:inlistbox"
 msgid "Addons"
 msgstr "Complements"
-
-#~ msgid "Retrieving size information"
-#~ msgstr "S'està recuperant la informació de la mida"
-
-#~ msgid "%2 (plus %1 dependency)"
-#~ msgid_plural "%2 (plus %1 dependencies)"
-#~ msgstr[0] "%2 (més %1 dependència)"
-#~ msgstr[1] "%2 (més %1 dependències)"

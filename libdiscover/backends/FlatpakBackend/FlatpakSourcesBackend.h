@@ -48,10 +48,10 @@ public:
         return true;
     }
 
-    bool moveSource(const QString &sourceId, int delta) override;
-    int originIndex(const QString &sourceId) const;
+    bool moveSource(const QString &disambiguatedSourceId, int delta) override;
+    int originIndex(const QString &disambiguatedSourceId) const;
     QStandardItem *sourceByUrl(const QString &url) const;
-    QStandardItem *sourceById(const QString &sourceId) const;
+    QStandardItem *sourceByDisambiguatedId(const QString &disambiguatedSourceId) const;
     DiscoverAction *inlineAction() const override
     {
         return m_saveAction;

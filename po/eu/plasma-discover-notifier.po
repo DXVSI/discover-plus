@@ -1,16 +1,16 @@
 # Translation for plasma-discover-notifier.po to Euskara/Basque (eu).
-# Copyright (C) 2017-2025 This file is copyright:
+# Copyright (C) 2017-2026 This file is copyright:
 # This file is distributed under the same license as the discover package.
-# SPDX-FileCopyrightText: 2023, 2024, 2025 KDE euskaratzeko proiektuaren arduraduna <xalba@ni.eus>
+# SPDX-FileCopyrightText: 2023-2026 KDE euskaratzeko proiektuaren arduraduna <xalba@ni.eus>
 #
 # Translators:
-# Iñigo Salvador Azurmendi <xalba@ni.eus>, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025.
+# Iñigo Salvador Azurmendi <xalba@ni.eus>, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: discover\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-04-02 00:45+0000\n"
-"PO-Revision-Date: 2025-04-14 22:51+0200\n"
+"POT-Creation-Date: 2026-04-23 00:45+0000\n"
+"PO-Revision-Date: 2026-04-19 14:33+0200\n"
 "Last-Translator: Iñigo Salvador Azurmendi <xalba@ni.eus>\n"
 "Language-Team: Basque <kde-i18n-eu@kde.org>\n"
 "Language: eu\n"
@@ -18,78 +18,77 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 24.12.3\n"
+"X-Generator: Lokalize 26.04.0\n"
 
 #: notifier/DiscoverNotifier.cpp:218
 #, kde-format
 msgid "View Updates"
 msgstr "Ikusi eguneratzeak"
 
-#: notifier/DiscoverNotifier.cpp:365
+#: notifier/DiscoverNotifier.cpp:363
 #, kde-format
 msgid "Security updates available"
 msgstr "Segurtasun eguneratzeak erabilgarri"
 
-#: notifier/DiscoverNotifier.cpp:367
+#: notifier/DiscoverNotifier.cpp:365
 #, kde-format
 msgid "Updates available"
 msgstr "Eguneratzeak erabilgarri"
 
-#: notifier/DiscoverNotifier.cpp:369
+#: notifier/DiscoverNotifier.cpp:367
 #, kde-format
 msgid "System up to date"
 msgstr "Sistema eguneratuta dago"
 
-#: notifier/DiscoverNotifier.cpp:371
-#, fuzzy, kde-format
-#| msgid "Install Updates and Restart…"
+#: notifier/DiscoverNotifier.cpp:369
+#, kde-format
 msgid "System will install updates when restarted"
-msgstr "Instalatu eguneratzeak eta berrabiatu..."
+msgstr "Sistemak eguneratzeak berrabiatzean instalatuko ditu"
 
-#: notifier/DiscoverNotifier.cpp:373
+#: notifier/DiscoverNotifier.cpp:371
 #, kde-format
 msgid "Offline"
 msgstr "Lerroz kanpo"
 
-#: notifier/DiscoverNotifier.cpp:375
+#: notifier/DiscoverNotifier.cpp:373
 #, kde-format
 msgid "Applying unattended updates…"
 msgstr "Arretarik gabeko eguneratzeak ezartzen..."
 
-#: notifier/DiscoverNotifier.cpp:400
+#: notifier/DiscoverNotifier.cpp:398
 #, kde-format
 msgid "Restart is required"
 msgstr "Berrabiatu beharra dago"
 
-#: notifier/DiscoverNotifier.cpp:401
+#: notifier/DiscoverNotifier.cpp:399
 #, kde-format
 msgid "The system needs to be restarted for the updates to take effect."
 msgstr "Sistemak berrabiatu beharra du eguneratzeak indarrean jartzeko."
 
-#: notifier/DiscoverNotifier.cpp:406
+#: notifier/DiscoverNotifier.cpp:404
 #, kde-format
 msgctxt "@action:button"
 msgid "Update and Restart"
 msgstr "Eguneratu eta berrabiatu"
 
-#: notifier/DiscoverNotifier.cpp:407
+#: notifier/DiscoverNotifier.cpp:405
 #, kde-format
 msgctxt "@action:button"
 msgid "Update and Shut Down"
 msgstr "Eguneratu eta itzali"
 
-#: notifier/DiscoverNotifier.cpp:451
+#: notifier/DiscoverNotifier.cpp:449
 #, kde-format
 msgid "Upgrade available"
 msgstr "Bertsio-berritzea erabilgarri"
 
-#: notifier/DiscoverNotifier.cpp:452
+#: notifier/DiscoverNotifier.cpp:450
 #, kde-format
 msgctxt "A new distro release (name and version) is available for upgrade"
 msgid "%1 is now available."
 msgstr "%1, orain, erabilgarri dago."
 
-#: notifier/DiscoverNotifier.cpp:455
+#: notifier/DiscoverNotifier.cpp:453
 #, kde-format
 msgctxt "@action:button"
 msgid "Upgrade"
@@ -175,10 +174,9 @@ msgid "Restart to apply installed updates"
 msgstr "Berrabiatu instalatutako eguneraketak ezartzeko"
 
 #: notifier/NotifierItem.cpp:65
-#, fuzzy, kde-format
-#| msgid "Click to restart the device"
+#, kde-format
 msgid "Click to restart the system"
-msgstr "Egin klik gailua berrabiarazteko"
+msgstr "Egin klik sistema berrabiarazteko"
 
 #~ msgid "Computer needs to restart"
 #~ msgstr "Ordenagailua berrabiatu beharra dago"

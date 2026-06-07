@@ -163,7 +163,7 @@ DiscoverPage {
         visible: updateModel.toUpdateCount
         icon.name: "update-none"
 
-        readonly property bool hasErrors: page.header.children.some(item => item?.visible && item instanceof Kirigami.InlineMessage)
+        readonly property bool hasErrors: page.header.children.some(item => item?.visible && item instanceof Kirigami.InlineMessage && (item as Kirigami.InlineMessage).type === Kirigami.MessageType.Error)
 
         enabled: page.readyToUpdate && !hasErrors
         onEnabledChanged: enabled => {
@@ -175,11 +175,19 @@ DiscoverPage {
     header: ColumnLayout {
         id: errorsColumn
 
-        spacing: Kirigami.Units.smallSpacing
+        spacing: 0
 
         DiscoverInlineMessage {
             Layout.fillWidth: true
             inlineMessage: Discover.ResourcesModel.inlineMessage
+        }
+
+        Kirigami.InlineMessage {
+            Layout.fillWidth: true
+            position: Kirigami.InlineMessage.Position.Header
+            visible: resourcesUpdatesModel.needsReboot && page.state !== "fetching" && page.state !== "reboot"
+            text: i18nc("@info", "A pending update will be installed when restarting the system.")
+            icon.name: "system-reboot-update"
         }
 
         Repeater {
@@ -448,6 +456,23 @@ DiscoverPage {
                 moreInformationButton.focus = false
             }
 
+            function fallbackUpdateDetailsText() {
+                const resource = listItem.model.resource
+                if (!resource) {
+                    return i18nc("@info", "No release notes were provided for this update.")
+                }
+
+                if (resource.installedVersion.length > 0 && resource.availableVersion.length > 0) {
+                    return i18nc("@info %1 is the old version, %2 is the new version", "No release notes were provided. This package will be updated from %1 to %2.", resource.installedVersion, resource.availableVersion)
+                }
+
+                if (resource.availableVersion.length > 0) {
+                    return i18nc("@info %1 is the new version", "No release notes were provided. This package will be updated to %1.", resource.availableVersion)
+                }
+
+                return i18nc("@info", "No release notes were provided for this update.")
+            }
+
             contentItem: ColumnLayout {
                 id: delegateLayout
 
@@ -562,7 +587,6 @@ DiscoverPage {
                         id: moreInformationButton
                         Layout.alignment: Qt.AlignRight
                         text: i18nc("@action:button minimize the length of this label", "More Info…")
-                        enabled: !resourcesUpdatesModel.isProgressing
                         onClicked: Navigation.openApplication(listItem.model.resource)
                     }
                 }
@@ -571,14 +595,14 @@ DiscoverPage {
                     Layout.fillWidth: true
                     Layout.leftMargin: delegateLayout.extraContentLeadingMargin
                     implicitHeight: view.implicitHeight
-                    visible: listItem.model.extended && listItem.model.changelog.length > 0
+                    visible: listItem.model.extended
                     QQC2.Label {
                         id: view
                         anchors {
                             right: parent.right
                             left: parent.left
                         }
-                        text: listItem.model.changelog
+                        text: listItem.model.changelog.length > 0 ? listItem.model.changelog : listItem.fallbackUpdateDetailsText()
                         textFormat: Text.StyledText
                         wrapMode: Text.WordWrap
                         color: listItem.down ? Kirigami.Theme.highlightedTextColor : Kirigami.Theme.textColor

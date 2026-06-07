@@ -4,6 +4,9 @@
     <file>qml/TopLevelPageData.qml</file>
     <file>qml/ApplicationsListPage.qml</file>
     <file>qml/ApplicationPage.qml</file>
+    <file>qml/ApplicationPageStickyHeader.qml</file>
+    <file>qml/ApplicationPageFullComponent.qml</file>
+    <file>qml/ApplicationPageStickyComponent.qml</file>
     <file>qml/ApplicationResourceButton.qml</file>
     <file>qml/BasicAbstractCard.qml</file>
     <file>qml/ReviewsPage.qml</file>

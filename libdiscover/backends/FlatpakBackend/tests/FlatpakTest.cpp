@@ -88,12 +88,15 @@ private Q_SLOTS:
         auto sourcesModel = SourcesModel::global();
         QVERIFY(sourcesModel);
         auto sourcesBackend = sourcesModel->index(0, 0).data(SourcesModel::SourcesBackend).value<AbstractSourcesBackend *>();
+        connect(sourcesBackend, &AbstractSourcesBackend::passiveMessage, this, [](const QString &message) {
+            qWarning() << message;
+        });
         QVERIFY(sourcesBackend);
         auto sources = sourcesBackend->sources();
         QVERIFY(sources);
         for (auto i = sources->rowCount() - 1; i >= 0; --i) {
             QSignalSpy spy(sources, &QAbstractItemModel::rowsRemoved);
-            const auto id = sources->index(i, 0).data(AbstractSourcesBackend::IdRole).toString();
+            const auto id = sources->index(i, 0).data(AbstractSourcesBackend::DisambiguatedIdRole).toString();
             QVERIFY(sourcesBackend->removeSource(id));
             QVERIFY(spy.count() >= 1 || spy.wait());
         }

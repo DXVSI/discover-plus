@@ -61,6 +61,7 @@
   <name xml:lang="ta">டிஸ்கவர்</name>
   <name xml:lang="tg">Кашфиёт</name>
   <name xml:lang="tr">Keşfet</name>
+  <name xml:lang="ug">Discover</name>
   <name xml:lang="uk">Discover</name>
   <name xml:lang="zh-CN">Discover 软件管理中心</name>
   <name xml:lang="zh-TW">Discover</name>
@@ -100,6 +101,7 @@
   <summary xml:lang="sv">Installera och ta bort program och tillägg</summary>
   <summary xml:lang="ta">செயலிகளையும் துணைநிரல்களையும் நிறுவி நீக்கலாம்</summary>
   <summary xml:lang="tr">Uygulamalar ve eklentiler kurun veya kaldırın</summary>
+  <summary xml:lang="ug">پىروگرامما ۋە قوشۇلما ئورنىتىپ ۋە چىقىرىۋېتىدۇ</summary>
   <summary xml:lang="uk">Встановлення і вилучення програм і додатків</summary>
   <summary xml:lang="zh-CN">安装、移除应用程序和附加组件</summary>
   <summary xml:lang="zh-TW">安裝或移除應用程式與附加功能</summary>
@@ -326,10 +328,10 @@
   </provides>
   <compulsory_for_desktop>KDE</compulsory_for_desktop>
   <releases>
+    <release version="6.6.5" date="2026-05-12"/>
     <release version="6.6.4" date="2026-04-06"/>
     <release version="6.6.3" date="2026-03-17"/>
     <release version="6.6.2" date="2026-03-03"/>
-    <release version="6.6.1" date="2026-02-24"/>
   </releases>
   <content_rating type="oars-1.1"/>
 </component>

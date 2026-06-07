@@ -136,6 +136,7 @@ DiscoverObject::DiscoverObject(const QVariantMap &initialProperties)
         r->setParent(engine);
         connect(r, &DiscoverSettings::installedPageSortingChanged, r, &DiscoverSettings::save);
         connect(r, &DiscoverSettings::appsListPageSortingChanged, r, &DiscoverSettings::save);
+        connect(r, &DiscoverSettings::installedPageCategorizeChanged, r, &DiscoverSettings::save);
         return r;
     });
     qmlRegisterSingletonType<FedoraRepoManager>(uriApp, 1, 0, "FedoraRepoManager", FedoraRepoManager::create);

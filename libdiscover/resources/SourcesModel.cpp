@@ -32,6 +32,7 @@ QHash<int, QByteArray> SourcesModel::roleNames() const
 {
     QHash<int, QByteArray> roles = QConcatenateTablesProxyModel::roleNames();
     roles.insert(AbstractSourcesBackend::IdRole, "sourceId");
+    roles.insert(AbstractSourcesBackend::DisambiguatedIdRole, "disambiguatedSourceId");
     roles.insert(Qt::DisplayRole, "display");
     roles.insert(Qt::ToolTipRole, "toolTip");
     roles.insert(Qt::CheckStateRole, "checkState");
