@@ -54,6 +54,7 @@ Kirigami.Padding {
         ColumnLayout {
             id: infoLayout
             Layout.alignment: fullComponentLayout.stackedMode ? Qt.AlignHCenter : Qt.AlignLeft
+            Layout.fillWidth: !fullComponentLayout.stackedMode
 
             spacing: Kirigami.Units.largeSpacing
 

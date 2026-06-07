@@ -219,7 +219,4 @@ BasicAbstractCard {
             }
         }
     }
-
-    Accessible.name: head.text
-    Accessible.onPressAction: trigger()
 }

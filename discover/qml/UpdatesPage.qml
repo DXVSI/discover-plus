@@ -456,6 +456,23 @@ DiscoverPage {
                 moreInformationButton.focus = false
             }
 
+            function fallbackUpdateDetailsText() {
+                const resource = listItem.model.resource
+                if (!resource) {
+                    return i18nc("@info", "No release notes were provided for this update.")
+                }
+
+                if (resource.installedVersion.length > 0 && resource.availableVersion.length > 0) {
+                    return i18nc("@info %1 is the old version, %2 is the new version", "No release notes were provided. This package will be updated from %1 to %2.", resource.installedVersion, resource.availableVersion)
+                }
+
+                if (resource.availableVersion.length > 0) {
+                    return i18nc("@info %1 is the new version", "No release notes were provided. This package will be updated to %1.", resource.availableVersion)
+                }
+
+                return i18nc("@info", "No release notes were provided for this update.")
+            }
+
             contentItem: ColumnLayout {
                 id: delegateLayout
 
@@ -578,14 +595,14 @@ DiscoverPage {
                     Layout.fillWidth: true
                     Layout.leftMargin: delegateLayout.extraContentLeadingMargin
                     implicitHeight: view.implicitHeight
-                    visible: listItem.model.extended && listItem.model.changelog.length > 0
+                    visible: listItem.model.extended
                     QQC2.Label {
                         id: view
                         anchors {
                             right: parent.right
                             left: parent.left
                         }
-                        text: listItem.model.changelog
+                        text: listItem.model.changelog.length > 0 ? listItem.model.changelog : listItem.fallbackUpdateDetailsText()
                         textFormat: Text.StyledText
                         wrapMode: Text.WordWrap
                         color: listItem.down ? Kirigami.Theme.highlightedTextColor : Kirigami.Theme.textColor

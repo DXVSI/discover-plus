@@ -107,10 +107,6 @@ QQC2.ItemDelegate {
 
     text: Kirigami.MnemonicData.richTextLabel
 
-    QQC2.ToolTip.text: action ? action.text : ""
-    QQC2.ToolTip.visible: hovered && QQC2.ToolTip.text.length > 0
-    QQC2.ToolTip.delay: Kirigami.Units.toolTipDelay
-
     onFocusChanged: {
         if (focus && typeof drawer !== "undefined") {
             drawer.ensureVisible(root)
