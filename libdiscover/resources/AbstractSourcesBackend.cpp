@@ -27,16 +27,16 @@ bool AbstractSourcesBackend::moveSource(const QString &sourceId, int delta)
     return false;
 }
 
-QString AbstractSourcesBackend::firstSourceId() const
+QString AbstractSourcesBackend::firstDisambiguatedSourceId() const
 {
     auto m = const_cast<AbstractSourcesBackend *>(this)->sources();
-    return m->index(0, 0).data(AbstractSourcesBackend::IdRole).toString();
+    return m->index(0, 0).data(AbstractSourcesBackend::DisambiguatedIdRole).toString();
 }
 
-QString AbstractSourcesBackend::lastSourceId() const
+QString AbstractSourcesBackend::lastDisambiguatedSourceId() const
 {
     auto m = const_cast<AbstractSourcesBackend *>(this)->sources();
-    return m->index(m->rowCount() - 1, 0).data(AbstractSourcesBackend::IdRole).toString();
+    return m->index(m->rowCount() - 1, 0).data(AbstractSourcesBackend::DisambiguatedIdRole).toString();
 }
 
 #include "moc_AbstractSourcesBackend.cpp"

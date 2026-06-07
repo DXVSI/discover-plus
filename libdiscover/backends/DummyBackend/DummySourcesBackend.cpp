@@ -77,9 +77,9 @@ bool DummySourcesBackend::moveSource(const QString &sourceId, int delta)
     const auto destRow = row + delta;
     m_sources->insertRow(destRow, prevRow);
     if (destRow == 0 || row == 0)
-        Q_EMIT firstSourceIdChanged();
+        Q_EMIT firstDisambiguatedSourceIdChanged();
     if (destRow == m_sources->rowCount() - 1 || row == m_sources->rowCount() - 1)
-        Q_EMIT lastSourceIdChanged();
+        Q_EMIT lastDisambiguatedSourceIdChanged();
     return true;
 }
 

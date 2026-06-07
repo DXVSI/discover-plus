@@ -15,6 +15,7 @@ ApplicationsListPage {
     showRating: false
     showSize: true
     canNavigate: false
+    canCategorize: true
 
     listHeader: null
 }

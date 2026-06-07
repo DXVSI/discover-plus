@@ -462,7 +462,9 @@ bool FlatpakTransactionThread::end_of_lifed_with_rebase(const char *remote,
             Q_EMIT proceedRequest(i18nc("@title", "Replacement Available"),
                                   xi18nc("@info %1 and 2 are flatpak ids e.g. org.kde.krita (can be rather lengthy though)",
                                          "<resource>%1</resource> is no longer receiving updates.<nl/><nl/>Replace it with the supported version provided by "
-                                         "<resource>%2</resource>?",
+                                         "<resource>%2</resource>?<nl/><nl/>Your settings and data will be automatically transferred to the new application."
+                                         "<nl/><nl/>If the old application is in your panel or Application Launcher favorites, you will need to remove it"
+                                         " and manually add the new one there.",
                                          QString::fromUtf8(ref),
                                          QString::fromUtf8(rebased_to_ref)));
             break;

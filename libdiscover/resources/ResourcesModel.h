@@ -6,6 +6,7 @@
 
 #pragma once
 
+#include "EmitWhenChanged.h"
 #include <QSet>
 #include <QTimer>
 #include <QVector>
@@ -40,31 +41,6 @@ private:
     QSet<QObject *> m_streams;
     QVector<StreamResult> m_results;
     QTimer m_delayedEmission;
-};
-
-template<typename T>
-class EmitWhenChanged
-{
-public:
-    EmitWhenChanged(T initial, const std::function<T()> &get, const std::function<void(T)> &emitChanged)
-        : m_get(get)
-        , m_emitChanged(emitChanged)
-        , m_value(initial)
-    {
-    }
-
-    void reevaluate()
-    {
-        auto newValue = m_get();
-        if (newValue != m_value) {
-            m_value = newValue;
-            m_emitChanged(m_value);
-        }
-    }
-
-    std::function<T()> const m_get;
-    std::function<void(T)> const m_emitChanged;
-    T m_value;
 };
 
 class DISCOVERCOMMON_EXPORT ResourcesModel : public QObject

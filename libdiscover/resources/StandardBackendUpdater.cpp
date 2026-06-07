@@ -20,11 +20,20 @@ StandardBackendUpdater::StandardBackendUpdater(AbstractResourcesBackend *parent)
     , m_backend(parent)
     , m_progress(0)
     , m_lastUpdate(QDateTime())
+    , m_isFetchingUpdates(
+          true,
+          [this] {
+              return m_backend->fetchingUpdatesProgress() != 100 || m_settingUp || !m_hasBeenPopulated;
+          },
+          [this](bool) {
+              Q_EMIT fetchingChanged();
+          })
 {
+    setObjectName(parent->displayName());
     connect(m_backend, &AbstractResourcesBackend::contentsChanged, this, &StandardBackendUpdater::refreshUpdateable);
     connect(m_backend, &AbstractResourcesBackend::invalidated, this, &StandardBackendUpdater::refreshUpdateable);
     connect(m_backend, &AbstractResourcesBackend::resourcesChanged, this, &StandardBackendUpdater::resourcesChanged);
-    connect(m_backend, &AbstractResourcesBackend::fetchingUpdatesProgressChanged, this, &StandardBackendUpdater::fetchingChanged);
+    connect(m_backend, &AbstractResourcesBackend::fetchingUpdatesProgressChanged, &m_isFetchingUpdates, &EmitWhenChanged<bool>::reevaluate);
     connect(m_backend, &AbstractResourcesBackend::resourceRemoved, this, [this](AbstractResource *resource) {
         if (m_upgradeable.remove(resource)) {
             Q_EMIT updatesCountChanged(updatesCount());
@@ -125,7 +134,7 @@ AbstractBackendUpdater::State toUpdateState(Transaction *t)
 
 bool StandardBackendUpdater::isFetchingUpdates() const
 {
-    return m_backend->fetchingUpdatesProgress() != 100 || m_settingUp;
+    return m_isFetchingUpdates.m_value;
 }
 
 void StandardBackendUpdater::transactionProgressChanged()
@@ -190,7 +199,7 @@ void StandardBackendUpdater::refreshUpdateable()
     m_timer.stop();
     setSettingUp(true);
     Q_EMIT progressingChanged(true);
-    Q_EMIT fetchingChanged();
+    m_isFetchingUpdates.reevaluate();
     AbstractResourcesBackend::Filters f;
     f.state = AbstractResource::Upgradeable;
     m_upgradeable.clear();
@@ -211,7 +220,7 @@ void StandardBackendUpdater::refreshUpdateable()
         setSettingUp(false);
         Q_EMIT updatesCountChanged(updatesCount());
         Q_EMIT progressingChanged(false);
-        Q_EMIT fetchingChanged();
+        m_isFetchingUpdates.reevaluate();
     });
 }
 
@@ -317,6 +326,9 @@ quint64 StandardBackendUpdater::downloadSpeed() const
 
 void StandardBackendUpdater::setSettingUp(bool settingUp)
 {
+    if (!settingUp) {
+        m_hasBeenPopulated = true;
+    }
     if (m_settingUp == settingUp) {
         return;
     }

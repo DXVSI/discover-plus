@@ -16,6 +16,7 @@ class DISCOVERCOMMON_EXPORT TransactionModel : public QAbstractListModel
 {
     Q_OBJECT
     Q_PROPERTY(int progress READ progress NOTIFY progressChanged)
+    Q_PROPERTY(bool hasActiveTransactions READ hasActiveTransactions NOTIFY activeTransactionsChanged)
     Q_PROPERTY(int count READ rowCount NOTIFY countChanged)
     Q_PROPERTY(QString mainTransactionText READ mainTransactionText NOTIFY mainTransactionTextChanged)
 public:
@@ -51,6 +52,7 @@ public:
         return m_transactions.contains(transaction);
     }
     int progress() const;
+    bool hasActiveTransactions() const;
     QVector<Transaction *> transactions() const
     {
         return m_transactions;
@@ -70,6 +72,7 @@ Q_SIGNALS:
     void transactionRemoved(Transaction *transaction);
     void countChanged();
     void progressChanged();
+    void activeTransactionsChanged();
     void proceedRequest(Transaction *transaction, const QString &title, const QString &description);
     void mainTransactionTextChanged();
 

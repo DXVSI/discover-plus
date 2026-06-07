@@ -163,7 +163,7 @@ DiscoverPage {
         visible: updateModel.toUpdateCount
         icon.name: "update-none"
 
-        readonly property bool hasErrors: page.header.children.some(item => item?.visible && item instanceof Kirigami.InlineMessage)
+        readonly property bool hasErrors: page.header.children.some(item => item?.visible && item instanceof Kirigami.InlineMessage && (item as Kirigami.InlineMessage).type === Kirigami.MessageType.Error)
 
         enabled: page.readyToUpdate && !hasErrors
         onEnabledChanged: enabled => {
@@ -175,11 +175,19 @@ DiscoverPage {
     header: ColumnLayout {
         id: errorsColumn
 
-        spacing: Kirigami.Units.smallSpacing
+        spacing: 0
 
         DiscoverInlineMessage {
             Layout.fillWidth: true
             inlineMessage: Discover.ResourcesModel.inlineMessage
+        }
+
+        Kirigami.InlineMessage {
+            Layout.fillWidth: true
+            position: Kirigami.InlineMessage.Position.Header
+            visible: resourcesUpdatesModel.needsReboot && page.state !== "fetching" && page.state !== "reboot"
+            text: i18nc("@info", "A pending update will be installed when restarting the system.")
+            icon.name: "system-reboot-update"
         }
 
         Repeater {
@@ -562,7 +570,6 @@ DiscoverPage {
                         id: moreInformationButton
                         Layout.alignment: Qt.AlignRight
                         text: i18nc("@action:button minimize the length of this label", "More Info…")
-                        enabled: !resourcesUpdatesModel.isProgressing
                         onClicked: Navigation.openApplication(listItem.model.resource)
                     }
                 }

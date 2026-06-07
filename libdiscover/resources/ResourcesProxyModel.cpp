@@ -35,6 +35,7 @@ const QHash<int, QByteArray> ResourcesProxyModel::s_roles = {{NameRole, "name"},
                                                              {CanUpgrade, "canUpgrade"},
                                                              {PackageNameRole, "packageName"},
                                                              {CategoryRole, "category"},
+                                                             {CategoryNameRole, "categoryName"},
                                                              {SectionRole, "section"},
                                                              {MimeTypes, "mimetypes"},
                                                              {LongDescriptionRole, "longDescription"},
@@ -402,10 +403,14 @@ bool ResourcesProxyModel::orderedLessThan(const StreamResult &left, const Stream
 {
     // (role, order) pair
     using SortCombination = std::pair<Roles, Qt::SortOrder>;
-    const std::array<SortCombination, 2> sortFallbackChain = {{
+    std::vector<SortCombination> sortFallbackChain = {{
         {m_sortRole, m_sortOrder},
         {NameRole, Qt::AscendingOrder},
     }};
+
+    if (m_categorize) {
+        sortFallbackChain.insert(sortFallbackChain.begin(), {CategoryRole, Qt::AscendingOrder});
+    }
 
     for (const auto &[role, order] : sortFallbackChain) {
         QVariant leftValue = roleToOrderedValue(left, role);
@@ -546,6 +551,23 @@ QVariant ResourcesProxyModel::roleToValue(const StreamResult &result, int role) 
 {
     const auto resource = result.resource;
     switch (role) {
+    case CategoryRole: {
+        return QVariant::fromValue(resource->type());
+    }
+    case CategoryNameRole: {
+        switch (resource->type()) {
+        case AbstractResource::Type::Application:
+            return i18nc("@label", "Applications");
+        case AbstractResource::Type::Addon:
+            return i18nc("@label", "Addons");
+        case AbstractResource::Type::ApplicationSupport:
+            return i18nc("@label", "Application Support");
+        case AbstractResource::Type::System:
+            return i18nc("@label", "System");
+        }
+        Q_UNREACHABLE();
+        break;
+    }
     case ApplicationRole:
         return QVariant::fromValue<QObject *>(resource);
     case RatingPointsRole: {
@@ -811,6 +833,21 @@ ResourcesCount::ResourcesCount(int number, const QString &string)
     , m_number(number)
     , m_string(string)
 {
+}
+
+void ResourcesProxyModel::setCategorize(bool categorize)
+{
+    if (categorize == m_categorize) {
+        return;
+    }
+    m_categorize = categorize;
+    invalidateSorting();
+    Q_EMIT categorizeChanged();
+}
+
+bool ResourcesProxyModel::categorize() const
+{
+    return m_categorize;
 }
 
 #include "moc_ResourcesProxyModel.cpp"

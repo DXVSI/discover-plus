@@ -1,10 +1,10 @@
-# SPDX-FileCopyrightText: 2022, 2023, 2024 Ryuichi Yamada <ryuichi_ya220@outlook.jp>
+# SPDX-FileCopyrightText: 2022, 2023, 2024, 2026 Ryuichi Yamada <ryuichi_ya220@outlook.jp>
 msgid ""
 msgstr ""
 "Project-Id-Version: discover\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-04-02 00:45+0000\n"
-"PO-Revision-Date: 2024-01-08 22:43+0900\n"
+"PO-Revision-Date: 2026-05-24 17:33+0900\n"
 "Last-Translator: Ryuichi Yamada <ryuichi_ya220@outlook.jp>\n"
 "Language-Team: Japanese <kde-jp@kde.org>\n"
 "Language: ja\n"
@@ -14,7 +14,7 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Accelerator-Marker: &\n"
 "X-Text-Markup: kde4\n"
-"X-Generator: Lokalize 23.08.4\n"
+"X-Generator: Lokalize 25.12.3\n"
 
 #: kcm/ui/main.qml:40
 #, kde-format
@@ -32,12 +32,7 @@ msgid "Automatically"
 msgstr "自動"
 
 #: kcm/ui/main.qml:58
-#, fuzzy, kde-kuit-format
-#| msgctxt "@info"
-#| msgid ""
-#| "Software updates will be downloaded automatically when they become "
-#| "available. Updates for applications will be installed immediately, while "
-#| "system updates will be installed the next time the computer is restarted."
+#, kde-kuit-format
 msgctxt "@info"
 msgid ""
 "Software updates will be downloaded automatically when they become "
@@ -45,8 +40,8 @@ msgid ""
 "updates for the system will be installed the next time it’s restarted."
 msgstr ""
 "ソフトウェアの更新は利用可能になったとき自動的にダウンロードされます。アプリ"
-"ケーションの更新は直ちにインストールされますが、システムの更新は次回のコン"
-"ピュータ再起動時にインストールされます。"
+"ケーションの更新は直ちにインストールされますが、システムの更新は次回の再起動"
+"時にインストールされます。"
 
 #: kcm/ui/main.qml:69
 #, kde-format

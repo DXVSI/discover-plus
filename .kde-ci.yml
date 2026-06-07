@@ -38,5 +38,5 @@ RuntimeDependencies:
     'sdk/selenium-webdriver-at-spi': '@same'
 
 Options:
- require-passing-tests-on: ['Linux', 'FreeBSD']
+ require-passing-tests-on: ['@all']
  cmake-options: -DBUILD_RpmOstreeBackend=ON -DBUILD_HoloBackend=ON

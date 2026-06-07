@@ -1,13 +1,13 @@
-# Copyright (C) YEAR This file is copyright:
+# Copyright (C) 2026 This file is copyright:
 # This file is distributed under the same license as the discover package.
-# Shinjo Park <kde@peremen.name>, 2021, 2022, 2023.
+# SPDX-FileCopyrightText: 2021, 2022, 2023, 2026 Shinjo Park <kde@peremen.name>
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: discover\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-04-02 00:45+0000\n"
-"PO-Revision-Date: 2023-10-08 22:34+0200\n"
+"PO-Revision-Date: 2026-04-26 23:01+0200\n"
 "Last-Translator: Shinjo Park <kde@peremen.name>\n"
 "Language-Team: Korean <kde-kr@kde.org>\n"
 "Language: ko\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Lokalize 22.12.3\n"
+"X-Generator: Lokalize 25.08.1\n"
 
 #: kcm/ui/main.qml:40
 #, kde-format
@@ -33,12 +33,7 @@ msgid "Automatically"
 msgstr "자동으로"
 
 #: kcm/ui/main.qml:58
-#, fuzzy, kde-kuit-format
-#| msgctxt "@info"
-#| msgid ""
-#| "Software updates will be downloaded automatically when they become "
-#| "available. Updates for applications will be installed immediately, while "
-#| "system updates will be installed the next time the computer is restarted."
+#, kde-kuit-format
 msgctxt "@info"
 msgid ""
 "Software updates will be downloaded automatically when they become "
@@ -46,8 +41,7 @@ msgid ""
 "updates for the system will be installed the next time it’s restarted."
 msgstr ""
 "소프트웨어 업데이트를 사용할 수 있을 때 자동으로 다운로드합니다. 앱 업데이트"
-"는 즉시 설치되며, 시스템 업데이트는 다음에 컴퓨터를 다시 시작할 때 설치됩니"
-"다."
+"는 즉시 설치되며, 시스템 업데이트는 다음에 다시 시작할 때 설치됩니다."
 
 #: kcm/ui/main.qml:69
 #, kde-format

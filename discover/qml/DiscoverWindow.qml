@@ -2,6 +2,7 @@ pragma ComponentBehavior: Bound
 
 import QtQml.Models
 import QtQuick
+import QtNetwork
 import QtQuick.Controls as QQC2
 import QtQuick.Layouts
 import org.kde.discover as Discover
@@ -53,6 +54,10 @@ Kirigami.ApplicationWindow {
             !DiscoverApp.FedoraRepoManager.firstRunCompleted &&
             DiscoverApp.FedoraRepoManager.setupNeeded) {
             firstRunDialogLoader.active = true
+        }
+
+        if (NetworkInformation.reachability !== NetworkInformation.Reachability.Online) {
+            connectionDialog.open();
         }
     }
 
@@ -362,6 +367,18 @@ Kirigami.ApplicationWindow {
         }
     }
 
+    Kirigami.PromptDialog {
+        id: connectionDialog
+
+        dialogType: Kirigami.PromptDialog.Warning
+
+        title: i18nc("@title:dialog", "Discover is Offline")
+        subtitle: i18nc("@info", "Please connect to a network to install applications and update the system.")
+
+        standardButtons: Kirigami.Dialog.Ok
+
+    }
+
     Kirigami.Dialog {
         id: messagesSheet
 
@@ -402,7 +419,7 @@ Kirigami.ApplicationWindow {
                         id: messages
 
                         onCountChanged: {
-                            messagesSheet.visible = (count > 0);
+                            messagesSheet.visible = (count > 0) && !connectionDialog.visible;
                             if (count > 0 && messagesSheetView.currentIndex === -1) {
                                 messagesSheetView.currentIndex = 0;
                             }

@@ -153,12 +153,8 @@ bool ResourcesModel::addResourcesBackend(AbstractResourcesBackend *backend)
     connect(backend, &AbstractResourcesBackend::contentsChanged, this, &ResourcesModel::callerContentsChanged);
     connect(backend, &AbstractResourcesBackend::allDataChanged, this, &ResourcesModel::updateCaller);
     connect(backend, &AbstractResourcesBackend::resourcesChanged, this, &ResourcesModel::resourceDataChanged);
-    connect(backend, &AbstractResourcesBackend::updatesCountChanged, this, [this] {
-        m_updatesCount.reevaluate();
-    });
-    connect(backend, &AbstractResourcesBackend::fetchingUpdatesProgressChanged, this, [this] {
-        m_fetchingUpdatesProgress.reevaluate();
-    });
+    connect(backend, &AbstractResourcesBackend::updatesCountChanged, &m_updatesCount, &EmitWhenChanged<int>::reevaluate);
+    connect(backend, &AbstractResourcesBackend::fetchingUpdatesProgressChanged, &m_fetchingUpdatesProgress, &EmitWhenChanged<int>::reevaluate);
     connect(backend, &AbstractResourcesBackend::resourceRemoved, this, &ResourcesModel::resourceRemoved);
     connect(backend, &AbstractResourcesBackend::passiveMessage, this, &ResourcesModel::passiveMessage);
     connect(backend, &AbstractResourcesBackend::inlineMessageChanged, this, &ResourcesModel::setInlineMessage);

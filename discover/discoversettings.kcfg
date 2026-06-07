@@ -4,5 +4,6 @@
   <group name="DiscoverUI">
     <entry name="appsListPageSorting" type="Int"><default>ResourcesProxyModel::RatingCountRole</default></entry>
     <entry name="installedPageSorting" type="Int"><default>ResourcesProxyModel::NameRole</default></entry>
+    <entry name="installedPageCategorize" type="Bool"><default>true</default></entry>
   </group>
 </kcfg>

@@ -8,6 +8,7 @@
 
 #include "AbstractResourcesBackend.h"
 #include "discovercommon_export.h"
+#include <EmitWhenChanged.h>
 #include <QDateTime>
 #include <QSet>
 #include <QTimer>
@@ -68,10 +69,12 @@ private:
     QSet<AbstractResource *> m_upgradeable;
     AbstractResourcesBackend *const m_backend;
     QSet<AbstractResource *> m_pendingResources;
+    bool m_hasBeenPopulated = false;
     bool m_settingUp = false;
     qreal m_progress;
     QDateTime m_lastUpdate;
     QTimer m_timer;
     bool m_canCancel = false;
     bool m_anyTransactionFailed = false;
+    EmitWhenChanged<bool> m_isFetchingUpdates;
 };

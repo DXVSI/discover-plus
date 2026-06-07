@@ -126,6 +126,7 @@ public:
     QString longDescription() override;
     QString name() const override;
     QString origin() const override;
+    QString disambiguatedOrigin() const override;
     QString displayOrigin() const override;
     QString packageName() const override;
     PropertyState propertyState(PropertyKind kind) const;

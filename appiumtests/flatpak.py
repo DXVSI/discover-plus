@@ -60,10 +60,13 @@ class FlatpakTest(unittest.TestCase):
         installButton = self.driver.find_element(by=AppiumBy.XPATH, value="//*[@name='Install from Flathub (user)' and contains(@accessibility-id, 'Button')]")
         installButton.click()
 
-        removeButton = WebDriverWait(self.driver, 120).until(
-            EC.element_to_be_clickable((AppiumBy.XPATH, "//*[@name='Remove' and contains(@accessibility-id, 'Button')]"))
+        removeButtons = WebDriverWait(self.driver, 120).until(
+            EC.visibility_of_any_elements_located((AppiumBy.XPATH, "//*[@name='Remove' and contains(@accessibility-id, 'Button')]"))
         )
-        removeButton.click()
+        for button in removeButtons:
+            if button.is_enabled():
+                button.click()
+                break
 
         # should find install button again after removal
         WebDriverWait(self.driver, 30).until(

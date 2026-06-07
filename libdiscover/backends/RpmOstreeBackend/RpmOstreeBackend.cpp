@@ -550,7 +550,7 @@ AbstractBackendUpdater *RpmOstreeBackend::backendUpdater() const
 
 QString RpmOstreeBackend::displayName() const
 {
-    return QStringLiteral("rpm-ostree");
+    return i18n("Operating System");
 }
 
 bool RpmOstreeBackend::hasApplications() const

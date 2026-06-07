@@ -24,13 +24,18 @@ BasicAbstractCard {
 
     readonly property bool appIsFromNonDefaultBackend: Discover.ResourcesModel.currentApplicationBackend !== application.backend && application.backend.hasApplications
     showClickFeedback: true
+    activeFocusOnTab: true
+
+    Accessible.name: application.name
+    Accessible.role: Accessible.ListItem
+    Accessible.onPressAction: trigger()
 
     function trigger() {
         ListView.currentIndex = index
         Navigation.openApplication(application)
     }
     padding: Kirigami.Units.largeSpacing * 2
-    highlighted: ListView.isCurrentItem
+    highlighted: ListView.isCurrentItem || focus
 
     Keys.onReturnPressed: trigger()
     onClicked: trigger()

@@ -189,9 +189,21 @@ public:
         return m_remote ? QString::fromUtf8(flatpak_remote_get_name(m_remote)) : QString();
     }
 
+    QString disambiguatedName() const
+    {
+        if (m_remote) {
+            return QString::fromUtf8(flatpak_remote_get_name(m_remote)) + (flatpak_installation_get_is_user(m_installation) ? u"-user"_s : u"-system"_s);
+        }
+        return {};
+    }
+
     QString title() const
     {
         auto ret = m_remote ? copyAndFree(flatpak_remote_get_title(m_remote)) : QString();
+
+        if (ret.isEmpty()) {
+            ret = name();
+        }
         if (flatpak_installation_get_is_user(m_installation)) {
             ret = i18nc("user denotes this as user-scoped flatpak repo", "%1 (user)", ret);
         }
@@ -1491,7 +1503,7 @@ bool FlatpakBackend::flatpakResourceLessThan(AbstractResource *left, AbstractRes
         return left->isInstalled();
     }
     if (left->origin() != right->origin()) {
-        return m_sources->originIndex(left->origin()) < m_sources->originIndex(right->origin());
+        return m_sources->originIndex(left->disambiguatedOrigin()) < m_sources->originIndex(right->disambiguatedOrigin());
     }
 
     const auto leftPoints = left->rating().ratingPoints();

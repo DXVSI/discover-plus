@@ -13,6 +13,7 @@ UserFeedback.Provider {
         Kirigami.Action {
             text: i18n("Submit Usage Information")
             tooltip: i18n("Sends anonymized usage information to KDE so we can better understand our users. For more information see https://kde.org/privacypolicy-apps.php.")
+            icon.name: "document-send"
             displayHint: Kirigami.DisplayHint.AlwaysHide
             onTriggered: {
                 provider.submit()
@@ -29,6 +30,7 @@ UserFeedback.Provider {
         Kirigami.Action {
             text: i18n("Configure Updates…")
             displayHint: Kirigami.DisplayHint.AlwaysHide
+            icon.name: "configure"
             onTriggered: {
                 KCMUtils.KCMLauncher.openSystemSettings("kcm_updates");
             }
@@ -55,7 +57,7 @@ UserFeedback.Provider {
     }
 
     onShowEncouragementMessage: {
-        showPassiveNotification(i18n("You can help us improving this application by sharing statistics and participate in surveys."), 5000, i18n("Contribute…"), encouraged)
+        showPassiveNotification(i18n("You can help KDE improve Discover by sharing anonymous information on how you use it."), 5000, i18n("Contribute…"), encouraged)
     }
 
     onSurveyAvailable: {
