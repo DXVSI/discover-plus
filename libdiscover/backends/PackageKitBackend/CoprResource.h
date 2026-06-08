@@ -4,11 +4,17 @@
 #include "PackageKitResource.h"
 #include "CoprClient.h"
 
+#include <QVariantList>
+
 class PackageKitBackend;
 
 class CoprResource : public PackageKitResource
 {
     Q_OBJECT
+    Q_PROPERTY(bool isCoprProjectResource READ isCoprProjectResource CONSTANT)
+    Q_PROPERTY(bool coprProjectPackagesLoaded READ coprProjectPackagesLoaded NOTIFY projectPackagesChanged)
+    Q_PROPERTY(QVariantList coprProjectPackages READ coprProjectPackages NOTIFY projectPackagesChanged)
+    Q_PROPERTY(QString selectedCoprPackageName READ selectedCoprPackageName NOTIFY projectPackagesChanged)
 
 public:
     explicit CoprResource(const CoprPackageInfo &packageInfo, AbstractResourcesBackend *parent);
@@ -26,6 +32,7 @@ public:
     QString author() const override;
     QString sourceIcon() const override;
     QDate releaseDate() const override;
+    QStringList topObjects() const override;
 
     AbstractResource::State state() override;
     QVariant icon() const override;
@@ -41,10 +48,28 @@ public:
     void setInstalledStateFromSystem(bool installed);
     void setProjectPackages(const QList<CoprPackageInfo> &packages);
     Q_INVOKABLE void fetchProjectPackages();
+    Q_INVOKABLE void selectCoprProjectPackage(const QString &packageName);
     void checkInstalledState();
 
     bool canExecute() const override;
     void invokeApplication() const override;
+
+    bool isCoprProjectResource() const
+    {
+        return m_isProjectResource;
+    }
+    bool coprProjectPackagesLoaded() const
+    {
+        return m_projectPackagesLoaded;
+    }
+    QVariantList coprProjectPackages() const;
+    QString selectedCoprPackageName() const
+    {
+        return m_installPackageName;
+    }
+
+Q_SIGNALS:
+    void projectPackagesChanged();
 
 private:
     QString findDesktopFile() const;

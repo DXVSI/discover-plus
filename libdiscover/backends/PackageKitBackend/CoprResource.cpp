@@ -9,6 +9,7 @@
 #include <QDirIterator>
 #include <QFileInfo>
 #include <QLocale>
+#include <QVariantMap>
 
 #include <algorithm>
 
@@ -356,12 +357,39 @@ QUrl CoprResource::homepage()
     return QUrl(QStringLiteral("https://copr.fedorainfracloud.org/coprs/%1/%2/").arg(m_owner, m_project));
 }
 
+QStringList CoprResource::topObjects() const
+{
+    QStringList objects = PackageKitResource::topObjects();
+    if (m_isProjectResource) {
+        objects.append(QStringLiteral("qrc:/qml/CoprPackageSelector.qml"));
+    }
+    return objects;
+}
+
+QVariantList CoprResource::coprProjectPackages() const
+{
+    QVariantList packages;
+    packages.reserve(m_projectPackages.size());
+
+    for (const CoprPackageInfo &package : m_projectPackages) {
+        QVariantMap item;
+        item.insert(QStringLiteral("name"), package.name);
+        item.insert(QStringLiteral("version"), package.version);
+        item.insert(QStringLiteral("latestBuildState"), package.latestBuildState);
+        item.insert(QStringLiteral("availableChroots"), package.availableChroots);
+        item.insert(QStringLiteral("isAvailableForCurrentFedora"), package.isAvailableForCurrentFedora);
+        packages.append(item);
+    }
+
+    return packages;
+}
+
 AbstractResource::State CoprResource::state()
 {
     if (m_isInstalled) {
         return AbstractResource::Installed;
     }
-    if (m_installPackageName.isEmpty() && m_isProjectResource && !m_projectPackagesLoaded) {
+    if (m_installPackageName.isEmpty() && m_isProjectResource) {
         return AbstractResource::Broken;
     }
 
@@ -404,22 +432,55 @@ void CoprResource::setProjectPackages(const QList<CoprPackageInfo> &packages)
         }
     }
 
-    m_availableChroots = mergedChroots(m_availableChroots, m_projectPackages);
-    m_isAvailableForCurrentFedora = std::any_of(m_availableChroots.cbegin(), m_availableChroots.cend(), [this](const QString &chroot) {
-        if (auto pkBackend = qobject_cast<PackageKitBackend *>(backend())) {
-            if (auto client = pkBackend->coprClient()) {
-                return chroot == client->getCurrentChroot();
+    if (m_installPackageName.isEmpty()) {
+        m_availableChroots = mergedChroots(m_availableChroots, m_projectPackages);
+        m_isAvailableForCurrentFedora = std::any_of(m_availableChroots.cbegin(), m_availableChroots.cend(), [this](const QString &chroot) {
+            if (auto pkBackend = qobject_cast<PackageKitBackend *>(backend())) {
+                if (auto client = pkBackend->coprClient()) {
+                    return chroot == client->getCurrentChroot();
+                }
             }
-        }
-        return false;
-    });
+            return false;
+        });
+    }
 
     Q_EMIT longDescriptionChanged();
     Q_EMIT versionsChanged();
+    Q_EMIT projectPackagesChanged();
     if (previousState != state() || previousInstallPackageName != m_installPackageName) {
         Q_EMIT stateChanged();
     }
     if (previousInstallPackageName != m_installPackageName && !m_installPackageName.isEmpty()) {
+        QMetaObject::invokeMethod(this, &CoprResource::checkInstalledState, Qt::QueuedConnection);
+    }
+}
+
+void CoprResource::selectCoprProjectPackage(const QString &packageName)
+{
+    if (!m_isProjectResource || packageName.isEmpty()) {
+        return;
+    }
+
+    const auto it = std::find_if(m_projectPackages.cbegin(), m_projectPackages.cend(), [&packageName](const CoprPackageInfo &package) {
+        return package.name == packageName;
+    });
+    if (it == m_projectPackages.cend()) {
+        return;
+    }
+
+    const AbstractResource::State previousState = state();
+    const QString previousInstallPackageName = m_installPackageName;
+
+    m_installPackageName = it->name;
+    applyPackageDetails(*it);
+
+    Q_EMIT longDescriptionChanged();
+    Q_EMIT versionsChanged();
+    Q_EMIT projectPackagesChanged();
+    if (previousState != state() || previousInstallPackageName != m_installPackageName) {
+        Q_EMIT stateChanged();
+    }
+    if (previousInstallPackageName != m_installPackageName) {
         QMetaObject::invokeMethod(this, &CoprResource::checkInstalledState, Qt::QueuedConnection);
     }
 }
@@ -441,39 +502,22 @@ const CoprPackageInfo *CoprResource::preferredProjectPackage() const
 
 void CoprResource::applyPackageDetails(const CoprPackageInfo &package)
 {
-    if (m_version.isEmpty()) {
-        m_version = package.version;
+    m_version = package.version;
+    m_latestBuildState = package.latestBuildState;
+    m_latestBuildRepoUrl = package.latestBuildRepoUrl;
+    m_latestBuildSubmitter = package.latestBuildSubmitter;
+    m_latestBuildSubmittedOn = package.latestBuildSubmittedOn;
+    m_latestBuildStartedOn = package.latestBuildStartedOn;
+    m_latestBuildEndedOn = package.latestBuildEndedOn;
+    m_sourceType = package.sourceType;
+    m_sourceUrl = package.sourceUrl;
+    m_sourceSpec = package.sourceSpec;
+    m_sourceSubdirectory = package.sourceSubdirectory;
+
+    if (!package.availableChroots.isEmpty()) {
+        m_availableChroots = package.availableChroots;
     }
-    if (m_latestBuildState.isEmpty()) {
-        m_latestBuildState = package.latestBuildState;
-    }
-    if (m_latestBuildRepoUrl.isEmpty()) {
-        m_latestBuildRepoUrl = package.latestBuildRepoUrl;
-    }
-    if (m_latestBuildSubmitter.isEmpty()) {
-        m_latestBuildSubmitter = package.latestBuildSubmitter;
-    }
-    if (!m_latestBuildSubmittedOn.isValid()) {
-        m_latestBuildSubmittedOn = package.latestBuildSubmittedOn;
-    }
-    if (!m_latestBuildStartedOn.isValid()) {
-        m_latestBuildStartedOn = package.latestBuildStartedOn;
-    }
-    if (!m_latestBuildEndedOn.isValid()) {
-        m_latestBuildEndedOn = package.latestBuildEndedOn;
-    }
-    if (m_sourceType.isEmpty()) {
-        m_sourceType = package.sourceType;
-    }
-    if (m_sourceUrl.isEmpty()) {
-        m_sourceUrl = package.sourceUrl;
-    }
-    if (m_sourceSpec.isEmpty()) {
-        m_sourceSpec = package.sourceSpec;
-    }
-    if (m_sourceSubdirectory.isEmpty()) {
-        m_sourceSubdirectory = package.sourceSubdirectory;
-    }
+    m_isAvailableForCurrentFedora = package.isAvailableForCurrentFedora;
 }
 
 QVariant CoprResource::icon() const
