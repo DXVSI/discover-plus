@@ -91,6 +91,10 @@ public:
         LongDescriptionRole,
         SourceIconRole,
         ReleaseDateRole,
+        RpmFusionSourceRole,
+        FedoraLinuxSourceRole,
+        FedoraFlatpaksSourceRole,
+        FlathubSourceRole,
         // This is better that's always the last value as this one should be never saved to disk
         SearchRelevanceRole
     };
