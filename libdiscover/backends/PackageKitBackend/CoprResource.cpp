@@ -13,38 +13,6 @@
 
 #include <algorithm>
 
-static QString htmlParagraphBreak()
-{
-    return QStringLiteral("<br><br>");
-}
-
-static QString htmlLabel(const QString &label)
-{
-    return QStringLiteral("<b>%1</b>").arg(label.toHtmlEscaped());
-}
-
-static void appendTextDetail(QString &html, const QString &label, const QString &value)
-{
-    if (value.isEmpty()) {
-        return;
-    }
-
-    html += QStringLiteral("<br>");
-    html += htmlLabel(label) + QStringLiteral(" ") + value.toHtmlEscaped();
-}
-
-static void appendLinkDetail(QString &html, const QString &label, const QString &url, const QString &text = {})
-{
-    if (url.isEmpty()) {
-        return;
-    }
-
-    const QString linkText = text.isEmpty() ? url : text;
-    html += QStringLiteral("<br>");
-    html += htmlLabel(label) + QStringLiteral(" ");
-    html += QStringLiteral("<a href=\"%1\">%2</a>").arg(url.toHtmlEscaped(), linkText.toHtmlEscaped());
-}
-
 static QString formatBuildDateTime(const QDateTime &dateTime)
 {
     if (!dateTime.isValid()) {
@@ -91,11 +59,6 @@ static QString formattedChrootsSummary(const QStringList &chroots)
     return QStringLiteral("Fedora %1 (%2)").arg(fedoraVersions.join(QStringLiteral(", ")), architectures.join(QStringLiteral(", ")));
 }
 
-static QString boolText(bool value)
-{
-    return value ? i18nc("@item", "yes") : i18nc("@item", "no");
-}
-
 static QStringList mergedChroots(const QStringList &baseChroots, const QList<CoprPackageInfo> &packages)
 {
     QStringList chroots = baseChroots;
@@ -107,24 +70,6 @@ static QStringList mergedChroots(const QStringList &baseChroots, const QList<Cop
         }
     }
     return chroots;
-}
-
-static QString packageSummaryLine(const CoprPackageInfo &package)
-{
-    QString summary = package.name.toHtmlEscaped();
-    if (!package.version.isEmpty()) {
-        summary += QStringLiteral(" ") + QStringLiteral("(%1)").arg(package.version.toHtmlEscaped());
-    }
-    if (!package.latestBuildState.isEmpty()) {
-        summary += QStringLiteral(" - ") + i18n("latest build: %1", package.latestBuildState.toHtmlEscaped());
-    }
-
-    const QString chroots = formattedChrootsSummary(package.availableChroots);
-    if (!chroots.isEmpty()) {
-        summary += QStringLiteral(" - ") + chroots.toHtmlEscaped();
-    }
-
-    return summary;
 }
 
 CoprResource::CoprResource(const CoprPackageInfo &packageInfo, AbstractResourcesBackend *parent)
@@ -197,131 +142,11 @@ QString CoprResource::comment()
 
 QString CoprResource::longDescription()
 {
-    QString desc;
-
     if (!m_description.isEmpty()) {
-        desc = m_description;
-    } else {
-        desc = i18n("Package from COPR repository %1/%2", m_owner, m_project);
+        return m_description;
     }
 
-    desc += htmlParagraphBreak();
-    desc += QStringLiteral("<hr>");
-    desc += htmlParagraphBreak();
-    desc += htmlLabel(i18n("COPR Details"));
-
-    appendTextDetail(desc, i18n("Repository:"), m_projectFullName.isEmpty() ? QStringLiteral("%1/%2").arg(m_owner, m_project) : m_projectFullName);
-    if (!m_isProjectResource) {
-        appendTextDetail(desc, i18n("Package:"), packageName());
-    } else if (m_projectPackages.isEmpty()) {
-        appendTextDetail(desc, i18n("Install target:"), i18n("Unknown until package metadata is loaded"));
-        if (m_projectPackagesRequested) {
-            appendTextDetail(desc, i18n("Project packages:"), i18n("Loading or unavailable"));
-        }
-    } else {
-        if (m_installPackageName.isEmpty()) {
-            appendTextDetail(desc, i18n("Install target:"), i18n("Select a specific package result to install"));
-        } else {
-            appendTextDetail(desc, i18n("Install target:"), m_installPackageName);
-        }
-        desc += QStringLiteral("<br>");
-        desc += htmlLabel(i18n("Packages in this project:"));
-        desc += QStringLiteral("<ul>");
-        for (const CoprPackageInfo &package : m_projectPackages) {
-            desc += QStringLiteral("<li>") + packageSummaryLine(package) + QStringLiteral("</li>");
-        }
-        desc += QStringLiteral("</ul>");
-    }
-    appendTextDetail(desc, i18n("Latest version:"), m_version);
-    appendTextDetail(desc, i18n("Latest build:"), m_latestBuildState);
-    appendTextDetail(desc, i18n("Submitted:"), formatBuildDateTime(m_latestBuildSubmittedOn));
-    appendTextDetail(desc, i18n("Started:"), formatBuildDateTime(m_latestBuildStartedOn));
-    appendTextDetail(desc, i18n("Finished:"), formatBuildDateTime(m_latestBuildEndedOn));
-    appendTextDetail(desc, i18n("Submitter:"), m_latestBuildSubmitter);
-    appendLinkDetail(desc, i18n("Build repository:"), m_latestBuildRepoUrl);
-
-    const QStringList allChroots = mergedChroots(m_availableChroots, m_projectPackages);
-    const QString chrootsSummary = formattedChrootsSummary(allChroots);
-    appendTextDetail(desc, i18n("Available for:"), chrootsSummary);
-
-    desc += htmlParagraphBreak();
-    if (allChroots.isEmpty()) {
-        desc += QStringLiteral("<span style='font-weight: bold;'>");
-        desc += i18n("Availability for your Fedora version is unknown.");
-        desc += QStringLiteral("</span>");
-    } else if (m_isAvailableForCurrentFedora) {
-        desc += QStringLiteral("<span style='color: green; font-weight: bold;'>");
-        desc += i18n("Available for your Fedora version.");
-        desc += QStringLiteral("</span>");
-    } else {
-        desc += QStringLiteral("<span style='color: red; font-weight: bold;'>");
-        desc += i18n("Not available for your Fedora version.");
-        desc += QStringLiteral("</span>");
-    }
-
-    if (!m_sourceType.isEmpty() || !m_sourceUrl.isEmpty() || !m_sourceSpec.isEmpty() || !m_sourceSubdirectory.isEmpty()) {
-        desc += htmlParagraphBreak();
-        desc += htmlLabel(i18n("Source"));
-        appendTextDetail(desc, i18n("Type:"), m_sourceType);
-        appendLinkDetail(desc, i18n("URL:"), m_sourceUrl);
-        appendTextDetail(desc, i18n("Spec:"), m_sourceSpec);
-        appendTextDetail(desc, i18n("Subdirectory:"), m_sourceSubdirectory);
-    }
-
-    if (!m_contact.isEmpty() || !m_instructions.isEmpty()) {
-        desc += htmlParagraphBreak();
-        desc += htmlLabel(i18n("Project Information"));
-        appendTextDetail(desc, i18n("Contact:"), m_contact);
-        if (!m_instructions.isEmpty()) {
-            desc += htmlParagraphBreak();
-            desc += htmlLabel(i18n("Instructions"));
-            desc += QStringLiteral("<br>");
-            desc += m_instructions;
-        }
-    }
-
-    desc += htmlParagraphBreak();
-    desc += QStringLiteral("<span style='color: #ff8800;'><b>");
-    desc += i18n("Notice:");
-    desc += QStringLiteral("</b> ");
-    desc += i18n("COPR repositories are not officially supported by Fedora. Use at your own risk.");
-    desc += QStringLiteral("</span>");
-
-    QStringList warnings;
-    if (m_develMode) {
-        warnings.append(i18n("This COPR project is in development mode."));
-    }
-    if (!m_additionalRepos.isEmpty()) {
-        warnings.append(i18n("This project uses additional repositories: %1", m_additionalRepos.join(QStringLiteral(", "))));
-    }
-    if (m_enableNet) {
-        warnings.append(i18n("Network access is enabled during builds."));
-    }
-    if (!m_repoPriority.isEmpty()) {
-        warnings.append(i18n("Repository priority: %1", m_repoPriority));
-    }
-    if (m_moduleHotfixes) {
-        warnings.append(i18n("Module hotfixes are enabled for this repository."));
-    }
-
-    if (!warnings.isEmpty()) {
-        desc += htmlParagraphBreak();
-        desc += QStringLiteral("<span style='color: #ff8800;'>");
-        desc += htmlLabel(i18n("Additional warnings:"));
-        desc += QStringLiteral("<ul>");
-        for (const QString &warning : warnings) {
-            desc += QStringLiteral("<li>") + warning.toHtmlEscaped() + QStringLiteral("</li>");
-        }
-        desc += QStringLiteral("</ul></span>");
-    }
-
-    desc += htmlParagraphBreak();
-    desc += htmlLabel(i18n("Repository flags"));
-    appendTextDetail(desc, i18n("AppStream metadata:"), boolText(m_appstream));
-    appendTextDetail(desc, i18n("Follows Fedora branching:"), boolText(m_followFedoraBranching));
-    appendTextDetail(desc, i18n("Auto-prune:"), boolText(m_autoPrune));
-
-    return desc;
+    return i18n("Package from COPR repository %1/%2", m_owner, m_project);
 }
 
 void CoprResource::fetchProjectPackages()
@@ -363,6 +188,7 @@ QStringList CoprResource::topObjects() const
     if (m_isProjectResource) {
         objects.append(QStringLiteral("qrc:/qml/CoprPackageSelector.qml"));
     }
+    objects.append(QStringLiteral("qrc:/qml/CoprDetails.qml"));
     return objects;
 }
 
@@ -382,6 +208,87 @@ QVariantList CoprResource::coprProjectPackages() const
     }
 
     return packages;
+}
+
+QVariantMap CoprResource::coprDetails() const
+{
+    QVariantMap details;
+    const QStringList allChroots = mergedChroots(m_availableChroots, m_projectPackages);
+
+    details.insert(QStringLiteral("repository"), m_projectFullName.isEmpty() ? QStringLiteral("%1/%2").arg(m_owner, m_project) : m_projectFullName);
+    details.insert(QStringLiteral("owner"), m_owner);
+    details.insert(QStringLiteral("project"), m_project);
+    details.insert(QStringLiteral("packageName"), m_installPackageName);
+    details.insert(QStringLiteral("latestVersion"), m_version);
+    details.insert(QStringLiteral("latestBuildState"), m_latestBuildState);
+    details.insert(QStringLiteral("buildRepositoryUrl"), m_latestBuildRepoUrl);
+    details.insert(QStringLiteral("buildSubmitter"), m_latestBuildSubmitter);
+    details.insert(QStringLiteral("buildSubmittedOn"), formatBuildDateTime(m_latestBuildSubmittedOn));
+    details.insert(QStringLiteral("buildStartedOn"), formatBuildDateTime(m_latestBuildStartedOn));
+    details.insert(QStringLiteral("buildFinishedOn"), formatBuildDateTime(m_latestBuildEndedOn));
+    details.insert(QStringLiteral("availableFor"), formattedChrootsSummary(allChroots));
+    details.insert(QStringLiteral("availableChroots"), allChroots);
+
+    if (allChroots.isEmpty()) {
+        details.insert(QStringLiteral("currentFedoraState"), QStringLiteral("unknown"));
+        details.insert(QStringLiteral("currentFedoraText"), i18n("Availability for your Fedora version is unknown."));
+    } else if (m_isAvailableForCurrentFedora) {
+        details.insert(QStringLiteral("currentFedoraState"), QStringLiteral("available"));
+        details.insert(QStringLiteral("currentFedoraText"), i18n("Available for your Fedora version."));
+    } else {
+        details.insert(QStringLiteral("currentFedoraState"), QStringLiteral("unavailable"));
+        details.insert(QStringLiteral("currentFedoraText"), i18n("Not available for your Fedora version."));
+    }
+
+    details.insert(QStringLiteral("sourceType"), m_sourceType);
+    details.insert(QStringLiteral("sourceUrl"), m_sourceUrl);
+    details.insert(QStringLiteral("sourceSpec"), m_sourceSpec);
+    details.insert(QStringLiteral("sourceSubdirectory"), m_sourceSubdirectory);
+    details.insert(QStringLiteral("contact"), m_contact);
+    details.insert(QStringLiteral("instructions"), m_instructions);
+    details.insert(QStringLiteral("additionalRepos"), m_additionalRepos);
+    details.insert(QStringLiteral("repoPriority"), m_repoPriority);
+    details.insert(QStringLiteral("appstream"), m_appstream);
+    details.insert(QStringLiteral("develMode"), m_develMode);
+    details.insert(QStringLiteral("enableNet"), m_enableNet);
+    details.insert(QStringLiteral("followFedoraBranching"), m_followFedoraBranching);
+    details.insert(QStringLiteral("autoPrune"), m_autoPrune);
+    details.insert(QStringLiteral("moduleHotfixes"), m_moduleHotfixes);
+
+    return details;
+}
+
+QVariantList CoprResource::coprWarnings() const
+{
+    QVariantList warnings;
+    const QStringList allChroots = mergedChroots(m_availableChroots, m_projectPackages);
+
+    auto addWarning = [&warnings](const QString &text) {
+        QVariantMap warning;
+        warning.insert(QStringLiteral("text"), text);
+        warnings.append(warning);
+    };
+
+    if (!allChroots.isEmpty() && !m_isAvailableForCurrentFedora) {
+        addWarning(i18n("This COPR package is not available for your Fedora version."));
+    }
+    if (m_develMode) {
+        addWarning(i18n("This COPR project is in development mode."));
+    }
+    if (!m_additionalRepos.isEmpty()) {
+        addWarning(i18n("This project uses additional repositories: %1", m_additionalRepos.join(QStringLiteral(", "))));
+    }
+    if (m_enableNet) {
+        addWarning(i18n("Network access is enabled during builds."));
+    }
+    if (!m_repoPriority.isEmpty()) {
+        addWarning(i18n("Repository priority: %1", m_repoPriority));
+    }
+    if (m_moduleHotfixes) {
+        addWarning(i18n("Module hotfixes are enabled for this repository."));
+    }
+
+    return warnings;
 }
 
 AbstractResource::State CoprResource::state()

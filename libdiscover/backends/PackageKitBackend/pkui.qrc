@@ -1,6 +1,7 @@
 <!DOCTYPE RCC>
 <RCC version="1.0">
  <qresource>
+    <file>qml/CoprDetails.qml</file>
     <file>qml/CoprPackageSelector.qml</file>
     <file>qml/DependenciesButton.qml</file>
     <file>qml/PackageKitPermissions.qml</file>
