@@ -40,6 +40,21 @@ Kirigami.ApplicationWindow {
     
     readonly property Item leftPage: window.pageStack.depth > 0 ? window.pageStack.get(0) : null
 
+    function applySearchToCurrentPage(search) {
+        if (!window.leftPage || !window.leftPage.hasOwnProperty("search")) {
+            return false;
+        }
+
+        if (window.pageStack.depth > 1) {
+            window.pageStack.pop();
+        }
+        window.pageStack.currentIndex = 0;
+        window.leftPage.search = search;
+        window.globalDrawer.setSearchText(search);
+        window.leftPage.forceActiveFocus();
+        return true;
+    }
+
     KConfig.WindowStateSaver {
         configGroupName: "MainWindow"
     }
@@ -188,6 +203,14 @@ Kirigami.ApplicationWindow {
         }
 
         function onOpenSearch(search) {
+            if (currentTopLevel === topCoprComp) {
+                if (!window.applySearchToCurrentPage(search)) {
+                    currentTopLevel = topCoprComp;
+                    Qt.callLater(() => window.applySearchToCurrentPage(search));
+                }
+                return;
+            }
+
             Navigation.clearStack()
             Navigation.openApplicationList({ search })
         }
