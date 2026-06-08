@@ -1,10 +1,11 @@
 #ifndef COPRRESOURCE_H
 #define COPRRESOURCE_H
 
-#include "PackageKitResource.h"
 #include "CoprClient.h"
+#include "PackageKitResource.h"
 
 #include <QVariantList>
+#include <QVariantMap>
 
 class PackageKitBackend;
 
@@ -15,6 +16,8 @@ class CoprResource : public PackageKitResource
     Q_PROPERTY(bool coprProjectPackagesLoaded READ coprProjectPackagesLoaded NOTIFY projectPackagesChanged)
     Q_PROPERTY(QVariantList coprProjectPackages READ coprProjectPackages NOTIFY projectPackagesChanged)
     Q_PROPERTY(QString selectedCoprPackageName READ selectedCoprPackageName NOTIFY projectPackagesChanged)
+    Q_PROPERTY(QVariantMap coprDetails READ coprDetails NOTIFY projectPackagesChanged)
+    Q_PROPERTY(QVariantList coprWarnings READ coprWarnings NOTIFY projectPackagesChanged)
 
 public:
     explicit CoprResource(const CoprPackageInfo &packageInfo, AbstractResourcesBackend *parent);
@@ -63,6 +66,8 @@ public:
         return m_projectPackagesLoaded;
     }
     QVariantList coprProjectPackages() const;
+    QVariantMap coprDetails() const;
+    QVariantList coprWarnings() const;
     QString selectedCoprPackageName() const
     {
         return m_installPackageName;
