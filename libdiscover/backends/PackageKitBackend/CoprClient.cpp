@@ -1,6 +1,7 @@
 #include "CoprClient.h"
 #include "libdiscover_backend_packagekit_debug.h"
 
+#include <QDateTime>
 #include <QDebug>
 #include <QFile>
 #include <QJsonArray>
@@ -10,6 +11,7 @@
 #include <QSysInfo>
 #include <QTextStream>
 #include <QTimer>
+#include <QUrl>
 #include <QUrlQuery>
 
 CoprClient::CoprClient(QObject *parent)
@@ -190,7 +192,8 @@ void CoprClient::emitResultForRequest(const QString &requestType, const QJsonObj
     } else if (requestType.startsWith(QStringLiteral("getProjectPackages:"))) {
         QStringList parts = requestType.split(QLatin1Char(':'));
         if (parts.size() >= 3) {
-            Q_EMIT packagesFound(parsePackagesResponse(json, parts[1], parts[2]));
+            const QList<CoprPackageInfo> packages = parsePackagesResponse(json, parts[1], parts[2]);
+            Q_EMIT projectPackagesFound(parts[1], parts[2], packages);
         }
     }
 }
@@ -236,7 +239,10 @@ void CoprClient::processNextRequest()
                         || requestType == QStringLiteral("getLatestProjects")) {
                         Q_EMIT projectsFound(QList<CoprProjectInfo>());
                     } else if (requestType.startsWith(QStringLiteral("getProjectPackages:"))) {
-                        Q_EMIT packagesFound(QList<CoprPackageInfo>());
+                        const QStringList parts = requestType.split(QLatin1Char(':'));
+                        if (parts.size() >= 3) {
+                            Q_EMIT projectPackagesFound(parts[1], parts[2], QList<CoprPackageInfo>());
+                        }
                     }
                     curlProcess->deleteLater();
                     processNextRequest();
@@ -252,7 +258,10 @@ void CoprClient::processNextRequest()
                         || requestType == QStringLiteral("getLatestProjects")) {
                         Q_EMIT projectsFound(QList<CoprProjectInfo>());
                     } else if (requestType.startsWith(QStringLiteral("getProjectPackages:"))) {
-                        Q_EMIT packagesFound(QList<CoprPackageInfo>());
+                        const QStringList parts = requestType.split(QLatin1Char(':'));
+                        if (parts.size() >= 3) {
+                            Q_EMIT projectPackagesFound(parts[1], parts[2], QList<CoprPackageInfo>());
+                        }
                     }
                     curlProcess->deleteLater();
                     processNextRequest();
@@ -270,12 +279,14 @@ void CoprClient::processNextRequest()
                 processNextRequest();
             });
 
+    const QString timeoutSeconds = requestType == QStringLiteral("searchProjects") ? QStringLiteral("25") : QStringLiteral("10");
     curlProcess->start(QStringLiteral("curl"),
                        {QStringLiteral("-s"),
+                        QStringLiteral("--compressed"),
                         QStringLiteral("-H"),
                         QStringLiteral("Accept: application/json"),
                         QStringLiteral("--max-time"),
-                        QStringLiteral("15"),
+                        timeoutSeconds,
                         url.toString()});
 
     // Try to start more concurrent requests from the queue
@@ -317,6 +328,89 @@ QString CoprClient::convertMarkdownToHtml(const QString &markdown) const
     return html;
 }
 
+static QStringList jsonStringArray(const QJsonArray &array)
+{
+    QStringList values;
+    values.reserve(array.size());
+
+    for (const QJsonValue &value : array) {
+        const QString text = value.toString();
+        if (!text.isEmpty()) {
+            values.append(text);
+        }
+    }
+
+    return values;
+}
+
+static QString jsonValueToDisplayString(const QJsonValue &value)
+{
+    if (value.isString()) {
+        return value.toString();
+    }
+    if (value.isDouble()) {
+        return QString::number(value.toInt());
+    }
+    if (value.isBool()) {
+        return value.toBool() ? QStringLiteral("true") : QStringLiteral("false");
+    }
+    return {};
+}
+
+static QDateTime unixTimestampToDateTime(const QJsonValue &value)
+{
+    const qint64 timestamp = value.toVariant().toLongLong();
+    if (timestamp <= 0) {
+        return {};
+    }
+    return QDateTime::fromSecsSinceEpoch(timestamp);
+}
+
+static QString sourceUrlFromSourceDict(const QJsonObject &source)
+{
+    const QString url = source.value(QStringLiteral("url")).toString();
+    if (!url.isEmpty()) {
+        return url;
+    }
+
+    const QString cloneUrl = source.value(QStringLiteral("clone_url")).toString();
+    if (!cloneUrl.isEmpty()) {
+        return cloneUrl;
+    }
+
+    return {};
+}
+
+CoprProjectInfo CoprClient::parseProjectObject(const QJsonObject &obj)
+{
+    CoprProjectInfo project;
+    project.owner = obj.value(QStringLiteral("ownername")).toString();
+    project.name = obj.value(QStringLiteral("name")).toString();
+    project.fullName = obj.value(QStringLiteral("full_name")).toString();
+    project.description = convertMarkdownToHtml(obj.value(QStringLiteral("description")).toString());
+    project.instructions = convertMarkdownToHtml(obj.value(QStringLiteral("instructions")).toString());
+    project.contact = obj.value(QStringLiteral("contact")).toString();
+    project.id = obj.value(QStringLiteral("id")).toInt();
+    project.homepage = obj.value(QStringLiteral("homepage")).toString();
+    project.additionalRepos = jsonStringArray(obj.value(QStringLiteral("additional_repos")).toArray());
+    project.repoPriority = jsonValueToDisplayString(obj.value(QStringLiteral("repo_priority")));
+    project.appstream = obj.value(QStringLiteral("appstream")).toBool();
+    project.develMode = obj.value(QStringLiteral("devel_mode")).toBool();
+    project.enableNet = obj.value(QStringLiteral("enable_net")).toBool();
+    project.followFedoraBranching = obj.value(QStringLiteral("follow_fedora_branching")).toBool();
+    project.autoPrune = obj.value(QStringLiteral("auto_prune")).toBool();
+    project.moduleHotfixes = obj.value(QStringLiteral("module_hotfixes")).toBool();
+
+    const QJsonObject chrootRepos = obj.value(QStringLiteral("chroot_repos")).toObject();
+    if (!chrootRepos.isEmpty()) {
+        project.chroots = chrootRepos.keys();
+    } else {
+        project.chroots = jsonStringArray(obj.value(QStringLiteral("chroots")).toArray());
+    }
+
+    return project;
+}
+
 QList<CoprProjectInfo> CoprClient::parseProjectsResponse(const QJsonObject &json)
 {
     QList<CoprProjectInfo> projects;
@@ -324,31 +418,7 @@ QList<CoprProjectInfo> CoprClient::parseProjectsResponse(const QJsonObject &json
     QJsonArray items = json.value(QStringLiteral("items")).toArray();
 
     for (const QJsonValue &value : items) {
-        QJsonObject obj = value.toObject();
-
-        CoprProjectInfo project;
-        project.owner = obj.value(QStringLiteral("ownername")).toString();
-        project.name = obj.value(QStringLiteral("name")).toString();
-        project.description = convertMarkdownToHtml(obj.value(QStringLiteral("description")).toString());
-        project.id = obj.value(QStringLiteral("id")).toInt();
-        project.homepage = obj.value(QStringLiteral("homepage")).toString();
-
-        // Try to get chroots from different possible fields
-        QJsonObject chrootRepos = obj.value(QStringLiteral("chroot_repos")).toObject();
-        if (!chrootRepos.isEmpty()) {
-            project.chroots = chrootRepos.keys();
-        } else {
-            // For search results, chroots might be in a different field
-            QJsonArray chrootsArray = obj.value(QStringLiteral("chroots")).toArray();
-            for (const QJsonValue &chrootVal : chrootsArray) {
-                QString chrootName = chrootVal.toString();
-                if (!chrootName.isEmpty()) {
-                    project.chroots.append(chrootName);
-                }
-            }
-        }
-
-        projects.append(project);
+        projects.append(parseProjectObject(value.toObject()));
     }
 
     return projects;
@@ -359,14 +429,11 @@ CoprProjectInfo CoprClient::parseProjectResponse(const QJsonObject &json)
     CoprProjectInfo project;
 
     QJsonObject obj = json.value(QStringLiteral("project")).toObject();
+    if (obj.isEmpty()) {
+        obj = json;
+    }
 
-    project.owner = obj.value(QStringLiteral("ownername")).toString();
-    project.name = obj.value(QStringLiteral("name")).toString();
-    project.description = convertMarkdownToHtml(obj.value(QStringLiteral("description")).toString());
-    project.id = obj.value(QStringLiteral("id")).toInt();
-    project.homepage = obj.value(QStringLiteral("homepage")).toString();
-
-    project.chroots = obj.value(QStringLiteral("chroot_repos")).toObject().keys();
+    project = parseProjectObject(obj);
 
     return project;
 }
@@ -384,31 +451,40 @@ QList<CoprPackageInfo> CoprClient::parsePackagesResponse(const QJsonObject &json
         package.name = obj.value(QStringLiteral("name")).toString();
         package.owner = owner;
         package.projectName = project;
+        package.sourceType = obj.value(QStringLiteral("source_type")).toString();
 
         // Extract info from latest build if available
         QJsonObject builds = obj.value(QStringLiteral("builds")).toObject();
-        QJsonObject latestBuild = builds.value(QStringLiteral("latest")).toObject();
+        QJsonObject latestBuild = builds.value(QStringLiteral("latest_succeeded")).toObject();
+        if (latestBuild.isEmpty()) {
+            latestBuild = builds.value(QStringLiteral("latest")).toObject();
+        }
 
         if (!latestBuild.isEmpty()) {
             // Get build chroots to determine availability
-            QJsonArray chroots = latestBuild.value(QStringLiteral("chroots")).toArray();
-            for (const QJsonValue &chrootVal : chroots) {
-                QString chrootName = chrootVal.toString();
-                if (!chrootName.isEmpty()) {
-                    package.availableChroots.append(chrootName);
-                }
-            }
+            package.availableChroots = jsonStringArray(latestBuild.value(QStringLiteral("chroots")).toArray());
 
             // Check if available for current Fedora
             package.isAvailableForCurrentFedora = package.availableChroots.contains(m_currentChroot);
+            package.latestBuildState = latestBuild.value(QStringLiteral("state")).toString();
+            package.latestBuildRepoUrl = latestBuild.value(QStringLiteral("repo_url")).toString();
+            package.latestBuildSubmitter = latestBuild.value(QStringLiteral("submitter")).toString();
+            package.latestBuildSubmittedOn = unixTimestampToDateTime(latestBuild.value(QStringLiteral("submitted_on")));
+            package.latestBuildStartedOn = unixTimestampToDateTime(latestBuild.value(QStringLiteral("started_on")));
+            package.latestBuildEndedOn = unixTimestampToDateTime(latestBuild.value(QStringLiteral("ended_on")));
+
+            const QJsonObject sourcePackage = latestBuild.value(QStringLiteral("source_package")).toObject();
+            package.version = sourcePackage.value(QStringLiteral("version")).toString();
         }
 
         // Get source info if available
         QJsonObject source = obj.value(QStringLiteral("source_dict")).toObject();
         if (!source.isEmpty()) {
-            QString url = source.value(QStringLiteral("url")).toString();
-            if (!url.isEmpty()) {
-                package.homepage = url;
+            package.sourceUrl = sourceUrlFromSourceDict(source);
+            package.sourceSpec = source.value(QStringLiteral("spec")).toString();
+            package.sourceSubdirectory = source.value(QStringLiteral("subdirectory")).toString();
+            if (package.homepage.isEmpty()) {
+                package.homepage = package.sourceUrl;
             }
         }
 

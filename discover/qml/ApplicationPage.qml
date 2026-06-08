@@ -40,6 +40,16 @@ DiscoverPage {
     readonly property bool isTechnicalPackage: application.type == Discover.AbstractResource.ApplicationSupport
                                             || application.type == Discover.AbstractResource.System
 
+    function fetchBackendDetails() {
+        const fetchProjectPackages = appInfo.application["fetchProjectPackages"];
+        if (typeof fetchProjectPackages === "function") {
+            fetchProjectPackages.call(appInfo.application);
+        }
+    }
+
+    Component.onCompleted: fetchBackendDetails()
+    onApplicationChanged: fetchBackendDetails()
+
     function colorForLicenseType(licenseType: string): string {
         switch(licenseType) {
             case "free":
