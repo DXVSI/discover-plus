@@ -214,7 +214,6 @@ void CoprTransaction::processFinished(int exitCode, QProcess::ExitStatus exitSta
             if (m_resource) {
                 m_resource->setState(AbstractResource::None);
                 qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "Package removed successfully, COPR repository left enabled";
-                Q_EMIT passiveMessage(i18n("Package %1 has been removed", m_resource->name()));
             }
             setProgress(100);
             setStatus(DoneStatus);
@@ -223,7 +222,6 @@ void CoprTransaction::processFinished(int exitCode, QProcess::ExitStatus exitSta
             if (m_resource) {
                 m_resource->setState(AbstractResource::Installed);
                 qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "Package installed successfully, state updated to Installed";
-                Q_EMIT passiveMessage(i18n("Package %1 has been installed", m_resource->name()));
             }
             setProgress(100);
             setStatus(DoneStatus);
