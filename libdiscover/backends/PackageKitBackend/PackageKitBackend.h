@@ -11,6 +11,7 @@
 #include <PackageKit/Offline>
 #include <PackageKit/Transaction>
 #include <QPointer>
+#include <QQueue>
 #include <QSet>
 #include <QSharedPointer>
 #include <QStringList>
@@ -152,6 +153,7 @@ public:
     void searchCoprPackages(const QString &query);
     void loadPopularCoprProjects();
     void loadMoreCoprProjects();
+    void requestCoprInstalledStateCheck(CoprResource *resource);
 
 public Q_SLOTS:
     void reloadPackageList();
@@ -167,6 +169,7 @@ private Q_SLOTS:
     void loadAllPackagesHybrid();
     void onCoprProjectsFound(const QList<CoprProjectInfo> &projects);
     void onCoprPackagesFound(const QList<CoprPackageInfo> &packages);
+    void onCoprProjectPackagesFound(const QString &owner, const QString &project, const QList<CoprPackageInfo> &packages);
 
 Q_SIGNALS:
     void loadedAppStream();
@@ -194,6 +197,7 @@ private:
     void updateProxy();
     void foundNewMajorVersion(const AppStream::Release &release);
     void setRefresher(PackageKit::Transaction *refresh);
+    void processNextCoprInstalledStateCheck();
 
     QScopedPointer<AppStream::ConcurrentPool> m_appdata;
     bool m_appdataLoaded = false;
@@ -223,6 +227,20 @@ private:
     QPointer<PKResultsStream> m_currentSearchStream;
     int m_coprOffset = 0;
     QString m_lastCoprSearchQuery;
+    QHash<QString, CoprProjectInfo> m_coprProjectMetadata;
+    QHash<QString, int> m_coprProjectRelevance;
+    QSet<QString> m_coprPackageRequests;
+    bool m_coprSearchPagePending = false;
+    struct CoprInstalledStateRequest {
+        QPointer<CoprResource> resource;
+        CoprResource *resourceKey = nullptr;
+        QString packageName;
+        QString owner;
+    };
+    QQueue<CoprInstalledStateRequest> m_coprInstalledStateQueue;
+    QSet<CoprResource *> m_coprInstalledStatePendingResources;
+    int m_activeCoprInstalledStateChecks = 0;
+    static constexpr int MaxConcurrentCoprInstalledStateChecks = 2;
 
     // Batch loading: accumulate results from parallel initial requests
     QList<CoprProjectInfo> m_coprBatchBuffer;

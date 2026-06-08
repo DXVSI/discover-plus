@@ -102,6 +102,11 @@ void CoprTransaction::installPackage()
         return;
     }
     QString packageName = m_resource->packageName();
+    if (packageName.isEmpty()) {
+        Q_EMIT passiveMessage(i18n("No installable package is known for this COPR project yet"));
+        setStatus(DoneWithErrorStatus);
+        return;
+    }
 
     qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "Installing package:" << packageName;
 
@@ -125,6 +130,11 @@ void CoprTransaction::removePackage()
         return;
     }
     QString packageName = m_resource->packageName();
+    if (packageName.isEmpty()) {
+        Q_EMIT passiveMessage(i18n("No installed package is known for this COPR resource"));
+        setStatus(DoneWithErrorStatus);
+        return;
+    }
 
     qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "Removing package:" << packageName;
     setProgress(50);
@@ -135,31 +145,6 @@ void CoprTransaction::removePackage()
     args << QStringLiteral("remove");
     args << QStringLiteral("-y");
     args << packageName;
-
-    m_process->start(QStringLiteral("pkexec"), args);
-}
-
-void CoprTransaction::disableCoprRepo()
-{
-    m_state = DisableRepo;
-    setStatus(CommittingStatus);
-    setProgress(90);
-
-    if (!m_resource) {
-        setStatus(DoneWithErrorStatus);
-        return;
-    }
-    QString coprRepo = m_resource->coprOwner() + QStringLiteral("/") + m_resource->coprProject();
-
-    qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "Disabling COPR repository:" << coprRepo;
-
-    // Use pkexec to run dnf copr disable with privileges
-    QStringList args;
-    args << QStringLiteral("dnf");
-    args << QStringLiteral("copr");
-    args << QStringLiteral("disable");
-    args << QStringLiteral("-y");
-    args << coprRepo;
 
     m_process->start(QStringLiteral("pkexec"), args);
 }
@@ -191,8 +176,13 @@ void CoprTransaction::processFinished(int exitCode, QProcess::ExitStatus exitSta
         break;
     case InstallPackage:
         if (m_role == RemoveRole) {
-            // After removing the package, also disable the COPR repository
-            disableCoprRepo();
+            if (m_resource) {
+                m_resource->setState(AbstractResource::None);
+                qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "Package removed successfully, COPR repository left enabled";
+                Q_EMIT passiveMessage(i18n("Package %1 has been removed", m_resource->name()));
+            }
+            setProgress(100);
+            setStatus(DoneStatus);
         } else {
             // Update resource state to installed
             if (m_resource) {
@@ -203,16 +193,6 @@ void CoprTransaction::processFinished(int exitCode, QProcess::ExitStatus exitSta
             setProgress(100);
             setStatus(DoneStatus);
         }
-        break;
-    case DisableRepo:
-        // Update resource state to not installed
-        if (m_resource) {
-            m_resource->setState(AbstractResource::None);
-            qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "Package and repository removed successfully";
-            Q_EMIT passiveMessage(i18n("Package %1 and its COPR repository have been removed", m_resource->name()));
-        }
-        setProgress(100);
-        setStatus(DoneStatus);
         break;
     default:
         break;

@@ -27,7 +27,6 @@ private:
     void enableCoprRepo();
     void installPackage();
     void removePackage();
-    void disableCoprRepo();
 
     QPointer<CoprResource> m_resource;
     PackageKitBackend *m_backend;
@@ -36,7 +35,6 @@ private:
     enum State {
         EnableRepo,
         InstallPackage,
-        DisableRepo,
         Done
     };
     State m_state;

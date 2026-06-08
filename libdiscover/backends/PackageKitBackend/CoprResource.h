@@ -16,6 +16,8 @@ public:
 
     QString section() override;
     QString origin() const override;
+    QString packageName() const override;
+    QStringList allPackageNames() const override;
     QString comment() override;
     QString longDescription() override;
     QString availableVersion() const override;
@@ -23,6 +25,7 @@ public:
     QUrl homepage() override;
     QString author() const override;
     QString sourceIcon() const override;
+    QDate releaseDate() const override;
 
     AbstractResource::State state() override;
     QVariant icon() const override;
@@ -35,6 +38,9 @@ public:
 
     void setAvailableForCurrentFedora(bool available) { m_isAvailableForCurrentFedora = available; }
     void setState(AbstractResource::State state);
+    void setInstalledStateFromSystem(bool installed);
+    void setProjectPackages(const QList<CoprPackageInfo> &packages);
+    Q_INVOKABLE void fetchProjectPackages();
     void checkInstalledState();
 
     bool canExecute() const override;
@@ -42,13 +48,42 @@ public:
 
 private:
     QString findDesktopFile() const;
+    const CoprPackageInfo *preferredProjectPackage() const;
+    void applyPackageDetails(const CoprPackageInfo &package);
 
     QString m_owner;
     QString m_project;
+    QString m_installPackageName;
+    QString m_projectFullName;
     QString m_description;
+    QString m_version;
     QStringList m_availableChroots;
     bool m_isAvailableForCurrentFedora;
     QString m_homepage;
+    QString m_instructions;
+    QString m_contact;
+    QStringList m_additionalRepos;
+    QString m_repoPriority;
+    bool m_appstream = false;
+    bool m_develMode = false;
+    bool m_enableNet = false;
+    bool m_followFedoraBranching = false;
+    bool m_autoPrune = false;
+    bool m_moduleHotfixes = false;
+    bool m_isProjectResource = false;
+    QString m_sourceType;
+    QString m_sourceUrl;
+    QString m_sourceSpec;
+    QString m_sourceSubdirectory;
+    QString m_latestBuildState;
+    QString m_latestBuildRepoUrl;
+    QString m_latestBuildSubmitter;
+    QDateTime m_latestBuildSubmittedOn;
+    QDateTime m_latestBuildStartedOn;
+    QDateTime m_latestBuildEndedOn;
+    QList<CoprPackageInfo> m_projectPackages;
+    bool m_projectPackagesRequested = false;
+    bool m_projectPackagesLoaded = false;
     bool m_isInstalled = false;
 };
 
