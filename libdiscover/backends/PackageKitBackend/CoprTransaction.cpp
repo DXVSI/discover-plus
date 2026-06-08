@@ -53,10 +53,50 @@ void CoprTransaction::proceed()
     setStatus(DownloadingStatus);
 
     if (m_role == InstallRole) {
+        if (!canInstallForCurrentChroot()) {
+            setStatus(DoneWithErrorStatus);
+            return;
+        }
         enableCoprRepo();
     } else if (m_role == RemoveRole) {
         removePackage();
     }
+}
+
+bool CoprTransaction::canInstallForCurrentChroot()
+{
+    if (!m_resource) {
+        return false;
+    }
+
+    if (m_resource->availableChroots().isEmpty() || m_resource->isAvailableForCurrentFedora()) {
+        return true;
+    }
+
+    Q_EMIT passiveMessage(i18n("This COPR package is not available for your Fedora version."));
+    qCWarning(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "Refusing to install unsupported COPR package:" << m_resource->coprOwner() << "/"
+                                                  << m_resource->coprProject() << "package:" << m_resource->packageName()
+                                                  << "available chroots:" << m_resource->availableChroots();
+    return false;
+}
+
+QString CoprTransaction::processDiagnosticOutput() const
+{
+    const QString stderrOutput = m_stderrBuffer.trimmed();
+    if (!stderrOutput.isEmpty()) {
+        return stderrOutput;
+    }
+
+    return m_stdoutBuffer.trimmed();
+}
+
+void CoprTransaction::startPkexec(const QStringList &arguments)
+{
+    m_stdoutBuffer.clear();
+    m_stderrBuffer.clear();
+
+    qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "Starting process: pkexec" << arguments;
+    m_process->start(QStringLiteral("pkexec"), arguments);
 }
 
 void CoprTransaction::enableCoprRepo()
@@ -81,14 +121,7 @@ void CoprTransaction::enableCoprRepo()
     args << QStringLiteral("-y");  // Auto-accept
     args << coprRepo;
 
-    qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "Starting process: pkexec" << args;
-    m_process->start(QStringLiteral("pkexec"), args);
-
-    if (!m_process->waitForStarted(5000)) {
-        qCWarning(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "Failed to start process";
-        Q_EMIT passiveMessage(i18n("Failed to start installation process"));
-        setStatus(DoneWithErrorStatus);
-    }
+    startPkexec(args);
 }
 
 void CoprTransaction::installPackage()
@@ -117,7 +150,7 @@ void CoprTransaction::installPackage()
     args << QStringLiteral("-y");
     args << packageName;
 
-    m_process->start(QStringLiteral("pkexec"), args);
+    startPkexec(args);
 }
 
 void CoprTransaction::removePackage()
@@ -146,12 +179,13 @@ void CoprTransaction::removePackage()
     args << QStringLiteral("-y");
     args << packageName;
 
-    m_process->start(QStringLiteral("pkexec"), args);
+    startPkexec(args);
 }
 
 void CoprTransaction::processFinished(int exitCode, QProcess::ExitStatus exitStatus)
 {
     qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "Process finished with exit code:" << exitCode << "status:" << exitStatus;
+    processOutput();
 
     if (exitStatus == QProcess::CrashExit) {
         setStatus(DoneWithErrorStatus);
@@ -159,9 +193,10 @@ void CoprTransaction::processFinished(int exitCode, QProcess::ExitStatus exitSta
     }
 
     if (exitCode != 0) {
-        QString error = QString::fromUtf8(m_process->readAllStandardError());
-        qCWarning(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "Process failed:" << error;
-        Q_EMIT passiveMessage(i18n("Operation failed: %1", error));
+        const QString error = processDiagnosticOutput();
+        const QString errorMessage = error.isEmpty() ? i18n("No error output was returned") : error;
+        qCWarning(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "Process failed:" << errorMessage;
+        Q_EMIT passiveMessage(i18n("Operation failed: %1", errorMessage));
 
         setStatus(DoneWithErrorStatus);
         return;
@@ -179,7 +214,6 @@ void CoprTransaction::processFinished(int exitCode, QProcess::ExitStatus exitSta
             if (m_resource) {
                 m_resource->setState(AbstractResource::None);
                 qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "Package removed successfully, COPR repository left enabled";
-                Q_EMIT passiveMessage(i18n("Package %1 has been removed", m_resource->name()));
             }
             setProgress(100);
             setStatus(DoneStatus);
@@ -188,7 +222,6 @@ void CoprTransaction::processFinished(int exitCode, QProcess::ExitStatus exitSta
             if (m_resource) {
                 m_resource->setState(AbstractResource::Installed);
                 qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "Package installed successfully, state updated to Installed";
-                Q_EMIT passiveMessage(i18n("Package %1 has been installed", m_resource->name()));
             }
             setProgress(100);
             setStatus(DoneStatus);
@@ -206,7 +239,7 @@ void CoprTransaction::processError(QProcess::ProcessError error)
     QString errorMessage;
     switch (error) {
     case QProcess::FailedToStart:
-        errorMessage = i18n("Failed to start the installation process. Make sure 'dnf' is installed.");
+        errorMessage = i18n("Failed to start the installation process. Make sure 'pkexec' and 'dnf' are installed.");
         break;
     case QProcess::Crashed:
         errorMessage = i18n("The installation process crashed unexpectedly.");
@@ -227,11 +260,13 @@ void CoprTransaction::processOutput()
 {
     QString output = QString::fromUtf8(m_process->readAllStandardOutput());
     if (!output.isEmpty()) {
+        m_stdoutBuffer += output;
         qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "Process output:" << output;
     }
 
     QString error = QString::fromUtf8(m_process->readAllStandardError());
     if (!error.isEmpty()) {
+        m_stderrBuffer += error;
         qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "Process stderr:" << error;
     }
 }

@@ -10,6 +10,7 @@
 
 #include <PackageKit/Offline>
 #include <PackageKit/Transaction>
+#include <QHash>
 #include <QPointer>
 #include <QQueue>
 #include <QSet>
@@ -154,6 +155,7 @@ public:
     void loadPopularCoprProjects();
     void loadMoreCoprProjects();
     void requestCoprInstalledStateCheck(CoprResource *resource);
+    void setCoprInstalledStateCache(const QString &owner, const QString &packageName, bool installed);
 
 public Q_SLOTS:
     void reloadPackageList();
@@ -234,11 +236,13 @@ private:
     struct CoprInstalledStateRequest {
         QPointer<CoprResource> resource;
         CoprResource *resourceKey = nullptr;
+        QString key;
         QString packageName;
         QString owner;
     };
     QQueue<CoprInstalledStateRequest> m_coprInstalledStateQueue;
-    QSet<CoprResource *> m_coprInstalledStatePendingResources;
+    QHash<CoprResource *, QString> m_coprInstalledStatePendingKeys;
+    QHash<QString, bool> m_coprInstalledStateCache;
     int m_activeCoprInstalledStateChecks = 0;
     static constexpr int MaxConcurrentCoprInstalledStateChecks = 2;
 
