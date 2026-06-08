@@ -320,13 +320,6 @@ Kirigami.Page {
                         NumberAnimation { from: 0; to: 1; duration: 700; easing.type: Easing.OutCubic }
                     }
 
-                    // Gentle pulse
-                    SequentialAnimation on scale {
-                        loops: Animation.Infinite
-                        running: true
-                        NumberAnimation { to: 1.06; duration: 2000; easing.type: Easing.InOutSine }
-                        NumberAnimation { to: 1.0; duration: 2000; easing.type: Easing.InOutSine }
-                    }
                 }
 
                 // Plus sign with glow
@@ -358,12 +351,6 @@ Kirigami.Page {
                         NumberAnimation { from: 0; to: 1; duration: 700; easing.type: Easing.OutCubic }
                     }
 
-                    SequentialAnimation on scale {
-                        loops: Animation.Infinite
-                        running: true
-                        NumberAnimation { to: 1.06; duration: 2200; easing.type: Easing.InOutSine }
-                        NumberAnimation { to: 1.0; duration: 2200; easing.type: Easing.InOutSine }
-                    }
                 }
             }
 

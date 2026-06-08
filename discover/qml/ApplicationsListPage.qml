@@ -48,6 +48,33 @@ DiscoverPage {
         return input.replace(regex, "");
     }
 
+    function resetAppsViewPosition() {
+        page.forceActiveFocus(Qt.OtherFocusReason)
+        appsView.currentIndex = -1
+        appsView.positionViewAtBeginning()
+        appsView.contentY = 0
+    }
+
+    function resetAppsViewPositionLater() {
+        page.resetAppsViewPosition()
+        Qt.callLater(function() {
+            page.resetAppsViewPosition()
+        })
+    }
+
+    function applySavedSortRole(role) {
+        page.resetAppsViewPosition()
+        DiscoverApp.DiscoverSettings[page.sortProperty] = role
+        appsModel.tempSortRole = -1
+        page.resetAppsViewPositionLater()
+    }
+
+    function applyTemporarySortRole(role) {
+        page.resetAppsViewPosition()
+        appsModel.tempSortRole = role
+        page.resetAppsViewPositionLater()
+    }
+
     property string name: categoryObject?.name ?? ""
 
     title: {
@@ -80,9 +107,9 @@ DiscoverPage {
 
     onSearchChanged: {
         if (search.length > 0) {
-            appsModel.tempSortRole = Discover.ResourcesProxyModel.SearchRelevanceRole
+            page.applyTemporarySortRole(Discover.ResourcesProxyModel.SearchRelevanceRole)
         } else {
-            appsModel.tempSortRole = -1
+            page.applyTemporarySortRole(-1)
         }
     }
 
@@ -108,19 +135,51 @@ DiscoverPage {
                 icon.name: "file-search-symbolic"
                 onTriggered: {
                     // Do *not* save the sort role on searches
-                    appsModel.tempSortRole = Discover.ResourcesProxyModel.SearchRelevanceRole
+                    page.applyTemporarySortRole(Discover.ResourcesProxyModel.SearchRelevanceRole)
                 }
                 checkable: true
                 checked: appsModel.sortRole === Discover.ResourcesProxyModel.SearchRelevanceRole
             }
             Kirigami.Action {
                 QQC2.ActionGroup.group: sortGroup
+                text: i18nc("@item:inmenu sort with RPM Fusion applications first", "RPM Fusion first")
+                icon.name: "folder-download-symbolic"
+                onTriggered: page.applySavedSortRole(Discover.ResourcesProxyModel.RpmFusionSourceRole)
+                checkable: true
+                checked: appsModel.sortRole === Discover.ResourcesProxyModel.RpmFusionSourceRole
+            }
+            Kirigami.Action {
+                QQC2.ActionGroup.group: sortGroup
+                text: i18nc("@item:inmenu sort with Fedora Linux applications first", "Fedora Linux first")
+                icon.name: "folder-download-symbolic"
+                onTriggered: page.applySavedSortRole(Discover.ResourcesProxyModel.FedoraLinuxSourceRole)
+                checkable: true
+                checked: appsModel.sortRole === Discover.ResourcesProxyModel.FedoraLinuxSourceRole
+            }
+            Kirigami.Action {
+                QQC2.ActionGroup.group: sortGroup
+                text: i18nc("@item:inmenu sort with Fedora Flatpaks first", "Fedora Flatpaks first")
+                icon.name: "flatpak-discover"
+                onTriggered: page.applySavedSortRole(Discover.ResourcesProxyModel.FedoraFlatpaksSourceRole)
+                checkable: true
+                checked: appsModel.sortRole === Discover.ResourcesProxyModel.FedoraFlatpaksSourceRole
+            }
+            Kirigami.Action {
+                QQC2.ActionGroup.group: sortGroup
+                text: i18nc("@item:inmenu sort with Flathub applications first", "Flathub first")
+                icon.name: "flatpak-discover"
+                onTriggered: page.applySavedSortRole(Discover.ResourcesProxyModel.FlathubSourceRole)
+                checkable: true
+                checked: appsModel.sortRole === Discover.ResourcesProxyModel.FlathubSourceRole
+            }
+            Kirigami.Action {
+                separator: true
+            }
+            Kirigami.Action {
+                QQC2.ActionGroup.group: sortGroup
                 text: i18n("Name")
                 icon.name: "sort-name"
-                onTriggered: {
-                    DiscoverApp.DiscoverSettings[page.sortProperty] = Discover.ResourcesProxyModel.NameRole
-                    appsModel.tempSortRole = -1
-                }
+                onTriggered: page.applySavedSortRole(Discover.ResourcesProxyModel.NameRole)
                 checkable: true
                 checked: appsModel.sortRole === Discover.ResourcesProxyModel.NameRole
             }
@@ -128,10 +187,7 @@ DiscoverPage {
                 QQC2.ActionGroup.group: sortGroup
                 text: i18n("Number of reviews")
                 icon.name: "view-pages-overview-symbolic"
-                onTriggered: {
-                    DiscoverApp.DiscoverSettings[page.sortProperty] = Discover.ResourcesProxyModel.RatingCountRole
-                    appsModel.tempSortRole = -1
-                }
+                onTriggered: page.applySavedSortRole(Discover.ResourcesProxyModel.RatingCountRole)
                 checkable: true
                 checked: appsModel.sortRole === Discover.ResourcesProxyModel.RatingCountRole
             }
@@ -139,10 +195,7 @@ DiscoverPage {
                 QQC2.ActionGroup.group: sortGroup
                 text: i18nc("@item:inmenu sort by highest-rated apps", "Rating")
                 icon.name: "rating"
-                onTriggered: {
-                    DiscoverApp.DiscoverSettings[page.sortProperty] = Discover.ResourcesProxyModel.SortableRatingRole
-                    appsModel.tempSortRole = -1
-                }
+                onTriggered: page.applySavedSortRole(Discover.ResourcesProxyModel.SortableRatingRole)
                 checkable: true
                 checked: appsModel.sortRole === Discover.ResourcesProxyModel.SortableRatingRole
             }
@@ -150,10 +203,7 @@ DiscoverPage {
                 QQC2.ActionGroup.group: sortGroup
                 text: i18n("Size")
                 icon.name: "download"
-                onTriggered: {
-                    DiscoverApp.DiscoverSettings[page.sortProperty] = Discover.ResourcesProxyModel.SizeRole
-                    appsModel.tempSortRole = -1
-                }
+                onTriggered: page.applySavedSortRole(Discover.ResourcesProxyModel.SizeRole)
                 checkable: true
                 checked: appsModel.sortRole === Discover.ResourcesProxyModel.SizeRole
             }
@@ -161,10 +211,7 @@ DiscoverPage {
                 QQC2.ActionGroup.group: sortGroup
                 text: i18n("Release date")
                 icon.name: "change-date-symbolic"
-                onTriggered: {
-                    DiscoverApp.DiscoverSettings[page.sortProperty] = Discover.ResourcesProxyModel.ReleaseDateRole
-                    appsModel.tempSortRole = -1
-                }
+                onTriggered: page.applySavedSortRole(Discover.ResourcesProxyModel.ReleaseDateRole)
                 checkable: true
                 checked: appsModel.sortRole === Discover.ResourcesProxyModel.ReleaseDateRole
             }

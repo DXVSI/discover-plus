@@ -41,7 +41,54 @@ const QHash<int, QByteArray> ResourcesProxyModel::s_roles = {{NameRole, "name"},
                                                              {LongDescriptionRole, "longDescription"},
                                                              {SourceIconRole, "sourceIcon"},
                                                              {SizeRole, "size"},
-                                                             {ReleaseDateRole, "releaseDate"}};
+                                                             {ReleaseDateRole, "releaseDate"},
+                                                             {RpmFusionSourceRole, "rpmFusionSourcePriority"},
+                                                             {FedoraLinuxSourceRole, "fedoraLinuxSourcePriority"},
+                                                             {FedoraFlatpaksSourceRole, "fedoraFlatpaksSourcePriority"},
+                                                             {FlathubSourceRole, "flathubSourcePriority"}};
+
+enum class PreferredSource {
+    RpmFusion,
+    FedoraLinux,
+    FedoraFlatpaks,
+    Flathub,
+};
+
+static bool matchesPreferredSource(AbstractResource *resource, PreferredSource source)
+{
+    const QString displayOrigin = resource->displayOrigin().toCaseFolded();
+    const QString origin = resource->origin().toCaseFolded();
+
+    switch (source) {
+    case PreferredSource::RpmFusion:
+        return displayOrigin.contains(QStringLiteral("rpm fusion")) || origin.contains(QStringLiteral("rpmfusion"))
+            || origin.contains(QStringLiteral("rpm fusion"));
+    case PreferredSource::FedoraLinux:
+        if (displayOrigin == QStringLiteral("fedora flatpaks") || origin.contains(QStringLiteral("flatpak"))) {
+            return false;
+        }
+        return displayOrigin == QStringLiteral("fedora linux") || displayOrigin == QStringLiteral("fedora") || origin == QStringLiteral("fedora")
+            || origin == QStringLiteral("updates") || origin == QStringLiteral("updates-testing") || origin.startsWith(QStringLiteral("fedora-"));
+    case PreferredSource::FedoraFlatpaks:
+        return displayOrigin == QStringLiteral("fedora flatpaks") || (origin.contains(QStringLiteral("fedora")) && origin.contains(QStringLiteral("flatpak")));
+    case PreferredSource::Flathub:
+        return displayOrigin == QStringLiteral("flathub") || origin.contains(QStringLiteral("flathub"));
+    }
+
+    Q_UNREACHABLE();
+    return false;
+}
+
+static int preferredSourcePriority(AbstractResource *resource, PreferredSource source)
+{
+    return matchesPreferredSource(resource, source) ? 1 : 0;
+}
+
+static bool isSourceSortRole(ResourcesProxyModel::Roles role)
+{
+    return role == ResourcesProxyModel::RpmFusionSourceRole || role == ResourcesProxyModel::FedoraLinuxSourceRole
+        || role == ResourcesProxyModel::FedoraFlatpaksSourceRole || role == ResourcesProxyModel::FlathubSourceRole;
+}
 
 int levenshteinDistance(QStringView source, QStringView target)
 {
@@ -586,6 +633,14 @@ QVariant ResourcesProxyModel::roleToValue(const StreamResult &result, int role) 
         const auto rating = resource->rating();
         return rating.sortableRating();
     }
+    case RpmFusionSourceRole:
+        return preferredSourcePriority(resource, PreferredSource::RpmFusion);
+    case FedoraLinuxSourceRole:
+        return preferredSourcePriority(resource, PreferredSource::FedoraLinux);
+    case FedoraFlatpaksSourceRole:
+        return preferredSourcePriority(resource, PreferredSource::FedoraFlatpaks);
+    case FlathubSourceRole:
+        return preferredSourcePriority(resource, PreferredSource::Flathub);
     case SearchRelevanceRole: {
         qreal rating = roleToValue(result, SortableRatingRole).value<qreal>();
 
@@ -711,7 +766,8 @@ void ResourcesProxyModel::refreshResource(AbstractResource *resource, const QVec
     const QModelIndex idx = index(row, 0);
     Q_ASSERT(idx.isValid());
     const auto roles = propertiesToRoles(properties);
-    if (roles.contains(m_sortRole)) {
+    const bool sourcePriorityChanged = isSourceSortRole(m_sortRole) && (roles.contains(DisplayOriginRole) || roles.contains(OriginRole));
+    if (roles.contains(m_sortRole) || sourcePriorityChanged) {
         beginRemoveRows({}, row, row);
         m_displayedResources.removeAt(row);
         endRemoveRows();
@@ -755,7 +811,8 @@ void ResourcesProxyModel::refreshBackend(AbstractResourcesBackend *backend, cons
         found = true;
     }
 
-    if (found && properties.contains(s_roles.value(m_sortRole))) {
+    const bool sourcePriorityChanged = isSourceSortRole(m_sortRole) && (roles.contains(DisplayOriginRole) || roles.contains(OriginRole));
+    if (found && (properties.contains(s_roles.value(m_sortRole)) || sourcePriorityChanged)) {
         invalidateSorting();
     }
 }

@@ -15,6 +15,12 @@
 #include <QUrl>
 #include <QUrlQuery>
 
+#if defined(WITH_MARKDOWN)
+extern "C" {
+#include <mkdio.h>
+}
+#endif
+
 CoprClient::CoprClient(QObject *parent)
     : QObject(parent)
     , m_baseUrl(QStringLiteral("https://copr.fedorainfracloud.org/api_3"))
@@ -292,7 +298,38 @@ void CoprClient::processNextRequest()
 
 QString CoprClient::convertMarkdownToHtml(const QString &markdown) const
 {
-    QString html = markdown;
+#if defined(WITH_MARKDOWN)
+    const QByteArray markdownBytes = markdown.toUtf8();
+    MMIOT *markdownHandle = mkd_string(markdownBytes.constData(), markdownBytes.size(), {});
+
+#ifdef MARKDOWN3
+    mkd_flag_t *flags = mkd_flags();
+    mkd_set_flag_num(flags, MKD_FENCEDCODE);
+    mkd_set_flag_num(flags, MKD_GITHUBTAGS);
+    mkd_set_flag_num(flags, MKD_AUTOLINK);
+    mkd_set_flag_num(flags, MKD_SAFELINK);
+    mkd_set_flag_num(flags, MKD_NOHTML);
+    const bool compiled = mkd_compile(markdownHandle, flags);
+#else
+    const bool compiled = mkd_compile(markdownHandle, MKD_FENCEDCODE | MKD_GITHUBTAGS | MKD_AUTOLINK | MKD_SAFELINK | MKD_NOHTML);
+#endif
+    if (compiled) {
+        char *htmlDocument = nullptr;
+        const int size = mkd_document(markdownHandle, &htmlDocument);
+        const QString html = QString::fromUtf8(htmlDocument, size);
+        mkd_cleanup(markdownHandle);
+#ifdef MARKDOWN3
+        mkd_free_flags(flags);
+#endif
+        return html;
+    }
+    mkd_cleanup(markdownHandle);
+#ifdef MARKDOWN3
+    mkd_free_flags(flags);
+#endif
+#endif
+
+    QString html = markdown.toHtmlEscaped();
 
     // Convert image badges with nested links like [![alt](image)](url) to clickable images
     html.replace(QRegularExpression(QStringLiteral("\\[!\\[([^\\]]*)\\]\\(([^\\)]+)\\)\\]\\(([^\\)]+)\\)")),
