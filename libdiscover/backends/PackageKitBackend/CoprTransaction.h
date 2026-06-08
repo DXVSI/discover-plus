@@ -24,6 +24,7 @@ private Q_SLOTS:
     void processOutput();
 
 private:
+    bool canInstallForCurrentChroot();
     void enableCoprRepo();
     void installPackage();
     void removePackage();

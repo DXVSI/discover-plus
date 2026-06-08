@@ -53,10 +53,31 @@ void CoprTransaction::proceed()
     setStatus(DownloadingStatus);
 
     if (m_role == InstallRole) {
+        if (!canInstallForCurrentChroot()) {
+            setStatus(DoneWithErrorStatus);
+            return;
+        }
         enableCoprRepo();
     } else if (m_role == RemoveRole) {
         removePackage();
     }
+}
+
+bool CoprTransaction::canInstallForCurrentChroot()
+{
+    if (!m_resource) {
+        return false;
+    }
+
+    if (m_resource->availableChroots().isEmpty() || m_resource->isAvailableForCurrentFedora()) {
+        return true;
+    }
+
+    Q_EMIT passiveMessage(i18n("This COPR package is not available for your Fedora version."));
+    qCWarning(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "Refusing to install unsupported COPR package:" << m_resource->coprOwner() << "/"
+                                                  << m_resource->coprProject() << "package:" << m_resource->packageName()
+                                                  << "available chroots:" << m_resource->availableChroots();
+    return false;
 }
 
 void CoprTransaction::enableCoprRepo()
