@@ -166,6 +166,11 @@ static bool rpmInfoMatchesCoprOwner(const QString &packageName, const QString &o
         || rpmInfo.contains(sourcePattern, Qt::CaseInsensitive) || rpmInfo.contains(sourcePatternWithCopr, Qt::CaseInsensitive);
 }
 
+static QString coprInstalledStateKey(const QString &owner, const QString &packageName)
+{
+    return owner + QLatin1Char('\n') + packageName;
+}
+
 PackageOrAppId makeResourceId(PackageKitResource *resource)
 {
     auto appstreamResource = qobject_cast<AppPackageKitResource *>(resource);
@@ -1727,20 +1732,30 @@ void PackageKitBackend::requestCoprInstalledStateCheck(CoprResource *resource)
         return;
     }
 
-    if (m_coprInstalledStatePendingResources.contains(resource)) {
+    const QString owner = resource->coprOwner();
+    const QString key = coprInstalledStateKey(owner, packageName);
+    const auto cachedState = m_coprInstalledStateCache.constFind(key);
+    if (cachedState != m_coprInstalledStateCache.cend()) {
+        resource->setInstalledStateFromSystem(*cachedState);
         return;
     }
 
-    m_coprInstalledStatePendingResources.insert(resource);
+    const auto pendingKey = m_coprInstalledStatePendingKeys.constFind(resource);
+    if (pendingKey != m_coprInstalledStatePendingKeys.cend() && *pendingKey == key) {
+        return;
+    }
+
+    m_coprInstalledStatePendingKeys.insert(resource, key);
     connect(resource, &QObject::destroyed, this, [this, resource] {
-        m_coprInstalledStatePendingResources.remove(resource);
+        m_coprInstalledStatePendingKeys.remove(resource);
     });
 
     CoprInstalledStateRequest request;
     request.resource = resource;
     request.resourceKey = resource;
+    request.key = key;
     request.packageName = packageName;
-    request.owner = resource->coprOwner();
+    request.owner = owner;
     m_coprInstalledStateQueue.enqueue(request);
 
     qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "Queued COPR installed-state check for" << resource->coprOwner() << "/" << resource->coprProject()
@@ -1748,12 +1763,23 @@ void PackageKitBackend::requestCoprInstalledStateCheck(CoprResource *resource)
     processNextCoprInstalledStateCheck();
 }
 
+void PackageKitBackend::setCoprInstalledStateCache(const QString &owner, const QString &packageName, bool installed)
+{
+    if (owner.isEmpty() || packageName.isEmpty()) {
+        return;
+    }
+
+    m_coprInstalledStateCache.insert(coprInstalledStateKey(owner, packageName), installed);
+}
+
 void PackageKitBackend::processNextCoprInstalledStateCheck()
 {
     while (m_activeCoprInstalledStateChecks < MaxConcurrentCoprInstalledStateChecks && !m_coprInstalledStateQueue.isEmpty()) {
         const CoprInstalledStateRequest request = m_coprInstalledStateQueue.dequeue();
         if (!request.resource) {
-            m_coprInstalledStatePendingResources.remove(request.resourceKey);
+            if (m_coprInstalledStatePendingKeys.value(request.resourceKey) == request.key) {
+                m_coprInstalledStatePendingKeys.remove(request.resourceKey);
+            }
             continue;
         }
 
@@ -1771,11 +1797,16 @@ void PackageKitBackend::processNextCoprInstalledStateCheck()
                     const bool installedFromCopr =
                         exitStatus == QProcess::NormalExit && exitCode == 0 && rpmInfoMatchesCoprOwner(request.packageName, request.owner, output);
 
-                    if (request.resource) {
+                    setCoprInstalledStateCache(request.owner, request.packageName, installedFromCopr);
+
+                    const bool isCurrentRequest = request.resource && m_coprInstalledStatePendingKeys.value(request.resourceKey) == request.key;
+                    if (isCurrentRequest) {
                         request.resource->setInstalledStateFromSystem(installedFromCopr);
+                        m_coprInstalledStatePendingKeys.remove(request.resourceKey);
+                    } else {
+                        qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "Ignoring stale COPR installed-state result for" << request.owner << request.packageName;
                     }
 
-                    m_coprInstalledStatePendingResources.remove(request.resourceKey);
                     --m_activeCoprInstalledStateChecks;
                     process->deleteLater();
                     processNextCoprInstalledStateCheck();

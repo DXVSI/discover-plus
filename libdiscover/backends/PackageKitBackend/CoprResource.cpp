@@ -406,6 +406,10 @@ void CoprResource::setInstalledStateFromSystem(bool installed)
     const bool wasInstalled = m_isInstalled;
     m_isInstalled = installed;
 
+    if (auto pkBackend = qobject_cast<PackageKitBackend *>(backend())) {
+        pkBackend->setCoprInstalledStateCache(m_owner, m_installPackageName, installed);
+    }
+
     // Also emit the change through the backend so the UI updates
     if (wasInstalled != m_isInstalled) {
         Q_EMIT stateChanged();
