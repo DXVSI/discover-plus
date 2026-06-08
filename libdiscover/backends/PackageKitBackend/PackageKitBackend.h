@@ -25,6 +25,7 @@
 
 class AppPackageKitResource;
 class PackageKitUpdater;
+class PackageKitSourcesBackend;
 class OdrsReviewsBackend;
 class PKResultsStream;
 class PKResolveTransaction;
@@ -156,6 +157,7 @@ public:
     void loadMoreCoprProjects();
     void requestCoprInstalledStateCheck(CoprResource *resource);
     void setCoprInstalledStateCache(const QString &owner, const QString &packageName, bool installed);
+    void refreshSources();
 
 public Q_SLOTS:
     void reloadPackageList();
@@ -204,6 +206,7 @@ private:
     QScopedPointer<AppStream::ConcurrentPool> m_appdata;
     bool m_appdataLoaded = false;
     PackageKitUpdater *m_updater;
+    PackageKitSourcesBackend *m_sourcesBackend = nullptr;
     QPointer<PackageKit::Transaction> m_refresher;
     int m_isFetching;
     QSet<QString> m_updatesPackageId;

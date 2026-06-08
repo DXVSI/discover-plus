@@ -155,7 +155,7 @@ void CoprTransaction::installPackage()
 
 void CoprTransaction::removePackage()
 {
-    m_state = InstallPackage;  // Reuse same state for removal
+    m_state = RemovePackage;
     setStatus(CommittingStatus);
 
     if (!m_resource) {
@@ -178,6 +178,38 @@ void CoprTransaction::removePackage()
     args << QStringLiteral("remove");
     args << QStringLiteral("-y");
     args << packageName;
+
+    startPkexec(args);
+}
+
+void CoprTransaction::removeCoprRepo()
+{
+    m_state = RemoveRepo;
+    setStatus(CommittingStatus);
+    setProgress(80);
+
+    if (!m_resource) {
+        setStatus(DoneWithErrorStatus);
+        return;
+    }
+
+    const QString owner = m_resource->coprOwner();
+    const QString project = m_resource->coprProject();
+    if (owner.isEmpty() || project.isEmpty()) {
+        Q_EMIT passiveMessage(i18n("No COPR repository is known for this resource"));
+        setStatus(DoneWithErrorStatus);
+        return;
+    }
+
+    const QString coprRepo = owner + QStringLiteral("/") + project;
+    qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "Removing COPR repository:" << coprRepo;
+
+    QStringList args;
+    args << QStringLiteral("dnf");
+    args << QStringLiteral("copr");
+    args << QStringLiteral("remove");
+    args << QStringLiteral("-y");
+    args << coprRepo;
 
     startPkexec(args);
 }
@@ -210,22 +242,28 @@ void CoprTransaction::processFinished(int exitCode, QProcess::ExitStatus exitSta
         }
         break;
     case InstallPackage:
-        if (m_role == RemoveRole) {
-            if (m_resource) {
-                m_resource->setState(AbstractResource::None);
-                qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "Package removed successfully, COPR repository left enabled";
-            }
-            setProgress(100);
-            setStatus(DoneStatus);
-        } else {
-            // Update resource state to installed
-            if (m_resource) {
-                m_resource->setState(AbstractResource::Installed);
-                qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "Package installed successfully, state updated to Installed";
-            }
-            setProgress(100);
-            setStatus(DoneStatus);
+        // Update resource state to installed
+        if (m_resource) {
+            m_resource->setState(AbstractResource::Installed);
+            qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "Package installed successfully, state updated to Installed";
         }
+        setProgress(100);
+        setStatus(DoneStatus);
+        break;
+    case RemovePackage:
+        if (m_resource) {
+            m_resource->setState(AbstractResource::None);
+            qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "Package removed successfully, removing COPR repository";
+        }
+        removeCoprRepo();
+        break;
+    case RemoveRepo:
+        qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "COPR repository removed successfully";
+        if (m_backend) {
+            m_backend->refreshSources();
+        }
+        setProgress(100);
+        setStatus(DoneStatus);
         break;
     default:
         break;

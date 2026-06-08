@@ -288,7 +288,8 @@ PackageKitBackend::PackageKitBackend(QObject *parent)
         updateProxy();
     });
 
-    SourcesModel::global()->addSourcesBackend(new PackageKitSourcesBackend(this));
+    m_sourcesBackend = new PackageKitSourcesBackend(this);
+    SourcesModel::global()->addSourcesBackend(m_sourcesBackend);
 
     reloadPackageList();
 
@@ -479,6 +480,13 @@ void PackageKitBackend::reloadPackageList()
             Qt::QueuedConnection);
     });
     m_appdata->loadAsync();
+}
+
+void PackageKitBackend::refreshSources()
+{
+    if (m_sourcesBackend) {
+        m_sourcesBackend->resetSources();
+    }
 }
 
 AppPackageKitResource *PackageKitBackend::addComponent(const AppStream::Component &component) const
@@ -1418,7 +1426,7 @@ Transaction *PackageKitBackend::removeApplication(AbstractResource *app)
     // Check if this is a COPR resource
     auto coprResource = qobject_cast<CoprResource *>(app);
     if (coprResource) {
-        // Use special COPR transaction that removes the package but leaves the repository enabled.
+        // Use special COPR transaction that removes the package and the COPR repository.
         return new CoprTransaction(coprResource, Transaction::RemoveRole, this);
     }
 

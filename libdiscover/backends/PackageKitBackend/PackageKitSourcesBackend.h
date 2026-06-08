@@ -31,9 +31,9 @@ public:
     QVariantList actions() const override;
 
     void transactionError(PackageKit::Transaction::Error, const QString &message);
+    void resetSources();
 
 private:
-    void resetSources();
     void addRepositoryDetails(const QString &id, const QString &description, bool enabled);
     QStandardItem *findItemForId(const QString &id) const;
 
