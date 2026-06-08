@@ -1,20 +1,24 @@
 #include "CoprClient.h"
 #include "libdiscover_backend_packagekit_debug.h"
 
+#include <QDateTime>
 #include <QDebug>
 #include <QFile>
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
+#include <QNetworkRequest>
 #include <QRegularExpression>
 #include <QSysInfo>
 #include <QTextStream>
 #include <QTimer>
+#include <QUrl>
 #include <QUrlQuery>
 
 CoprClient::CoprClient(QObject *parent)
     : QObject(parent)
     , m_baseUrl(QStringLiteral("https://copr.fedorainfracloud.org/api_3"))
+    , m_networkAccessManager(new QNetworkAccessManager(this))
 {
     m_fedoraVersion = getFedoraVersion();
     m_currentChroot = getCurrentChroot();
@@ -24,6 +28,7 @@ CoprClient::CoprClient(QObject *parent)
 
 CoprClient::~CoprClient()
 {
+    cancelAllRequests();
 }
 
 QString CoprClient::getFedoraVersion() const
@@ -126,6 +131,14 @@ void CoprClient::searchPackages(const QString &query, int limit)
 
 void CoprClient::cancelAllRequests()
 {
+    for (const auto &reply : std::as_const(m_activeReplies)) {
+        if (reply) {
+            reply->disconnect(this);
+            reply->abort();
+            reply->deleteLater();
+        }
+    }
+    m_activeReplies.clear();
     m_requestQueue.clear();
     m_activeRequests = 0;
 
@@ -182,94 +195,98 @@ void CoprClient::emitResultForRequest(const QString &requestType, const QJsonObj
     } else if (requestType.startsWith(QStringLiteral("getProjectPackages:"))) {
         QStringList parts = requestType.split(QLatin1Char(':'));
         if (parts.size() >= 3) {
-            Q_EMIT packagesFound(parsePackagesResponse(json, parts[1], parts[2]));
+            const QList<CoprPackageInfo> packages = parsePackagesResponse(json, parts[1], parts[2]);
+            Q_EMIT projectPackagesFound(parts[1], parts[2], packages);
+        }
+    }
+}
+
+void CoprClient::emitEmptyResultForRequest(const QString &requestType)
+{
+    if (requestType == QStringLiteral("searchProjects") || requestType == QStringLiteral("getPopularProjects")
+        || requestType == QStringLiteral("getLatestProjects")) {
+        Q_EMIT projectsFound(QList<CoprProjectInfo>());
+    } else if (requestType.startsWith(QStringLiteral("getProjectPackages:"))) {
+        const QStringList parts = requestType.split(QLatin1Char(':'));
+        if (parts.size() >= 3) {
+            Q_EMIT projectPackagesFound(parts[1], parts[2], QList<CoprPackageInfo>());
         }
     }
 }
 
 void CoprClient::processNextRequest()
 {
-    if (m_requestQueue.isEmpty() || m_activeRequests >= MaxConcurrentRequests) {
-        return;
-    }
+    while (!m_requestQueue.isEmpty() && m_activeRequests < MaxConcurrentRequests) {
+        const auto requestData = m_requestQueue.dequeue();
+        const QUrl url = requestData.first;
+        const QString requestType = requestData.second;
+        const QString urlString = url.toString();
 
-    m_activeRequests++;
-    auto request_data = m_requestQueue.dequeue();
-    QUrl url = request_data.first;
-    QString requestType = request_data.second;
-    QString urlString = url.toString();
+        QNetworkRequest request(url);
+        request.setRawHeader("Accept", "application/json");
 
-    qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "Processing COPR request via curl:" << requestType << "active:" << m_activeRequests
-                                                << "queued:" << m_requestQueue.size();
+        QNetworkReply *reply = m_networkAccessManager->get(request);
+        reply->setProperty("requestType", requestType);
+        reply->setProperty("urlString", urlString);
 
-    QProcess *curlProcess = new QProcess(this);
-    curlProcess->setProperty("requestType", requestType);
+        m_activeReplies.append(reply);
+        ++m_activeRequests;
 
-    connect(curlProcess,
-            QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished),
-            this,
-            [this, curlProcess, urlString](int exitCode, QProcess::ExitStatus) {
-                QString requestType = curlProcess->property("requestType").toString();
-                QByteArray data = curlProcess->readAllStandardOutput();
+        qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "Processing COPR request via Qt network:" << requestType << "active:" << m_activeRequests
+                                                    << "queued:" << m_requestQueue.size();
 
-                m_activeRequests--;
+        const int timeoutMs = requestType == QStringLiteral("searchProjects") ? 25000 : 10000;
+        QTimer::singleShot(timeoutMs, reply, [reply]() {
+            if (reply->isRunning()) {
+                reply->setProperty("timedOut", true);
+                reply->abort();
+            }
+        });
 
-                if (exitCode != 0 || data.isEmpty()) {
-                    // curl exit code 28 = timeout
-                    QString errorMsg =
-                        exitCode == 28 ? QStringLiteral("COPR request timed out") : QStringLiteral("COPR request failed (exit code: %1)").arg(exitCode);
-                    qWarning() << errorMsg << "for" << requestType;
-                    Q_EMIT errorOccurred(errorMsg);
+        connect(reply, &QNetworkReply::finished, this, [this, reply]() {
+            m_activeReplies.removeAll(reply);
 
-                    if (requestType == QStringLiteral("searchProjects") || requestType == QStringLiteral("getPopularProjects")
-                        || requestType == QStringLiteral("getLatestProjects")) {
-                        Q_EMIT projectsFound(QList<CoprProjectInfo>());
-                    } else if (requestType.startsWith(QStringLiteral("getProjectPackages:"))) {
-                        Q_EMIT packagesFound(QList<CoprPackageInfo>());
-                    }
-                    curlProcess->deleteLater();
-                    processNextRequest();
-                    return;
-                }
+            const QString requestType = reply->property("requestType").toString();
+            const QString urlString = reply->property("urlString").toString();
+            const bool timedOut = reply->property("timedOut").toBool();
+            const QByteArray data = reply->readAll();
 
-                QJsonDocument doc = QJsonDocument::fromJson(data);
-                if (!doc.isObject()) {
-                    qWarning() << "Invalid JSON from COPR for" << requestType << "- data:" << data.left(200);
-                    Q_EMIT errorOccurred(QStringLiteral("Invalid response from COPR API"));
+            if (m_activeRequests > 0) {
+                --m_activeRequests;
+            }
 
-                    if (requestType == QStringLiteral("searchProjects") || requestType == QStringLiteral("getPopularProjects")
-                        || requestType == QStringLiteral("getLatestProjects")) {
-                        Q_EMIT projectsFound(QList<CoprProjectInfo>());
-                    } else if (requestType.startsWith(QStringLiteral("getProjectPackages:"))) {
-                        Q_EMIT packagesFound(QList<CoprPackageInfo>());
-                    }
-                    curlProcess->deleteLater();
-                    processNextRequest();
-                    return;
-                }
-
-                QJsonObject json = doc.object();
-
-                // Cache the successful response
-                m_cache[urlString] = CacheEntry{json, QDateTime::currentMSecsSinceEpoch()};
-
-                emitResultForRequest(requestType, json);
-
-                curlProcess->deleteLater();
+            if (timedOut || reply->error() != QNetworkReply::NoError || data.isEmpty()) {
+                const QString errorMsg =
+                    timedOut ? QStringLiteral("COPR request timed out") : QStringLiteral("COPR request failed: %1").arg(reply->errorString());
+                qWarning() << errorMsg << "for" << requestType;
+                Q_EMIT errorOccurred(errorMsg);
+                emitEmptyResultForRequest(requestType);
+                reply->deleteLater();
                 processNextRequest();
-            });
+                return;
+            }
 
-    curlProcess->start(QStringLiteral("curl"),
-                       {QStringLiteral("-s"),
-                        QStringLiteral("-H"),
-                        QStringLiteral("Accept: application/json"),
-                        QStringLiteral("--max-time"),
-                        QStringLiteral("15"),
-                        url.toString()});
+            QJsonParseError parseError;
+            const QJsonDocument doc = QJsonDocument::fromJson(data, &parseError);
+            if (!doc.isObject()) {
+                qWarning() << "Invalid JSON from COPR for" << requestType << "- error:" << parseError.errorString() << "- data:" << data.left(200);
+                Q_EMIT errorOccurred(QStringLiteral("Invalid response from COPR API"));
+                emitEmptyResultForRequest(requestType);
+                reply->deleteLater();
+                processNextRequest();
+                return;
+            }
 
-    // Try to start more concurrent requests from the queue
-    if (!m_requestQueue.isEmpty() && m_activeRequests < MaxConcurrentRequests) {
-        processNextRequest();
+            const QJsonObject json = doc.object();
+
+            // Cache the successful response
+            m_cache[urlString] = CacheEntry{json, QDateTime::currentMSecsSinceEpoch()};
+
+            emitResultForRequest(requestType, json);
+
+            reply->deleteLater();
+            processNextRequest();
+        });
     }
 }
 
@@ -306,6 +323,89 @@ QString CoprClient::convertMarkdownToHtml(const QString &markdown) const
     return html;
 }
 
+static QStringList jsonStringArray(const QJsonArray &array)
+{
+    QStringList values;
+    values.reserve(array.size());
+
+    for (const QJsonValue &value : array) {
+        const QString text = value.toString();
+        if (!text.isEmpty()) {
+            values.append(text);
+        }
+    }
+
+    return values;
+}
+
+static QString jsonValueToDisplayString(const QJsonValue &value)
+{
+    if (value.isString()) {
+        return value.toString();
+    }
+    if (value.isDouble()) {
+        return QString::number(value.toInt());
+    }
+    if (value.isBool()) {
+        return value.toBool() ? QStringLiteral("true") : QStringLiteral("false");
+    }
+    return {};
+}
+
+static QDateTime unixTimestampToDateTime(const QJsonValue &value)
+{
+    const qint64 timestamp = value.toVariant().toLongLong();
+    if (timestamp <= 0) {
+        return {};
+    }
+    return QDateTime::fromSecsSinceEpoch(timestamp);
+}
+
+static QString sourceUrlFromSourceDict(const QJsonObject &source)
+{
+    const QString url = source.value(QStringLiteral("url")).toString();
+    if (!url.isEmpty()) {
+        return url;
+    }
+
+    const QString cloneUrl = source.value(QStringLiteral("clone_url")).toString();
+    if (!cloneUrl.isEmpty()) {
+        return cloneUrl;
+    }
+
+    return {};
+}
+
+CoprProjectInfo CoprClient::parseProjectObject(const QJsonObject &obj)
+{
+    CoprProjectInfo project;
+    project.owner = obj.value(QStringLiteral("ownername")).toString();
+    project.name = obj.value(QStringLiteral("name")).toString();
+    project.fullName = obj.value(QStringLiteral("full_name")).toString();
+    project.description = convertMarkdownToHtml(obj.value(QStringLiteral("description")).toString());
+    project.instructions = convertMarkdownToHtml(obj.value(QStringLiteral("instructions")).toString());
+    project.contact = obj.value(QStringLiteral("contact")).toString();
+    project.id = obj.value(QStringLiteral("id")).toInt();
+    project.homepage = obj.value(QStringLiteral("homepage")).toString();
+    project.additionalRepos = jsonStringArray(obj.value(QStringLiteral("additional_repos")).toArray());
+    project.repoPriority = jsonValueToDisplayString(obj.value(QStringLiteral("repo_priority")));
+    project.appstream = obj.value(QStringLiteral("appstream")).toBool();
+    project.develMode = obj.value(QStringLiteral("devel_mode")).toBool();
+    project.enableNet = obj.value(QStringLiteral("enable_net")).toBool();
+    project.followFedoraBranching = obj.value(QStringLiteral("follow_fedora_branching")).toBool();
+    project.autoPrune = obj.value(QStringLiteral("auto_prune")).toBool();
+    project.moduleHotfixes = obj.value(QStringLiteral("module_hotfixes")).toBool();
+
+    const QJsonObject chrootRepos = obj.value(QStringLiteral("chroot_repos")).toObject();
+    if (!chrootRepos.isEmpty()) {
+        project.chroots = chrootRepos.keys();
+    } else {
+        project.chroots = jsonStringArray(obj.value(QStringLiteral("chroots")).toArray());
+    }
+
+    return project;
+}
+
 QList<CoprProjectInfo> CoprClient::parseProjectsResponse(const QJsonObject &json)
 {
     QList<CoprProjectInfo> projects;
@@ -313,31 +413,7 @@ QList<CoprProjectInfo> CoprClient::parseProjectsResponse(const QJsonObject &json
     QJsonArray items = json.value(QStringLiteral("items")).toArray();
 
     for (const QJsonValue &value : items) {
-        QJsonObject obj = value.toObject();
-
-        CoprProjectInfo project;
-        project.owner = obj.value(QStringLiteral("ownername")).toString();
-        project.name = obj.value(QStringLiteral("name")).toString();
-        project.description = convertMarkdownToHtml(obj.value(QStringLiteral("description")).toString());
-        project.id = obj.value(QStringLiteral("id")).toInt();
-        project.homepage = obj.value(QStringLiteral("homepage")).toString();
-
-        // Try to get chroots from different possible fields
-        QJsonObject chrootRepos = obj.value(QStringLiteral("chroot_repos")).toObject();
-        if (!chrootRepos.isEmpty()) {
-            project.chroots = chrootRepos.keys();
-        } else {
-            // For search results, chroots might be in a different field
-            QJsonArray chrootsArray = obj.value(QStringLiteral("chroots")).toArray();
-            for (const QJsonValue &chrootVal : chrootsArray) {
-                QString chrootName = chrootVal.toString();
-                if (!chrootName.isEmpty()) {
-                    project.chroots.append(chrootName);
-                }
-            }
-        }
-
-        projects.append(project);
+        projects.append(parseProjectObject(value.toObject()));
     }
 
     return projects;
@@ -348,14 +424,11 @@ CoprProjectInfo CoprClient::parseProjectResponse(const QJsonObject &json)
     CoprProjectInfo project;
 
     QJsonObject obj = json.value(QStringLiteral("project")).toObject();
+    if (obj.isEmpty()) {
+        obj = json;
+    }
 
-    project.owner = obj.value(QStringLiteral("ownername")).toString();
-    project.name = obj.value(QStringLiteral("name")).toString();
-    project.description = convertMarkdownToHtml(obj.value(QStringLiteral("description")).toString());
-    project.id = obj.value(QStringLiteral("id")).toInt();
-    project.homepage = obj.value(QStringLiteral("homepage")).toString();
-
-    project.chroots = obj.value(QStringLiteral("chroot_repos")).toObject().keys();
+    project = parseProjectObject(obj);
 
     return project;
 }
@@ -373,31 +446,40 @@ QList<CoprPackageInfo> CoprClient::parsePackagesResponse(const QJsonObject &json
         package.name = obj.value(QStringLiteral("name")).toString();
         package.owner = owner;
         package.projectName = project;
+        package.sourceType = obj.value(QStringLiteral("source_type")).toString();
 
         // Extract info from latest build if available
         QJsonObject builds = obj.value(QStringLiteral("builds")).toObject();
-        QJsonObject latestBuild = builds.value(QStringLiteral("latest")).toObject();
+        QJsonObject latestBuild = builds.value(QStringLiteral("latest_succeeded")).toObject();
+        if (latestBuild.isEmpty()) {
+            latestBuild = builds.value(QStringLiteral("latest")).toObject();
+        }
 
         if (!latestBuild.isEmpty()) {
             // Get build chroots to determine availability
-            QJsonArray chroots = latestBuild.value(QStringLiteral("chroots")).toArray();
-            for (const QJsonValue &chrootVal : chroots) {
-                QString chrootName = chrootVal.toString();
-                if (!chrootName.isEmpty()) {
-                    package.availableChroots.append(chrootName);
-                }
-            }
+            package.availableChroots = jsonStringArray(latestBuild.value(QStringLiteral("chroots")).toArray());
 
             // Check if available for current Fedora
             package.isAvailableForCurrentFedora = package.availableChroots.contains(m_currentChroot);
+            package.latestBuildState = latestBuild.value(QStringLiteral("state")).toString();
+            package.latestBuildRepoUrl = latestBuild.value(QStringLiteral("repo_url")).toString();
+            package.latestBuildSubmitter = latestBuild.value(QStringLiteral("submitter")).toString();
+            package.latestBuildSubmittedOn = unixTimestampToDateTime(latestBuild.value(QStringLiteral("submitted_on")));
+            package.latestBuildStartedOn = unixTimestampToDateTime(latestBuild.value(QStringLiteral("started_on")));
+            package.latestBuildEndedOn = unixTimestampToDateTime(latestBuild.value(QStringLiteral("ended_on")));
+
+            const QJsonObject sourcePackage = latestBuild.value(QStringLiteral("source_package")).toObject();
+            package.version = sourcePackage.value(QStringLiteral("version")).toString();
         }
 
         // Get source info if available
         QJsonObject source = obj.value(QStringLiteral("source_dict")).toObject();
         if (!source.isEmpty()) {
-            QString url = source.value(QStringLiteral("url")).toString();
-            if (!url.isEmpty()) {
-                package.homepage = url;
+            package.sourceUrl = sourceUrlFromSourceDict(source);
+            package.sourceSpec = source.value(QStringLiteral("spec")).toString();
+            package.sourceSubdirectory = source.value(QStringLiteral("subdirectory")).toString();
+            if (package.homepage.isEmpty()) {
+                package.homepage = package.sourceUrl;
             }
         }
 

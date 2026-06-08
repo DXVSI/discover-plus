@@ -80,3 +80,5 @@ VariantMapMap MockServer::CheckForUpdates(const QVariantMap & /* options */, Var
     }
     return result;
 }
+
+#include "moc_mock_server.cpp"

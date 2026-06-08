@@ -1,8 +1,9 @@
 #ifndef COPRTRANSACTION_H
 #define COPRTRANSACTION_H
 
-#include <Transaction/Transaction.h>
+#include <QPointer>
 #include <QProcess>
+#include <Transaction/Transaction.h>
 
 class CoprResource;
 class PackageKitBackend;
@@ -26,16 +27,14 @@ private:
     void enableCoprRepo();
     void installPackage();
     void removePackage();
-    void disableCoprRepo();
 
-    CoprResource *m_resource;
+    QPointer<CoprResource> m_resource;
     PackageKitBackend *m_backend;
     QProcess *m_process;
     Transaction::Role m_role;
     enum State {
         EnableRepo,
         InstallPackage,
-        DisableRepo,
         Done
     };
     State m_state;

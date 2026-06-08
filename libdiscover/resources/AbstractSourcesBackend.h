@@ -24,14 +24,15 @@ class DISCOVERCOMMON_EXPORT AbstractSourcesBackend : public QObject
     Q_PROPERTY(bool supportsAdding READ supportsAdding CONSTANT)
     Q_PROPERTY(bool canMoveSources READ canMoveSources CONSTANT)
     Q_PROPERTY(bool canFilterSources READ canFilterSources CONSTANT)
-    Q_PROPERTY(QString firstSourceId READ firstSourceId NOTIFY firstSourceIdChanged)
-    Q_PROPERTY(QString lastSourceId READ lastSourceId NOTIFY lastSourceIdChanged)
+    Q_PROPERTY(QString firstDisambiguatedSourceId READ firstDisambiguatedSourceId NOTIFY firstDisambiguatedSourceIdChanged)
+    Q_PROPERTY(QString lastDisambiguatedSourceId READ lastDisambiguatedSourceId NOTIFY lastDisambiguatedSourceIdChanged)
 public:
     explicit AbstractSourcesBackend(AbstractResourcesBackend *parent);
     ~AbstractSourcesBackend() override;
 
     enum Roles {
         IdRole = Qt::UserRole,
+        DisambiguatedIdRole,
         LastRole,
     };
     Q_ENUM(Roles)
@@ -63,8 +64,8 @@ public:
     }
     Q_SCRIPTABLE virtual bool moveSource(const QString &sourceId, int delta);
 
-    QString firstSourceId() const;
-    QString lastSourceId() const;
+    QString firstDisambiguatedSourceId() const;
+    QString lastDisambiguatedSourceId() const;
 
 public Q_SLOTS:
     virtual void cancel()
@@ -76,8 +77,8 @@ public Q_SLOTS:
     }
 
 Q_SIGNALS:
-    void firstSourceIdChanged();
-    void lastSourceIdChanged();
+    void firstDisambiguatedSourceIdChanged();
+    void lastDisambiguatedSourceIdChanged();
     void passiveMessage(const QString &message);
     void proceedRequest(const QString &title, const QString &description);
 };

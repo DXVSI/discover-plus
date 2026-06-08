@@ -61,6 +61,7 @@
   <name xml:lang="ta">டிஸ்கவர்</name>
   <name xml:lang="tg">Кашфиёт</name>
   <name xml:lang="tr">Keşfet</name>
+  <name xml:lang="ug">Discover</name>
   <name xml:lang="uk">Discover</name>
   <name xml:lang="zh-CN">Discover 软件管理中心</name>
   <name xml:lang="zh-TW">Discover</name>
@@ -95,10 +96,12 @@
   <summary xml:lang="ro">Instalează și elimină aplicații și suplimente</summary>
   <summary xml:lang="ru">Установка и удаление приложений и дополнений</summary>
   <summary xml:lang="sa">एप्स्, एड्-ऑन् च संस्थाप्य निष्कासयन्तु</summary>
+  <summary xml:lang="sk">Inštalovať a odstraňovať aplikácie a doplnky</summary>
   <summary xml:lang="sl">Namešča in odstranjuje aplikacije in dodatke</summary>
   <summary xml:lang="sv">Installera och ta bort program och tillägg</summary>
   <summary xml:lang="ta">செயலிகளையும் துணைநிரல்களையும் நிறுவி நீக்கலாம்</summary>
   <summary xml:lang="tr">Uygulamalar ve eklentiler kurun veya kaldırın</summary>
+  <summary xml:lang="ug">پىروگرامما ۋە قوشۇلما ئورنىتىپ ۋە چىقىرىۋېتىدۇ</summary>
   <summary xml:lang="uk">Встановлення і вилучення програм і додатків</summary>
   <summary xml:lang="zh-CN">安装、移除应用程序和附加组件</summary>
   <summary xml:lang="zh-TW">安裝或移除應用程式與附加功能</summary>
@@ -170,7 +173,7 @@
     <p xml:lang="eo">Kun Discover, vi povas administri programaron el pluraj fontoj, inkluzive de la programara deponejo de via operaciumo, Flatpak-repozoj, la Snap-butiko aŭ eĉ AppImages de store.kde.org.</p>
     <p xml:lang="es">Con Discover puede gestionar software de múltiples fuentes, incluyendo los repositorios de software de su sistema operativo, repositorios de Flatpak, la tienda de Snap, e incluso AppImages de store.kde.org.</p>
     <p xml:lang="et">Discoveriga saab hallata tarkvara, mis on pärit mitmest allikast, kaasa arvatud su enda operatsioonisüsteemi tarkvarahoidla, Flatpaki hoidlad, Snapi hoidla või isegi hoidlas store.kde.org pakutavad AppImage'id.</p>
-    <p xml:lang="eu">Discover-rekin, sorburu askotako softwarea kudeatu dezakezu, tartean zure sistema eragilearen software gordetegia, Flatpak gordetegiak, Snap biltegia, edo baita store.kde.org-eko  AppImages-etik ere.</p>
+    <p xml:lang="eu">Discover-rekin, sorburu askotako softwarea kudeatu dezakezu, tartean zure sistema eragilearen software gordetegia, Flatpak gordetegiak, Snap biltegia, edo baita store.kde.org-eko AppImages-etik ere.</p>
     <p xml:lang="fa">با دیسکاور شما می‌توانید برنامه‌ها را از چند منبع مختلف مدیریت کنید، از جمله مخازن سیستم‌عامل شما، فلت‌پک، اسنپ و یا حتی اپ‌ایمیج‌ها از store.kde.org.</p>
     <p xml:lang="fi">Discoverilla voit hallita ohjelmia eri lähteistä: käyttöjärjestelmän tai Flatpakin asennuslähteistä, Snap-kaupasta tai jopa store.kde.orgin AppImageista.</p>
     <p xml:lang="fr">Grâce à Discover, vous pouvez gérer des logiciels provenant de plusieurs sources, dont le dépôt de logiciels de votre système d'exploitation, les dépôts « Flatpak », la boutique « Snap » ou même des modules « AppImage  »de la boutique « store.kde.org ».</p>
@@ -325,10 +328,10 @@
   </provides>
   <compulsory_for_desktop>KDE</compulsory_for_desktop>
   <releases>
+    <release version="6.6.5" date="2026-05-12"/>
+    <release version="6.6.4" date="2026-04-06"/>
+    <release version="6.6.3" date="2026-03-17"/>
     <release version="6.6.2" date="2026-03-03"/>
-    <release version="6.6.1" date="2026-02-24"/>
-    <release version="6.6.0" date="2026-02-17"/>
-    <release version="6.5.5" date="2026-01-13"/>
   </releases>
   <content_rating type="oars-1.1"/>
 </component>

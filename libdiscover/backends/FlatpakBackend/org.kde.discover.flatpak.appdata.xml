@@ -52,6 +52,7 @@
   <name xml:lang="ta">ஃபலாட்பாக் பின்நிலை</name>
   <name xml:lang="tg">Коркардкунандаи Flatpak</name>
   <name xml:lang="tr">Flatpak arka ucu</name>
+  <name xml:lang="ug">Flatpak ئارقا ئۇچى</name>
   <name xml:lang="uk">Модуль Flatpak</name>
   <name xml:lang="zh-CN">Flatpak 后端程序</name>
   <name xml:lang="zh-TW">Flatpak 後端</name>
@@ -162,14 +163,15 @@
   <developer_name xml:lang="ta">அலேயிக்சு போல் கொன்ஸாலெசு</developer_name>
   <developer_name xml:lang="tg">Алейкс Пол Гонзалес (Aleix Pol Gonzalez)</developer_name>
   <developer_name xml:lang="tr">Aleix Pol Gonzalez</developer_name>
+  <developer_name xml:lang="ug">Aleix Pol Gonzalez</developer_name>
   <developer_name xml:lang="uk">Aleix Pol Gonzalez</developer_name>
   <developer_name xml:lang="zh-CN">Aleix Pol Gonzalez</developer_name>
   <developer_name xml:lang="zh-TW">Aleix Pol Gonzalez</developer_name>
   <icon type="stock">system-software-install</icon>
   <releases>
+    <release version="6.6.5" date="2026-05-12"/>
+    <release version="6.6.4" date="2026-04-06"/>
+    <release version="6.6.3" date="2026-03-17"/>
     <release version="6.6.2" date="2026-03-03"/>
-    <release version="6.6.1" date="2026-02-24"/>
-    <release version="6.6.0" date="2026-02-17"/>
-    <release version="6.5.5" date="2026-01-13"/>
   </releases>
 </component>

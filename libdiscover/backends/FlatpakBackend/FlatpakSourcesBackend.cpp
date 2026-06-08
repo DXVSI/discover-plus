@@ -61,6 +61,7 @@ public:
                 g_autoptr(GError) error = nullptr;
                 if (!flatpak_installation_modify_remote(m_installation, m_remote, nullptr, &error)) {
                     qCWarning(LIBDISCOVER_BACKEND_FLATPAK_LOG) << "set disabled failed" << error->message;
+                    flatpak_remote_set_disabled(m_remote, disabled);
                     return;
                 }
 
@@ -193,12 +194,12 @@ bool FlatpakSourcesBackend::addSource(const QString &id)
     return true;
 }
 
-QStandardItem *FlatpakSourcesBackend::sourceById(const QString &id) const
+QStandardItem *FlatpakSourcesBackend::sourceByDisambiguatedId(const QString &id) const
 {
     QStandardItem *sourceIt = nullptr;
     for (int i = 0, c = m_sources->rowCount(); i < c; ++i) {
         auto it = m_sources->item(i);
-        if (it->data(IdRole) == id) {
+        if (it->data(DisambiguatedIdRole) == id) {
             sourceIt = it;
             break;
         }
@@ -221,14 +222,16 @@ QStandardItem *FlatpakSourcesBackend::sourceByUrl(const QString &_url) const
     return sourceIt;
 }
 
-bool FlatpakSourcesBackend::removeSource(const QString &id)
+bool FlatpakSourcesBackend::removeSource(const QString &disambiguatedSourceId)
 {
-    auto sourceIt = sourceById(id);
+    auto sourceIt = sourceByDisambiguatedId(disambiguatedSourceId);
     if (sourceIt) {
         FlatpakSourceItem *sourceItem = static_cast<FlatpakSourceItem *>(sourceIt);
         g_autoptr(GCancellable) cancellable = g_cancellable_new();
         g_autoptr(GError) error = nullptr;
         const auto installation = sourceItem->flatpakInstallation();
+
+        auto id = disambiguatedSourceId.left(disambiguatedSourceId.lastIndexOf(u'-'));
 
         g_autoptr(GPtrArray) refs = flatpak_installation_list_remote_refs_sync(installation, id.toUtf8().constData(), cancellable, &error);
         if (refs) {
@@ -314,7 +317,7 @@ bool FlatpakSourcesBackend::removeSource(const QString &id)
             return false;
         }
     } else {
-        Q_EMIT passiveMessage(i18n("Could not find %1", id));
+        Q_EMIT passiveMessage(i18n("Could not find %1", disambiguatedSourceId));
         return false;
     }
 
@@ -333,6 +336,8 @@ void FlatpakSourcesBackend::addRemote(FlatpakRemote *remote, FlatpakInstallation
     }
     const QString id = QString::fromUtf8(flatpak_remote_get_name(remote));
     const QString title = copyAndFree(flatpak_remote_get_title(remote));
+    const QString disambiguatedId =
+        QString::fromUtf8(flatpak_remote_get_name(remote)) + (flatpak_installation_get_is_user(installation) ? u"-user"_s : u"-system"_s);
     const QUrl remoteUrl(copyAndFree(flatpak_remote_get_url(remote)));
 
     const auto theActions = actions();
@@ -368,6 +373,7 @@ void FlatpakSourcesBackend::addRemote(FlatpakRemote *remote, FlatpakInstallation
     it->setData(remoteUrl.isLocalFile() ? remoteUrl.toLocalFile() : remoteUrl.host(), Qt::ToolTipRole);
     it->setData(remoteUrl, Qt::StatusTipRole);
     it->setData(id, IdRole);
+    it->setData(disambiguatedId, DisambiguatedIdRole);
     it->setData(prio, PrioRole);
     it->setCheckState(flatpak_remote_get_disabled(remote) ? Qt::Unchecked : Qt::Checked);
 #if FLATPAK_CHECK_VERSION(1, 4, 0)
@@ -397,9 +403,9 @@ void FlatpakSourcesBackend::addRemote(FlatpakRemote *remote, FlatpakInstallation
 
     m_sources->insertRow(idx, it);
     if (m_sources->rowCount() == 1) {
-        Q_EMIT firstSourceIdChanged();
+        Q_EMIT firstDisambiguatedSourceIdChanged();
     }
-    Q_EMIT lastSourceIdChanged();
+    Q_EMIT lastDisambiguatedSourceIdChanged();
 
     if (m_sources->rowCount() > 0) {
         m_sources->takeRow(m_noSourcesItem->row());
@@ -413,7 +419,7 @@ QString FlatpakSourcesBackend::idDescription()
 
 bool FlatpakSourcesBackend::moveSource(const QString &sourceId, int delta)
 {
-    auto item = sourceById(sourceId);
+    auto item = sourceByDisambiguatedId(sourceId);
     if (!item) {
         return false;
     }
@@ -424,18 +430,18 @@ bool FlatpakSourcesBackend::moveSource(const QString &sourceId, int delta)
     const auto destRow = row + delta;
     m_sources->insertRow(destRow, prevRow);
     if (destRow == 0 || row == 0) {
-        Q_EMIT firstSourceIdChanged();
+        Q_EMIT firstDisambiguatedSourceIdChanged();
     }
     if (destRow == m_sources->rowCount() - 1 || row == m_sources->rowCount() - 1) {
-        Q_EMIT lastSourceIdChanged();
+        Q_EMIT lastDisambiguatedSourceIdChanged();
     }
     m_saveAction->setVisible(true);
     return true;
 }
 
-int FlatpakSourcesBackend::originIndex(const QString &sourceId) const
+int FlatpakSourcesBackend::originIndex(const QString &disambiguatedSourceId) const
 {
-    auto item = sourceById(sourceId);
+    auto item = sourceByDisambiguatedId(disambiguatedSourceId);
     return item ? item->row() : INT_MAX;
 }
 

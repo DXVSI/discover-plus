@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: trunk-kf 5\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-17 11:53+0000\n"
-"PO-Revision-Date: 2025-09-06 13:53+0300\n"
+"POT-Creation-Date: 2026-04-23 00:45+0000\n"
+"PO-Revision-Date: 2026-04-11 00:42+0300\n"
 "Last-Translator: Moo\n"
 "Language-Team: Lithuanian <kde-i18n-lt@kde.org>\n"
 "Language: lt\n"
@@ -19,77 +19,77 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=(n==1 ? 0 : n%10>=2 && (n%100<10 || n"
 "%100>=20) ? 1 : n%10==0 || (n%100>10 && n%100<20) ? 2 : 3);\n"
-"X-Generator: Poedit 3.6\n"
+"X-Generator: Poedit 3.8\n"
 
 #: notifier/DiscoverNotifier.cpp:218
 #, kde-format
 msgid "View Updates"
 msgstr "Rodyti atnaujinimus"
 
-#: notifier/DiscoverNotifier.cpp:365
+#: notifier/DiscoverNotifier.cpp:363
 #, kde-format
 msgid "Security updates available"
 msgstr "Yra prieinami saugumo atnaujinimai"
 
-#: notifier/DiscoverNotifier.cpp:367
+#: notifier/DiscoverNotifier.cpp:365
 #, kde-format
 msgid "Updates available"
 msgstr "Yra prieinami atnaujinimai"
 
-#: notifier/DiscoverNotifier.cpp:369
+#: notifier/DiscoverNotifier.cpp:367
 #, kde-format
 msgid "System up to date"
 msgstr "Sistema pilnai atnaujinta"
 
-#: notifier/DiscoverNotifier.cpp:371
+#: notifier/DiscoverNotifier.cpp:369
 #, kde-format
-msgid "Computer needs to restart"
-msgstr "Reikia paleisti kompiuterį iš naujo"
+msgid "System will install updates when restarted"
+msgstr "Sistema įdiegs atnaujinimus, kai bus paleista iš naujo"
 
-#: notifier/DiscoverNotifier.cpp:373
+#: notifier/DiscoverNotifier.cpp:371
 #, kde-format
 msgid "Offline"
 msgstr "Nėra ryšio"
 
-#: notifier/DiscoverNotifier.cpp:375
+#: notifier/DiscoverNotifier.cpp:373
 #, kde-format
 msgid "Applying unattended updates…"
 msgstr "Taikomi nestebimieji atnaujinimai…"
 
-#: notifier/DiscoverNotifier.cpp:400
+#: notifier/DiscoverNotifier.cpp:398
 #, kde-format
 msgid "Restart is required"
 msgstr "Reikalingas paleidimas iš naujo"
 
-#: notifier/DiscoverNotifier.cpp:401
+#: notifier/DiscoverNotifier.cpp:399
 #, kde-format
 msgid "The system needs to be restarted for the updates to take effect."
 msgstr "Tam, kad nuostatos įsigaliotų, sistema turi būti paleista iš naujo."
 
-#: notifier/DiscoverNotifier.cpp:406
+#: notifier/DiscoverNotifier.cpp:404
 #, kde-format
 msgctxt "@action:button"
 msgid "Update and Restart"
 msgstr "Atnaujinti ir paleisti iš naujo"
 
-#: notifier/DiscoverNotifier.cpp:407
+#: notifier/DiscoverNotifier.cpp:405
 #, kde-format
 msgctxt "@action:button"
 msgid "Update and Shut Down"
 msgstr "Atnaujinti ir išjungti"
 
-#: notifier/DiscoverNotifier.cpp:451
+#: notifier/DiscoverNotifier.cpp:449
 #, kde-format
 msgid "Upgrade available"
 msgstr "Yra prieinamas naujinimas"
 
-#: notifier/DiscoverNotifier.cpp:452
+#: notifier/DiscoverNotifier.cpp:450
 #, kde-format
 msgctxt "A new distro release (name and version) is available for upgrade"
 msgid "%1 is now available."
 msgstr "Dabar yra prieinama %1."
 
-#: notifier/DiscoverNotifier.cpp:455
+#: notifier/DiscoverNotifier.cpp:453
 #, kde-format
 msgctxt "@action:button"
 msgid "Upgrade"
@@ -176,8 +176,11 @@ msgstr "Paleiskite iš naujo, kad pritaikytumėte įdiegtus atnaujinimus"
 
 #: notifier/NotifierItem.cpp:65
 #, kde-format
-msgid "Click to restart the device"
-msgstr "Spustelėkite, norėdami įrenginį iš naujo"
+msgid "Click to restart the system"
+msgstr "Spustelėkite norėdami paleisti sistemą iš naujo"
+
+#~ msgid "Computer needs to restart"
+#~ msgstr "Reikia paleisti kompiuterį iš naujo"
 
 #~ msgid "See Updates…"
 #~ msgstr "Rodyti atnaujinimus…"

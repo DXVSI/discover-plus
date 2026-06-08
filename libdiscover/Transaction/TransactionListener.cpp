@@ -35,7 +35,7 @@ bool TransactionListener::isCancellable() const
 
 bool TransactionListener::isActive() const
 {
-    return m_transaction && m_transaction->status() != Transaction::SetupStatus;
+    return m_transaction;
 }
 
 QString TransactionListener::statusText() const

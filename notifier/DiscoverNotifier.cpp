@@ -287,15 +287,13 @@ void DiscoverNotifier::startUnattendedUpdates()
     connect(process, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), this, [this, process](int exitCode, QProcess::ExitStatus exitStatus) {
         qDebug() << "Finished running plasma-discover" << exitCode << exitStatus;
         process->deleteLater();
-        if (exitCode == 0) {
-            settings()->setLastUnattendedTrigger(QDateTime::currentDateTimeUtc());
-        }
         settings()->save();
         setBusy(false);
     });
 
     setBusy(true);
     process->start(QStringLiteral("plasma-discover"), {QStringLiteral("--headless-update")});
+    settings()->setLastUnattendedTrigger(QDateTime::currentDateTimeUtc());
     qInfo() << "started unattended update" << QDateTime::currentDateTimeUtc();
 }
 
@@ -368,7 +366,7 @@ QString DiscoverNotifier::message() const
     case NoUpdates:
         return i18n("System up to date");
     case RebootRequired:
-        return i18n("Computer needs to restart");
+        return i18n("System will install updates when restarted");
     case Offline:
         return i18n("Offline");
     case Busy:

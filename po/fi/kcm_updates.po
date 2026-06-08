@@ -1,13 +1,13 @@
-# Copyright (C) YEAR This file is copyright:
+# Copyright (C) 2026 This file is copyright:
 # This file is distributed under the same license as the discover package.
-# Tommi Nieminen <translator@legisign.org>, 2021, 2022, 2023.
+# SPDX-FileCopyrightText: 2021, 2022, 2023, 2026 Tommi Nieminen <translator@legisign.org>
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: discover\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-17 11:53+0000\n"
-"PO-Revision-Date: 2023-11-29 17:02+0200\n"
+"POT-Creation-Date: 2026-04-02 00:45+0000\n"
+"PO-Revision-Date: 2026-02-24 13:32+0200\n"
 "Last-Translator: Tommi Nieminen <translator@legisign.org>\n"
 "Language-Team: Finnish <kde-i18n-doc@kde.org>\n"
 "Language: fi\n"
@@ -15,6 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Lokalize 25.04.0\n"
 
 #: kcm/ui/main.qml:40
 #, kde-format
@@ -24,20 +25,25 @@ msgstr "Päivitä ohjelma:"
 #: kcm/ui/main.qml:41
 #, kde-format
 msgid "Manually"
-msgstr "Itse"
+msgstr "itse"
 
 #: kcm/ui/main.qml:51
 #, kde-format
 msgid "Automatically"
-msgstr "Automaattisesti"
+msgstr "automaattisesti"
 
 #: kcm/ui/main.qml:58
-#, kde-kuit-format
+#, fuzzy, kde-kuit-format
+#| msgctxt "@info"
+#| msgid ""
+#| "Software updates will be downloaded automatically when they become "
+#| "available. Updates for applications will be installed immediately, while "
+#| "system updates will be installed the next time the computer is restarted."
 msgctxt "@info"
 msgid ""
 "Software updates will be downloaded automatically when they become "
 "available. Updates for applications will be installed immediately, while "
-"system updates will be installed the next time the computer is restarted."
+"updates for the system will be installed the next time it’s restarted."
 msgstr ""
 "Ohjelmapäivitykset ladataan automaattisesti niiden tultua saataville. "
 "Sovelluspäivitykset asennetaan heti, järjestelmäpäivitykset seuraavan "
@@ -90,7 +96,7 @@ msgctxt ""
 "@option:radio part of the logical sentence 'Apply system updates after "
 "rebooting'"
 msgid "After rebooting"
-msgstr "Uudelleenkäynnistyksen jälkeen"
+msgstr "uudelleenkäynnistyksen jälkeen"
 
 #: kcm/ui/main.qml:133
 #, kde-format
@@ -105,7 +111,7 @@ msgstr "Suositellaan järjestelmän vakauden takia"
 msgctxt ""
 "@option:radio part of the logical sentence 'Apply system updates immediately'"
 msgid "Immediately"
-msgstr "Välittömästi"
+msgstr "välittömästi"
 
 #~ msgid "Use offline updates:"
 #~ msgstr "Päivitä käynnistettäessä:"

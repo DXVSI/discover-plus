@@ -2,6 +2,7 @@ pragma ComponentBehavior: Bound
 
 import QtQml.Models
 import QtQuick
+import QtNetwork
 import QtQuick.Controls as QQC2
 import QtQuick.Layouts
 import org.kde.discover as Discover
@@ -39,6 +40,21 @@ Kirigami.ApplicationWindow {
     
     readonly property Item leftPage: window.pageStack.depth > 0 ? window.pageStack.get(0) : null
 
+    function applySearchToCurrentPage(search) {
+        if (!window.leftPage || !window.leftPage.hasOwnProperty("search")) {
+            return false;
+        }
+
+        if (window.pageStack.depth > 1) {
+            window.pageStack.pop();
+        }
+        window.pageStack.currentIndex = 0;
+        window.leftPage.search = search;
+        window.globalDrawer.setSearchText(search);
+        window.leftPage.forceActiveFocus();
+        return true;
+    }
+
     KConfig.WindowStateSaver {
         configGroupName: "MainWindow"
     }
@@ -53,6 +69,10 @@ Kirigami.ApplicationWindow {
             !DiscoverApp.FedoraRepoManager.firstRunCompleted &&
             DiscoverApp.FedoraRepoManager.setupNeeded) {
             firstRunDialogLoader.active = true
+        }
+
+        if (NetworkInformation.reachability !== NetworkInformation.Reachability.Online) {
+            connectionDialog.open();
         }
     }
 
@@ -143,6 +163,12 @@ Kirigami.ApplicationWindow {
         shortcut: StandardKey.Preferences
     }
 
+    Shortcut {
+        id: refreshKey
+        autoRepeat: false
+        sequences: [StandardKey.Refresh]
+        onActivated: refreshAction.trigger()
+    }
     Kirigami.Action {
         id: refreshAction
         readonly property Discover.DiscoverAction action: Discover.ResourcesModel.updateAction
@@ -154,14 +180,8 @@ Kirigami.ApplicationWindow {
         // on the view to refresh, which is the common and expected behavior
         // on that platform - but is not possible on desktop
         visible: !Kirigami.Settings.isMobile
-        tooltip: shortcut.nativeText
-
-        // Need to define an explicit Shortcut object so we can get its text
-        // using shortcut.nativeText
-        shortcut: Shortcut {
-            sequences: [ StandardKey.Refresh ]
-            onActivated: refreshAction.trigger()
-        }
+        tooltip: action.toolTip
+        shortcut: refreshKey.nativeText
     }
 
     Connections {
@@ -183,6 +203,14 @@ Kirigami.ApplicationWindow {
         }
 
         function onOpenSearch(search) {
+            if (currentTopLevel === topCoprComp) {
+                if (!window.applySearchToCurrentPage(search)) {
+                    currentTopLevel = topCoprComp;
+                    Qt.callLater(() => window.applySearchToCurrentPage(search));
+                }
+                return;
+            }
+
             Navigation.clearStack()
             Navigation.openApplicationList({ search })
         }
@@ -362,6 +390,18 @@ Kirigami.ApplicationWindow {
         }
     }
 
+    Kirigami.PromptDialog {
+        id: connectionDialog
+
+        dialogType: Kirigami.PromptDialog.Warning
+
+        title: i18nc("@title:dialog", "Discover is Offline")
+        subtitle: i18nc("@info", "Please connect to a network to install applications and update the system.")
+
+        standardButtons: Kirigami.Dialog.Ok
+
+    }
+
     Kirigami.Dialog {
         id: messagesSheet
 
@@ -402,7 +442,7 @@ Kirigami.ApplicationWindow {
                         id: messages
 
                         onCountChanged: {
-                            messagesSheet.visible = (count > 0);
+                            messagesSheet.visible = (count > 0) && !connectionDialog.visible;
                             if (count > 0 && messagesSheetView.currentIndex === -1) {
                                 messagesSheetView.currentIndex = 0;
                             }

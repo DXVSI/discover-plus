@@ -105,22 +105,11 @@ QVariant PackageKitResource::icon() const
 {
     const QString pkgName = packageName();
     if (pkgName.isEmpty()) {
-        return QStringLiteral("applications-other");
+        return QIcon::fromTheme(QStringLiteral("package-x-generic"));
     }
 
-    // Try package name directly (works for discord, firefox, etc.)
-    if (QIcon::hasThemeIcon(pkgName)) {
-        return pkgName;
-    }
-
-    // Try org.package.name format (for telegram-desktop -> org.telegram.desktop)
-    QString orgName = QStringLiteral("org.") + QString(pkgName).replace(QLatin1Char('-'), QLatin1Char('.'));
-    if (QIcon::hasThemeIcon(orgName)) {
-        return orgName;
-    }
-
-    // Fallback to package name anyway (might resolve later)
-    return pkgName;
+    const QString orgName = QStringLiteral("org.") + QString(pkgName).replace(QLatin1Char('-'), QLatin1Char('.'));
+    return QIcon::fromTheme(pkgName, QIcon::fromTheme(orgName, QIcon::fromTheme(QStringLiteral("package-x-generic"))));
 }
 
 static QMap<QString, QString> s_translation = {
@@ -289,34 +278,6 @@ bool PackageKitResource::hasCategory(const QString & /*category*/) const
 
 AbstractResource::Type PackageKitResource::type() const
 {
-    const QString pkgName = packageName();
-
-    // If package has a theme icon, it's an application
-    if (!pkgName.isEmpty()) {
-        if (QIcon::hasThemeIcon(pkgName)) {
-            return Application;
-        }
-        // Try org.package.name format
-        QString orgName = QStringLiteral("org.") + QString(pkgName).replace(QLatin1Char('-'), QLatin1Char('.'));
-        if (QIcon::hasThemeIcon(orgName)) {
-            return Application;
-        }
-    }
-
-    // Show RPM Fusion packages as applications (except libs, devel, doc packages)
-    QString pkgid = availablePackageId().isEmpty() ? installedPackageId() : availablePackageId();
-    if (!pkgid.isEmpty()) {
-        QString repoName = PackageKit::Daemon::packageData(pkgid);
-        if (repoName.startsWith(QStringLiteral("rpmfusion-"))) {
-            // Filter out non-application packages
-            if (!pkgName.endsWith(QStringLiteral("-devel")) && !pkgName.endsWith(QStringLiteral("-libs")) && !pkgName.endsWith(QStringLiteral("-lib"))
-                && !pkgName.endsWith(QStringLiteral("-doc")) && !pkgName.endsWith(QStringLiteral("-docs")) && !pkgName.endsWith(QStringLiteral("-common"))
-                && !pkgName.endsWith(QStringLiteral("-data")) && !pkgName.startsWith(QStringLiteral("lib")) && !pkgName.startsWith(QStringLiteral("kmod-"))
-                && !pkgName.startsWith(QStringLiteral("akmod-"))) {
-                return Application;
-            }
-        }
-    }
     return System;
 }
 
@@ -500,27 +461,6 @@ PackageKitBackend *PackageKitResource::backend() const
     return qobject_cast<PackageKitBackend *>(parent());
 }
 
-QString PackageKitResource::sizeDescription()
-{
-    auto baseDescription = AbstractResource::sizeDescription();
-
-    if (state() != AbstractResource::State::None) {
-        return baseDescription;
-    }
-
-    if (!m_dependencies.hasFetchedDependencies()) {
-        fetchDetails();
-        updatePackageIdForDependencies();
-        return baseDescription;
-    }
-
-    const auto dependenciesCount = m_dependencies.dependencies().count();
-    if (dependenciesCount == 0) {
-        return baseDescription;
-    }
-    return i18np("%2 (plus %1 dependency)", "%2 (plus %1 dependencies)", dependenciesCount, baseDescription);
-}
-
 QString PackageKitResource::sourceIcon() const
 {
     // Get repository name from package ID
@@ -553,13 +493,6 @@ QStringList PackageKitResource::topObjects() const
 QStringList PackageKitResource::bottomObjects() const
 {
     return s_bottomObjects;
-}
-
-void PackageKitResource::updatePackageIdForDependencies()
-{
-    const auto packageId = isInstalled() ? installedPackageId() : availablePackageId();
-    m_dependencies.setPackageId(packageId);
-    m_dependencies.refresh(); // In case packageId didn't actually change.
 }
 
 bool PackageKitResource::extendsItself() const

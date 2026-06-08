@@ -55,7 +55,7 @@ void SnapTransaction::finishTransaction()
         if (role() == Transaction::InstallRole) {
             Q_EMIT proceedRequest(m_app->name(),
                                   i18n("This Snap application is not compatible with security sandboxing "
-                                       "and will have full access to this computer. Install it anyway?"));
+                                       "and will have full access to this system. Install it anyway?"));
             return;
         }
         break;

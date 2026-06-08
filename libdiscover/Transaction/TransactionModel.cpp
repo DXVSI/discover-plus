@@ -28,6 +28,7 @@ TransactionModel::TransactionModel(QObject *parent)
     connect(this, &QAbstractItemModel::rowsInserted, this, &TransactionModel::countChanged);
     connect(this, &QAbstractItemModel::rowsRemoved, this, &TransactionModel::countChanged);
     connect(this, &TransactionModel::countChanged, this, &TransactionModel::progressChanged);
+    connect(this, &TransactionModel::countChanged, this, &TransactionModel::activeTransactionsChanged);
 }
 
 QHash<int, QByteArray> TransactionModel::roleNames() const
@@ -74,7 +75,6 @@ QVariant TransactionModel::data(const QModelIndex &index, int role) const
     case StatusTextRole:
         switch (transaction->status()) {
         case Transaction::SetupStatus:
-            return i18nc("@info:status", "Starting");
         case Transaction::QueuedStatus:
             return i18nc("@info:status", "Waiting");
         case Transaction::DownloadingStatus:
@@ -159,6 +159,7 @@ void TransactionModel::addTransaction(Transaction *transaction)
 
     connect(transaction, &Transaction::statusChanged, this, [this, transaction]() {
         transactionChanged(transaction, StatusTextRole);
+        Q_EMIT activeTransactionsChanged();
     });
     connect(transaction, &Transaction::cancellableChanged, this, [this, transaction]() {
         transactionChanged(transaction, CancellableRole);
@@ -216,9 +217,25 @@ int TransactionModel::progress() const
     return count == 0 ? 0 : sum / count;
 }
 
+bool TransactionModel::hasActiveTransactions() const
+{
+    return std::any_of(m_transactions.constBegin(), m_transactions.constEnd(), [](const auto transaction) {
+        return transaction->isActive() && transaction->isVisible();
+    });
+}
+
 QString TransactionModel::mainTransactionText() const
 {
     return m_transactions.isEmpty() ? QString() : m_transactions.constFirst()->name();
+}
+
+int TransactionModel::visibleTransactionCount() const
+{
+    const auto iterator = std::count_if(m_transactions.constBegin(), m_transactions.constEnd(), [](const Transaction *transaction) {
+        return transaction->isVisible();
+    });
+
+    return iterator;
 }
 
 #include "moc_TransactionModel.cpp"

@@ -1,21 +1,20 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR This file is copyright:
+# Copyright (C) 2026 This file is copyright:
 # This file is distributed under the same license as the discover package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
+# SPDX-FileCopyrightText: 2026 Yaron Shahrabani <sh.yaron@gmail.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: discover\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-17 11:53+0000\n"
-"PO-Revision-Date: 2023-10-17 14:58+0300\n"
-"Last-Translator: \n"
-"Language-Team: Hebrew <kde-i18n-doc@kde.org>\n"
+"POT-Creation-Date: 2026-04-02 00:45+0000\n"
+"PO-Revision-Date: 2026-04-02 08:47+0300\n"
+"Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
+"Language-Team: צוות התרגום של KDE ישראל\n"
 "Language: he\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.3.2\n"
+"X-Generator: Lokalize 25.12.3\n"
 "Plural-Forms: nplurals=4; plural=(n == 1) ? 0 : ((n == 2) ? 1 : ((n > 10 && "
 "n % 10 == 0) ? 2 : 3));\n"
 
@@ -40,10 +39,10 @@ msgctxt "@info"
 msgid ""
 "Software updates will be downloaded automatically when they become "
 "available. Updates for applications will be installed immediately, while "
-"system updates will be installed the next time the computer is restarted."
+"updates for the system will be installed the next time it’s restarted."
 msgstr ""
 "עדכוני התוכנה ירדו אוטומטית כשאלה זמינים. עדכונים ליישומים יותקנו מיידית, "
-"בעוד שעדכוני מערכת יותקנו בפעם הבאה שהמחשב יופעל מחדש."
+"בעוד שעדכוני מערכת יותקנו עם ההפעלה הבאה מחדש."
 
 #: kcm/ui/main.qml:69
 #, kde-format

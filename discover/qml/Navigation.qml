@@ -19,10 +19,10 @@ QtObject {
         window.pageStack.clear();
     }
 
-    function openApplicationListSource(origin: string) {
+    function openApplicationListSource(origin: string, title: string) {
         openApplicationList({
             originFilter: origin,
-            title: origin,
+            title,
             allBackends: true,
         });
     }

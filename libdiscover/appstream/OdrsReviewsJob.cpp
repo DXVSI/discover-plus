@@ -158,3 +158,5 @@ void OdrsReviewsJob::parseReviews(const QJsonDocument &document)
 
     Q_EMIT reviewsReady(reviewsList, false);
 }
+
+#include "moc_OdrsReviewsJob.cpp"

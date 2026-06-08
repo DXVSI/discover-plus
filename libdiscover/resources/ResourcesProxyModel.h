@@ -64,6 +64,7 @@ class DISCOVERCOMMON_EXPORT ResourcesProxyModel : public QAbstractListModel, pub
     Q_PROPERTY(QVariantList subcategories READ subcategories NOTIFY subcategoriesChanged)
     Q_PROPERTY(bool busy READ isBusy NOTIFY busyChanged)
     Q_PROPERTY(ResourcesCount count READ count NOTIFY countChanged FINAL)
+    Q_PROPERTY(bool categorize READ categorize WRITE setCategorize NOTIFY categorizeChanged)
 public:
     explicit ResourcesProxyModel(QObject *parent = nullptr);
     // Make sure the role values don't change since some get stored in config files.
@@ -83,6 +84,7 @@ public:
         CanUpgrade,
         PackageNameRole,
         CategoryRole,
+        CategoryNameRole,
         SectionRole,
         MimeTypes,
         SizeRole,
@@ -134,6 +136,9 @@ public:
 
     AbstractResourcesBackend *backendFilter() const;
     void setBackendFilter(AbstractResourcesBackend *filtered);
+
+    bool categorize() const;
+    void setCategorize(bool categorize);
 
     QVariantList subcategories() const;
 
@@ -192,6 +197,7 @@ private:
     static QHash<int, int> createRoleToProperty();
     ResultsStream *m_currentStream;
     QTimer m_countTimer;
+    bool m_categorize = false;
 
 Q_SIGNALS:
     void busyChanged();
@@ -204,4 +210,5 @@ Q_SIGNALS:
     void resourcesUrlChanged(const QUrl &url);
     void countChanged();
     void filterMinimumStateChanged(bool filterMinimumState);
+    void categorizeChanged();
 };

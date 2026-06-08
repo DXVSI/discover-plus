@@ -40,6 +40,9 @@ DiscoverPage {
     readonly property alias subcategories: appsModel.subcategories
     readonly property Discover.Category categoryObject: Discover.CategoryModel.get(page.category)
 
+    property bool canCategorize: false
+    readonly property bool categorize: canCategorize && categorizeAction.checked
+
     function stripHtml(input) {
         var regex = /(<([^>]+)>)/ig
         return input.replace(regex, "");
@@ -123,7 +126,18 @@ DiscoverPage {
             }
             Kirigami.Action {
                 QQC2.ActionGroup.group: sortGroup
-                text: i18n("Popularity")
+                text: i18n("Number of reviews")
+                icon.name: "view-pages-overview-symbolic"
+                onTriggered: {
+                    DiscoverApp.DiscoverSettings[page.sortProperty] = Discover.ResourcesProxyModel.RatingCountRole
+                    appsModel.tempSortRole = -1
+                }
+                checkable: true
+                checked: appsModel.sortRole === Discover.ResourcesProxyModel.RatingCountRole
+            }
+            Kirigami.Action {
+                QQC2.ActionGroup.group: sortGroup
+                text: i18nc("@item:inmenu sort by highest-rated apps", "Rating")
                 icon.name: "rating"
                 onTriggered: {
                     DiscoverApp.DiscoverSettings[page.sortProperty] = Discover.ResourcesProxyModel.SortableRatingRole
@@ -154,6 +168,18 @@ DiscoverPage {
                 checkable: true
                 checked: appsModel.sortRole === Discover.ResourcesProxyModel.ReleaseDateRole
             }
+            Kirigami.Action {
+                separator: true
+                visible: page.canCategorize
+            }
+            Kirigami.Action {
+                id: categorizeAction
+                visible: page.canCategorize
+                text: i18nc("@info", "Group by Type")
+                checkable: true
+                checked: DiscoverApp.DiscoverSettings.installedPageCategorize
+                onToggled: DiscoverApp.DiscoverSettings.installedPageCategorize = checked
+            }
         }
     ]
 
@@ -177,6 +203,7 @@ DiscoverPage {
             property int tempSortRole: -1
             sortRole: tempSortRole >= 0 ? tempSortRole : DiscoverApp.DiscoverSettings.appsListPageSorting
             sortOrder: sortRole === Discover.ResourcesProxyModel.NameRole ? Qt.AscendingOrder : Qt.DescendingOrder
+            categorize: page.categorize
 
             onBusyChanged: {
                 if (busy) {
@@ -186,9 +213,22 @@ DiscoverPage {
         }
 
         delegate: ApplicationDelegate {
-            compact: !applicationWindow().wideScreen
             showRating: page.showRating
             showSize: page.showSize
+        }
+
+        section {
+            property: page.categorize ? "categoryName" : ""
+            criteria: ViewSection.FullString
+
+            delegate: Kirigami.ListSectionHeader {
+                required property string section
+
+                topPadding: 0
+                width: appsView.width - appsView.leftMargin - appsView.rightMargin
+
+                label: section
+            }
         }
 
         Item {
@@ -266,7 +306,7 @@ DiscoverPage {
             id: loadingHolder
             parent: appsView.count === 0 ? appsView : appsView.footerItem
             anchors.fill: parent
-            visible: appsModel.busy && appsView.atYEnd
+            visible: appsModel.busy && (appsView.count === 0 || appsView.atYEnd)
             ColumnLayout {
                 anchors.centerIn: parent
                 opacity: parent.visible ? 0.5 : 0

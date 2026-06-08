@@ -14,16 +14,27 @@
 
 constexpr QLatin1StringView PROGRESS_PROPERTY_NAME("Progress");
 const QLatin1StringView SYSUPDATE_JOB_INTERFACE_NAME = QLatin1String(org::freedesktop::sysupdate1::Job::staticInterfaceName());
+// empty means latest and by default doesn't require authorization
+const QString TO_VERSION;
+// flags - currently unused and expected to be 0
+const int FLAGS = 0;
 
-SystemdSysupdateTransaction::SystemdSysupdateTransaction(AbstractResource *resource, SystemdSysupdateUpdateReply &updateCall)
+SystemdSysupdateTransaction::SystemdSysupdateTransaction(AbstractResource *resource, org::freedesktop::sysupdate1::Target *target)
     : Transaction(resource, resource, InstallRole)
+    , m_resource(resource)
+    , m_target(target)
 {
     // Can't cancel until we have a job ID
     setCancellable(false);
-    setStatus(DownloadingStatus);
 
-    auto watcher = new QDBusPendingCallWatcher(updateCall, this);
-    connect(watcher, &QDBusPendingCallWatcher::finished, this, [this, resource](QDBusPendingCallWatcher *watcher) {
+    // Start downloading the files (acquiring)
+    setStatus(DownloadingStatus);
+    auto backend = qobject_cast<SystemdSysupdateBackend *>(m_resource->backend());
+    Q_ASSERT(backend);
+    connect(backend, &SystemdSysupdateBackend::transactionRemoved, this, &SystemdSysupdateTransaction::acquireDone);
+    auto acquireCall = m_target->Acquire(TO_VERSION, FLAGS);
+    auto watcher = new QDBusPendingCallWatcher(acquireCall, this);
+    connect(watcher, &QDBusPendingCallWatcher::finished, this, [this](QDBusPendingCallWatcher *watcher) {
         watcher->deleteLater();
         const SystemdSysupdateUpdateReply reply = *watcher;
 
@@ -33,10 +44,9 @@ SystemdSysupdateTransaction::SystemdSysupdateTransaction(AbstractResource *resou
             return;
         }
 
-        auto id = reply.argumentAt<1>();
-        auto path = reply.argumentAt<2>();
+        const auto path = reply.argumentAt<2>();
 
-        qCDebug(SYSTEMDSYSUPDATE_LOG) << "Created sysupdate1::Job with path " << path;
+        qCInfo(SYSTEMDSYSUPDATE_LOG) << "Created sysupdate1::Job with path " << path << "for Acquire";
 
         // need to keep a reference to this to be able to cancel
         m_job = new org::freedesktop::sysupdate1::Job(SYSUPDATE1_SERVICE, path.path(), SystemdSysupdateBackend::OUR_BUS(), this);
@@ -69,22 +79,53 @@ SystemdSysupdateTransaction::SystemdSysupdateTransaction(AbstractResource *resou
                         setProgress(reply.argumentAt(0).toUInt());
                     }
                 });
-
-        auto backend = qobject_cast<SystemdSysupdateBackend *>(resource->backend());
-        Q_ASSERT(backend);
-        connect(backend,
-                &SystemdSysupdateBackend::transactionRemoved,
-                this,
-                [id, resource, this](qulonglong jobId, const QDBusObjectPath &jobPath, int status) {
-                    if (id != jobId) {
-                        return;
-                    }
-
-                    qCInfo(SYSTEMDSYSUPDATE_LOG) << "Job" << jobPath.path() << "for target" << resource->name() << "finished with status" << status;
-                    setStatus(status == 0 ? DoneStatus : DoneWithErrorStatus);
-                    deleteLater();
-                });
     });
+}
+
+void SystemdSysupdateTransaction::acquireDone(qulonglong jobId, const QDBusObjectPath &jobPath, int status)
+{
+    Q_UNUSED(jobId);
+    qCInfo(SYSTEMDSYSUPDATE_LOG) << "Acquire job" << jobPath.path() << "for target" << m_resource->name() << "finished with status" << status;
+    auto backend = qobject_cast<SystemdSysupdateBackend *>(m_resource->backend());
+    Q_ASSERT(backend);
+    disconnect(backend, &SystemdSysupdateBackend::transactionRemoved, this, &SystemdSysupdateTransaction::acquireDone);
+    if (status == 0) {
+        // We are already installing, do not cancel
+        setCancellable(false);
+        setStatus(CommittingStatus);
+        connect(backend, &SystemdSysupdateBackend::transactionRemoved, this, &SystemdSysupdateTransaction::installDone);
+        auto installCall = m_target->Install(TO_VERSION, FLAGS);
+
+        auto watcher = new QDBusPendingCallWatcher(installCall, this);
+        connect(watcher, &QDBusPendingCallWatcher::finished, this, [this](QDBusPendingCallWatcher *watcher) {
+            watcher->deleteLater();
+            const SystemdSysupdateUpdateReply reply = *watcher;
+
+            if (reply.isError()) {
+                Q_EMIT passiveMessage(reply.error().message());
+                setStatus(DoneWithErrorStatus);
+                return;
+            }
+
+            const auto path = reply.argumentAt<2>();
+
+            qCInfo(SYSTEMDSYSUPDATE_LOG) << "Created sysupdate1::Job with path " << path << "for Install";
+        });
+    } else {
+        setStatus(DoneWithErrorStatus);
+        deleteLater();
+    }
+}
+
+void SystemdSysupdateTransaction::installDone(qulonglong jobId, const QDBusObjectPath &jobPath, int status)
+{
+    Q_UNUSED(jobId);
+    qCInfo(SYSTEMDSYSUPDATE_LOG) << "Install job" << jobPath.path() << "for target" << m_resource->name() << "finished with status" << status;
+    auto backend = qobject_cast<SystemdSysupdateBackend *>(m_resource->backend());
+    Q_ASSERT(backend);
+    disconnect(backend, &SystemdSysupdateBackend::transactionRemoved, this, &SystemdSysupdateTransaction::installDone);
+    setStatus(status == 0 ? DoneStatus : DoneWithErrorStatus);
+    deleteLater();
 }
 
 void SystemdSysupdateTransaction::cancel()

@@ -158,6 +158,9 @@ void ReviewsModel::restartFetching()
 
     m_canFetchMore = true;
     m_lastPage = 0;
+    beginResetModel();
+    m_reviews.clear();
+    endResetModel();
     fetchMore();
     Q_EMIT rowsChanged();
     Q_EMIT fetchingChanged(m_job);

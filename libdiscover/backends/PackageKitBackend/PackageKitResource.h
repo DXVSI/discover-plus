@@ -77,8 +77,6 @@ public:
         return false;
     }
 
-    QString sizeDescription() override;
-
     QList<PackageKitDependency> dependencies();
 
     QString sourceIcon() const override;
@@ -128,7 +126,6 @@ protected:
     PackageKit::Details m_details;
 
 private:
-    void updatePackageIdForDependencies();
     /** fetches details individually, it's better if done in batch, like for updates */
     virtual void fetchDetails();
 

@@ -74,3 +74,5 @@ UnattendedUpdates::IdleHandle::~IdleHandle()
 {
     KIdleTime::instance()->removeIdleTimeout(m_id);
 }
+
+#include "moc_UnattendedUpdates.cpp"

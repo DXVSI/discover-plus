@@ -16,10 +16,18 @@ using SystemdSysupdateUpdateReply = QDBusPendingReply<QString, qulonglong, QDBus
 class SystemdSysupdateTransaction : public Transaction
 {
 public:
-    SystemdSysupdateTransaction(AbstractResource *resource, SystemdSysupdateUpdateReply &reply);
+    SystemdSysupdateTransaction(AbstractResource *resource, org::freedesktop::sysupdate1::Target *target);
 
     void cancel() override;
 
+private Q_SLOTS:
+    // Called when downloading the files is done, and runs the install process if there is no errors
+    void acquireDone(qulonglong jobId, const QDBusObjectPath &jobPath, int status);
+    // Called when installing files is done, marks the transaction done or done with errors
+    void installDone(qulonglong jobId, const QDBusObjectPath &jobPath, int status);
+
 private:
+    const AbstractResource *m_resource;
+    org::freedesktop::sysupdate1::Target *m_target;
     org::freedesktop::sysupdate1::Job *m_job;
 };

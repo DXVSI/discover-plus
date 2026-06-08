@@ -1,13 +1,13 @@
 # Copyright (C) 2024 This file is copyright:
 # This file is distributed under the same license as the discover package.
-# SPDX-FileCopyrightText: 2021, 2022, 2024, 2025 Zayed Al-Saidi <zayed.alsaidi@gmail.com>
+# SPDX-FileCopyrightText: 2021, 2022, 2024, 2025, 2026 Zayed Al-Saidi <zayed.alsaidi@gmail.com>
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: discover\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-17 11:53+0000\n"
-"PO-Revision-Date: 2025-08-03 22:32+0400\n"
+"POT-Creation-Date: 2026-04-02 00:45+0000\n"
+"PO-Revision-Date: 2026-04-09 10:07+0400\n"
 "Last-Translator: Zayed Al-Saidi <zayed.alsaidi@gmail.com>\n"
 "Language-Team: ar\n"
 "Language: ar\n"
@@ -39,11 +39,10 @@ msgctxt "@info"
 msgid ""
 "Software updates will be downloaded automatically when they become "
 "available. Updates for applications will be installed immediately, while "
-"system updates will be installed the next time the computer is restarted."
+"updates for the system will be installed the next time it’s restarted."
 msgstr ""
-"ستنزل تحديثات البرامج آليّا عندما تصبح متوفرة. وستثبت تحديثات التطبيقات على "
-"الفور، بينما ستثبت تحديثات النظام في المرة التالية التي يعاد فيها تشغيل "
-"الحاسوب."
+"ستُنزل تحديثات البرامج آليًا عند توفرها. وستُثبت تحديثات التطبيقات على الفور، "
+"بينما ستُثبت تحديثات النظام عند إعادة تشغيل النظام في المرة القادمة."
 
 #: kcm/ui/main.qml:69
 #, kde-format

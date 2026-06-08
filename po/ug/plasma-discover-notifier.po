@@ -1,0 +1,177 @@
+# Uyghur translation for plasma-discover-notifier.
+# Copyright (C) YEAR This file is copyright:
+# This file is distributed under the same license as the discover package.
+# Abduqadir Abliz <sahranbay@gmail.com>, 2026., YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: discover\n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2026-04-23 00:45+0000\n"
+"PO-Revision-Date: 2026-05-29 17:23-0400\n"
+"Last-Translator: Abduqadir Abliz <sahranbay@gmail.com>\n"
+"Language-Team: Uyghur <kde-i18n-doc@kde.org>\n"
+"Language: ug\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.9\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: notifier/DiscoverNotifier.cpp:218
+#, kde-format
+msgid "View Updates"
+msgstr ""
+
+#: notifier/DiscoverNotifier.cpp:363
+#, kde-format
+msgid "Security updates available"
+msgstr "بىخەتەرلىك يېڭىلانمىسى بار"
+
+#: notifier/DiscoverNotifier.cpp:365
+#, kde-format
+msgid "Updates available"
+msgstr "يېڭىلانما بار"
+
+#: notifier/DiscoverNotifier.cpp:367
+#, kde-format
+msgid "System up to date"
+msgstr ""
+
+#: notifier/DiscoverNotifier.cpp:369
+#, kde-format
+msgid "System will install updates when restarted"
+msgstr ""
+
+#: notifier/DiscoverNotifier.cpp:371
+#, kde-format
+msgid "Offline"
+msgstr "تورسىز"
+
+#: notifier/DiscoverNotifier.cpp:373
+#, kde-format
+msgid "Applying unattended updates…"
+msgstr ""
+
+#: notifier/DiscoverNotifier.cpp:398
+#, kde-format
+msgid "Restart is required"
+msgstr ""
+
+#: notifier/DiscoverNotifier.cpp:399
+#, kde-format
+msgid "The system needs to be restarted for the updates to take effect."
+msgstr ""
+
+#: notifier/DiscoverNotifier.cpp:404
+#, kde-format
+msgctxt "@action:button"
+msgid "Update and Restart"
+msgstr ""
+
+#: notifier/DiscoverNotifier.cpp:405
+#, kde-format
+msgctxt "@action:button"
+msgid "Update and Shut Down"
+msgstr ""
+
+#: notifier/DiscoverNotifier.cpp:449
+#, kde-format
+msgid "Upgrade available"
+msgstr "يۈكسەلدۈرۈش بار"
+
+#: notifier/DiscoverNotifier.cpp:450
+#, kde-format
+msgctxt "A new distro release (name and version) is available for upgrade"
+msgid "%1 is now available."
+msgstr "ھازىر %1 بار."
+
+#: notifier/DiscoverNotifier.cpp:453
+#, kde-format
+msgctxt "@action:button"
+msgid "Upgrade"
+msgstr "يۈكسەلدۈر"
+
+#: notifier/main.cpp:39
+#, kde-format
+msgid "Discover Notifier"
+msgstr ""
+
+#: notifier/main.cpp:41
+#, kde-format
+msgid "System update status notifier"
+msgstr ""
+
+#: notifier/main.cpp:43
+#, kde-format
+msgid "© 2010-2025 Plasma Development Team"
+msgstr ""
+
+#: notifier/main.cpp:47
+#, kde-format
+msgctxt "NAME OF TRANSLATORS"
+msgid "Your names"
+msgstr "ئابدۇقادىر ئابلىز، غەيرەت كەنجى"
+
+#: notifier/main.cpp:47
+#, kde-format
+msgctxt "EMAIL OF TRANSLATORS"
+msgid "Your emails"
+msgstr "sahranbay@gmail.com, gheyret@gmail.com"
+
+#: notifier/main.cpp:54
+#, kde-format
+msgid "Replace an existing instance"
+msgstr "مەۋجۇت ئۈلگىنى ئالماشتۇر"
+
+#: notifier/main.cpp:58
+#, kde-format
+msgid "Do not show the notifier"
+msgstr ""
+
+#: notifier/main.cpp:58
+#, kde-format
+msgid "hidden"
+msgstr "يوشۇرۇن"
+
+#: notifier/NotifierItem.cpp:22 notifier/NotifierItem.cpp:23
+#, kde-format
+msgid "Updates"
+msgstr "يېڭىلانما"
+
+#: notifier/NotifierItem.cpp:36
+#, kde-format
+msgctxt "@action:button Opens Discover's main UI to analyze the updates"
+msgid "Open Discover…"
+msgstr ""
+
+#: notifier/NotifierItem.cpp:47
+#, kde-format
+msgctxt "@action:button Starts an update in the background"
+msgid "Start Update"
+msgstr ""
+
+#: notifier/NotifierItem.cpp:50
+#, kde-format
+msgid "Refresh…"
+msgstr ""
+
+#: notifier/NotifierItem.cpp:56
+#, kde-format
+msgid "Install Updates and Restart…"
+msgstr ""
+
+#: notifier/NotifierItem.cpp:59
+#, kde-format
+msgid "Install Updates and Shut Down…"
+msgstr ""
+
+#: notifier/NotifierItem.cpp:64
+#, kde-format
+msgid "Restart to apply installed updates"
+msgstr ""
+
+#: notifier/NotifierItem.cpp:65
+#, kde-format
+msgid "Click to restart the system"
+msgstr ""

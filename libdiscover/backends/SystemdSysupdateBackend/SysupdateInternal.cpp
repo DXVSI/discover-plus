@@ -48,3 +48,5 @@ const QDBusArgument &operator>>(const QDBusArgument &argument, Sysupdate::Target
 
 Q_DECLARE_METATYPE(Sysupdate::Target)
 Q_DECLARE_METATYPE(Sysupdate::TargetList)
+
+#include "moc_SysupdateInternal.cpp"

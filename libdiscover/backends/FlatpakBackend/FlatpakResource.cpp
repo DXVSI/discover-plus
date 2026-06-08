@@ -26,6 +26,8 @@
 #include <KDesktopFile>
 #include <KFormat>
 #include <KIO/ApplicationLauncherJob>
+#include <KIO/CopyJob> // for KIO::trash
+#include <KIO/JobUiDelegate>
 #include <KLocalizedString>
 
 #include <AppStreamQt/release.h>
@@ -289,6 +291,9 @@ QVariant FlatpakResource::icon() const
 
 QString FlatpakResource::installedVersion() const
 {
+    if (resourceType() == FlatpakResource::Source) {
+        return {};
+    }
     g_autoptr(FlatpakInstalledRef) ref = backend()->getInstalledRefForApp(this);
     if (ref) {
         const char *appdataVersion = flatpak_installed_ref_get_appdata_version(ref);
@@ -474,9 +479,13 @@ quint64 FlatpakResource::size()
 
 QString FlatpakResource::sizeDescription()
 {
+    if (resourceType() == FlatpakResource::Source) {
+        setInstalledSize(1);
+        return {};
+    }
     if (propertyState(InstalledSize) == NotKnownYet || propertyState(InstalledSize) == Fetching) {
         backend()->updateAppSize(this);
-        return i18n("Retrieving size information");
+        return QStringLiteral("🗘");
     } else if (propertyState(InstalledSize) == UnknownOrFailed) {
         return i18nc("@label app size", "Unknown");
     } else {
@@ -719,7 +728,7 @@ QString FlatpakResource::sourceIcon() const
         return QStringLiteral("org.fedoraproject.AnacondaInstaller");
     }
 
-    const auto sourceItem = backend()->sources()->sourceById(origin());
+    const auto sourceItem = backend()->sources()->sourceByDisambiguatedId(disambiguatedOrigin());
     if (!sourceItem) {
         qCWarning(LIBDISCOVER_BACKEND_FLATPAK_LOG) << "Could not find source " << origin();
         return QStringLiteral("flatpak-discover");
@@ -1088,10 +1097,16 @@ void FlatpakResource::clearUserData()
         return;
     }
 
-    if (!QDir(location).removeRecursively()) {
-        qCWarning(LIBDISCOVER_BACKEND_FLATPAK_LOG) << "Failed to remove location" << location;
-    }
-    Q_EMIT hasDataChanged();
+    auto *trashJob = KIO::trash(QUrl::fromLocalFile(location));
+    connect(trashJob, &KJob::result, this, [this, location](KJob *job) {
+        if (job->error()) {
+            qCWarning(LIBDISCOVER_BACKEND_FLATPAK_LOG) << "Failed to trash" << location;
+        } else {
+            Q_EMIT hasDataChanged();
+        }
+    });
+    trashJob->uiDelegate()->setAutoErrorHandlingEnabled(true);
+    trashJob->start();
 }
 
 int FlatpakResource::versionCompare(FlatpakResource *resource) const
@@ -1156,6 +1171,11 @@ QString FlatpakResource::verifiedMessage() const
                     author());
     }
     return {};
+}
+
+QString FlatpakResource::disambiguatedOrigin() const
+{
+    return origin() + (flatpak_installation_get_is_user(m_installation) ? u"-user"_s : u"-system"_s);
 }
 
 #include "moc_FlatpakResource.cpp"

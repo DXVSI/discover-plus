@@ -164,10 +164,10 @@ bool AlpineApkSourcesBackend::moveSource(const QString &sourceId, int delta)
     const int destRow = row + delta;
     m_sourcesModel->insertRow(destRow, prevRow);
     if (destRow == 0 || row == 0) {
-        Q_EMIT firstSourceIdChanged();
+        Q_EMIT firstDisambiguatedSourceIdChanged();
     }
     if (destRow == (m_sourcesModel->rowCount() - 1) || row == (m_sourcesModel->rowCount() - 1)) {
-        Q_EMIT lastSourceIdChanged();
+        Q_EMIT lastDisambiguatedSourceIdChanged();
     }
 
     // swap also items in internal storage vector

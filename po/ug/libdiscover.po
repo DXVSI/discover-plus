@@ -7,25 +7,26 @@ msgid ""
 msgstr ""
 "Project-Id-Version: libmuon\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-02-28 00:45+0000\n"
-"PO-Revision-Date: 2013-09-08 07:04+0900\n"
-"Last-Translator: Gheyret Kenji <gheyret@gmail.com>\n"
+"POT-Creation-Date: 2026-05-30 00:47+0000\n"
+"PO-Revision-Date: 2026-05-29 17:22-0400\n"
+"Last-Translator: Abduqadir Abliz <sahranbay@gmail.com>\n"
 "Language-Team: Uyghur Computer Science Association <UKIJ@yahoogroups.com>\n"
 "Language: ug\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Poedit 3.9\n"
 
 #, kde-format
 msgctxt "NAME OF TRANSLATORS"
 msgid "Your names"
-msgstr ""
+msgstr "ئابدۇقادىر ئابلىز، غەيرەت كەنجى"
 
 #, kde-format
 msgctxt "EMAIL OF TRANSLATORS"
 msgid "Your emails"
-msgstr ""
+msgstr "sahranbay@gmail.com, gheyret@gmail.com"
 
 #: libdiscover/appstream/AppStreamUtils.cpp:112
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:326
@@ -34,80 +35,67 @@ msgstr ""
 #: libdiscover/backends/RpmOstreeBackend/RpmOstreeResource.cpp:393
 #: libdiscover/UpdateModel/UpdateModel.cpp:123
 #: libdiscover/UpdateModel/UpdateModel.cpp:362
-#, fuzzy, kde-format
-#| msgctxt "@info license"
-#| msgid "Unknown"
+#, kde-format
 msgid "Unknown"
-msgstr "نامەلۇم"
+msgstr "يوچۇن"
 
 #: libdiscover/appstream/AppStreamUtils.cpp:114
-#, fuzzy, kde-format
-#| msgctxt "@info license"
-#| msgid "Proprietary"
+#, kde-format
 msgid "Proprietary"
-msgstr "ئىگىسى بار"
+msgstr "مەخسۇس ئىجازەتلىك"
 
 #: libdiscover/appstream/AppStreamUtils.cpp:118
 #, kde-format
 msgid "Public Domain"
-msgstr ""
+msgstr "ئاممىۋى دائىرە"
 
 #: libdiscover/appstream/OdrsReviewsBackend.cpp:206
 #, kde-format
 msgid "Error while submitting usefulness: %1"
-msgstr ""
+msgstr "ئىشلىتىلىشچانلىقىنى تاپشۇرۇۋاتقاندا خاتالىق كۆرۈلدى: %1"
 
 #: libdiscover/appstream/OdrsReviewsJob.cpp:38
 #, kde-format
 msgid "Error while submitting review: %1"
-msgstr ""
+msgstr "تەكشۈرۈشنى تاپشۇرۇۋاتقاندا خاتالىق كۆرۈلدى: %1"
 
 #: libdiscover/appstream/OdrsReviewsJob.cpp:68
-#, fuzzy, kde-format
-#| msgctxt ""
-#| "@item:inlistbox Human-readable name for the Debian package section \"web\""
-#| msgid "Internet"
+#, kde-format
 msgid "Technical error message: %1"
-msgstr "ئىنتېرنېت"
+msgstr "تېخنىكىلىق خاتالىق ئۇچۇرى: %1"
 
 #: libdiscover/backends/AlpineApkBackend/AlpineApkAuthActionFactory.cpp:26
-#, fuzzy, kde-format
-#| msgctxt "@title:column"
-#| msgid "Package"
+#, kde-format
 msgid "Package management"
-msgstr "بوغچا"
+msgstr "بوغچا باشقۇرغۇچ"
 
 #: libdiscover/backends/AlpineApkBackend/AlpineApkBackend.cpp:203
 #, kde-format
 msgid "Loading, please wait..."
-msgstr ""
+msgstr "يۈكلەۋاتىدۇ، سەل كۈتۈڭ…"
 
 #: libdiscover/backends/AlpineApkBackend/AlpineApkBackend.cpp:289
-#, fuzzy, kde-format
-#| msgctxt "@action"
-#| msgid "Add Downloaded Packages"
+#, kde-format
 msgctxt "Root category name"
 msgid "Alpine Linux packages"
-msgstr "چۈشۈرۈلگەن بوغچىلارنى قوش"
+msgstr "Alpine Linux بوغچىسى"
 
 #: libdiscover/backends/AlpineApkBackend/AlpineApkBackend.cpp:458
 #, kde-format
 msgctxt "Backend plugin display name"
 msgid "Alpine APK"
-msgstr ""
+msgstr "Alpine APK"
 
 #: libdiscover/backends/AlpineApkBackend/AlpineApkSourcesBackend.cpp:98
 #: libdiscover/backends/AlpineApkBackend/AlpineApkUpdater.cpp:272
 #, kde-format
 msgid "Authorization denied"
-msgstr ""
+msgstr "دەلىللەش رەت قىلىندى"
 
 #: libdiscover/backends/AlpineApkBackend/AlpineApkSourcesBackend.cpp:100
-#, fuzzy, kde-format
-#| msgctxt "@label Shows the error"
-#| msgid "Error: %1"
+#, kde-format
 msgid "Error: "
-msgstr "خاتالىق: %1"
+msgstr "خاتالىق: "
 
 #: libdiscover/backends/AlpineApkBackend/AlpineApkSourcesBackend.cpp:133
 #, kde-format
@@ -116,120 +104,109 @@ msgid ""
 "Enter Alpine repository URL, for example: http://dl-cdn.alpinelinux.org/"
 "alpine/edge/testing/"
 msgstr ""
+"Alpine خەزىنە تور ئادرېسى كىرگۈزۈلىدۇ، مەسىلەن، http://dl-cdn.alpinelinux."
+"org/alpine/edge/testing/"
 
 #: libdiscover/backends/AlpineApkBackend/AlpineApkTransaction.cpp:77
 #, kde-format
 msgid "Error: Authorization denied"
-msgstr ""
+msgstr "خاتالىق: دەلىللەش رەت قىلىندى"
 
 #: libdiscover/backends/AlpineApkBackend/AlpineApkTransaction.cpp:123
 #: libdiscover/backends/AlpineApkBackend/AlpineApkUpdater.cpp:283
-#, fuzzy, kde-format
-#| msgctxt "@label Shows the error"
-#| msgid "Error: %1"
+#, kde-format
 msgid "Error"
-msgstr "خاتالىق: %1"
+msgstr "خاتالىق"
 
 #: libdiscover/backends/AlpineApkBackend/AlpineApkUpdater.cpp:39
 #, kde-format
 msgid "Failed to open APK database!"
-msgstr ""
+msgstr "APK سانداننى ئاچالمىدى!"
 
 #: libdiscover/backends/AlpineApkBackend/AlpineApkUpdater.cpp:44
 #, kde-format
 msgid "Failed to get a list of packages to upgrade!"
-msgstr ""
+msgstr "يۈكسەلدۈرىدىغان بوغچا تىزىمىغا ئېرىشەلمىدى!"
 
 #: libdiscover/backends/DummyBackend/dummy-backend-categories.xml:4
-#, fuzzy, kde-format
-#| msgctxt "@label Label preceding the package category"
-#| msgid "Category:"
+#, kde-format
 msgctxt "Category"
 msgid "Dummy Category"
-msgstr "تۈرى:"
+msgstr "مەۋھۇم سەھىپە"
 
 #: libdiscover/backends/DummyBackend/dummy-backend-categories.xml:11
 #, kde-format
 msgctxt "Category"
 msgid "dummy"
-msgstr ""
+msgstr "مەۋھۇم"
 
 #: libdiscover/backends/DummyBackend/dummy-backend-categories.xml:18
 #, kde-format
 msgctxt "Category"
 msgid "dummy addons"
-msgstr ""
+msgstr "مەۋھۇم قوشۇلما"
 
 #: libdiscover/backends/DummyBackend/dummy-backend-categories.xml:26
 #, kde-format
 msgctxt "Category"
 msgid "dummy 1"
-msgstr ""
+msgstr "1-مەۋھۇم"
 
 #: libdiscover/backends/DummyBackend/dummy-backend-categories.xml:33
 #, kde-format
 msgctxt "Category"
 msgid "dummy with stuff"
-msgstr ""
+msgstr "مەزمۇنى بار مەۋھۇم"
 
 #: libdiscover/backends/DummyBackend/dummy-backend-categories.xml:40
 #: libdiscover/backends/DummyBackend/dummy-backend-categories.xml:55
 #, kde-format
 msgctxt "Category"
 msgid "dummy 2.1"
-msgstr ""
+msgstr "مەۋھۇم 2.1"
 
 #: libdiscover/backends/DummyBackend/dummy-backend-categories.xml:48
 #, kde-format
 msgctxt "Category"
 msgid "dummy with quite some stuff"
-msgstr ""
+msgstr "كۆپرەك مەزمۇنى بار مەۋھۇم"
 
 #: libdiscover/backends/DummyBackend/dummy-backend-categories.xml:64
 #, kde-format
 msgctxt "Category"
 msgid "dummy 3"
-msgstr ""
+msgstr "3-مەۋھۇم"
 
 #: libdiscover/backends/DummyBackend/dummy-backend-categories.xml:74
 #, kde-format
 msgctxt "Category"
 msgid "dummy 4"
-msgstr ""
+msgstr "4-مەۋھۇم"
 
 #: libdiscover/backends/FlatpakBackend/flatpak-backend-categories.xml:5
 #: libdiscover/backends/PackageKitBackend/packagekit-backend-categories.xml:5
-#, fuzzy, kde-format
-#| msgid "Applications"
+#, kde-format
 msgctxt "Category"
 msgid "All Applications"
-msgstr "پروگراممىلار"
+msgstr "بارلىق پىروگرامما"
 
 #: libdiscover/backends/FlatpakBackend/flatpak-backend-categories.xml:29
 #: libdiscover/backends/PackageKitBackend/packagekit-backend-categories.xml:29
-#, fuzzy, kde-format
-#| msgctxt ""
-#| "@item:inlistbox Human-readable name for the Debian package section \"utils"
-#| "\""
-#| msgid "Utilities"
+#, kde-format
 msgctxt "Category"
 msgid "Utilities"
-msgstr "قوراللار"
+msgstr "قورال"
 
 #: libdiscover/backends/FlatpakBackend/flatpak-backend-categories.xml:40
 #: libdiscover/backends/PackageKitBackend/packagekit-backend-categories.xml:40
 #, kde-format
 msgctxt "Category"
 msgid "Accessibility"
-msgstr ""
+msgstr "قولايلىق"
 
 #: libdiscover/backends/FlatpakBackend/flatpak-backend-categories.xml:51
 #: libdiscover/backends/PackageKitBackend/packagekit-backend-categories.xml:51
-#, fuzzy, kde-format
-#| msgctxt ""
-#| "@item:inlistbox Human-readable name for the Debian package section \"devel"
-#| "\""
-#| msgid "Development"
+#, kde-format
 msgctxt "Category"
 msgid "Development"
 msgstr "ئىجادىيەت"
@@ -239,21 +216,21 @@ msgstr "ئىجادىيەت"
 #, kde-format
 msgctxt "Category"
 msgid "Debugging"
-msgstr "سازلا"
+msgstr "سازلاش"
 
 #: libdiscover/backends/FlatpakBackend/flatpak-backend-categories.xml:70
 #: libdiscover/backends/PackageKitBackend/packagekit-backend-categories.xml:70
 #, kde-format
 msgctxt "Category"
 msgid "Graphic Interface Design"
-msgstr ""
+msgstr "گىرافىكىلىق ئارايۈز لايىھەسى"
 
 #: libdiscover/backends/FlatpakBackend/flatpak-backend-categories.xml:80
 #: libdiscover/backends/PackageKitBackend/packagekit-backend-categories.xml:80
 #, kde-format
 msgctxt "Category"
 msgid "IDEs"
-msgstr ""
+msgstr "يۈرۈشلەشتۈرۈلگەن ئىجادىيەت مۇھىتى"
 
 #: libdiscover/backends/FlatpakBackend/flatpak-backend-categories.xml:89
 #: libdiscover/backends/PackageKitBackend/packagekit-backend-categories.xml:89
@@ -267,92 +244,84 @@ msgstr "يەرلىكلەشتۈرۈش"
 #, kde-format
 msgctxt "Category"
 msgid "Profiling"
-msgstr ""
+msgstr "ئۈنۈم تەھلىلى"
 
 #: libdiscover/backends/FlatpakBackend/flatpak-backend-categories.xml:108
 #: libdiscover/backends/PackageKitBackend/packagekit-backend-categories.xml:108
-#, fuzzy, kde-format
-#| msgctxt ""
-#| "@item:inlistbox Human-readable name for the Debian package section \"devel"
-#| "\""
-#| msgid "Development"
+#, kde-format
 msgctxt "Category"
 msgid "Web Development"
-msgstr "ئىجادىيەت"
+msgstr "تور بېكەت ئىجادىيىتى"
 
 #: libdiscover/backends/FlatpakBackend/flatpak-backend-categories.xml:121
 #: libdiscover/backends/PackageKitBackend/packagekit-backend-categories.xml:120
 #, kde-format
 msgctxt "Category"
 msgid "Education"
-msgstr "ئورنى"
+msgstr "مائارىپ"
 
 #: libdiscover/backends/FlatpakBackend/flatpak-backend-categories.xml:131
 #: libdiscover/backends/PackageKitBackend/packagekit-backend-categories.xml:130
-#, fuzzy, kde-format
-#| msgctxt ""
-#| "@item:inlistbox Human-readable name for the Debian package section "
-#| "\"science\""
-#| msgid "Science"
+#, kde-format
 msgctxt "Category"
 msgid "Science & Math"
-msgstr "ئىلىم"
+msgstr "پەن ۋە ماتېماتىكا"
 
 #: libdiscover/backends/FlatpakBackend/flatpak-backend-categories.xml:140
 #: libdiscover/backends/PackageKitBackend/packagekit-backend-categories.xml:139
 #, kde-format
 msgctxt "Category"
 msgid "Astronomy"
-msgstr ""
+msgstr "ئاسترونومىيە"
 
 #: libdiscover/backends/FlatpakBackend/flatpak-backend-categories.xml:149
 #: libdiscover/backends/PackageKitBackend/packagekit-backend-categories.xml:148
 #, kde-format
 msgctxt "Category"
 msgid "Biology"
-msgstr ""
+msgstr "بىيولوگىيە"
 
 #: libdiscover/backends/FlatpakBackend/flatpak-backend-categories.xml:157
 #: libdiscover/backends/PackageKitBackend/packagekit-backend-categories.xml:156
 #, kde-format
 msgctxt "Category"
 msgid "Chemistry"
-msgstr ""
+msgstr "خىمىيە"
 
 #: libdiscover/backends/FlatpakBackend/flatpak-backend-categories.xml:166
 #: libdiscover/backends/PackageKitBackend/packagekit-backend-categories.xml:165
 #, kde-format
 msgctxt "Category"
 msgid "Computer Science and Robotics"
-msgstr ""
+msgstr "كومپيۇتېر ئىلمى ۋە ماشىنا ئادەم"
 
 #: libdiscover/backends/FlatpakBackend/flatpak-backend-categories.xml:177
 #: libdiscover/backends/PackageKitBackend/packagekit-backend-categories.xml:176
 #, kde-format
 msgctxt "Category"
 msgid "Electronics"
-msgstr "ئېلېكترونىكا"
+msgstr "ئېلېكتىرون ئىلمى"
 
 #: libdiscover/backends/FlatpakBackend/flatpak-backend-categories.xml:186
 #: libdiscover/backends/PackageKitBackend/packagekit-backend-categories.xml:185
 #, kde-format
 msgctxt "Category"
 msgid "Engineering"
-msgstr ""
+msgstr "ئىنژېنېرلىق ئىلمى"
 
 #: libdiscover/backends/FlatpakBackend/flatpak-backend-categories.xml:195
 #: libdiscover/backends/PackageKitBackend/packagekit-backend-categories.xml:194
 #, kde-format
 msgctxt "Category"
 msgid "Geography"
-msgstr ""
+msgstr "جۇغراپىيە"
 
 #: libdiscover/backends/FlatpakBackend/flatpak-backend-categories.xml:204
 #: libdiscover/backends/PackageKitBackend/packagekit-backend-categories.xml:203
 #, kde-format
 msgctxt "Category"
 msgid "Geology"
-msgstr ""
+msgstr "گېئولوگىيە"
 
 #: libdiscover/backends/FlatpakBackend/flatpak-backend-categories.xml:213
 #: libdiscover/backends/PackageKitBackend/packagekit-backend-categories.xml:212
@@ -366,157 +335,154 @@ msgstr "ماتېماتىكا"
 #, kde-format
 msgctxt "Category"
 msgid "Physics"
-msgstr ""
+msgstr "فىزىكا"
 
 #: libdiscover/backends/FlatpakBackend/flatpak-backend-categories.xml:235
 #: libdiscover/backends/PackageKitBackend/packagekit-backend-categories.xml:234
 #, kde-format
 msgctxt "Category"
 msgid "Games"
-msgstr ""
+msgstr "ئويۇن"
 
 #: libdiscover/backends/FlatpakBackend/flatpak-backend-categories.xml:244
 #: libdiscover/backends/PackageKitBackend/packagekit-backend-categories.xml:243
 #, kde-format
 msgctxt "Category"
 msgid "Arcade"
-msgstr ""
+msgstr "كوچا ئويۇنى"
 
 #: libdiscover/backends/FlatpakBackend/flatpak-backend-categories.xml:253
 #: libdiscover/backends/PackageKitBackend/packagekit-backend-categories.xml:252
 #, kde-format
 msgctxt "Category"
 msgid "Board Games"
-msgstr ""
+msgstr "تاختاي ئويۇنى"
 
 #: libdiscover/backends/FlatpakBackend/flatpak-backend-categories.xml:262
 #: libdiscover/backends/PackageKitBackend/packagekit-backend-categories.xml:261
 #, kde-format
 msgctxt "Category"
 msgid "Card Games"
-msgstr ""
+msgstr "قارتا ئويۇنى"
 
 #: libdiscover/backends/FlatpakBackend/flatpak-backend-categories.xml:271
 #: libdiscover/backends/PackageKitBackend/packagekit-backend-categories.xml:270
 #, kde-format
 msgctxt "Category"
 msgid "Puzzles"
-msgstr ""
+msgstr "رەسىم جىپسىلاش"
 
 #: libdiscover/backends/FlatpakBackend/flatpak-backend-categories.xml:280
 #: libdiscover/backends/PackageKitBackend/packagekit-backend-categories.xml:279
 #, kde-format
 msgctxt "Category"
 msgid "Role Playing"
-msgstr ""
+msgstr "رول ئېلىش ئويۇنى"
 
 #: libdiscover/backends/FlatpakBackend/flatpak-backend-categories.xml:289
 #: libdiscover/backends/PackageKitBackend/packagekit-backend-categories.xml:288
 #, kde-format
 msgctxt "Category"
 msgid "Simulation"
-msgstr "ئورنى"
+msgstr "تەقلىدلەش"
 
 #: libdiscover/backends/FlatpakBackend/flatpak-backend-categories.xml:298
 #: libdiscover/backends/PackageKitBackend/packagekit-backend-categories.xml:297
 #, kde-format
 msgctxt "Category"
 msgid "Strategy"
-msgstr ""
+msgstr "تەدبىر"
 
 #: libdiscover/backends/FlatpakBackend/flatpak-backend-categories.xml:307
 #: libdiscover/backends/PackageKitBackend/packagekit-backend-categories.xml:306
 #, kde-format
 msgctxt "Category"
 msgid "Sports"
-msgstr ""
+msgstr "تەنتەربىيە"
 
 #: libdiscover/backends/FlatpakBackend/flatpak-backend-categories.xml:316
 #: libdiscover/backends/PackageKitBackend/packagekit-backend-categories.xml:315
-#, fuzzy, kde-format
-#| msgid "Applications"
+#, kde-format
 msgctxt "Category"
 msgid "Action"
-msgstr "پروگراممىلار"
+msgstr "مەشغۇلات"
 
 #: libdiscover/backends/FlatpakBackend/flatpak-backend-categories.xml:325
 #: libdiscover/backends/PackageKitBackend/packagekit-backend-categories.xml:324
-#, fuzzy, kde-format
-#| msgctxt "Category"
-#| msgid "Simulation"
+#, kde-format
 msgctxt "Category"
 msgid "Emulators"
-msgstr "ئورنى"
+msgstr "تەقلىدلەشتۈرگۈچ"
 
 #: libdiscover/backends/FlatpakBackend/flatpak-backend-categories.xml:334
 #: libdiscover/backends/PackageKitBackend/packagekit-backend-categories.xml:333
 #, kde-format
 msgctxt "Category"
 msgid "Launchers"
-msgstr ""
+msgstr "قوزغاتقۇچ"
 
 #: libdiscover/backends/FlatpakBackend/flatpak-backend-categories.xml:343
 #: libdiscover/backends/PackageKitBackend/packagekit-backend-categories.xml:342
 #, kde-format
 msgctxt "Category"
 msgid "Tools"
-msgstr ""
+msgstr "قورال"
 
 #: libdiscover/backends/FlatpakBackend/flatpak-backend-categories.xml:355
 #: libdiscover/backends/PackageKitBackend/packagekit-backend-categories.xml:355
 #, kde-format
 msgctxt "Category"
 msgid "Graphics"
-msgstr "گرافىك"
+msgstr "گىرافىك"
 
 #: libdiscover/backends/FlatpakBackend/flatpak-backend-categories.xml:363
 #: libdiscover/backends/PackageKitBackend/packagekit-backend-categories.xml:363
 #, kde-format
 msgctxt "Category"
 msgid "3D"
-msgstr ""
+msgstr "3D"
 
 #: libdiscover/backends/FlatpakBackend/flatpak-backend-categories.xml:372
 #: libdiscover/backends/PackageKitBackend/packagekit-backend-categories.xml:372
 #, kde-format
 msgctxt "Category"
 msgid "Drawing"
-msgstr ""
+msgstr "سىزمىچىلىق"
 
 #: libdiscover/backends/FlatpakBackend/flatpak-backend-categories.xml:384
 #: libdiscover/backends/PackageKitBackend/packagekit-backend-categories.xml:384
 #, kde-format
 msgctxt "Category"
 msgid "Painting and Editing"
-msgstr ""
+msgstr "سىزىش ۋە تەھرىرلەش"
 
 #: libdiscover/backends/FlatpakBackend/flatpak-backend-categories.xml:397
 #: libdiscover/backends/PackageKitBackend/packagekit-backend-categories.xml:397
 #, kde-format
 msgctxt "Category"
 msgid "Photography"
-msgstr ""
+msgstr "سۈرەتچىلىك"
 
 #: libdiscover/backends/FlatpakBackend/flatpak-backend-categories.xml:406
 #: libdiscover/backends/PackageKitBackend/packagekit-backend-categories.xml:406
 #, kde-format
 msgctxt "Category"
 msgid "Publishing"
-msgstr ""
+msgstr "تارقىتىش"
 
 #: libdiscover/backends/FlatpakBackend/flatpak-backend-categories.xml:415
 #: libdiscover/backends/PackageKitBackend/packagekit-backend-categories.xml:415
 #, kde-format
 msgctxt "Category"
 msgid "Scanning and OCR"
-msgstr ""
+msgstr "تاراش ۋە ئوپتىكىلىق ھەرپ تونۇش"
 
 #: libdiscover/backends/FlatpakBackend/flatpak-backend-categories.xml:425
 #: libdiscover/backends/PackageKitBackend/packagekit-backend-categories.xml:425
 #, kde-format
 msgctxt "Category"
 msgid "Viewers"
-msgstr ""
+msgstr "كۆرگۈچ"
 
 #: libdiscover/backends/FlatpakBackend/flatpak-backend-categories.xml:437
 #: libdiscover/backends/PackageKitBackend/packagekit-backend-categories.xml:437
@@ -530,28 +496,28 @@ msgstr "ئىنتېرنېت"
 #, kde-format
 msgctxt "Category"
 msgid "Chat"
-msgstr ""
+msgstr "سۆھبەت"
 
 #: libdiscover/backends/FlatpakBackend/flatpak-backend-categories.xml:455
 #: libdiscover/backends/PackageKitBackend/packagekit-backend-categories.xml:455
 #, kde-format
 msgctxt "Category"
 msgid "File Sharing"
-msgstr ""
+msgstr "ھۆججەت ھەمبەھىرلەش"
 
 #: libdiscover/backends/FlatpakBackend/flatpak-backend-categories.xml:464
 #: libdiscover/backends/PackageKitBackend/packagekit-backend-categories.xml:464
 #, kde-format
 msgctxt "Category"
 msgid "Mail"
-msgstr ""
+msgstr "خەت"
 
 #: libdiscover/backends/FlatpakBackend/flatpak-backend-categories.xml:473
 #: libdiscover/backends/PackageKitBackend/packagekit-backend-categories.xml:473
 #, kde-format
 msgctxt "Category"
 msgid "Web Browsers"
-msgstr ""
+msgstr "توركۆرگۈ"
 
 #: libdiscover/backends/FlatpakBackend/flatpak-backend-categories.xml:485
 #: libdiscover/backends/PackageKitBackend/packagekit-backend-categories.xml:485
@@ -565,97 +531,76 @@ msgstr "كۆپ ۋاسىتە"
 #, kde-format
 msgctxt "Category"
 msgid "Audio and Video Editors"
-msgstr ""
+msgstr "ئۈن ۋە سىن تەھرىرلەش"
 
 #: libdiscover/backends/FlatpakBackend/flatpak-backend-categories.xml:503
 #: libdiscover/backends/PackageKitBackend/packagekit-backend-categories.xml:503
 #, kde-format
 msgctxt "Category"
 msgid "Audio Players"
-msgstr ""
+msgstr "ئۈن قويغۇچ"
 
 #: libdiscover/backends/FlatpakBackend/flatpak-backend-categories.xml:524
 #: libdiscover/backends/PackageKitBackend/packagekit-backend-categories.xml:524
 #, kde-format
 msgctxt "Category"
 msgid "Video Players"
-msgstr ""
+msgstr "سىن  قويغۇچ"
 
 #: libdiscover/backends/FlatpakBackend/flatpak-backend-categories.xml:542
 #: libdiscover/backends/PackageKitBackend/packagekit-backend-categories.xml:542
 #, kde-format
 msgctxt "Category"
 msgid "CD and DVD"
-msgstr ""
+msgstr "CD ۋە DVD"
 
 #: libdiscover/backends/FlatpakBackend/flatpak-backend-categories.xml:554
 #: libdiscover/backends/PackageKitBackend/packagekit-backend-categories.xml:554
 #, kde-format
 msgctxt "Category"
 msgid "Office"
-msgstr ""
+msgstr "ئىشخانا"
 
 #: libdiscover/backends/FlatpakBackend/flatpak-backend-categories.xml:564
 #: libdiscover/backends/PackageKitBackend/packagekit-backend-categories.xml:564
-#, fuzzy, kde-format
-#| msgctxt ""
-#| "@item:inlistbox Human-readable name for the Debian package section \"base"
-#| "\""
-#| msgid "Base System"
+#, kde-format
 msgctxt "Category"
 msgid "System"
-msgstr "ئاساسى سىستېما"
+msgstr "سىستېما"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakBackend.cpp:196
-#, fuzzy, kde-format
-#| msgid "%1 (%2)"
+#: libdiscover/backends/FlatpakBackend/FlatpakBackend.cpp:208
+#, kde-format
 msgctxt "user denotes this as user-scoped flatpak repo"
 msgid "%1 (user)"
-msgstr "%1 (%2)"
+msgstr "%1 (ئىشلەتكۈچى)"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakBackend.cpp:799
+#: libdiscover/backends/FlatpakBackend/FlatpakBackend.cpp:811
 #, kde-format
 msgid "Local bundle"
-msgstr ""
+msgstr "يەرلىك بوغچا"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakBackend.cpp:1951
+#: libdiscover/backends/FlatpakBackend/FlatpakBackend.cpp:1963
 #: libdiscover/backends/PackageKitBackend/PackageKitBackend.cpp:852
 #, kde-format
 msgid "Malformed appstream url '%1'"
-msgstr ""
+msgstr "خاتا appstream تور ئادرېسى «%1»"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakBackend.cpp:2081
-#, fuzzy, kde-format
-#| msgctxt "@label"
-#| msgid ""
-#| "Failed to download %1\n"
-#| "%2\n"
-#| "\n"
+#: libdiscover/backends/FlatpakBackend/FlatpakBackend.cpp:2093
+#, kde-format
 msgid "Failed to add source '%1': %2"
-msgstr ""
-"%1 نى چۈرۈش مەغلۇپ بولدى\n"
-"%2\n"
-"\n"
+msgstr "«%1» مەنبەنى قوشالمىدى: %2"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakBackend.cpp:2208
+#: libdiscover/backends/FlatpakBackend/FlatpakBackend.cpp:2220
 #, kde-format
 msgid "There are no Flatpak sources."
-msgstr ""
+msgstr "ھېچقانداق Flatpak مەنبەسى يوق."
 
-#: libdiscover/backends/FlatpakBackend/FlatpakBackend.cpp:2212
-#, fuzzy, kde-format
-#| msgctxt "@label"
-#| msgid ""
-#| "Failed to download %1\n"
-#| "%2\n"
-#| "\n"
+#: libdiscover/backends/FlatpakBackend/FlatpakBackend.cpp:2224
+#, kde-format
 msgid "Failed to load \"%1\" source"
-msgstr ""
-"%1 نى چۈرۈش مەغلۇپ بولدى\n"
-"%2\n"
-"\n"
+msgstr "«%1» مەنبەنى يۈكلىيەلمىدى"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:378
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:383
 #, kde-kuit-format
 msgctxt "@info"
 msgid ""
@@ -663,364 +608,371 @@ msgid ""
 "software in this repository will also be made be available in Discover when "
 "the application is installed.</para>"
 msgstr ""
+"<para>بۇ پىروگراممىنىڭ مەنبەسى «%1» (<link>%2</link> دىكى مۇلازىمېتىردا). بۇ "
+"پىروگرامما ئورنىتىلغاندىن كېيىن، شۇ خەزىنەدىكى باشقا يۇمشاق دېتاللارنىمۇ "
+"Discover دا ئىشلەتكىلى بولىدۇ.</para>"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:470
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:481
+#: libdiscover/backends/RpmOstreeBackend/RpmOstreeResource.cpp:419
 #, kde-format
-msgid "Retrieving size information"
-msgstr ""
-
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:472
-#, fuzzy, kde-format
-#| msgctxt "@info license"
-#| msgid "Unknown"
 msgctxt "@label app size"
 msgid "Unknown"
-msgstr "نامەلۇم"
+msgstr "يوچۇن"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:528
-#: libdiscover/backends/PackageKitBackend/PackageKitResource.cpp:495
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:537
+#: libdiscover/backends/PackageKitBackend/PackageKitResource.cpp:467
 #: libdiscover/backends/PackageKitBackend/PackageKitSourcesBackend.cpp:70
-#, fuzzy, kde-format
-#| msgctxt "@label"
-#| msgid ""
-#| "Failed to download %1\n"
-#| "%2\n"
-#| "\n"
+#, kde-format
 msgid "Failed to start '%1': %2"
-msgstr ""
-"%1 نى چۈرۈش مەغلۇپ بولدى\n"
-"%2\n"
-"\n"
+msgstr "«%1» نى قوزغىتالمىدى: %2"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:769
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:778
 #, kde-format
 msgid "All Files"
-msgstr ""
+msgstr "بارلىق ھۆججەت"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:771
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:780
 #, kde-format
 msgid "Home"
-msgstr ""
+msgstr "باش بەت"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:773
-#, fuzzy, kde-format
-#| msgctxt "@info:status"
-#| msgid "Downloading"
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:782
+#, kde-format
 msgid "Downloads"
-msgstr "چۈشۈرۈۋاتىدۇ"
+msgstr "چۈشۈرۈلمە"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:775
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:784
 #, kde-format
 msgid "Music"
-msgstr ""
+msgstr "نەغمە"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:853
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:862
 #: libdiscover/backends/KNSBackend/KNSBackend.cpp:451
 #, kde-format
 msgid "%1: %2"
-msgstr ""
+msgstr "%1: %2"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:871
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:880
 #, kde-format
 msgid "Network Access"
-msgstr ""
-
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:872
-#, kde-format
-msgid "Can access the internet"
-msgstr ""
+msgstr "تور زىيارەت ئىجازىتى"
 
 #: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:881
-#, fuzzy, kde-format
-#| msgctxt "@item:inlistbox Filters updates in the history view"
-#| msgid "Updates"
-msgid "Sound system access"
-msgstr "يېڭىلانمىلار"
+#, kde-format
+msgid "Can access the internet"
+msgstr "ئىنتېرنېتنى زىيارەت قىلالايدۇ"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:882
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:890
+#, kde-format
+msgid "Sound system access"
+msgstr "ئاۋاز سىستېما زىيارەت ئىجازىتى"
+
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:891
 #, kde-format
 msgid "Can play and record audio"
-msgstr ""
+msgstr "ئۈن ياڭرىتىپ ۋە خاتىرىلىيەلەيدۇ"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:886
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:1030
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:895
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:1039
 #, kde-format
 msgid "Session Bus Access"
-msgstr ""
+msgstr "جەريانچاق باش لىنىيەسى زىيارەت ئىجازىتى"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:887
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:896
 #, kde-format
 msgid ""
 "Can communicate with all other applications and processes run in this user "
 "account"
 msgstr ""
+"بۇ ھېسابتا ئىجرا قىلىنىدىغان بارلىق باشقا پىروگرامما ۋە جەريان بىلەن ئالاقە "
+"قىلالايدۇ"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:892
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:1042
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:901
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:1051
 #, kde-format
 msgid "System Bus Access"
-msgstr ""
+msgstr "سىستېما باش لىنىيەسى زىيارەت ئىجازىتى"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:893
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:902
 #, kde-format
 msgid "Can communicate with all other applications and processes on the system"
-msgstr ""
+msgstr "سىستېمىدىكى بارلىق باشقا پىروگرامما ۋە جەريان بىلەن ئالاقە قىلالايدۇ"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:898
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:907
 #, kde-format
 msgid "Remote Login Access"
-msgstr ""
-
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:899
-#, kde-format
-msgid "Can initiate remote login requests using the SSH protocol"
-msgstr ""
-
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:903
-#, kde-format
-msgid "Smart Card Access"
-msgstr ""
-
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:904
-#, kde-format
-msgid "Can integrate and communicate with smart cards"
-msgstr ""
+msgstr "يىراقتىن تىزىمغا كىرىش زىيارەت ئىجازىتى"
 
 #: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:908
 #, kde-format
-msgid "Printer Access"
-msgstr ""
+msgid "Can initiate remote login requests using the SSH protocol"
+msgstr "SSH كېلىشىمى ئارقىلىق يىراقتىن تىزىمغا كىرىش ئىلتىماسىنى قوزغىتالايدۇ"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:909
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:912
 #, kde-format
-msgid "Can integrate and communicate with printers"
-msgstr ""
+msgid "Smart Card Access"
+msgstr "ئىدراكلىق كارتا زىيارەت ئىجازىتى"
 
 #: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:913
 #, kde-format
-msgid "GPG Agent"
-msgstr ""
+msgid "Can integrate and communicate with smart cards"
+msgstr "ئىدراكلىق كارتىنى توپلاشتۇرۇپ ۋە ئالاقە قىلالايدۇ"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:914
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:917
+#, kde-format
+msgid "Printer Access"
+msgstr "باسقۇ زىيارىتى"
+
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:918
+#, kde-format
+msgid "Can integrate and communicate with printers"
+msgstr "باسقۇنى توپلاشتۇرۇپ ۋە ئالاقە قىلالايدۇ"
+
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:922
+#, kde-format
+msgid "GPG Agent"
+msgstr "GPG ۋاكالەتچىسى"
+
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:923
 #, kde-format
 msgid ""
 "Allows access to the GPG cryptography service, generally used for signing "
 "and reading signed documents"
 msgstr ""
+"GPG شىفىرلاش مۇلازىمىتىنى زىيارەت قىلىشقا يول قويىدۇ، ئادەتتە ئىمزا قويۇش ۋە "
+"ئىمزالىق پۈتۈكنى ئوقۇشقا ئىشلىتىلىدۇ"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:920
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:929
 #, kde-format
 msgid "Bluetooth Access"
-msgstr ""
+msgstr "كۆكچىش زىيارىتى"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:921
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:930
 #, kde-format
 msgid "Can integrate and communicate with Bluetooth devices"
-msgstr ""
+msgstr "كۆكچىش ئۈسكۈنىسىنى توپلاشتۇرۇپ ۋە ئالاقە قىلالايدۇ"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:925
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:934
 #, kde-format
 msgid "Low-Level System Access"
-msgstr ""
+msgstr "تۆۋەن دەرىجىلىك سىستېما زىيارىتى"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:926
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:935
 #, kde-format
 msgid "Can make low-level system calls (e.g. ptrace)"
-msgstr ""
+msgstr "تۆۋەن دەرىجىلىك سىستېما چاقىرىشنى ئىجرا قىلالايدۇ (مەسىلەن، ptrace)"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:932
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:941
 #, kde-format
 msgid "Device Access"
-msgstr ""
+msgstr "ئۈسكۈنە زىيارىتى"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:933
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:942
 #, kde-format
 msgid "Can communicate with and control built-in or connected hardware devices"
 msgstr ""
+"ئىچكى ياكى باغلانغان سىرتقى ئۈسكۈنىلەر بىلەن ئالاقە قىلىپ ۋە ئۇلارنى "
+"تىزگىنلىيەلەيدۇ"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:937
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:946
 #, kde-format
 msgid "Kernel-based Virtual Machine Access"
-msgstr ""
+msgstr "يادرو ئاساسىدىكى مەۋھۇم ماشىنا زىيارىتى"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:938
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:947
 #, kde-format
 msgid "Allows running other operating systems as guests in virtual machines"
 msgstr ""
+"مەۋھۇم ماشىنىدا مېھمان سالاھىيىتىدە باشقا مەشغۇلات سىستېمىسىنى ئىجرا قىلىشقا "
+"يول قويىدۇ"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:965
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:977
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:974
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:986
 #, kde-format
 msgid "%1 (read-only)"
-msgstr ""
+msgstr "%1 (ئوقۇشقىلا بولىدۇ)"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:968
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:980
-#, kde-format
-msgid "%1 (can create files)"
-msgstr ""
-
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:971
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:977
 #: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:989
 #, kde-format
-msgid "%1 (read & write) "
-msgstr ""
+msgid "%1 (can create files)"
+msgstr "%1 (ھۆججەت قۇرالايدۇ)"
 
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:980
 #: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:998
 #, kde-format
-msgid "Home Folder Access"
-msgstr ""
+msgid "%1 (read & write) "
+msgstr "%1 (ئوقۇش ۋە يېزىش) "
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:1001
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:1007
+#, kde-format
+msgid "Home Folder Access"
+msgstr "باش قىسقۇچ زىيارىتى"
+
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:1010
 #, kde-format
 msgid ""
 "Can read, write, and create files in the following locations in your home "
 "folder without asking permission first: %1"
 msgstr ""
+"تۆۋەندىكى ئورۇندىكى باش قىسقۇچتا ئىجازەت سورىماي ھۆججەتنى ئوقۇپ، يېزىپ ۋە "
+"ھۆججەت قۇرالايدۇ: %1"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:1003
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:1012
 #, kde-format
 msgid ""
 "Can read and write files in the following locations in your home folder "
 "without asking permission first: %1"
 msgstr ""
+"تۆۋەندىكى ئورۇندىكى باش قىسقۇچتا ئىجازەت سورىماي ھۆججەتكە ئوقۇپ ۋە "
+"يازالايدۇ: %1"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:1005
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:1014
 #, kde-format
 msgid ""
 "Can read files in the following locations in your home folder without asking "
 "permission first: %1"
 msgstr ""
+"تۆۋەندىكى ئورۇندىكى باش قىسقۇچتا ئىجازەت سورىماي ھۆججەتنى ئوقۇيالايدۇ: %1"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:1007
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:1016
 #, kde-format
 msgid ""
 "Can access files in the following locations in your home folder without "
 "asking permission first: %1"
 msgstr ""
+"تۆۋەندىكى ئورۇندىكى باش قىسقۇچتا ئىجازەت سورىماي ھۆججەتنى زىيارەت قىلالايدۇ: "
+"%1"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:1013
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:1022
 #, kde-format
 msgid "System Folder Access"
-msgstr ""
+msgstr "سىستېما قىسقۇچ زىيارەت ئىجازىتى"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:1015
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:1024
 #, kde-format
 msgid ""
 "Can read, write, and create system files in the following locations without "
 "asking permission first: %1"
 msgstr ""
+"تۆۋەندىكى ئورۇندا ئىجازەت سورىماي سىستېما ھۆججەتنى ئوقۇپ، يېزىپ ۋە "
+"قۇرالايدۇ: %1"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:1017
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:1026
 #, kde-format
 msgid ""
 "Can read and write system files in the following locations without asking "
 "permission first: %1"
 msgstr ""
+"تۆۋەندىكى ئورۇندا ئىجازەت سورىماي سىستېما ھۆججەتنى ئوقۇپ، يازالايدۇ: %1"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:1019
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:1028
 #, kde-format
 msgid ""
 "Can read system files in the following locations without asking permission "
 "first: %1"
-msgstr ""
+msgstr "تۆۋەندىكى ئورۇندا ئىجازەت سورىماي سىستېما ھۆججەتنى ئوقۇيالايدۇ: %1"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:1021
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:1030
 #, kde-format
 msgid ""
 "Can access system files in the following locations without asking permission "
 "first: %1"
 msgstr ""
+"تۆۋەندىكى ئورۇندا ئىجازەت سورىماي سىستېما ھۆججەتنى زىيارەت قىلالايدۇ: %1"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:1032
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:1041
 #, kde-format
 msgid ""
 "Can communicate with other applications and processes in the same desktop "
 "session using the following communication protocols: %1"
 msgstr ""
+"تۆۋەندىكى ئالاقە كېلىشىمى ئارقىلىق باشقا پىروگرامما ۋە جەريان بىلەن ئوخشاش "
+"ئۈستەلئۈستى جەريانچاقتا ئالاقە قىلالايدۇ: %1"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:1044
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:1053
 #, kde-format
 msgid ""
 "Can communicate with all applications and system services using the "
 "following communication protocols: %1"
 msgstr ""
+"تۆۋەندىكى ئالاقە كېلىشىمى ئارقىلىق بارلىق پىروگرامما ۋە سىستېما مۇلازىمىتى "
+"بىلەن ئالاقە قىلالايدۇ: %1"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:1136
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:1151
 #, kde-format
 msgid "App Verified on %1 as shipped by its author %2"
-msgstr ""
-
-#: libdiscover/backends/FlatpakBackend/FlatpakSourcesBackend.cpp:97
-#, kde-format
-msgid "Add Flathub"
-msgstr ""
+msgstr "ئەپنى %2 يازغۇچى تارقاتقاندەك %1 دا دەلىللەندى"
 
 #: libdiscover/backends/FlatpakBackend/FlatpakSourcesBackend.cpp:98
-#, fuzzy, kde-format
-#| msgctxt "@info Status information, widget title"
-#| msgid "Applying Changes"
-msgid "Apply Changes"
-msgstr "ئۆزگەرتىشلەرنى قوللىنىۋاتىدۇ"
+#, kde-format
+msgid "Add Flathub"
+msgstr "Flathub قوش"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakSourcesBackend.cpp:102
+#: libdiscover/backends/FlatpakBackend/FlatpakSourcesBackend.cpp:99
+#, kde-format
+msgid "Apply Changes"
+msgstr "ئۆزگەرتىشنى قوللان"
+
+#: libdiscover/backends/FlatpakBackend/FlatpakSourcesBackend.cpp:103
 #, kde-format
 msgid ""
 "Changes to the priority of Flatpak sources must be applied before they will "
 "take effect."
 msgstr ""
+"Flatpak مەنبەسىنىڭ ئالدىنلىقىنى ئۆزگەرتكەندىن كېيىن چوقۇم قوللانغاندىن كېيىن "
+"ئاندىن ئۈنۈمى كۆرۈلىدۇ."
 
-#: libdiscover/backends/FlatpakBackend/FlatpakSourcesBackend.cpp:106
+#: libdiscover/backends/FlatpakBackend/FlatpakSourcesBackend.cpp:107
 #, kde-format
 msgid ""
 "Makes it possible to easily install the applications listed in https://"
 "flathub.org"
-msgstr ""
+msgstr "https://flathub.org دىكى پىروگراممىنى ئورنىتىشنى تېخىمۇ قولايلاشتۇرىدۇ"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakSourcesBackend.cpp:174
+#: libdiscover/backends/FlatpakBackend/FlatpakSourcesBackend.cpp:175
 #, kde-format
 msgid "Could not add the source %1"
-msgstr ""
+msgstr "%1 مەنبەنى قوشالمايدۇ"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakSourcesBackend.cpp:294
-#, fuzzy, kde-format
-#| msgctxt "@info:status"
-#| msgid "Removing"
+#: libdiscover/backends/FlatpakBackend/FlatpakSourcesBackend.cpp:297
+#, kde-format
 msgid "Removing '%1'"
-msgstr "ئۆچۈرۈۋاتىدۇ..."
+msgstr "«%1» چىقىرىۋېتىۋاتىدۇ"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakSourcesBackend.cpp:295
+#: libdiscover/backends/FlatpakBackend/FlatpakSourcesBackend.cpp:298
 #, kde-format
 msgid ""
 "To remove this repository, the following applications must be uninstalled:"
 "<ul><li>%1</li></ul>"
 msgstr ""
+"بۇ خەزىنەنى چىقىرىۋېتىشتە، تۆۋەندىكى پىروگرامما سۆكۈۋېتىلىشى كېرەك: <ul><li>"
+"%1</li></ul>"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakSourcesBackend.cpp:313
+#: libdiscover/backends/FlatpakBackend/FlatpakSourcesBackend.cpp:316
 #, kde-format
 msgid "Failed to remove %1 remote repository: %2"
-msgstr ""
+msgstr "يىراقتىكى خەزىنە %1 نى چىقىرىۋېتەلمىدى: %2"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakSourcesBackend.cpp:317
+#: libdiscover/backends/FlatpakBackend/FlatpakSourcesBackend.cpp:320
 #, kde-format
 msgid "Could not find %1"
-msgstr ""
+msgstr "%1 نى تاپالمىدى"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakSourcesBackend.cpp:349
-#, fuzzy, kde-format
-#| msgid "%1 (%2)"
+#: libdiscover/backends/FlatpakBackend/FlatpakSourcesBackend.cpp:354
+#, kde-format
 msgid "%1 (user)"
-msgstr "%1 (%2)"
+msgstr "%1 (ئىشلەتكۈچى)"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakSourcesBackend.cpp:411
+#: libdiscover/backends/FlatpakBackend/FlatpakSourcesBackend.cpp:417
 #, kde-format
 msgid "Enter a Flatpak repository URI (*.flatpakrepo):"
-msgstr ""
+msgstr "Flatpak خەزىنە URI (*.flatpakrepo) كىرگۈزۈلىدۇ:"
 
 #: libdiscover/backends/FlatpakBackend/FlatpakTransactionThread.cpp:35
 #, kde-format
 msgid "Adding remote '%1' in %2 from %3"
-msgstr ""
+msgstr "%2 غا %3 دىن يىراقتىكى «%1» نى قوشۇۋاتىدۇ"
 
 #: libdiscover/backends/FlatpakBackend/FlatpakTransactionThread.cpp:338
 #, kde-format
@@ -1029,6 +981,8 @@ msgid ""
 "Cannot create transaction for '%1':<nl/>%2<nl/><nl/>Please report this to <a "
 "href='%3'>%3</a>"
 msgstr ""
+"«%1» ئۈچۈن ئالماشتۇرۇش قۇرالمايدۇ: <nl/>%2<nl/><nl/>بۇنى <a href='%3'>%3</a> "
+"غا مەلۇم قىلىڭ"
 
 #: libdiscover/backends/FlatpakBackend/FlatpakTransactionThread.cpp:424
 #, kde-format
@@ -1037,13 +991,14 @@ msgid ""
 "An internal error occurred. Please file a report at https://bugs.kde.org/"
 "enter_bug.cgi?product=Discover"
 msgstr ""
+"ئىچكى خاتالىق كۆرۈلدى. https://bugs.kde.org/enter_bug.cgi?product=Discover "
+"دا پىروگرامما كەمتۈكلۈك دوكلاتى يوللاڭ"
 
 #: libdiscover/backends/FlatpakBackend/FlatpakTransactionThread.cpp:462
-#, fuzzy, kde-format
-#| msgid "Available"
+#, kde-format
 msgctxt "@title"
 msgid "Replacement Available"
-msgstr "ئىشلەتكىلى بولىدۇ"
+msgstr "ئالماشتۇرغىلى بولىدىغىنى بار"
 
 #: libdiscover/backends/FlatpakBackend/FlatpakTransactionThread.cpp:464
 #, kde-kuit-format
@@ -1052,16 +1007,20 @@ msgctxt ""
 "though)"
 msgid ""
 "<resource>%1</resource> is no longer receiving updates.<nl/><nl/>Replace it "
-"with the supported version provided by <resource>%2</resource>?"
-msgstr ""
-
-#: libdiscover/backends/FlatpakBackend/FlatpakTransactionThread.cpp:470
-#, kde-format
-msgctxt "@title"
-msgid "Automatic Removal"
+"with the supported version provided by <resource>%2</resource>?<nl/><nl/"
+">Your settings and data will be automatically transferred to the new "
+"application.<nl/><nl/>If the old application is in your panel or Application "
+"Launcher favorites, you will need to remove it and manually add the new one "
+"there."
 msgstr ""
 
 #: libdiscover/backends/FlatpakBackend/FlatpakTransactionThread.cpp:472
+#, kde-format
+msgctxt "@title"
+msgid "Automatic Removal"
+msgstr "ئۆزلۈكىدىن چىقىرىۋەت"
+
+#: libdiscover/backends/FlatpakBackend/FlatpakTransactionThread.cpp:474
 #, kde-kuit-format
 msgctxt ""
 "@info %1 is a flatpak id e.g. org.kde.krita (can be rather lengthy though)"
@@ -1069,6 +1028,8 @@ msgid ""
 "<resource>%1</resource> is no longer receiving updates.<nl/><p>The reason "
 "given is: <message>%2</message></p><nl/><p>Automatically remove it?</p>"
 msgstr ""
+"<resource>%1</resource> ئەمدى يېڭىلاشنى تاپشۇرۇۋالمايدۇ.<nl/><p>سەۋەبى:"
+"<message>%2</message></p><nl/><p>ئۇنى ئۆزلۈكىدىن چىقىرىۋېتەمدۇ؟</p>"
 
 #: libdiscover/backends/FlatpakBackend/qml/FlatpakOldBeta.qml:30
 #, kde-format
@@ -1077,55 +1038,54 @@ msgid ""
 "This development version of %1 is outdated. Using the stable version is "
 "highly recommended."
 msgstr ""
+"بۇ %1 ئىجادىيەت نەشرىنىڭ ۋاقتى ئۆتكەن. مۇقىم نەشرىنى ئىشلىتىش كۈچلۈك تەۋسىيە "
+"قىلىنىدۇ."
 
 #: libdiscover/backends/FlatpakBackend/qml/FlatpakOldBeta.qml:31
 #, kde-format
 msgctxt "@label %1 is the name of an application"
 msgid "A more stable version of %1 is available."
-msgstr ""
+msgstr "%1 نىڭ نۇرغۇن مۇقىم نەشرى بار."
 
 #: libdiscover/backends/FlatpakBackend/qml/FlatpakOldBeta.qml:50
 #, kde-format
 msgctxt "@action: button %1 is the name of a Flatpak repo"
 msgid "View Stable Version on %1"
-msgstr ""
+msgstr "%1 دىكى مۇقىم نەشرىنى كۆرسەت"
 
 #: libdiscover/backends/FlatpakBackend/qml/FlatpakRemoveData.qml:19
 #, kde-format
-msgid "%1 is not installed but it still has data present."
+msgid "%1 is not installed but it still has user data and settings present."
 msgstr ""
 
 #: libdiscover/backends/FlatpakBackend/qml/FlatpakRemoveData.qml:45
 #, kde-format
-msgid "Delete settings and user data"
-msgstr ""
+msgid "Move to Trash"
+msgstr "ئەخلەتخانىغا يۆتكە"
 
 #: libdiscover/backends/FlatpakBackend/qml/FlatpakRemoveData.qml:48
 #, kde-format
 msgid "Clearing settings and user data…"
-msgstr ""
+msgstr "تەڭشەك ۋە ئىشلەتكۈچى سانلىق مەلۇماتىنى تازىلاۋاتىدۇ…"
 
 #: libdiscover/backends/FlatpakBackend/qml/PermissionsList.qml:26
 #: libdiscover/backends/PackageKitBackend/qml/PackageKitPermissions.qml:23
-#, fuzzy, kde-format
-#| msgctxt "@info:label Refers to a software version, Ex: Version 1.2.1:"
-#| msgid "Version %1:"
+#, kde-format
 msgctxt "Permission to access system resources and hardware devices"
 msgid "Permissions"
-msgstr "نەشرى  %1:"
+msgstr "ئىجازەت"
 
 #: libdiscover/backends/FlatpakBackend/qml/PermissionsList.qml:76
 #: libdiscover/backends/SnapBackend/qml/PermissionsButton.qml:20
 #, kde-format
 msgid "Configure permissions…"
-msgstr ""
+msgstr "ئىجازەت سەپلە…"
 
-#: libdiscover/backends/FwupdBackend/FwupdBackend.cpp:486
+#: libdiscover/backends/FwupdBackend/FwupdBackend.cpp:493
 #: libdiscover/backends/FwupdBackend/FwupdResource.cpp:116
-#, fuzzy, kde-format
-#| msgid "Applications"
+#, kde-format
 msgid "Firmware Updates"
-msgstr "پروگراممىلار"
+msgstr "مۇقىم دېتال يېڭىلاش"
 
 #: libdiscover/backends/FwupdBackend/FwupdSourcesBackend.cpp:38
 #, kde-format
@@ -1133,32 +1093,34 @@ msgid ""
 "The remote %1 require that you accept their license:\n"
 " %2"
 msgstr ""
+"يىراقتىكى %1 ئۇلارنىڭ ئىجازەتنامىسىنى قوبۇل قىلىشنى تەلەپ قىلىدۇ:\n"
+"%2"
 
 #: libdiscover/backends/FwupdBackend/FwupdSourcesBackend.cpp:41
 #, kde-format
 msgid "Review EULA"
-msgstr ""
+msgstr "ئاخىرقى ئىشلەتكۈچى ئىجازەت كېلىشىمىنى تەكشۈرۈش"
 
 #: libdiscover/backends/FwupdBackend/FwupdSourcesBackend.cpp:137
 #, kde-format
 msgid "Could not enable remote %1: %2"
-msgstr ""
+msgstr "يىراقتىكى %1 نى قوزغىتالمايدۇ: %2"
 
 #: libdiscover/backends/HoloBackend/HoloBackend.cpp:71
 #, kde-format
 msgid "SteamOS"
-msgstr ""
+msgstr "SteamOS"
 
 #: libdiscover/backends/HoloBackend/HoloBackend.cpp:73
 #, kde-format
 msgid "Holo"
-msgstr ""
+msgstr "Holo"
 
 #: libdiscover/backends/HoloBackend/HoloBackend.cpp:113
 #, kde-format
 msgctxt "%1 is the pretty name of the distro e.g. Holo or SteamOS"
 msgid "Holo: Unable to query atomupd for %1 Updates..."
-msgstr ""
+msgstr "Holo: %1 يېڭىلىنىشىنىڭ atomupd نى سۈرۈشتۈرەلمەيدۇ…"
 
 #: libdiscover/backends/KNSBackend/KNSBackend.cpp:64
 #, kde-format
@@ -1166,33 +1128,33 @@ msgid ""
 "Unsupported question:\n"
 "%1"
 msgstr ""
+"قوللىمايدىغان مەسىلە:\n"
+"%1"
 
 #: libdiscover/backends/KNSBackend/KNSBackend.cpp:210
 #, kde-format
 msgid "Backend %1 took too long to initialize"
-msgstr ""
+msgstr "ئارقا ئۇچ %1 نى دەسلەپلەشتۈرۈش ۋاقتى بەك ئۇزۇن"
 
 #: libdiscover/backends/KNSBackend/KNSBackend.cpp:276
-#, fuzzy, kde-format
-#| msgid "Applications"
+#, kde-format
 msgid "Applications"
-msgstr "پروگراممىلار"
+msgstr "پىروگرامما"
 
 #: libdiscover/backends/KNSBackend/KNSBackend.cpp:304
 #, kde-format
 msgid "Plasma Addons"
-msgstr ""
+msgstr "Plasma قوشۇلما"
 
 #: libdiscover/backends/KNSBackend/KNSBackend.cpp:304
-#, fuzzy, kde-format
-#| msgid "Applications"
+#, kde-format
 msgid "Application Addons"
-msgstr "پروگراممىلار"
+msgstr "پىروگرامما قوشۇلما"
 
 #: libdiscover/backends/KNSBackend/KNSBackend.cpp:392
 #, kde-format
 msgid "Network error in backend %1: %2"
-msgstr ""
+msgstr "ئارقا ئۇچ %1 دا تور خاتالىقى كۆرۈلدى: %2"
 
 #: libdiscover/backends/KNSBackend/KNSBackend.cpp:399
 #, kde-format
@@ -1200,13 +1162,15 @@ msgid ""
 "Too many requests sent to the server for backend %1. Please try again in a "
 "few minutes."
 msgstr ""
+"مۇلازىمېتىرغا ئارقا ئۇچ %1 ئۈچۈن بەك كۆپ ئىلتىماس يوللاندى. بىر قانچە "
+"مىنۇتتىن كېيىن قايتا سىناڭ."
 
 #: libdiscover/backends/KNSBackend/KNSBackend.cpp:402
 #: libdiscover/backends/KNSBackend/KNSBackend.cpp:408
 #: libdiscover/backends/KNSBackend/KNSBackend.cpp:413
 #, kde-format
 msgid "Invalid %1 backend, contact your distributor."
-msgstr ""
+msgstr "ئىناۋەتسىز %1 ئارقا ئۇچ، تارقاتقۇچى بىلەن ئالاقىلىشىڭ."
 
 #: libdiscover/backends/KNSBackend/KNSBackend.cpp:432
 #, kde-format
@@ -1216,37 +1180,43 @@ msgid ""
 "reported error was:\n"
 "%2"
 msgstr ""
+"%1 نىڭ يېڭىلىنىشىنى تاماملىيالمايدۇ. يېڭىلاشقا ئېرىشىش سۆزلەشكۈدە  بۇ "
+"مەشغۇلاتنى ئىجرا قىلالايسىز ھەمدە  تېخىمۇ تەپسىلىي تەڭشىيەلەيسىز. خاتالىق "
+"ئۇچۇرى:\n"
+"%2"
 
 #: libdiscover/backends/KNSBackend/KNSBackend.cpp:442
 #, kde-format
 msgid "Could not fetch screenshot for the entry %1 in backend %2"
-msgstr ""
+msgstr "%2 ئارقا ئۇچتىن %1 نىڭ ئېكران كۆرۈنۈشىگە ئېرىشەلمەيدۇ"
 
 #: libdiscover/backends/KNSBackend/KNSBackend.cpp:446
 #, kde-format
 msgid "Unhandled error in %1 backend. Contact your distributor."
 msgstr ""
+"%1 ئارقا ئۇچتا بىر تەرەپ قىلغىلى بولمايدىغان خاتالىق كۆرۈلدى. تارقاتقۇچى "
+"بىلەن ئالاقىلىشىڭ."
 
 #: libdiscover/backends/KNSBackend/KNSBackend.cpp:570
 #, kde-format
 msgid "Wrong KNewStuff URI: %1"
-msgstr ""
+msgstr "KNewStuff URI خاتا: %1"
 
 #: libdiscover/backends/KNSBackend/KNSResource.cpp:169
 #, kde-format
 msgctxt "The name of the KDE Store"
 msgid "KDE Store"
-msgstr ""
+msgstr "KDE دۇكىنى"
 
 #: libdiscover/backends/KNSBackend/KNSReviews.cpp:146
 #, kde-format
 msgid "Log in information for %1"
-msgstr ""
+msgstr "%1 نىڭ تىزىمغا كىرىش ئۇچۇرى"
 
 #: libdiscover/backends/PackageKitBackend/AppPackageKitResource.cpp:268
 #, kde-format
 msgid "Cannot launch %1"
-msgstr ""
+msgstr "%1 نى قوزغىتالمايدۇ"
 
 #: libdiscover/backends/PackageKitBackend/packagekit-backend-categories.xml:575
 #: libdiscover/backends/PackageKitBackend/packagekit-backend-categories.xml:621
@@ -1259,24 +1229,24 @@ msgstr "خەت نۇسخا"
 #, kde-format
 msgctxt "Category"
 msgid "Hardware Drivers"
-msgstr ""
+msgstr "قاتتىق دېتال قوزغاتقۇ"
 
 #: libdiscover/backends/PackageKitBackend/packagekit-backend-categories.xml:597
 #, kde-format
 msgctxt "Category"
 msgid "Plasma Addons"
-msgstr ""
+msgstr "Plasma قوشۇلما"
 
 #: libdiscover/backends/PackageKitBackend/packagekit-backend-categories.xml:609
 #, kde-format
 msgctxt "Category"
 msgid "Plasma Widgets"
-msgstr ""
+msgstr "Plasma ئەپچە"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitBackend.cpp:331
 #, kde-format
 msgid "Please make sure that Appstream is properly set up on your system"
-msgstr ""
+msgstr "سىستېمىڭىزدا Appstream نىڭ توغرا تەڭشەلگەنلىكىنى جەزملەڭ"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitBackend.cpp:367
 #, kde-format
@@ -1285,11 +1255,13 @@ msgid ""
 "Your operating system ended support on %1. Consider upgrading to a supported "
 "version."
 msgstr ""
+"مەشغۇلات سىستېمىڭىزنى قوللاش %1 دا ئاخىرلىشىدۇ. ئەڭ يېڭى قوللايدىغان نەشرىگە "
+"يۈكسەلدۈرۈشنى ئويلىشىڭ."
 
 #: libdiscover/backends/PackageKitBackend/PackageKitBackend.cpp:958
 #, kde-format
 msgid "Cannot remove '%1'"
-msgstr ""
+msgstr "«%1» نى چىقىرىۋېتەلمەيدۇ"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitBackend.cpp:1042
 #: libdiscover/backends/RpmOstreeBackend/RpmOstreeBackend.cpp:365
@@ -1300,22 +1272,22 @@ msgid ""
 "To be able to upgrade to this new version, first apply all available "
 "updates, and then restart the system."
 msgstr ""
+"<b>ھازىر %1  نى ئىشلەتكىلى بولىدۇ.</b>\n"
+"بۇ يېڭى نەشرىگە يۈكسەلدۈرۈش ئۈچۈن، ئالدى بىلەن ئىشلەتكىلى بولىدىغان ھەممە "
+"يېڭىلاشنى قوللىنىپ، ئاندىن سىستېمىنى قايتا قوزغىتىش كېرەك."
 
 #: libdiscover/backends/PackageKitBackend/PackageKitBackend.cpp:1051
-#, fuzzy, kde-format
-#| msgctxt "@info:status Requested action"
-#| msgid "Upgrade"
+#, kde-format
 msgctxt "@action: button"
 msgid "Upgrade Now"
-msgstr "يۈكسەلدۈر"
+msgstr "ھازىر يۈكسەلدۈر"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitBackend.cpp:1073
 #: libdiscover/backends/RpmOstreeBackend/RpmOstreeBackend.cpp:375
-#, fuzzy, kde-format
-#| msgid "Available"
+#, kde-format
 msgctxt "@info:status %1 is a new major version of the user's distro"
 msgid "%1 is now available."
-msgstr "ئىشلەتكىلى بولىدۇ"
+msgstr "ھازىر %1 بار."
 
 #: libdiscover/backends/PackageKitBackend/PackageKitBackend.cpp:1200
 #, kde-format
@@ -1324,404 +1296,365 @@ msgid ""
 "The PackageKit background service stopped unexpectedly.<nl/></nl/>Please "
 "<link url='%1'>report this issue to %2</link>"
 msgstr ""
+"PackageKit ئارقا سۇپا مۇلازىمىتى تاسادىپىي توختىدى.<nl/></nl/><link "
+"url='%1'>بۇ مەسىلىنى %2 غا مەلۇم قىلىڭ</link>"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:18
 #, kde-format
 msgid "Out of memory"
-msgstr ""
+msgstr "ئەسلەك يېتىشمىدى"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:20
 #, kde-format
 msgid "No network connection available"
-msgstr ""
+msgstr "ئىشلەتكىلى بولىدىغان تور باغلىنىشى يوق"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:22
 #, kde-format
 msgid "Operation not supported"
-msgstr ""
+msgstr "مەشغۇلاتنى قوللىمايدۇ"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:25
-#, fuzzy, kde-format
-#| msgctxt ""
-#| "@item:inlistbox Human-readable name for the Debian package section \"web\""
-#| msgid "Internet"
+#, kde-format
 msgid "Internal error"
-msgstr "ئىنتېرنېت"
+msgstr "ئىچكى خاتالىق"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:27
-#, fuzzy, kde-format
-#| msgctxt ""
-#| "@item:inlistbox Human-readable name for the Debian package section \"web\""
-#| msgid "Internet"
+#, kde-format
 msgid "Internal error: %1"
-msgstr "ئىنتېرنېت"
+msgstr "ئىچكى خاتالىق: %1"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:31
 #, kde-format
 msgid "GPG failure"
-msgstr ""
+msgstr "GPG مەغلۇپ بولدى"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:33
-#, fuzzy, kde-format
-#| msgctxt "@info:status Package state"
-#| msgid "Not Installed"
+#, kde-format
 msgid "PackageID invalid"
-msgstr "قاچىلانمىدى"
+msgstr "PackageID ئىناۋەتسىز"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:35
-#, fuzzy, kde-format
-#| msgctxt "@info:status Package state"
-#| msgid "Not Installed"
+#, kde-format
 msgid "Package not installed"
-msgstr "قاچىلانمىدى"
+msgstr "بوغچا ئورنىتىلمىدى"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:37
-#, fuzzy, kde-format
-#| msgctxt "@info:status Package state"
-#| msgid "Not Installed"
+#, kde-format
 msgid "Package not found"
-msgstr "قاچىلانمىدى"
+msgstr "بوغچا تېپىلمىدى"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:39
-#, fuzzy, kde-format
-#| msgctxt "@info:status Package state"
-#| msgid "Not Installed"
+#, kde-format
 msgid "Package is already installed"
-msgstr "قاچىلانمىدى"
+msgstr "بوغچا ئاللىقاچان ئورنىتىلغان"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:41
-#, fuzzy, kde-format
-#| msgctxt "@action"
-#| msgid "Save Package Download List..."
+#, kde-format
 msgid "Package download failed"
-msgstr "بوغچا چۈشۈرۈش تىزىمىنى ساقلاش…"
+msgstr "بوغچىنى چۈشۈرەلمىدى"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:43
-#, fuzzy, kde-format
-#| msgctxt "@info:status Package state"
-#| msgid "Not Installed"
+#, kde-format
 msgid "Package group not found"
-msgstr "قاچىلانمىدى"
+msgstr "بوغچا گۇرۇپپىسىنى تاپالمىدى"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:45
-#, fuzzy, kde-format
-#| msgctxt "@info:status Package state"
-#| msgid "Not Installed"
+#, kde-format
 msgid "Package group list invalid"
-msgstr "قاچىلانمىدى"
+msgstr "بوغچا گۇرۇپپا تىزىمى ئىناۋەتسىز"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:47
 #, kde-format
 msgid "Dependency resolution failed"
-msgstr ""
+msgstr "تايىنىشچانلىقنى ھەل قىلالمىدى"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:49
 #, kde-format
 msgid "Filter invalid"
-msgstr ""
+msgstr "سۈزگۈچ ئىناۋەتسىز"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:51
 #, kde-format
 msgid "Failed while creating a thread"
-msgstr ""
+msgstr "جەريانچاق قۇرالمىدى"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:53
 #, kde-format
 msgid "Transaction failure"
-msgstr ""
+msgstr "بېجىرەلمىدى"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:55
 #, kde-format
 msgid "Transaction canceled"
-msgstr ""
+msgstr "بېجىرىشتىن ۋاز كەچتى"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:57
 #, kde-format
 msgid "No Cache available"
-msgstr ""
+msgstr "ھېچقانداق غەملەك يوق"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:59
 #, kde-format
 msgid "Cannot find repository"
-msgstr ""
+msgstr "خەزىنە تاپالمىدى"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:61
 #, kde-format
 msgid "Cannot remove system package"
-msgstr ""
+msgstr "سىستېما بوغچىسىنى چىقىرىۋېتەلمىدى"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:63
 #, kde-format
 msgid "The PackageKit daemon has crashed"
-msgstr ""
+msgstr "PackageKit نازارەتچى يىمىرىلدى"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:65
 #, kde-format
 msgid "Initialization failure"
-msgstr ""
+msgstr "دەسلەپلەشتۈرەلمىدى"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:67
 #, kde-format
 msgid "Failed to finalize transaction"
-msgstr ""
+msgstr "بېجىرىدىغان ئىشنى تاماملىيالمىدى"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:69
 #, kde-format
 msgid "Config parsing failed"
-msgstr ""
+msgstr "تەھلىل قىلىشنى سەپلىيەلمىدى"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:71
 #, kde-format
 msgid "Cannot cancel transaction"
-msgstr ""
+msgstr "بېجىرىدىغان ئىشنى بىكار قىلالمىدى"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:73
 #, kde-format
 msgid "Cannot obtain lock"
-msgstr ""
+msgstr "قۇلۇپلىيالمىدى"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:75
 #, kde-format
 msgid "No packages to update"
-msgstr ""
+msgstr "يېڭىلايدىغان بوغچا يوق"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:77
 #, kde-format
 msgid "Cannot write repo config"
-msgstr ""
+msgstr "خەزىنە سەپلىمىسىنى يازالمىدى"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:79
-#, fuzzy, kde-format
-#| msgctxt "@info:status Package state"
-#| msgid "Not Installed"
+#, kde-format
 msgid "Local install failed"
-msgstr "قاچىلانمىدى"
+msgstr "يەرلىك ئورنىتىش مەغلۇپ بولدى"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:81
 #, kde-format
 msgid "Bad GPG signature found"
-msgstr ""
+msgstr "ناچار GPG ئىمزا بايقالدى"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:83
 #, kde-format
 msgid "No GPG signature found"
-msgstr ""
+msgstr "ھېچقانداق GPG ئىمزا بايقالمىدى"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:85
 #, kde-format
 msgid "Cannot install source package"
-msgstr ""
+msgstr "مەنبە بوغچىنى ئورنىتالمىدى"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:87
-#, fuzzy, kde-format
-#| msgctxt "@title:window"
-#| msgid "Authentication error"
+#, kde-format
 msgid "Repo configuration error"
-msgstr "كىملىك دەلىللەش خاتالىقى"
+msgstr "خەزىنە سەپلىمە خاتالىقى"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:89
 #, kde-format
 msgid "No license agreement"
-msgstr ""
+msgstr "ئىجازەتنامە كېلىشىمى يوق"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:91
 #, kde-format
 msgid "File conflicts found"
-msgstr ""
+msgstr "ھۆججەت توقۇنۇشى بايقالدى"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:93
-#, fuzzy, kde-format
-#| msgctxt "@action"
-#| msgid "Save Package Download List..."
+#, kde-format
 msgid "Package conflict found"
-msgstr "بوغچا چۈشۈرۈش تىزىمىنى ساقلاش…"
+msgstr "بوغچا توقۇنۇشى بايقالدى"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:95
 #, kde-format
 msgid "Repo not available"
-msgstr ""
+msgstr "خەزىنىنى ئىشلەتكىلى بولمايدۇ"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:97
 #, kde-format
 msgid "Invalid package file"
-msgstr ""
+msgstr "ئىناۋەتسىز بوغچا ھۆججىتى"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:99
-#, fuzzy, kde-format
-#| msgctxt "@info:status Package state"
-#| msgid "Not Installed"
+#, kde-format
 msgid "Package install blocked"
-msgstr "قاچىلانمىدى"
+msgstr "بوغچا ئورنىتىش توسۇلدى"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:101
 #, kde-format
 msgid "Corrupt package found"
-msgstr ""
+msgstr "بۇزۇلغان بوغچا بايقالدى"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:103
-#, fuzzy, kde-format
-#| msgctxt "@info:status Package state"
-#| msgid "Not Installed"
+#, kde-format
 msgid "All packages already installed"
-msgstr "قاچىلانمىدى"
+msgstr "بارلىق بوغچا ئاللىقاچان ئورنىتىلىپتۇ"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:105
 #, kde-format
 msgid "File not found"
-msgstr ""
+msgstr "ھۆججەت تېپىلمىدى"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:107
 #, kde-format
 msgid "No more mirrors available"
-msgstr ""
+msgstr "تېخىمۇ كۆپ ئىشلەتكۈدەك تەسۋىر يوق"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:109
-#, fuzzy, kde-format
-#| msgid "Distribution upgrades"
+#, kde-format
 msgid "No distro upgrade data"
-msgstr "تارقىتىلما يۈكسەلدۈرۈش"
+msgstr "تارقىتىلغان نەشرىنىڭ يۈكسەلدۈرىدىغان سانلىق مەلۇماتى يوق"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:111
 #, kde-format
 msgid "Incompatible architecture"
-msgstr ""
+msgstr "ماسلاشمايدىغان قۇرۇلما"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:113
 #, kde-format
 msgid "No space on device left"
-msgstr ""
+msgstr "ئۈسكۈنىدە بوشلۇق قالمىدى"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:115
-#, fuzzy, kde-format
-#| msgctxt "@title:window"
-#| msgid "Media Change Required"
+#, kde-format
 msgid "A media change is required"
-msgstr "ۋاسىتە ئۆزگەرتىش زۆرۈر"
+msgstr "ۋاسىتە ئالماشتۇرۇشقا ئېھتىياجلىق"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:117
 #, kde-format
 msgid "You have no authorization to execute this operation"
-msgstr ""
+msgstr "بۇ مەشغۇلاتنى ئىجرا قىلىشقا يېتەرلىك ئىجازىتىڭىز يوق"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:119
 #, kde-format
 msgid "Update not found"
-msgstr ""
+msgstr "يېڭىلانما تېپىلمىدى"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:121
 #, kde-format
 msgid "Cannot install from unsigned repo"
-msgstr ""
+msgstr "ئىمزا قويۇلمىغان خەزىنەدىن ئورنىتالمىدى"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:123
 #, kde-format
 msgid "Cannot update from unsigned repo"
-msgstr ""
+msgstr "ئىمزا قويۇلمىغان خەزىنەدىن يېڭىلىيالمىدى"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:125
 #, kde-format
 msgid "Cannot get file list"
-msgstr ""
+msgstr "ھۆججەت تىزىمغا ئېرىشكىلى بولمىدى"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:127
 #, kde-format
 msgid "Cannot get requires"
-msgstr ""
+msgstr "تايىنىشچانلىق ئۇچۇرىغا ئېرىشەلمىدى"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:129
 #, kde-format
 msgid "Cannot disable repository"
-msgstr ""
+msgstr "خەزىنەنى چەكلىيەلمەيدۇ"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:131
 #, kde-format
 msgid "Restricted download detected"
-msgstr ""
+msgstr "چەكلىمىلىك چۈشۈرۈش بايقالدى"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:133
 #, kde-format
 msgid "Package failed to configure"
-msgstr ""
+msgstr "بوغچىنى سەپلىيەلمىدى"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:135
 #, kde-format
 msgid "Package failed to build"
-msgstr ""
+msgstr "بوغچىنى قۇرالمىدى"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:137
-#, fuzzy, kde-format
-#| msgctxt "@info:status Package state"
-#| msgid "Not Installed"
+#, kde-format
 msgid "Package failed to install"
-msgstr "قاچىلانمىدى"
+msgstr "بوغچىنى ئورنىتالمىدى"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:139
 #, kde-format
 msgid "Package failed to remove"
-msgstr ""
+msgstr "بوغچىنى چىقىرىۋېتەلمىدى"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:141
 #, kde-format
 msgid "Update failed due to running process"
-msgstr ""
+msgstr "جەريان ئىجرا بولۇۋاتقانلىقتىن يېڭىلاش مەغلۇپ بولدى"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:143
 #, kde-format
 msgid "The package database changed"
-msgstr ""
+msgstr "بوغچا ساندان ئۆزگەردى"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:145
 #, kde-format
 msgid "The provided type is not supported"
-msgstr ""
+msgstr "تەمىنلەنگەن تۈرنى قوللىمايدۇ"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:147
 #, kde-format
 msgid "Install root is invalid"
-msgstr ""
+msgstr "ئورنىتىدىغان غول مۇندەرىجە ئىناۋەتسىز"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:149
 #, kde-format
 msgctxt ""
 "Failed to sync your Linux distro repositories or other sources of packages"
 msgid "Cannot fetch sources"
-msgstr ""
+msgstr "ئەسلى كودقا ئېرىشەلمەيدۇ"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:151
-#, fuzzy, kde-format
-#| msgctxt "@action:button Cancels the download"
-#| msgid "Cancel"
+#, kde-format
 msgid "Canceled priority"
-msgstr "ۋاز كەچ"
+msgstr "ئالدىنلىق بىكار قىلىندى"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:153
 #, kde-format
 msgid "Unfinished transaction"
-msgstr ""
+msgstr "تاماملانمىغان بېجىرىدىغان ئىش"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:155
-#, fuzzy, kde-format
-#| msgctxt "@info:status Package locked at a certain version"
-#| msgid "Locked"
+#, kde-format
 msgid "Lock required"
-msgstr "قۇلۇپلانغان"
+msgstr "قۇلۇپلاش زۆرۈر"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:160
-#, fuzzy, kde-format
-#| msgctxt "@title:window"
-#| msgid "Unknown Error"
+#, kde-format
 msgid "Unknown error %1."
-msgstr "نامەلۇم خاتالىق"
+msgstr "يوچۇن خاتالىق %1."
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:169
 #, kde-format
 msgid "'%1' was changed and suggests to be restarted."
-msgstr ""
+msgstr "«%1» ئۆزگەرگەن قايتا قوزغىتىش تەۋسىيە قىلىنىدۇ."
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:171
 #, kde-format
 msgid "A change by '%1' suggests your session to be restarted."
-msgstr ""
+msgstr "«%1» نىڭ ئۆزگىرىشى جەريانچاقنى قايتا قوزغىتىش تەكلىپى بەردى."
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:173
 #, kde-format
@@ -1729,6 +1662,8 @@ msgid ""
 "'%1' was updated for security reasons, a restart of the session is "
 "recommended."
 msgstr ""
+"بىخەتەرلىك سەۋەبىدىن «%1» يېڭىلانغان، جەريانچاقنى قايتا قوزغىتىش تەۋسىيە "
+"قىلىنىدۇ."
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:175
 #, kde-format
@@ -1736,196 +1671,174 @@ msgid ""
 "'%1' was updated for security reasons, a restart of the system is "
 "recommended."
 msgstr ""
+"بىخەتەرلىك سەۋەبىدىن «%1» يېڭىلانغان، سىستېمىنى قايتا قوزغىتىش تەۋسىيە "
+"قىلىنىدۇ."
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:180
 #, kde-format
 msgid "A change by '%1' suggests your system to be restarted."
-msgstr ""
+msgstr "«%1» نىڭ ئۆزگىرىشى سىستېمىنى قايتا قوزغىتىش تەكلىپى بەردى."
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:188
 #, kde-format
 msgid "The application will have to be restarted."
-msgstr ""
+msgstr "پىروگرامما قايتا قوزغىتىلىشى زۆرۈر."
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:190
 #, kde-format
 msgid "The session will have to be restarted"
-msgstr ""
+msgstr "جەريانچاق قايتا قوزغىتىلىشى زۆرۈر"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:192
 #, kde-format
 msgid "The system will have to be restarted."
-msgstr ""
+msgstr "سىستېما قايتا قوزغىتىلىشى زۆرۈر."
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:194
 #, kde-format
 msgid "For security, the session will have to be restarted."
-msgstr ""
+msgstr "بىخەتەرلىك سەۋەبىدىن جەريانچاق قايتا قوزغىتىلىشى زۆرۈر."
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:196
 #, kde-format
 msgid "For security, the system will have to be restarted."
-msgstr ""
+msgstr "بىخەتەرلىك سەۋەبىدىن سىستېما قايتا قوزغىتىلىشى زۆرۈر."
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:208
-#, fuzzy, kde-format
-#| msgctxt "@info:status"
-#| msgid "Waiting"
+#, kde-format
 msgid "Waiting…"
-msgstr "كۈتۈۋاتىدۇ"
+msgstr "كۈتۈۋاتىدۇ…"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:210
 #, kde-format
 msgid "Refreshing Cache…"
-msgstr ""
+msgstr "غەملەكنى يېڭىلاۋاتىدۇ…"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:212
 #, kde-format
 msgid "Setup…"
-msgstr ""
+msgstr "تەڭشەك…"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:214
 #, kde-format
 msgid "Processing…"
-msgstr ""
+msgstr "بىر تەرەپ قىلىۋاتىدۇ…"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:216
-#, fuzzy, kde-format
-#| msgctxt "@status describes a past-tense action"
-#| msgid "Removed"
+#, kde-format
 msgid "Remove…"
-msgstr "چىقىرىۋېتىلدى"
+msgstr "چىقىرىۋەت…"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:218
-#, fuzzy, kde-format
-#| msgctxt "@info:status"
-#| msgid "Downloading"
+#, kde-format
 msgid "Downloading…"
-msgstr "چۈشۈرۈۋاتىدۇ"
+msgstr "چۈشۈرۈۋاتىدۇ…"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:220
-#, fuzzy, kde-format
-#| msgctxt "@info:status"
-#| msgid "Installing"
+#, kde-format
 msgid "Installing…"
-msgstr "ئورنىتىۋاتىدۇ"
+msgstr "ئورنىتىۋاتىدۇ…"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:222
-#, fuzzy, kde-format
-#| msgctxt "@info Status information, widget title"
-#| msgid "Waiting"
+#, kde-format
 msgid "Updating…"
-msgstr "كۈتۈۋاتىدۇ"
+msgstr "يېڭىلىنىۋاتىدۇ…"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:224
 #, kde-format
 msgid "Cleaning up…"
-msgstr ""
+msgstr "تازىلاۋاتىدۇ…"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:227
 #, kde-format
 msgid "Resolving dependencies…"
-msgstr ""
+msgstr "بېقىندىلىق مۇناسىۋەتنى ھەل قىلىۋاتىدۇ…"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:229
 #, kde-format
 msgid "Checking signatures…"
-msgstr ""
+msgstr "ئىمزانى تەكشۈرۈۋاتىدۇ…"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:231
 #, kde-format
 msgid "Test committing…"
-msgstr ""
+msgstr "تاپشۇرۇشنى سىناۋاتىدۇ…"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:233
-#, fuzzy, kde-format
-#| msgctxt ""
-#| "@item:inlistbox Human-readable name for the Debian package section \"comm"
-#| "\""
-#| msgid "Communication"
+#, kde-format
 msgid "Committing…"
-msgstr "ئالاقە"
+msgstr "تاپشۇرۇۋاتىدۇ…"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:236
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:362
-#, fuzzy, kde-format
-#| msgctxt "@info Status information, widget title"
-#| msgid "Finished"
+#, kde-format
 msgid "Finished"
 msgstr "تاماملاندى"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:238
-#, fuzzy, kde-format
-#| msgctxt "@action:button Cancels the download"
-#| msgid "Cancel"
+#, kde-format
 msgid "Canceled"
-msgstr "ۋاز كەچ"
+msgstr "ۋاز كەچتى"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:240
 #, kde-format
 msgid "Waiting for lock…"
-msgstr ""
+msgstr "قۇلۇپلاشنى كۈتۈۋاتىدۇ…"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:242
-#, fuzzy, kde-format
-#| msgctxt "@info Status info, widget title"
-#| msgid "Waiting for Authentication"
+#, kde-format
 msgid "Waiting for authorization…"
-msgstr "دەلىللەشنى كۈتۈۋاتىدۇ‏"
+msgstr "كىملىك دەلىللەشنى كۈتۈۋاتىدۇ…"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:247
 #, kde-format
 msgid "Copying files…"
-msgstr ""
+msgstr "ھۆججەت كۆچۈرۈۋاتىدۇ…"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:250
-#, fuzzy, kde-format
-#| msgctxt "@info license"
-#| msgid "Unknown"
+#, kde-format
 msgid "Unknown Status"
-msgstr "نامەلۇم"
+msgstr "يوچۇن ھالەت"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:258
 #, kde-format
 msgid "We are waiting for something."
-msgstr ""
+msgstr "بىر تەرەپ قىلىشنى كۈتۈۋاتىدۇ."
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:260
 #, kde-format
 msgid "Setting up transaction…"
-msgstr ""
+msgstr "بېجىرىدىغان ئىشنى تەڭشەۋاتىدۇ…"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:262
 #, kde-format
 msgid "The transaction is currently working…"
-msgstr ""
+msgstr "ھازىر بېجىرىدىغان ئىشنى قىلىۋاتىدۇ…"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:264
 #, kde-format
 msgid "The transaction is currently removing packages…"
-msgstr ""
+msgstr "نۆۋەتتە بېجىرىۋاتقان ئىش بوغچىنى چىقىرىۋېتىۋاتىدۇ…"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:266
-#, fuzzy, kde-format
-#| msgctxt "@info Status information, widget title"
-#| msgid "Downloading Packages"
+#, kde-format
 msgid "The transaction is currently downloading packages…"
-msgstr "بوغچىلارنى چۈشۈرۈۋاتىدۇ"
+msgstr "نۆۋەتتە بېجىرىۋاتقان ئىش بوغچىنى چۈشۈرۈۋاتىدۇ…"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:268
 #, kde-format
 msgid "The transactions is currently installing packages…"
-msgstr ""
+msgstr "نۆۋەتتە بېجىرىۋاتقان ئىش بوغچا ئورنىتىۋاتىدۇ…"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:270
 #, kde-format
 msgid "The transaction is currently updating packages…"
-msgstr ""
+msgstr "نۆۋەتتە بېجىرىۋاتقان ئىش بوغچىنى يېڭىلاۋاتىدۇ…"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:272
 #, kde-format
 msgid "The transaction is currently cleaning up…"
-msgstr ""
+msgstr "نۆۋەتتە بېجىرىۋاتقان ئىش تازىلاۋاتىدۇ…"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:275
 #, kde-format
@@ -1933,80 +1846,77 @@ msgid ""
 "The transaction is currently resolving the dependencies of the packages it "
 "will install…"
 msgstr ""
+"نۆۋەتتە بېجىرىۋاتقان ئىش ئورنىتىدىغان يۇمشاق دېتالنىڭ تايىنىشچانلىق "
+"مەسىلىسىنى ھەل قىلىۋاتىدۇ…"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:277
 #, kde-format
 msgid "The transaction is currently checking the signatures of the packages…"
-msgstr ""
+msgstr "نۆۋەتتە بېجىرىۋاتقان ئىش بوغچىنىڭ ئىمزاسىنى ئۆزگەرتىۋاتىدۇ…"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:279
 #, kde-format
 msgid ""
 "The transaction is currently testing the commit of this set of packages…"
-msgstr ""
+msgstr "نۆۋەتتە بېجىرىۋاتقان ئىش بۇ بوغچا توپلىمىنى تاپشۇرۇشنى سىناۋاتىدۇ…"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:281
 #, kde-format
 msgid "The transaction is currently committing its set of packages…"
-msgstr ""
+msgstr "نۆۋەتتە بېجىرىۋاتقان ئىش بۇ بوغچا توپلىمىنى تاپشۇرۇۋاتىدۇ…"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:284
 #, kde-format
 msgid "The transaction has finished!"
-msgstr ""
+msgstr "بېجىرىدىغان ئىش تاماملاندى!"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:286
 #, kde-format
 msgid "The transaction was canceled"
-msgstr ""
+msgstr "بېجىرىدىغان ئىش قالدۇرۇلدى"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:288
 #, kde-format
 msgid "The transaction is currently waiting for the lock…"
-msgstr ""
+msgstr "نۆۋەتتە بېجىرىۋاتقان ئىش قۇلۇپلاشنى كۈتۈۋاتىدۇ…"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:290
-#, fuzzy, kde-format
-#| msgctxt "@info Status info, widget title"
-#| msgid "Waiting for Authentication"
+#, kde-format
 msgid "Waiting for the user to authorize the transaction…"
-msgstr "دەلىللەشنى كۈتۈۋاتىدۇ‏"
+msgstr "بېجىرىدىغان ئىشقا ئىشلەتكۈچىنىڭ ئىجازىتىنى كۈتۈۋاتىدۇ…"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:295
 #, kde-format
 msgid "The transaction is currently copying files…"
-msgstr ""
+msgstr "نۆۋەتتە بېجىرىۋاتقان ئىش ھۆججەت كۆچۈرۈۋاتىدۇ…"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:297
 #, kde-format
 msgid "Currently refreshing the repository cache…"
-msgstr ""
+msgstr "نۆۋەتتە خەزىنە غەملەكنى يېڭىلاۋاتىدۇ…"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:302
-#, fuzzy, kde-format
-#| msgctxt "@info license"
-#| msgid "Unknown"
+#, kde-format
 msgid "Unknown status %1."
-msgstr "نامەلۇم"
+msgstr "يوچۇن ھالەت %1."
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:313
 #, kde-format
 msgctxt "update state"
 msgid "Stable"
-msgstr ""
+msgstr "مۇقىم"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:315
-#, fuzzy, kde-format
-#| msgid "Installed"
+#, kde-format
 msgctxt "update state"
 msgid "Unstable"
-msgstr "ئورنىتىلغان"
+msgstr "مۇقىمسىز"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:317
 #, kde-format
 msgctxt "update state"
 msgid "Testing"
-msgstr ""
+msgstr "سىناق"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:328
 #: libdiscover/resources/AbstractResource.cpp:97
@@ -2015,184 +1925,152 @@ msgid "Installed"
 msgstr "ئورنىتىلغان"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:330
-#, fuzzy, kde-format
-#| msgid "Installed"
+#, kde-format
 msgid "Not Installed"
-msgstr "ئورنىتىلغان"
+msgstr "ئورنىتىلمىغان"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:332
 #, kde-format
 msgid "Low"
-msgstr ""
+msgstr "تۆۋەن"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:334
 #, kde-format
 msgid "Enhancement"
-msgstr ""
+msgstr "كۈچەيتىلگەن"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:336
 #, kde-format
 msgid "Normal"
-msgstr ""
+msgstr "ئادەتتىكى"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:338
 #, kde-format
 msgid "Bugfix"
-msgstr ""
+msgstr "كەمتۈك تۈزىتىش"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:340
 #, kde-format
 msgid "Important"
-msgstr ""
+msgstr "مۇھىم"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:342
 #, kde-format
 msgid "Security"
-msgstr ""
+msgstr "بىخەتەرلىك"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:344
-#, fuzzy, kde-format
-#| msgctxt "@info:status Package locked at a certain version"
-#| msgid "Locked"
+#, kde-format
 msgid "Blocked"
-msgstr "قۇلۇپلانغان"
+msgstr "توسۇلدى"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:346
-#, fuzzy, kde-format
-#| msgctxt "@info:status"
-#| msgid "Downloading"
+#, kde-format
 msgid "Downloading"
 msgstr "چۈشۈرۈۋاتىدۇ"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:348
-#, fuzzy, kde-format
-#| msgctxt "@info Status information, widget title"
-#| msgid "Waiting"
+#, kde-format
 msgid "Updating"
-msgstr "كۈتۈۋاتىدۇ"
+msgstr "يېڭىلاۋاتىدۇ"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:350
-#, fuzzy, kde-format
-#| msgctxt "@info:status"
-#| msgid "Installing"
+#, kde-format
 msgid "Installing"
 msgstr "ئورنىتىۋاتىدۇ"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:352
-#, fuzzy, kde-format
-#| msgctxt "@info:status"
-#| msgid "Removing"
+#, kde-format
 msgid "Removing"
-msgstr "ئۆچۈرۈۋاتىدۇ..."
+msgstr "چىقىرىۋېتىۋاتىدۇ"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:354
 #, kde-format
 msgid "Cleanup"
-msgstr ""
+msgstr "تازىلا"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:356
 #, kde-format
 msgid "Obsoleting"
-msgstr ""
+msgstr "كېرەكسىز قىلىۋاتىدۇ"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:358
-#, fuzzy, kde-format
-#| msgid "Installed"
+#, kde-format
 msgid "Collection Installed"
-msgstr "ئورنىتىلغان"
+msgstr "توپلام ئورنىتىلدى"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:360
-#, fuzzy, kde-format
-#| msgid "Available"
+#, kde-format
 msgid "Collection Available"
-msgstr "ئىشلەتكىلى بولىدۇ"
+msgstr "توپلام بار"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:364
-#, fuzzy, kde-format
-#| msgctxt "@info:status Requested action"
-#| msgid "Reinstall"
+#, kde-format
 msgid "Reinstalling"
-msgstr "قايتا ئورنات"
+msgstr "قايتا ئورنىتىۋاتىدۇ"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:366
-#, fuzzy, kde-format
-#| msgctxt "@info:status"
-#| msgid "Downloading"
+#, kde-format
 msgid "Downgrading"
-msgstr "چۈشۈرۈۋاتىدۇ"
+msgstr "نەشرىنى تۆۋەنلىتىۋاتىدۇ"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:368
 #, kde-format
 msgid "Preparing"
-msgstr ""
+msgstr "تەييارلاۋاتىدۇ"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:370
 #, kde-format
 msgid "Decompressing"
-msgstr ""
+msgstr "يېشىۋاتىدۇ"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:372
-#, fuzzy, kde-format
-#| msgctxt "@title:window"
-#| msgid "Untrusted Packages"
+#, kde-format
 msgid "Untrusted"
-msgstr "ئىشەنچسىز بوغچىلار"
+msgstr "ئىشەنچسىز"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:374
 #, kde-format
 msgid "Trusted"
-msgstr ""
+msgstr "ئىشەنچلىك"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:376
-#, fuzzy, kde-format
-#| msgid "Available"
+#, kde-format
 msgid "Unavailable"
-msgstr "ئىشلەتكىلى بولىدۇ"
+msgstr "ئىشلەتكىلى بولمايدۇ"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:380
 #, kde-format
 msgid "Critical"
-msgstr ""
+msgstr "ئاچقۇچلۇق"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:382
-#, fuzzy, kde-format
-#| msgctxt "@info:status Requested action"
-#| msgid "Install"
+#, kde-format
 msgid "Install"
 msgstr "ئورنات"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:384
-#, fuzzy, kde-format
-#| msgctxt "@status describes a past-tense action"
-#| msgid "Removed"
+#, kde-format
 msgid "Remove"
-msgstr "چىقىرىۋېتىلدى"
+msgstr "چىقىرىۋەت"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:386
 #, kde-format
 msgid "Obsolete"
-msgstr ""
+msgstr "كېرەكسىز"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:388
-#, fuzzy, kde-format
-#| msgctxt "@info:status Requested action"
-#| msgid "Downgrade"
+#, kde-format
 msgid "Downgrade"
 msgstr "نەشرىنى تۆۋەنلەت"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitNotifier.cpp:132
-#, fuzzy, kde-format
-#| msgid "Applications"
+#, kde-format
 msgid "Failed Offline Update"
-msgstr "پروگراممىلار"
+msgstr "تورسىز يېڭىلىيالمىدى"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitNotifier.cpp:133
-#, fuzzy, kde-format
-#| msgctxt "@label"
-#| msgid ""
-#| "Failed to download %1\n"
-#| "%2\n"
-#| "\n"
+#, kde-format
 msgid ""
 "Failed to update %1 package\n"
 "%2"
@@ -2200,82 +2078,62 @@ msgid_plural ""
 "Failed to update %1 packages\n"
 "%2"
 msgstr[0] ""
-"%1 نى چۈرۈش مەغلۇپ بولدى\n"
-"%2\n"
-"\n"
+"%1 بوغچىنى يېڭىلىيالمىدى\n"
+"%2"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitNotifier.cpp:136
 #: libdiscover/backends/PackageKitBackend/PackageKitNotifier.cpp:187
-#, fuzzy, kde-format
-#| msgctxt "@title:window"
-#| msgid "Open File"
+#, kde-format
 msgctxt "@action:button"
 msgid "Open Discover"
-msgstr "ھۆججەت ئاچ"
+msgstr "Discover نى ئاچ"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitNotifier.cpp:141
-#, fuzzy, kde-format
-#| msgctxt ""
-#| "@item:inlistbox Human-readable name for the Debian package section \"base"
-#| "\""
-#| msgid "Base System"
+#, kde-format
 msgctxt "@action:button"
 msgid "Repair System"
-msgstr "ئاساسى سىستېما"
+msgstr "سىستېما ئوڭشا"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitNotifier.cpp:146
-#, fuzzy, kde-format
-#| msgid "Applications"
+#, kde-format
 msgid "Repairing failed offline update"
-msgstr "پروگراممىلار"
+msgstr "تورسىز يېڭىلانمىنى ئوڭشىيالمىدى"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitNotifier.cpp:153
 #, kde-format
 msgid "Repair Failed"
-msgstr ""
+msgstr "ئوڭشىيالمىدى"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitNotifier.cpp:155
 #, kde-kuit-format
 msgctxt ""
 "@info %1 is an error message and %3 is the name of the operating system"
 msgid "%1<nl/>Please <link url='%2'>report this error to %3</link>."
-msgstr ""
+msgstr "%1<nl/><link url='%2'>بۇ خاتالىقنى %3 غا مەلۇم قىلىڭ</link>."
 
 #: libdiscover/backends/PackageKitBackend/PackageKitNotifier.cpp:168
 #, kde-format
 msgid "Repaired Successfully"
-msgstr ""
+msgstr "مۇۋەپپەقىيەتلىك ئوڭشىدى"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitNotifier.cpp:183
-#, fuzzy, kde-format
-#| msgid "Applications"
+#, kde-format
 msgid "Offline Updates"
-msgstr "پروگراممىلار"
+msgstr "تورسىز يېڭىلانما"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitNotifier.cpp:184
-#, fuzzy, kde-format
-#| msgctxt "@label"
-#| msgid ""
-#| "Failed to download %1\n"
-#| "%2\n"
-#| "\n"
+#, kde-format
 msgid "Successfully updated %1 package"
 msgid_plural "Successfully updated %1 packages"
-msgstr[0] ""
-"%1 نى چۈرۈش مەغلۇپ بولدى\n"
-"%2\n"
-"\n"
+msgstr[0] "%1 بوغچا مۇۋەپپەقىيەتلىك يېڭىلاندى"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitResource.cpp:192
-#, fuzzy, kde-format
-#| msgctxt "@title:window"
-#| msgid "Unknown Error"
+#, kde-format
 msgid "Unknown Source"
-msgstr "نامەلۇم خاتالىق"
+msgstr "يوچۇن مەنبە"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitResource.cpp:340
-#, fuzzy, kde-format
-#| msgid "%1 (%2)"
+#, kde-format
 msgctxt "package-name (version)"
 msgid "%1 (%2)"
 msgstr "%1 (%2)"
@@ -2284,74 +2142,66 @@ msgstr "%1 (%2)"
 #, kde-format
 msgctxt "comma separating package names"
 msgid ", "
-msgstr ""
+msgstr "، "
 
 #: libdiscover/backends/PackageKitBackend/PackageKitResource.cpp:358
 #, kde-format
 msgid "Software verified by %1"
-msgstr ""
+msgstr "يۇمشاق دېتالنى %1 دەلىللىدى"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitResource.cpp:413
 #, kde-format
 msgid "Obsoletes:"
-msgstr ""
+msgstr "كېرەكسىز:"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitResource.cpp:414
 #, kde-format
 msgid "Release Notes:"
-msgstr ""
+msgstr "تارقىتىش چۈشەندۈرۈشى:"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitResource.cpp:415
 #, kde-format
 msgid "Update State:"
-msgstr ""
+msgstr "يېڭىلاش ھالىتى:"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitResource.cpp:416
 #, kde-format
 msgid "Restart:"
-msgstr ""
+msgstr "قايتا قوزغات:"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitResource.cpp:419
 #, kde-format
 msgid "Vendor:"
-msgstr ""
-
-#: libdiscover/backends/PackageKitBackend/PackageKitResource.cpp:448
-#, kde-format
-msgid "%2 (plus %1 dependency)"
-msgid_plural "%2 (plus %1 dependencies)"
-msgstr[0] ""
+msgstr "تەمىنلىگۈچى:"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitSourcesBackend.cpp:105
 #, kde-format
 msgid "Repository URL:"
-msgstr ""
+msgstr "خەزىنە تور ئادرېسى:"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitUpdater.cpp:98
 #, kde-format
 msgctxt "distro upgrade: name version"
 msgid "%1 %2"
-msgstr ""
+msgstr "%1 %2"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitUpdater.cpp:100
-#, fuzzy, kde-format
-#| msgctxt "@item:inlistbox Filters updates in the history view"
-#| msgid "Updates"
+#, kde-format
 msgid "System upgrade"
-msgstr "يېڭىلانمىلار"
+msgstr "سىستېما يۈكسەلدۈرۈش"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitUpdater.cpp:191
-#, fuzzy, kde-format
-#| msgctxt "@title:column"
-#| msgid "Package"
+#, kde-format
 msgid "1 package will be upgraded"
 msgid_plural "%1 packages will be upgraded"
-msgstr[0] "بوغچا"
+msgstr[0] "%1 بوغچا يۈكسەلدۈرۈلىدۇ"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitUpdater.cpp:203
 #, kde-format
 msgid "<h3>%1</h3>Upgrade to new version %2<br/>No release notes provided"
 msgstr ""
+"<h3>%1</h3>يېڭى نەشرى %2 گە يۈكسەلدۈرىدۇ<br/>ھېچقانداق تارقىتىش چۈشەندۈرۈشى "
+"تەمىنلەنمىگەن"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitUpdater.cpp:205
 #, kde-format
@@ -2359,22 +2209,24 @@ msgid ""
 "<h3>%1</h3>Upgrade to new version %2<br/>Release notes:<blockquote>%3</"
 "blockquote>"
 msgstr ""
+"<h3>%1</h3>يېڭى نەشرى %2 گە يۈكسەلدۈرىدۇ<br/>تارقىتىش چۈشەندۈرۈشى: "
+"<blockquote>%3</blockquote>"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitUpdater.cpp:231
 #, kde-format
 msgid "Present"
-msgstr ""
+msgstr "ھازىر"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitUpdater.cpp:235
 #, kde-format
 msgid "Future"
-msgstr ""
+msgstr "كەلگۈسى"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitUpdater.cpp:380
 #, kde-format
 msgctxt "@info:status %1 is a formatted disk space string e.g. '240 MiB'"
 msgid "Not enough space to perform the update; only %1 of space are available."
-msgstr ""
+msgstr "يېڭىلاشقا يېتەرلىك بوشلۇق يوق؛ پەقەت %1 بوشلۇقنى ئىشلەتكىلى بولىدۇ."
 
 #: libdiscover/backends/PackageKitBackend/PackageKitUpdater.cpp:602
 #, kde-format
@@ -2384,13 +2236,15 @@ msgid ""
 "you believe this is an error, please report it as a bug to the packagers of "
 "your distribution."
 msgstr ""
+"بۇ يېڭىلاشنى تاماملىيالمايدۇ چۈنكى ئۇ سىستېما ئىجرا قىلىشقا زۆرۈر بولغان "
+"تۆۋەندىكى يۇمشاق دېتالنى چىقىرىۋېتىدۇ:<nl/><ul><li>%1</li></ul><nl/>ئەگەر "
+"بۇنى بىر خاتالىق دەپ قارىسىڭىز، ئۇنى پىروگرامما كەمتۈكلۈكى سۈپىتىدە تارقىتىش "
+"نەشرىنى بوغچىلىغانلارغا مەلۇم قىلىڭ."
 
 #: libdiscover/backends/PackageKitBackend/PackageKitUpdater.cpp:609
-#, fuzzy, kde-format
-#| msgctxt "@info:status Package state"
-#| msgid "No Change"
+#, kde-format
 msgid "Confirm Changes"
-msgstr "ئۆزگىرىش يوق"
+msgstr "ئۆزگەرتىشنى جەزملە"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitUpdater.cpp:610
 #, kde-format
@@ -2398,12 +2252,14 @@ msgid ""
 "The following packages will be removed by the update:<ul><li>%1</li></ul><br/"
 ">in order to install:<ul><li>%2</li></ul>"
 msgstr ""
+"يېڭىلاش تۆۋەندىكى بوغچىنى چىقىرىۋېتىدۇ:<ul><li>%1</li></ul><br/"
+">ئورنىتىدىغىنى:<ul><li>%2</li></ul>"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitUpdater.cpp:736
 #, kde-kuit-format
 msgctxt "@info"
 msgid "%1:<nl/><nl/>%2"
-msgstr ""
+msgstr "%1:<nl/><nl/>%2"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitUpdater.cpp:744
 #: libdiscover/backends/PackageKitBackend/PKTransaction.cpp:327
@@ -2412,12 +2268,14 @@ msgid ""
 "Media Change of type '%1' is requested.\n"
 "%2"
 msgstr ""
+"تۈرى «%1» نى ئۆزگەرتىشنى ئىلتىماس قىلغان ۋاسىتە.\n"
+"%2"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitUpdater.cpp:777
 #: libdiscover/backends/PackageKitBackend/PKTransaction.cpp:304
 #, kde-format
 msgid "Accept EULA"
-msgstr ""
+msgstr "ئاخىرقى ئىشلەتكۈچى ئىجازەت كېلىشىمىگە قوشۇل"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitUpdater.cpp:778
 #: libdiscover/backends/PackageKitBackend/PKTransaction.cpp:305
@@ -2426,12 +2284,15 @@ msgid ""
 "The package %1 and its vendor %2 require that you accept their license:\n"
 " %3"
 msgstr ""
+"يۇمشاق دېتال بوغچىسى %1 ۋە ئۇنىڭ تەمىنلىگۈچىسى %2 سىزدىن ئۇلارنىڭ ئىجازەت "
+"كېلىشىمىگە قوشۇلۇشىڭىزنى تەلەپ قىلىدۇ:\n"
+"%3"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitUpdater.cpp:928
 #: libdiscover/backends/PackageKitBackend/PKTransaction.cpp:344
 #, kde-format
 msgid "Missing signature for %1 in %2"
-msgstr ""
+msgstr "%2 دىكى %1 نىڭ ئىمزاسى كەم"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitUpdater.cpp:929
 #: libdiscover/backends/PackageKitBackend/PKTransaction.cpp:345
@@ -2445,6 +2306,13 @@ msgid ""
 "Fingerprint: %4\n"
 "Timestamp: %4\n"
 msgstr ""
+"تۆۋەندىكى ئاچقۇچقا ئىشىنەمسىز؟\n"
+"\n"
+"تور ئادرېسى: %1\n"
+"ئىشلەتكۈچى: %2\n"
+"ئاچقۇچ: %3\n"
+"بارماق ئىزى: %4\n"
+"ۋاقىت تامغا: %4\n"
 
 #: libdiscover/backends/PackageKitBackend/PKTransaction.cpp:201
 #, kde-format
@@ -2454,158 +2322,180 @@ msgid ""
 "you believe this is an error, please report it as a bug to the packagers of "
 "your distribution."
 msgstr ""
+"بۇ مەشغۇلاتنىنى تاماملىيالمايدۇ چۈنكى ئۇ سىستېما ئىجرا قىلىشقا زۆرۈر بولغان "
+"تۆۋەندىكى يۇمشاق دېتالنى چىقىرىۋېتىدۇ:<nl/><ul><li>%1</li></ul><nl/>ئەگەر "
+"بۇنى بىر خاتالىق دەپ قارىسىڭىز، ئۇنى پىروگرامما كەمتۈكلۈكى سۈپىتىدە تارقىتىش "
+"نەشرىنى بوغچىلىغانلارغا مەلۇم قىلىڭ."
 
 #: libdiscover/backends/PackageKitBackend/PKTransaction.cpp:214
 #, kde-format
 msgid "Confirm package removal"
-msgstr ""
+msgstr "بوغچا چىقىرىۋېتىشنى جەزملە"
 
 #: libdiscover/backends/PackageKitBackend/PKTransaction.cpp:215
-#, fuzzy, kde-format
-#| msgctxt "@label"
-#| msgid "Unable to download the following packages:"
+#, kde-format
 msgid ""
 "This action will also remove the following package:\n"
 "%2"
 msgid_plural ""
 "This action will also remove the following packages:\n"
 "%2"
-msgstr[0] "تۆۋەندىكى بوغچىلارنى چۈشۈرگىلى بولمىدى:"
+msgstr[0] ""
+"بۇ مەشغۇلات تۆۋەندىكى بوغچىنىمۇ چىقىرىۋېتىدۇ:\n"
+"%2"
 
 #: libdiscover/backends/PackageKitBackend/qml/DependenciesButton.qml:33
-#, fuzzy, kde-format
-#| msgctxt "@title:tab"
-#| msgid "Dependencies"
+#, kde-format
 msgid "Show Dependencies…"
-msgstr "بېقىنىشچانلىق"
+msgstr "تايىنىشچانلىقنى كۆرسىتىدۇ…"
 
 #: libdiscover/backends/PackageKitBackend/qml/DependenciesButton.qml:43
 #, kde-format
 msgid "Dependencies for package: %1"
-msgstr ""
+msgstr "بوغچىنىڭ تايىنىشچانلىقى: %1"
 
 #: libdiscover/backends/PackageKitBackend/qml/PackageKitPermissions.qml:31
 #, kde-format
 msgid "Full Access"
-msgstr ""
+msgstr "تولۇق زىيارەت ئىجازىتى"
 
 #: libdiscover/backends/PackageKitBackend/qml/PackageKitPermissions.qml:32
 #, kde-format
 msgid "Can access everything on the system"
-msgstr ""
+msgstr "سىستېمىدىكى ھەممە نەرسىنى زىيارەت قىلالايدۇ"
 
 #: libdiscover/backends/RpmOstreeBackend/rpm-ostree-backend-categories.xml:4
-#, fuzzy, kde-format
-#| msgctxt ""
-#| "@item:inlistbox Human-readable name for the Debian package section \"base"
-#| "\""
-#| msgid "Base System"
+#, kde-format
 msgctxt "Category"
 msgid "Operating System"
-msgstr "ئاساسى سىستېما"
+msgstr "مەشغۇلات سىستېمىسى"
 
 #: libdiscover/backends/RpmOstreeBackend/RpmOstreeBackend.cpp:172
 #, kde-format
 msgid ""
 "rpm-ostree backend: Multiple booted deployments found. Please file a bug."
 msgstr ""
+"rpm-ostree ئارقا ئۇچى: قوزغىتىلغان كۆپ جايلاشتۇرۇش بايقالدى. كەمتۈك مەلۇم "
+"قىلىڭ."
 
 #: libdiscover/backends/RpmOstreeBackend/RpmOstreeBackend.cpp:184
 #, kde-format
 msgid "rpm-ostree backend: No booted deployment found. Please file a bug."
 msgstr ""
+"rpm-ostree ئارقا ئۇچى: قوزغىتىلغان ھېچقانداق جايلاشتۇرۇش بايقالمىدى. كەمتۈك "
+"مەلۇم قىلىڭ."
 
 #: libdiscover/backends/RpmOstreeBackend/RpmOstreeBackend.cpp:373
-#, fuzzy, kde-format
-#| msgctxt "@info:status Requested action"
-#| msgid "Upgrade"
+#, kde-format
 msgctxt "@action: button"
 msgid "Begin Upgrade…"
-msgstr "يۈكسەلدۈر"
+msgstr "يۈكسەلدۈرۈشنى باشلايدۇ…"
 
 #: libdiscover/backends/RpmOstreeBackend/RpmOstreeBackend.cpp:524
 #, kde-format
 msgid "You have pending updates for the current version. Proceeding anyway."
 msgstr ""
+"نۆۋەتتىكى نەشرىنىڭ بىر تەرەپ قىلىنىدىغان يېڭىلانمىسى بار. بىر تەرەپ قىلىش "
+"داۋاملىشىۋېرىدۇ."
 
 #: libdiscover/backends/RpmOstreeBackend/RpmOstreeBackend.cpp:527
 #, kde-format
 msgid "Please update to the latest version before rebasing to a major version"
 msgstr ""
+"قايتىدىن يېڭى بىر ئاساسىي نەشرىگە توغرىلاشتىن ئىلگىرى ئەڭ يېڭى نەشرىگە "
+"يۈكسەلدۈرۈڭ"
 
 #: libdiscover/backends/RpmOstreeBackend/RpmOstreeBackend.cpp:535
 #, kde-format
 msgid "Missing remote ref for rebase operation. Please file a bug."
 msgstr ""
+"قايتا نىشانلاش مەشغۇلاتىغا كېرەكلىك يىراقتىكى نەقىل مەنبەسى كەم. كەمتۈك "
+"مەلۇم قىلىڭ."
+
+#: libdiscover/backends/RpmOstreeBackend/RpmOstreeBackend.cpp:553
+#, fuzzy, kde-format
+#| msgctxt "Category"
+#| msgid "Operating System"
+msgid "Operating System"
+msgstr "مەشغۇلات سىستېمىسى"
 
 #: libdiscover/backends/RpmOstreeBackend/RpmOstreeResource.cpp:301
 #, kde-format
 msgid "GPL and other licenses"
-msgstr ""
+msgstr "GPL ۋە باشقا ئىجازەتنامە"
 
 #: libdiscover/backends/RpmOstreeBackend/RpmOstreeResource.cpp:311
-#, fuzzy, kde-format
-#| msgctxt "@action"
-#| msgid "Add Downloaded Packages"
+#, kde-format
 msgid "Additional packages: "
-msgstr "چۈشۈرۈلگەن بوغچىلارنى قوش"
+msgstr "قوشۇمچە بوغچا: "
 
 #: libdiscover/backends/RpmOstreeBackend/RpmOstreeResource.cpp:318
-#, fuzzy, kde-format
-#| msgctxt "@action"
-#| msgid "Add Downloaded Packages"
+#, kde-format
 msgid "Additional modules: "
-msgstr "چۈشۈرۈلگەن بوغچىلارنى قوش"
+msgstr "قوشۇمچە بۆلەك: "
 
 #: libdiscover/backends/RpmOstreeBackend/RpmOstreeResource.cpp:325
 #, kde-format
 msgid "Local packages: "
-msgstr ""
+msgstr "يەرلىك بوغچا: "
 
 #: libdiscover/backends/RpmOstreeBackend/RpmOstreeResource.cpp:332
 #, kde-format
 msgid "Replaced packages:"
-msgstr ""
+msgstr "ئالماشتۇرۇلغان بوغچا:"
 
 #: libdiscover/backends/RpmOstreeBackend/RpmOstreeResource.cpp:339
 #, kde-format
 msgid "Removed packages:"
-msgstr ""
+msgstr "چىقىرىۋەتكەن بوغچا:"
+
+#: libdiscover/backends/RpmOstreeBackend/RpmOstreeResource.cpp:346
+#, kde-format
+msgctxt "@label OS updater message"
+msgid ""
+"<br/>This version is pinned and won't be automatically removed on updates."
+msgstr "<br/>بۇ نەشرى مىخلاندى ۋە ئۆزلۈكىدىن يېڭىلانغاندا چىقىرىۋېتىلمەيدۇ."
+
+#: libdiscover/backends/RpmOstreeBackend/RpmOstreeResource.cpp:360
+#: libdiscover/backends/RpmOstreeBackend/RpmOstreeResource.cpp:373
+#: libdiscover/backends/RpmOstreeBackend/RpmOstreeResource.cpp:391
+#, kde-format
+msgctxt "@label OS vendor"
+msgid "Fedora Project"
+msgstr "Fedora قۇرۇلۇشى"
 
 #: libdiscover/backends/RpmOstreeBackend/RpmOstreeResource.cpp:400
-#, fuzzy, kde-format
-#| msgctxt "@title:tab"
-#| msgid "Versions"
+#, kde-format
 msgid "Currently booted version (pinned)"
-msgstr "نەشرى"
+msgstr "نۆۋەتتىكى قوزغىتىلغان نەشرى (مىخلانغان)"
 
 #: libdiscover/backends/RpmOstreeBackend/RpmOstreeResource.cpp:402
-#, fuzzy, kde-format
-#| msgctxt "@title:tab"
-#| msgid "Versions"
+#, kde-format
 msgid "Currently booted version"
-msgstr "نەشرى"
+msgstr "نۆۋەتتىكى قوزغىتىلغان نەشرى"
 
 #: libdiscover/backends/RpmOstreeBackend/RpmOstreeResource.cpp:405
 #, kde-format
 msgid "Version that will be used after reboot"
-msgstr ""
+msgstr "قايتا قوزغىتىلغاندىن كېيىن ئىشلىتىدىغان نەشرى"
 
 #: libdiscover/backends/RpmOstreeBackend/RpmOstreeResource.cpp:407
 #, kde-format
 msgid "Fallback version (pinned)"
-msgstr ""
+msgstr "زاپاس نەشرى (مىخلانغان)"
 
 #: libdiscover/backends/RpmOstreeBackend/RpmOstreeResource.cpp:409
 #, kde-format
 msgid "Fallback version"
-msgstr ""
+msgstr "زاپاس نەشرى"
 
 #: libdiscover/backends/RpmOstreeBackend/RpmOstreeTransaction.cpp:40
 #, kde-format
 msgid ""
 "rpm-ostree backend: Error: No DBus interface provided. Please file a bug."
 msgstr ""
+"rpm-ostree ئارقا ئۇچى: ھېچقانداق DBus ئارايۈزى تەمىنلەنمىگەن. كەمتۈك مەلۇم "
+"قىلىڭ."
 
 #: libdiscover/backends/RpmOstreeBackend/RpmOstreeTransaction.cpp:60
 #, kde-format
@@ -2613,18 +2503,22 @@ msgid ""
 "rpm-ostree backend: Error: Can not start a transaction for resource with an "
 "invalid format. Please file a bug."
 msgstr ""
+"rpm-ostree ئارقا ئۇچى: پىچىمى ئىناۋەتسىز مەنبە ئۈچۈن يۇمشاق دېتال "
+"جايلاشتۇرۇشنى قوزغىتالمايدۇ. كەمتۈك مەلۇم قىلىڭ."
 
 #: libdiscover/backends/RpmOstreeBackend/RpmOstreeTransaction.cpp:80
 #, kde-format
 msgid ""
 "rpm-ostree backend: Error: Can not rebase to an empty ref. Please file a bug."
 msgstr ""
+"rpm-ostree ئارقا ئۇچى: بوش نەقىلگە قايتا نىشانلىيالمايدۇ. كەمتۈك مەلۇم قىلىڭ."
 
 #: libdiscover/backends/RpmOstreeBackend/RpmOstreeTransaction.cpp:98
 #, kde-format
 msgid ""
 "rpm-ostree backend: Error: Unknown operation requested. Please file a bug."
 msgstr ""
+"rpm-ostree ئارقا ئۇچى: يوچۇن مەشغۇلات ئىلتىماس قىلىندى. كەمتۈك مەلۇم قىلىڭ."
 
 #: libdiscover/backends/RpmOstreeBackend/RpmOstreeTransaction.cpp:160
 #: libdiscover/backends/RpmOstreeBackend/RpmOstreeTransaction.cpp:183
@@ -2633,35 +2527,41 @@ msgid ""
 "rpm-ostree transaction failed with:\n"
 "%1"
 msgstr ""
+"rpm-ostree بېجىرىدىغان ئىش مەغلۇپ بولدى:\n"
+"%1"
 
 #: libdiscover/backends/RpmOstreeBackend/RpmOstreeTransaction.cpp:244
 #, kde-format
 msgid "rpm-ostree backend: Error: Unknown resource format. Please file a bug."
-msgstr ""
+msgstr "rpm-ostree ئارقا ئۇچى: يوچۇن مەنبە پىچىمى. كەمتۈك مەلۇم قىلىڭ."
 
 #: libdiscover/backends/RpmOstreeBackend/RpmOstreeTransaction.cpp:366
 #, kde-format
 msgid ""
 "Cancelling rpm-ostree transaction. This may take some time. Please wait."
 msgstr ""
+"rpm-ostree بېجىرىدىغان ئىشنى قالدۇرۇۋېتىۋاتىدۇ. بۇنىڭغا بىر ئاز ۋاقىت كېتىشى "
+"مۇمكىن. سەل كۈتۈڭ."
 
 #: libdiscover/backends/RpmOstreeBackend/RpmOstreeTransaction.cpp:395
-#, fuzzy, kde-format
-#| msgctxt "@action Checks the Internet for updates"
-#| msgid "Check for Updates"
+#, kde-format
 msgid "Checking for a system update"
-msgstr "يېڭىلانمىنى تەكشۈرۈش"
+msgstr "سىستېما يېڭىلىنىشىنى تەكشۈرۈۋاتىدۇ"
 
 #: libdiscover/backends/RpmOstreeBackend/RpmOstreeTransaction.cpp:398
 #, kde-format
 msgid ""
 "Downloading system update. Please be patient as progress is not reported."
 msgstr ""
+"سىستېما يېڭىلىنىشىنى چۈشۈرۈۋاتىدۇ. سەۋرچانلىق بىلەن كۈتۈڭ، يېڭىلاش جەريانى "
+"مەلۇم قىلىنمايدۇ."
 
 #: libdiscover/backends/RpmOstreeBackend/RpmOstreeTransaction.cpp:401
 #, kde-format
 msgid "Updating the system. Please be patient as progress is not reported."
 msgstr ""
+"سىستېمىنى يېڭىلاۋاتىدۇ. سەۋرچانلىق بىلەن كۈتۈڭ، يېڭىلاش جەريانى مەلۇم "
+"قىلىنمايدۇ."
 
 #: libdiscover/backends/RpmOstreeBackend/RpmOstreeTransaction.cpp:404
 #, kde-format
@@ -2669,78 +2569,81 @@ msgid ""
 "Updating to the next major version. Please be patient as progress is not "
 "reported."
 msgstr ""
+"سىستېمىنىڭ كېيىنكى ئاساسىي نەشرىگە يېڭىلاۋاتىدۇ. سەۋرچانلىق بىلەن كۈتۈڭ، "
+"يېڭىلاش جەريانى مەلۇم قىلىنمايدۇ."
 
 #: libdiscover/backends/RpmOstreeBackend/RpmOstreeTransaction.cpp:407
 #, kde-format
 msgid "Operation in progress (started outside of Discover)"
-msgstr ""
+msgstr "مەشغۇلات قىلىنىۋاتىدۇ (Discover نىڭ سىرتىدا قوزغىتىلغان)"
 
 #: libdiscover/backends/RpmOstreeBackend/RpmOstreeTransaction.cpp:413
-#, fuzzy, kde-format
-#| msgctxt "@info license"
-#| msgid "Unknown"
+#, kde-format
 msgid "Unknown transaction type"
-msgstr "نامەلۇم"
+msgstr "يوچۇن بېجىرىدىغان ئىش تۈرى"
 
 #: libdiscover/backends/SnapBackend/qml/ChannelsButton.qml:22
 #, kde-format
 msgid "Channel: %1"
-msgstr ""
+msgstr "قانال: %1"
 
 #: libdiscover/backends/SnapBackend/qml/ChannelsButton.qml:31
 #, kde-format
 msgid "Channels for %1"
-msgstr ""
+msgstr "%1 نىڭ قانىلى"
 
 #: libdiscover/backends/SnapBackend/qml/ChannelsButton.qml:45
 #: libdiscover/backends/SnapBackend/SnapResource.cpp:384
 #, kde-format
 msgid "%1 - %2"
-msgstr ""
+msgstr "%1 - %2"
 
 #: libdiscover/backends/SnapBackend/qml/ChannelsButton.qml:57
 #, kde-format
 msgid "Switch"
-msgstr ""
+msgstr "ئۈزچات"
 
 #: libdiscover/backends/SnapBackend/qml/PermissionsButton.qml:28
 #, kde-format
 msgid "Permissions for %1"
-msgstr ""
+msgstr "%1 نىڭ ئىجازىتى"
 
 #: libdiscover/backends/SnapBackend/SnapBackend.cpp:43
 #, kde-format
 msgid "Snap"
-msgstr ""
+msgstr "قادا"
 
 #: libdiscover/backends/SnapBackend/SnapResource.cpp:585
 #, kde-format
 msgid "Verified Publisher on snapcraft.io"
-msgstr ""
+msgstr "snapcraft.io دا دەلىللەنگەن تارقاتقۇچى"
 
 #: libdiscover/backends/SnapBackend/SnapResource.cpp:587
 #, kde-format
 msgid "Starred Publisher on snapcraft.io"
-msgstr ""
+msgstr "snapcraft.io دىكى يۇلتۇزلۇق تارقاتقۇچى"
 
 #: libdiscover/backends/SnapBackend/SnapTransaction.cpp:57
 #, kde-format
 msgid ""
 "This Snap application is not compatible with security sandboxing and will "
-"have full access to this computer. Install it anyway?"
+"have full access to this system. Install it anyway?"
 msgstr ""
+"بۇ Snap پىروگرامما بىخەتەر قۇم قۇتا بىلەن ماسلاشمايدۇ ۋە سىستېمىنى تولۇق "
+"زىيارەت ئىجازىتىگە ئىگە بولىدۇ. ئۇنى ئورنىتىۋېرەمدۇ؟"
 
 #: libdiscover/backends/SystemdSysupdateBackend/SystemdSysupdateBackend.cpp:149
 #, kde-kuit-format
 msgctxt "@info:status"
 msgid "Failed to get appstream data for “%1”.<nl/><nl/>Error message: %2"
 msgstr ""
+"«%1» نىڭ ئەپ ئېقىم سانلىق مەلۇماتىغا ئېرىشەلمىدى.<nl/><nl/>خاتالىق ئۇچۇرى: %2"
 
 #: libdiscover/backends/SystemdSysupdateBackend/SystemdSysupdateBackend.cpp:154
 #, kde-format
 msgctxt "@info:status"
 msgid "No appstream URLs found for target “%1”"
-msgstr ""
+msgstr "«%1» نىشاننىڭ ھېچقانداق ئەپ ئېقىم تور ئادرېسىنى تاپالمىدى"
 
 #: libdiscover/backends/SystemdSysupdateBackend/SystemdSysupdateBackend.cpp:165
 #, kde-kuit-format
@@ -2749,24 +2652,27 @@ msgid ""
 "Failed to fetch the updates from <a href='%1'>%1</a>.<nl/><nl/>Error "
 "message: %2"
 msgstr ""
+"<a href='%1'>%1</a> دىن يېڭىلانمىغا ئېرىشەلمىدى.<nl/><nl/>خاتالىق ئۇچۇرى: %2"
 
 #: libdiscover/backends/SystemdSysupdateBackend/SystemdSysupdateBackend.cpp:178
 #, kde-kuit-format
 msgctxt "@info:status"
 msgid "Failed to parse update metadata.<nl/><nl/>Error message: %1"
-msgstr ""
+msgstr "يېڭىلانما تەپسىلىي ئۇچۇرىنى يېشەلمىدى.<nl/><nl/>خاتالىق ئۇچۇرى: %1"
 
 #: libdiscover/backends/SystemdSysupdateBackend/SystemdSysupdateBackend.cpp:187
 #, kde-format
 msgctxt "@info:status"
 msgid "No components found in appstream metadata for target “%1”"
-msgstr ""
+msgstr "«%1» نىشاننىڭ ئەپ تەپسىلىي ئۇچۇرىدىكى ھېچقانداق بۆلەكنى تاپالمىدى"
 
 #: libdiscover/DiscoverBackendsFactory.cpp:127
 #, kde-format
 msgid ""
 "List all the backends we'll want to have loaded, separated by comma ','."
 msgstr ""
+"«,» پەش بىلەن ئايرىلغان، يۈكلىمەكچى بولغان بارلىق ئارقا ئۇچ تىزىمىنى "
+"كۆرسىتىدۇ."
 
 #: libdiscover/resources/AbstractResource.cpp:93
 #, kde-format
@@ -2781,70 +2687,82 @@ msgstr "ئىشلەتكىلى بولىدۇ"
 #: libdiscover/resources/AbstractResource.cpp:99
 #, kde-format
 msgid "Upgradeable"
-msgstr "يۈكشەلدۈرگىلى بولىدۇ"
+msgstr "يۈكسەلدۈرگىلى بولىدۇ"
 
 #: libdiscover/resources/AbstractResource.cpp:239
 #, kde-format
 msgid "Launch"
-msgstr ""
+msgstr "قوزغات"
 
 #: libdiscover/resources/AbstractResource.cpp:250
-#, fuzzy, kde-format
-#| msgctxt "@info:label Refers to a software version, Ex: Version 1.2.1:"
-#| msgid "Version %1:"
+#, kde-format
 msgctxt ""
 "@info 'Refresh' is used as a noun here, and %1 is an app's version number"
 msgid "Refresh of version %1"
-msgstr "نەشرى  %1:"
+msgstr "%1 نىڭ يېڭىلانغان نەشرى"
 
 #: libdiscover/resources/AbstractResource.cpp:260
 #, kde-format
 msgctxt "Do not translate or alter \\u009C"
 msgid "%1 → %2%1 → %2%2"
-msgstr ""
+msgstr "%1 → %2%1 → %2%2"
 
 #: libdiscover/resources/AbstractResourcesBackend.cpp:160
 #, kde-format
 msgid "Please verify Internet connectivity"
-msgstr ""
+msgstr "ئىنتېرنېت باغلىنىشىنى تەكشۈرۈڭ"
 
 #: libdiscover/resources/ResourcesModel.cpp:104
 #, kde-format
 msgid "Refresh"
-msgstr ""
+msgstr "يېڭىلا"
 
-#: libdiscover/resources/ResourcesModel.cpp:405
-#, fuzzy, kde-format
-#| msgctxt "@info:label Refers to a software version, Ex: Version 1.2.1:"
-#| msgid "Version %1:"
+#: libdiscover/resources/ResourcesModel.cpp:401
+#, kde-format
 msgctxt "@info:status %1 is the name of a source of updates"
 msgid "Refreshing %1"
-msgstr "نەشرى  %1:"
+msgstr "%1 نى يېڭىلاۋاتىدۇ"
 
-#: libdiscover/resources/ResourcesProxyModel.cpp:787
+#: libdiscover/resources/ResourcesProxyModel.cpp:561
+#, kde-format
+msgctxt "@label"
+msgid "Applications"
+msgstr "پىروگرامما"
+
+#: libdiscover/resources/ResourcesProxyModel.cpp:563
+#, kde-format
+msgctxt "@label"
+msgid "Addons"
+msgstr "قوشۇلما"
+
+#: libdiscover/resources/ResourcesProxyModel.cpp:565
+#, kde-format
+msgctxt "@label"
+msgid "Application Support"
+msgstr "پىروگرامما قوللاش"
+
+#: libdiscover/resources/ResourcesProxyModel.cpp:567
+#, kde-format
+msgctxt "@label"
+msgid "System"
+msgstr "سىستېما"
+
+#: libdiscover/resources/ResourcesProxyModel.cpp:809
 #, kde-format
 msgctxt "an approximation number, like 3000+"
 msgid "%1+"
-msgstr ""
+msgstr "%1+"
 
 #: libdiscover/resources/ResourcesUpdatesModel.cpp:112
-#, fuzzy, kde-format
-#| msgctxt "@item:inlistbox Filters updates in the history view"
-#| msgid "Updates"
+#, kde-format
 msgid "Updates"
-msgstr "يېڭىلانمىلار"
+msgstr "يېڭىلانما"
 
 #: libdiscover/Transaction/Transaction.cpp:133
 #, kde-format
 msgctxt "@label Download rate"
 msgid "%1/s"
-msgstr ""
-
-#: libdiscover/Transaction/TransactionModel.cpp:77
-#, kde-format
-msgctxt "@info:status"
-msgid "Starting"
-msgstr "باشلاۋاتىدۇ..."
+msgstr "%1/s"
 
 #: libdiscover/Transaction/TransactionModel.cpp:79
 #, kde-format
@@ -2868,13 +2786,13 @@ msgstr "ئورنىتىۋاتىدۇ"
 #, kde-format
 msgctxt "@info:status"
 msgid "Removing"
-msgstr "ئۆچۈرۈۋاتىدۇ..."
+msgstr "چىقىرىۋېتىۋاتىدۇ"
 
 #: libdiscover/Transaction/TransactionModel.cpp:89
 #, kde-format
 msgctxt "@info:status"
 msgid "Changing Addons"
-msgstr ""
+msgstr "قوشۇلمىنى ئۆزگەرتىۋاتىدۇ"
 
 #: libdiscover/Transaction/TransactionModel.cpp:93
 #, kde-format
@@ -2886,62 +2804,77 @@ msgstr "تامام"
 #, kde-format
 msgctxt "@info:status"
 msgid "Failed"
-msgstr ""
+msgstr "مەغلۇپ بولدى"
 
 #: libdiscover/Transaction/TransactionModel.cpp:97
-#, fuzzy, kde-format
-#| msgctxt "@action:button Cancels the download"
-#| msgid "Cancel"
+#, kde-format
 msgctxt "@info:status"
 msgid "Cancelled"
-msgstr "ۋاز كەچ"
+msgstr "ئەمەلدىن قالدۇرۇلدى"
 
 #: libdiscover/UpdateModel/UpdateModel.cpp:137
-#, fuzzy, kde-format
-#| msgid "Applications"
+#, kde-format
 msgctxt "@item:inlistbox"
 msgid "Applications"
-msgstr "پروگراممىلار"
+msgstr "پىروگرامما"
 
 #: libdiscover/UpdateModel/UpdateModel.cpp:138
-#, fuzzy, kde-format
-#| msgid "Applications"
+#, kde-format
 msgctxt "@item:inlistbox"
 msgid "Application Support"
-msgstr "پروگراممىلار"
+msgstr "پىروگرامما قوللاش"
 
 #: libdiscover/UpdateModel/UpdateModel.cpp:139
-#, fuzzy, kde-format
-#| msgctxt "@item:inlistbox Filters updates in the history view"
-#| msgid "Updates"
+#, kde-format
 msgctxt "@item:inlistbox"
 msgid "System Software"
-msgstr "يېڭىلانمىلار"
+msgstr "سىستېما يۇمشاق دېتالى"
 
 #: libdiscover/UpdateModel/UpdateModel.cpp:140
 #, kde-format
 msgctxt "@item:inlistbox"
 msgid "Addons"
-msgstr ""
+msgstr "قوشۇلما"
+
+#~ msgctxt ""
+#~ "@info %1 and 2 are flatpak ids e.g. org.kde.krita (can be rather lengthy "
+#~ "though)"
+#~ msgid ""
+#~ "<resource>%1</resource> is no longer receiving updates.<nl/><nl/>Replace "
+#~ "it with the supported version provided by <resource>%2</resource>?"
+#~ msgstr ""
+#~ "<resource>%1</resource> ئەمدى يېڭىلاشنى تاپشۇرۇۋالمايدۇ.<nl/><nl/>ئۇنى "
+#~ "<resource>%2</resource> تەمىنلىگەن قوللايدىغان نەشرىگە ئالماشتۇرامسىز؟"
+
+#~ msgid "Delete settings and user data"
+#~ msgstr "تەڭشەك ۋە ئىشلەتكۈچى سانلىق مەلۇماتىنى ئۆچۈر"
+
+#~ msgctxt "@info:status"
+#~ msgid "Starting"
+#~ msgstr "باشلاۋاتىدۇ"
+
+#~ msgid "Retrieving size information"
+#~ msgstr "چوڭلۇق ئۇچۇرىغا ئېرىشىۋاتىدۇ"
+
+#~ msgid "%2 (plus %1 dependency)"
+#~ msgid_plural "%2 (plus %1 dependencies)"
+#~ msgstr[0] "%2 (يەنە %1 تايىنىدىغان بوغچا)"
 
 #~ msgctxt "Category"
 #~ msgid "Developer Tools"
 #~ msgstr "ئىجادىيەت"
 
-#, fuzzy
 #~| msgctxt "@item:inlistbox Filters updates in the history view"
 #~| msgid "Updates"
 #~ msgctxt "Category"
 #~ msgid "System Settings"
 #~ msgstr "يېڭىلانمىلار"
 
-#, fuzzy
 #~| msgctxt "@item:inlistbox Filters all changes in the history view"
 #~| msgid "All changes"
 #~ msgid "%1 channels"
 #~ msgstr "بارلىق ئۆزگىرىشلەر"
 
-#, fuzzy
 #~| msgctxt "Category"
 #~| msgid "Internet"
 #~ msgctxt ""
@@ -2951,7 +2884,6 @@ msgstr ""
 #~ msgid "Moderate Content"
 #~ msgstr "ئىنتېرنېت"
 
-#, fuzzy
 #~| msgctxt "Category"
 #~| msgid "Internet"
 #~ msgctxt ""
@@ -2962,13 +2894,11 @@ msgstr ""
 #~ msgid "Intense Content"
 #~ msgstr "ئىنتېرنېت"
 
-#, fuzzy
 #~| msgctxt "@info Status information, widget title"
 #~| msgid "Downloading Packages"
 #~ msgid "Downloading system update"
 #~ msgstr "بوغچىلارنى چۈشۈرۈۋاتىدۇ"
 
-#, fuzzy
 #~| msgctxt ""
 #~| "@item:inlistbox Human-readable name for the Debian package section \"base"
 #~| "\""
@@ -2976,61 +2906,51 @@ msgstr ""
 #~ msgid "Updating the system"
 #~ msgstr "ئاساسى سىستېما"
 
-#, fuzzy
 #~| msgctxt "@info:status Requested action"
 #~| msgid "Upgrade"
 #~ msgid "Upgrade to %1 %2"
 #~ msgstr "يۈكسەلدۈر"
 
-#, fuzzy
 #~| msgctxt "@info license"
 #~| msgid "Unknown"
 #~ msgid "Unknown size"
 #~ msgstr "نامەلۇم"
 
-#, fuzzy
 #~| msgctxt "@info:status Requested action"
 #~| msgid "Remove"
 #~ msgid "Remote: "
 #~ msgstr "چىقىرىۋەت"
 
-#, fuzzy
 #~| msgid "%1 (%2)"
 #~ msgctxt "version (branch)"
 #~ msgid "%1 (%2)"
 #~ msgstr "%1 (%2)"
 
-#, fuzzy
 #~| msgid "Applications"
 #~ msgctxt "Category"
 #~ msgid "Applications"
 #~ msgstr "پروگراممىلار"
 
-#, fuzzy
 #~| msgid "%1 (%2)"
 #~ msgctxt "origin (backend name)"
 #~ msgid "%1 (%2)"
 #~ msgstr "%1 (%2)"
 
-#, fuzzy
 #~| msgctxt "@label The software source that this package comes from"
 #~| msgid "Origin:"
 #~ msgid "Origin: "
 #~ msgstr "مەنبە:"
 
-#, fuzzy
 #~| msgctxt "@info Status information, widget title"
 #~| msgid "Waiting"
 #~ msgid "Waiting..."
 #~ msgstr "كۈتۈۋاتىدۇ"
 
-#, fuzzy
 #~| msgctxt "@info:status Requested action"
 #~| msgid "Remove"
 #~ msgid "Remove..."
 #~ msgstr "چىقىرىۋەت"
 
-#, fuzzy
 #~| msgctxt "@info:status"
 #~| msgid "Downloading"
 #~ msgid "Downloading..."
@@ -3039,42 +2959,35 @@ msgstr ""
 #~ msgid "Installing..."
 #~ msgstr "ئورنىتىۋاتىدۇ..."
 
-#, fuzzy
 #~| msgctxt "@item:inlistbox Filters updates in the history view"
 #~| msgid "Updates"
 #~ msgid "Update"
 #~ msgstr "يېڭىلانمىلار"
 
-#, fuzzy
 #~| msgctxt "@info:status Package state"
 #~| msgid "Not Installed"
 #~ msgid "Not Invokable"
 #~ msgstr "قاچىلانمىدى"
 
-#, fuzzy
 #~| msgid "Upgradeable"
 #~ msgid "Upgrade available"
 #~ msgstr "يۈكشەلدۈرگىلى بولىدۇ"
 
-#, fuzzy
 #~| msgctxt "@title:window"
 #~| msgid "Media Change Required"
 #~ msgid "Restart is required"
 #~ msgstr "ۋاسىتە ئۆزگەرتىش زۆرۈر"
 
-#, fuzzy
 #~| msgctxt "@title:window"
 #~| msgid "Media Change Required"
 #~ msgid "Session restart is required"
 #~ msgstr "ۋاسىتە ئۆزگەرتىش زۆرۈر"
 
-#, fuzzy
 #~| msgctxt "@item:inlistbox Filters updates in the history view"
 #~| msgid "Updates"
 #~ msgid "Updates:"
 #~ msgstr "يېڭىلانمىلار"
 
-#, fuzzy
 #~| msgid "%1 (%2)"
 #~ msgctxt "description (url)"
 #~ msgid "%1 (%2)"
@@ -3087,18 +3000,15 @@ msgstr ""
 #~ msgid "%1 has been updated"
 #~ msgstr "%1 يېڭىلىنىپ بولغان"
 
-#, fuzzy
 #~| msgid "Available updates"
 #~ msgid "Available backends:\n"
 #~ msgstr "بار يېڭىلانمىلار"
 
-#, fuzzy
 #~| msgid "Applications"
 #~ msgctxt "Category"
 #~ msgid "Application Addons"
 #~ msgstr "پروگراممىلار"
 
-#, fuzzy
 #~| msgctxt ""
 #~| "@item:inlistbox Human-readable name for the Debian package section \"vcs"
 #~| "\""
@@ -3196,13 +3106,11 @@ msgstr ""
 #~ msgid "Broken"
 #~ msgstr "بۇزۇلغان"
 
-#, fuzzy
 #~| msgid "Installed"
 #~ msgctxt "@info:status Package state"
 #~ msgid "Install Broken"
 #~ msgstr "ئورنىتىلغان"
 
-#, fuzzy
 #~| msgctxt "@title:window"
 #~| msgid "Download failed"
 #~ msgctxt "@info:status Package state"
@@ -3213,14 +3121,12 @@ msgstr ""
 #~ msgid "Purge"
 #~ msgstr "پاكىزلا"
 
-#, fuzzy
 #~| msgctxt "Category"
 #~| msgid "Version Control"
 #~ msgctxt "@info:status Package state"
 #~ msgid "Version overridden"
 #~ msgstr "نەشر باشقۇرۇش سىستېمىلىرى"
 
-#, fuzzy
 #~| msgid "Broken"
 #~ msgctxt "@info:status Package state"
 #~ msgid "Policy Broken"
@@ -3299,20 +3205,17 @@ msgstr ""
 #~ msgid "All"
 #~ msgstr "ھەممىسى"
 
-#, fuzzy
 #~| msgctxt "@info license"
 #~| msgid "Unknown"
 #~ msgctxt "Category"
 #~ msgid "Unknown"
 #~ msgstr "نامەلۇم"
 
-#, fuzzy
 #~| msgctxt "@info:status"
 #~| msgid "Downloading"
 #~ msgid "Started downloading %1..."
 #~ msgstr "چۈشۈرۈۋاتىدۇ"
 
-#, fuzzy
 #~| msgctxt "@info:status"
 #~| msgid "Downloading"
 #~ msgctxt "@label Column label"
@@ -3463,7 +3366,6 @@ msgstr ""
 #~ msgid "Power PC"
 #~ msgstr "Power PC"
 
-#, fuzzy
 #~| msgid "Show the number of available updates"
 #~ msgid "Show notifications for available updates"
 #~ msgstr "بار يېڭىلانمىلارنىڭ سانىنى كۆرسىتىدۇ"
@@ -3471,32 +3373,26 @@ msgstr ""
 #~ msgid "Show the number of available updates"
 #~ msgstr "بار يېڭىلانمىلارنىڭ سانىنى كۆرسىتىدۇ"
 
-#, fuzzy
 #~| msgid "Notification type:"
 #~ msgid "Muon Notification Daemon"
 #~ msgstr "ئۇقتۇرۇش تىپى:"
 
-#, fuzzy
 #~| msgid "Show notifications for:"
 #~ msgid "A Notification Daemon for Muon"
 #~ msgstr "تۆۋەندىكى ئۇقتۇرۇشلارنى كۆرسەتسۇن:"
 
-#, fuzzy
 #~| msgid "Applications in your system"
 #~ msgid "A security update is available for your system."
 #~ msgstr "سىستېمڭىزدىكى پروگراممىلار"
 
-#, fuzzy
 #~| msgid "Applications in your system"
 #~ msgid "An update is available for your system!"
 #~ msgstr "سىستېمڭىزدىكى پروگراممىلار"
 
-#, fuzzy
 #~| msgid "Applications Backend"
 #~ msgid "Akabei Backend"
 #~ msgstr "پروگراممالىرنىڭ ئارقا ئۇچى"
 
-#, fuzzy
 #~| msgid "Applications in your system"
 #~ msgid "Chakra-Applications in your system"
 #~ msgstr "سىستېمڭىزدىكى پروگراممىلار"
@@ -3507,7 +3403,6 @@ msgstr ""
 #~ msgid "Applications in your system"
 #~ msgstr "سىستېمڭىزدىكى پروگراممىلار"
 
-#, fuzzy
 #~| msgctxt "@info Status information, widget title"
 #~| msgid "Finished"
 #~ msgid "Finished."

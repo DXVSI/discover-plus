@@ -130,3 +130,5 @@ ConcurrentPool::componentsByNames(QThreadPool *threadPool, const QList<Concurren
             acc.insert(next.first, next.second);
         });
 }
+
+#include "moc_AppStreamConcurrentPool.cpp"

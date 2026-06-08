@@ -136,42 +136,52 @@ Kirigami.Dialog {
             }
         }
 
-        QQC2.TextArea {
-            id: reviewInput
-
-            readonly property string lowercaseText: reviewInput.text.toLowerCase()
-
-            // Intentionally untranslated to cover the case of people writing reviews
-            // in English when their system is in another language.
-            readonly property string doesntRunKeywordsEn: "launch,run,start"
-            readonly property string doesntRunKeywordsI18n: i18nc("Words the user might use in an unhelpful sentence saying an app is not launching. Preserve the commas. If necessary, add more words used for this in your language and/or shorten to common stems contained by multiple forms of the words.",
-                                                                  "launch,run,start")
-            readonly property list<string> doesntRunKeywords: doesntRunKeywordsEn.concat(",", doesntRunKeywordsI18n).split(",")
-            readonly property bool hasDoesntRunKeywords: doesntRunKeywords.some(suspiciousWord => lowercaseText.includes(suspiciousWord))
-
-
-            readonly property string crashKeywordsEn: "crash,segfault"
-            readonly property string crashKeywordsI18n:  i18nc("Words the user might use in an unhelpful sentence saying an app crashes. Preserve the commas. If necessary, add more words used for this in your language and/or shorten to common stems contained by multiple forms of the words",
-                                                               "crash,segfault")
-            readonly property list<string> crashKeywords: crashKeywordsEn.concat(",", crashKeywordsI18n).split(",")
-            readonly property bool hasCrashKeywords: crashKeywords.some(suspiciousWord => lowercaseText.includes(suspiciousWord))
-
-
-            readonly property string subjectiveKeywordsEn: "doesn't work,dumb,stupid,crap,junk,suck,terrible,hate"
-            readonly property string subjectiveKeywordsI18n: i18nc("Word the user might use in an unhelpful sentence saying an app isn't very good. Preserve the commas. If necessary, add more words used for this in your language and/or shorten to common stems contained by multiple forms of the words,",
-                                                                   "doesn't work,dumb,stupid,crap,junk,suck,terrible,hate")
-            readonly property list<string> subjectiveKeywords: subjectiveKeywordsEn.concat(",", subjectiveKeywordsI18n).split(",")
-            readonly property bool hasSubjectiveKeywords: subjectiveKeywords.some(suspiciousWord => lowercaseText.includes(suspiciousWord))
-
-
-            readonly property bool hasAnySuspiciousKeywords: hasDoesntRunKeywords || hasSubjectiveKeywords || hasCrashKeywords
-
-            readonly property bool acceptableInput: length > 15 && length < 3000
-
+        QQC2.ScrollView {
             Layout.fillWidth: true
-            Layout.minimumHeight: Kirigami.Units.gridUnit * 8
-            KeyNavigation.priority: KeyNavigation.BeforeItem
-            wrapMode: TextEdit.Wrap
+            Layout.preferredHeight: Kirigami.Units.gridUnit * 8
+            Layout.maximumHeight: Kirigami.Units.gridUnit * 8
+            clip: true
+
+            // Use ScrollView's frame border for review content and scrollbar, replacing text area's own frame border
+            Kirigami.StyleHints.showFramedBackground: true
+
+            QQC2.TextArea {
+                id: reviewInput
+
+                readonly property string lowercaseText: reviewInput.text.toLowerCase()
+
+                // Intentionally untranslated to cover the case of people writing reviews
+                // in English when their system is in another language.
+                readonly property string doesntRunKeywordsEn: "launch,run,start"
+                readonly property string doesntRunKeywordsI18n: i18nc("Words the user might use in an unhelpful sentence saying an app is not launching. Preserve the commas. If necessary, add more words used for this in your language and/or shorten to common stems contained by multiple forms of the words.",
+                                                                      "launch,run,start")
+                readonly property list<string> doesntRunKeywords: doesntRunKeywordsEn.concat(",", doesntRunKeywordsI18n).split(",")
+                readonly property bool hasDoesntRunKeywords: doesntRunKeywords.some(suspiciousWord => lowercaseText.includes(suspiciousWord))
+
+
+                readonly property string crashKeywordsEn: "crash,segfault"
+                readonly property string crashKeywordsI18n:  i18nc("Words the user might use in an unhelpful sentence saying an app crashes. Preserve the commas. If necessary, add more words used for this in your language and/or shorten to common stems contained by multiple forms of the words",
+                                                                   "crash,segfault")
+                readonly property list<string> crashKeywords: crashKeywordsEn.concat(",", crashKeywordsI18n).split(",")
+                readonly property bool hasCrashKeywords: crashKeywords.some(suspiciousWord => lowercaseText.includes(suspiciousWord))
+
+
+                readonly property string subjectiveKeywordsEn: "doesn't work,dumb,stupid,crap,junk,suck,terrible,hate"
+                readonly property string subjectiveKeywordsI18n: i18nc("Word the user might use in an unhelpful sentence saying an app isn't very good. Preserve the commas. If necessary, add more words used for this in your language and/or shorten to common stems contained by multiple forms of the words,",
+                                                                       "doesn't work,dumb,stupid,crap,junk,suck,terrible,hate")
+                readonly property list<string> subjectiveKeywords: subjectiveKeywordsEn.concat(",", subjectiveKeywordsI18n).split(",")
+                readonly property bool hasSubjectiveKeywords: subjectiveKeywords.some(suspiciousWord => lowercaseText.includes(suspiciousWord))
+
+
+                readonly property bool hasAnySuspiciousKeywords: hasDoesntRunKeywords || hasSubjectiveKeywords || hasCrashKeywords
+
+                readonly property bool acceptableInput: length > 15 && length < 3000
+
+                width: parent.width
+                background: null // Hide text area's frame border in favor of the ScrollView one
+                KeyNavigation.priority: KeyNavigation.BeforeItem
+                wrapMode: TextEdit.Wrap
+            }
         }
 
         QQC2.Label {

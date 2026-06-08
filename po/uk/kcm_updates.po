@@ -3,22 +3,22 @@
 # This file is distributed under the license LGPL version 2.1 or
 # version 3 or later versions approved by the membership of KDE e.V.
 #
-# Yuri Chornoivan <yurchor@ukr.net>, 2020, 2021, 2022, 2023.
+# Yuri Chornoivan <yurchor@ukr.net>, 2020, 2021, 2022, 2023, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: kcm_updates\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-17 11:53+0000\n"
-"PO-Revision-Date: 2023-09-28 09:09+0300\n"
+"POT-Creation-Date: 2026-04-02 00:45+0000\n"
+"PO-Revision-Date: 2026-04-02 09:27+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
-"Language-Team: Ukrainian <kde-i18n-uk@kde.org>\n"
+"Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=n==1 ? 3 : n%10==1 && n%100!=11 ? 0 : n"
 "%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
-"X-Generator: Lokalize 20.12.0\n"
+"X-Generator: Lokalize 23.04.3\n"
 
 #: kcm/ui/main.qml:40
 #, kde-format
@@ -41,11 +41,12 @@ msgctxt "@info"
 msgid ""
 "Software updates will be downloaded automatically when they become "
 "available. Updates for applications will be installed immediately, while "
-"system updates will be installed the next time the computer is restarted."
+"updates for the system will be installed the next time it’s restarted."
 msgstr ""
 "Оновлення програмного забезпечення буде отримано автоматично, щойно вони "
 "з'являться у сховищах. Оновлення програм буде встановлено негайно, а "
-"оновлення системи — під час наступного перезавантаження комп'ютера."
+"оновлення системи буде встановлено під час наступного перезавантаження "
+"комп'ютера."
 
 #: kcm/ui/main.qml:69
 #, kde-format

@@ -188,16 +188,15 @@ void SystemdSysupdateResource::fetchChangelog()
 SystemdSysupdateTransaction *SystemdSysupdateResource::update()
 {
     qCInfo(SYSTEMDSYSUPDATE_LOG) << "Updating target" << name();
-    const QString toVersion; // empty means latest and by default doesn't require authorization
-    SystemdSysupdateUpdateReply reply = m_target->Update(toVersion, 0 /* flags - currently unused and expected to be 0 */);
 
-    auto transaction = new SystemdSysupdateTransaction(this, reply);
+    auto transaction = new SystemdSysupdateTransaction(this, m_target);
     connect(transaction, &Transaction::statusChanged, this, [this](Transaction::Status status) {
         if (status == Transaction::DoneStatus) {
             m_targetInfo.installedVersion = m_targetInfo.availableVersion;
-            Q_EMIT stateChanged();
         }
     });
 
     return transaction;
 }
+
+#include "moc_SystemdSysupdateResource.cpp"

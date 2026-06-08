@@ -99,3 +99,5 @@ void HoloTest::testUpdateInProgress()
     QCOMPARE(spyNewTransaction.count(), 1);
 }
 QTEST_GUILESS_MAIN(HoloTest)
+
+#include "moc_HoloTest.cpp"

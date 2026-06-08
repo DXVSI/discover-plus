@@ -105,7 +105,14 @@ in the middle of comments):
         <method name="CheckNew">
             <arg type="s" name="new_version" direction="out"/>
         </method>
-        <method name="Update">
+        <method name="Acquire">
+            <arg type="s" name="new_version" direction="in"/>
+            <arg type="t" name="flags" direction="in"/>
+            <arg type="s" name="new_version" direction="out"/>
+            <arg type="t" name="job_id" direction="out"/>
+            <arg type="o" name="job_path" direction="out"/>
+        </method>
+        <method name="Install">
             <arg type="s" name="new_version" direction="in"/>
             <arg type="t" name="flags" direction="in"/>
             <arg type="s" name="new_version" direction="out"/>

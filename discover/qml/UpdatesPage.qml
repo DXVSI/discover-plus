@@ -163,7 +163,7 @@ DiscoverPage {
         visible: updateModel.toUpdateCount
         icon.name: "update-none"
 
-        readonly property bool hasErrors: page.header.children.some(item => item?.visible && item instanceof Kirigami.InlineMessage)
+        readonly property bool hasErrors: page.header.children.some(item => item?.visible && item instanceof Kirigami.InlineMessage && (item as Kirigami.InlineMessage).type === Kirigami.MessageType.Error)
 
         enabled: page.readyToUpdate && !hasErrors
         onEnabledChanged: enabled => {
@@ -175,11 +175,19 @@ DiscoverPage {
     header: ColumnLayout {
         id: errorsColumn
 
-        spacing: Kirigami.Units.smallSpacing
+        spacing: 0
 
         DiscoverInlineMessage {
             Layout.fillWidth: true
             inlineMessage: Discover.ResourcesModel.inlineMessage
+        }
+
+        Kirigami.InlineMessage {
+            Layout.fillWidth: true
+            position: Kirigami.InlineMessage.Position.Header
+            visible: resourcesUpdatesModel.needsReboot && page.state !== "fetching" && page.state !== "reboot"
+            text: i18nc("@info", "A pending update will be installed when restarting the system.")
+            icon.name: "system-reboot-update"
         }
 
         Repeater {
@@ -262,7 +270,7 @@ DiscoverPage {
                 }
 
                 RowLayout {
-                    visible: resourcesUpdatesModel.needsReboot && resourcesUpdatesModel.isProgressing
+                    visible: resourcesUpdatesModel.isProgressing
                     spacing: Kirigami.Units.smallSpacing
 
                     Layout.fillWidth: true
@@ -271,17 +279,22 @@ DiscoverPage {
                     Layout.rightMargin: Kirigami.Units.largeSpacing
 
                     RowLayout {
-                        visible: resourcesUpdatesModel.needsReboot && resourcesUpdatesModel.isProgressing
+                        visible: resourcesUpdatesModel.isProgressing
                         spacing: Kirigami.Units.smallSpacing
                         Layout.fillWidth: true
 
                         QQC2.Label {
-                            text: i18nc("@info on the completion of updates, the action that automatically happens after (e.g shut down)", "On completion, automatically:")
+                            text: i18nc("@info After updates complete, shut down/restart/quit", "After updates complete:")
                         }
 
                         QQC2.ComboBox {
                             id: actionAfterUpdateCombo
-                            model: [i18nc("@item:inlistbox placeholder for when no action is selected", "Select an action"), i18nc("@item:inlistbox", "Restart"), i18nc("@item:inlistbox", "Shut down")]
+                            model: [
+                                i18nc("@item:inlistbox after updates complete, do nothing", "Do nothing"),
+                                i18nc("@item:inlistbox after updates complete, restart", "Restart"),
+                                i18nc("@item:inlistbox after updates complete, shut down", "Shut down"),
+                                i18nc("@item:inlistbox after updates complete, quit", "Quit")
+                            ]
                         }
                     }
                 }
@@ -443,6 +456,23 @@ DiscoverPage {
                 moreInformationButton.focus = false
             }
 
+            function fallbackUpdateDetailsText() {
+                const resource = listItem.model.resource
+                if (!resource) {
+                    return i18nc("@info", "No release notes were provided for this update.")
+                }
+
+                if (resource.installedVersion.length > 0 && resource.availableVersion.length > 0) {
+                    return i18nc("@info %1 is the old version, %2 is the new version", "No release notes were provided. This package will be updated from %1 to %2.", resource.installedVersion, resource.availableVersion)
+                }
+
+                if (resource.availableVersion.length > 0) {
+                    return i18nc("@info %1 is the new version", "No release notes were provided. This package will be updated to %1.", resource.availableVersion)
+                }
+
+                return i18nc("@info", "No release notes were provided for this update.")
+            }
+
             contentItem: ColumnLayout {
                 id: delegateLayout
 
@@ -557,7 +587,6 @@ DiscoverPage {
                         id: moreInformationButton
                         Layout.alignment: Qt.AlignRight
                         text: i18nc("@action:button minimize the length of this label", "More Info…")
-                        enabled: !resourcesUpdatesModel.isProgressing
                         onClicked: Navigation.openApplication(listItem.model.resource)
                     }
                 }
@@ -566,14 +595,14 @@ DiscoverPage {
                     Layout.fillWidth: true
                     Layout.leftMargin: delegateLayout.extraContentLeadingMargin
                     implicitHeight: view.implicitHeight
-                    visible: listItem.model.extended && listItem.model.changelog.length > 0
+                    visible: listItem.model.extended
                     QQC2.Label {
                         id: view
                         anchors {
                             right: parent.right
                             left: parent.left
                         }
-                        text: listItem.model.changelog
+                        text: listItem.model.changelog.length > 0 ? listItem.model.changelog : listItem.fallbackUpdateDetailsText()
                         textFormat: Text.StyledText
                         wrapMode: Text.WordWrap
                         color: listItem.down ? Kirigami.Theme.highlightedTextColor : Kirigami.Theme.textColor
@@ -591,6 +620,9 @@ DiscoverPage {
     }
 
     readonly property alias secSinceUpdate: resourcesUpdatesModel.secsToLastUpdate
+    property string previousState: ""
+    property bool updateTriggered: false
+
     state:  ( resourcesUpdatesModel.isProgressing        ? "progressing"
             : resourcesUpdatesModel.isFetching           ? "fetching"
             : updateModel.hasUpdates                     ? "has-updates"
@@ -601,6 +633,29 @@ DiscoverPage {
             : secSinceUpdate < 1000 * 60 * 60 * 24 * 7   ? "medium"
             :                                              "low"
             )
+
+    onStateChanged: {
+        const prev = previousState
+        previousState = state
+        if (prev === "progressing") {
+            updateTriggered = true
+        }
+
+        const option = actionAfterUpdateCombo.currentIndex
+        if (state === "reboot") {
+            if (resourcesUpdatesModel.readyToReboot) {
+                if (option === 1) {
+                    app.rebootNow()
+                } else if (option === 2) {
+                    app.shutdownNow()
+                } else if (option === 3) {
+                    app.reconsiderQuit()
+                }
+            }
+        } else if (updateTriggered && option === 3) {
+            app.reconsiderQuit()
+        }
+    }
 
     states: [
         State {
@@ -634,15 +689,6 @@ DiscoverPage {
             PropertyChanges { statusLabel.helpfulAction: promptRestartAction }
             PropertyChanges { statusLabel.explanation: i18nc("@info", "You can keep using the system if you're not ready to restart yet.") }
             PropertyChanges { statusLabel.progressBar.visible: false }
-            StateChangeScript {
-                script: if (resourcesUpdatesModel.readyToReboot) {
-                    if (actionAfterUpdateCombo.currentIndex === 1) {
-                        app.rebootNow()
-                    } else if (actionAfterUpdateCombo.currentIndex === 2) {
-                        app.shutdownNow()
-                    }
-                }
-            }
         },
         State {
             name: "now-uptodate"

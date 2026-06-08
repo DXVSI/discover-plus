@@ -304,4 +304,9 @@ void AbstractResource::resolveIcon()
 {
 }
 
+QString AbstractResource::disambiguatedOrigin() const
+{
+    return origin();
+}
+
 #include "moc_AbstractResource.cpp"

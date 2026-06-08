@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: discover\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2025-11-17 11:53+0000\n"
-"PO-Revision-Date: 2023-09-29 05:07+0200\n"
+"POT-Creation-Date: 2026-04-02 00:45+0000\n"
+"PO-Revision-Date: 2026-04-02 04:54+0200\n"
 "Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
 "Language-Team: Georgian <kde-i18n-doc@kde.org>\n"
 "Language: ka\n"
@@ -16,12 +16,12 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.3.2\n"
+"X-Generator: Poedit 3.9\n"
 
 #: kcm/ui/main.qml:40
 #, kde-format
 msgid "Update software:"
-msgstr "პროგრამების განახლებa:"
+msgstr "პროგრამების განახლება:"
 
 #: kcm/ui/main.qml:41
 #, kde-format
@@ -39,11 +39,11 @@ msgctxt "@info"
 msgid ""
 "Software updates will be downloaded automatically when they become "
 "available. Updates for applications will be installed immediately, while "
-"system updates will be installed the next time the computer is restarted."
+"updates for the system will be installed the next time it’s restarted."
 msgstr ""
-"სისტემური პროგრამების განახლებები გადმოიწერება მაშინვე, როგორც კი ისინი "
-"ხელმისაწვდომი გახდებიან. აპლიკაციების განახლებები მაშინვე გადმოიწერება, "
-"მაგრამ გადატარდება მხოლოდ კომპიუტერის გადატვირთვის შემდეგ."
+"პროგრამის განახლებები ავტომატურად გადმოიწერება მაშინვე, როგორც კი ისინი "
+"ხელმისაწვდომია. აპლიკაციის განახლებების დაყენება მაშინვე ხდება, სისტემის "
+"განახლებების დაყენება კი - სისტემის შემდეგი გადატვირთვისას."
 
 #: kcm/ui/main.qml:69
 #, kde-format
