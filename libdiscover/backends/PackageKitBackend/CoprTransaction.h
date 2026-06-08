@@ -3,6 +3,8 @@
 
 #include <QPointer>
 #include <QProcess>
+#include <QString>
+#include <QStringList>
 #include <Transaction/Transaction.h>
 
 class CoprResource;
@@ -25,6 +27,8 @@ private Q_SLOTS:
 
 private:
     bool canInstallForCurrentChroot();
+    QString processDiagnosticOutput() const;
+    void startPkexec(const QStringList &arguments);
     void enableCoprRepo();
     void installPackage();
     void removePackage();
@@ -33,6 +37,8 @@ private:
     PackageKitBackend *m_backend;
     QProcess *m_process;
     Transaction::Role m_role;
+    QString m_stdoutBuffer;
+    QString m_stderrBuffer;
     enum State {
         EnableRepo,
         InstallPackage,
