@@ -6,10 +6,11 @@
 #include <QJsonArray>
 #include <QJsonObject>
 #include <QList>
+#include <QNetworkAccessManager>
+#include <QNetworkReply>
 #include <QObject>
 #include <QPair>
 #include <QPointer>
-#include <QProcess>
 #include <QQueue>
 #include <QString>
 #include <QStringList>
@@ -103,11 +104,13 @@ private:
     QList<CoprPackageInfo> parsePackagesResponse(const QJsonObject &json, const QString &owner, const QString &project);
     QString convertMarkdownToHtml(const QString &markdown) const;
     void emitResultForRequest(const QString &requestType, const QJsonObject &json);
+    void emitEmptyResultForRequest(const QString &requestType);
 
     void processNextRequest();
     void queueRequest(const QUrl &url, const QString &requestType);
 
     QString m_baseUrl;
+    QNetworkAccessManager *m_networkAccessManager = nullptr;
     QString m_fedoraVersion;
     QString m_currentChroot;
 
@@ -116,8 +119,8 @@ private:
     int m_activeRequests = 0;
     static constexpr int MaxConcurrentRequests = 3;
 
-    // Active curl processes (for cancellation)
-    QList<QPointer<QProcess>> m_activeProcesses;
+    // Active network replies (for cancellation)
+    QList<QPointer<QNetworkReply>> m_activeReplies;
 
     // Response cache with TTL
     struct CacheEntry {

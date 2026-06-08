@@ -23,6 +23,15 @@ Kirigami.GlobalDrawer {
         }
     }
 
+    function setSearchText(text) {
+        drawer.currentSearchText = text
+        if (searchField.visible) {
+            searchField.text = text
+            searchField.currentSearchText = text
+            forceSearchFieldFocus()
+        }
+    }
+
     function forceSearchFieldFocus() {
         if (searchField.visible && wideScreen) {
             searchField.forceActiveFocus();
