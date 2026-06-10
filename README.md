@@ -1,105 +1,115 @@
 # Discover Plus
 
-Enhanced KDE Discover with extended RPM package support and COPR integration for Fedora Linux.
+Discover Plus is a Fedora-focused fork of KDE Discover. It keeps the regular Discover UI and adds practical Fedora package workflows: RPM repositories, Flatpak sources, RPM Fusion, and Fedora COPR.
 
 ## Screenshots
 
 <details>
-<summary><b>Click to view UI Gallery</b></summary>
+<summary><b>UI gallery</b></summary>
 
-### Home Page & Installed Apps
+### Home Page and Installed Apps
 <p align="center">
   <img src="screen/image1.png" width="48%" alt="Home Page" />
   <img src="screen/image2.png" width="48%" alt="Installed Applications" />
 </p>
 
-### Repository Labels & Source Selection
+### Repository Labels and Source Selection
 <p align="center">
-  <img src="screen/image3.png" width="48%" alt="Repository Labels - RPM Fusion, Fedora, Flatpak, Flathub" />
-  <img src="screen/image4.png" width="48%" alt="Source Selection - RPM Fusion or Flathub" />
+  <img src="screen/image3.png" width="48%" alt="Repository labels" />
+  <img src="screen/image4.png" width="48%" alt="Source selection" />
 </p>
 
-### COPR Search & Package Info
+### COPR Search and Package Info
 <p align="center">
-  <img src="screen/image5.png" width="48%" alt="COPR Search - Zen Browser" />
-  <img src="screen/image6.png" width="48%" alt="COPR Package Details" />
+  <img src="screen/image5.png" width="48%" alt="COPR search" />
+  <img src="screen/image6.png" width="48%" alt="COPR package details" />
 </p>
 
-### First-Run Setup & Updates
+### First-Run Setup and Updates
 <p align="center">
-  <img src="screen/image7.png" width="48%" alt="First Run Setup - Welcome to Discover" />
-  <img src="screen/image8.png" width="48%" alt="Updates Page" />
+  <img src="screen/image7.png" width="48%" alt="First-run setup" />
+  <img src="screen/image8.png" width="48%" alt="Updates page" />
 </p>
 
 </details>
 
-## Key Features
+## What This Fork Adds
 
-* **COPR Repository Integration** - Browse and install packages from Fedora COPR with cached responses, parallel requests and relevance-based search
-* **First-Run System Setup** - One-click configuration of DNF, RPM Fusion, Flathub, NVIDIA drivers, Steam, Chrome
-* **Full RPM Fusion Support** - All RPM Fusion packages are visible in Discover
-* **Enhanced Package Search** - Fallback search via PackageKit for packages without AppStream metadata
-* **Repository Labels** - Shows repository source for each package (Fedora Linux, RPM Fusion, COPR, etc.)
-* **Search History** - Recent searches are saved and available as suggestions
+- Fedora first-run setup for common repositories and DNF settings.
+- RPM Fusion and Fedora package visibility through the PackageKit backend.
+- Source labels for PackageKit and Flatpak results, including Fedora Linux, RPM Fusion, Fedora Flatpaks, Flathub, and COPR.
+- Source-first sorting options: RPM Fusion first, Fedora Linux first, Fedora Flatpaks first, and Flathub first.
+- Dedicated COPR page, search, project details, package selection, install, and uninstall.
+- COPR detail UI with availability, build state, source metadata, repository flags, warnings, and instructions.
+- Search history and PackageKit fallback results for packages without AppStream metadata.
 
-## What's New
+## How It Works
 
-### First-Run System Setup
-* DNF optimization (parallel downloads, fastest mirror, keepcache)
-* Cisco OpenH264 repo disable (blocked in Russia, causes timeouts)
-* RPM Fusion Free & Nonfree one-click install
-* Flathub repository setup
-* NVIDIA Driver, Steam, Google Chrome repo toggles
-* Single authentication prompt for all operations
+### First-Run Setup
 
-### COPR Integration
-* Dedicated COPR category in the sidebar
-* Search and browse COPR packages directly in Discover
-* Response caching (5 min TTL) for instant repeated queries
-* Up to 3 parallel API requests for faster loading
-* Batch initial loading (60 projects) with relevance sorting
-* Request deduplication to prevent redundant API calls
-* Markdown to HTML description conversion
-* One-click install with automatic repository enabling
-* Clean uninstall with repository removal
+The first-run dialog is shown on Fedora systems and can configure:
+
+- DNF parallel downloads, fastest mirror, and package cache behavior.
+- RPM Fusion Free and Nonfree repositories.
+- Flathub.
+- Optional NVIDIA driver, Steam, and Google Chrome repositories.
+- Cisco OpenH264 disablement, useful where that repository times out.
+
+The setup runs the selected steps as one authenticated operation.
+
+### Sources and Sorting
+
+Discover Plus maps package origins into readable labels:
+
+- `fedora`, `updates`, `updates-testing`: Fedora Linux
+- `rpmfusion-*`: RPM Fusion
+- Flatpak remotes containing `fedora`: Fedora Flatpaks
+- Flatpak remotes containing `flathub`: Flathub
+- `@copr:*` and `copr:*`: COPR
+
+The sort menu can lift one selected source to the top of the current list. Changing sort order resets the old focused item and scroll position so the list stays at the top after sorting.
+
+### COPR
+
+COPR is intentionally handled from the COPR sidebar page, not from global search. This keeps regular app search fast and avoids mixing unreviewed COPR projects into normal results.
+
+The COPR flow is:
+
+1. Browse recent projects or search COPR from the COPR page.
+2. Open a project page and review warnings, availability, build information, source links, repository flags, and instructions.
+3. If the project exposes multiple packages, select the package to install.
+4. Install enables the COPR repository and installs the selected package.
+5. Uninstall removes the installed package and then removes the matching COPR repository.
+
+COPR API responses are cached, duplicate requests are deduplicated, and concurrent requests are limited to keep the UI responsive.
 
 ## Installation
 
-### Quick Install (Recommended)
+### Quick Install
 
-```bash
+```fish
 chmod +x install.sh
 ./install.sh
 ```
 
-The script will automatically:
-- Remove conflicting system packages
-- Install all dependencies
-- Build and install Discover Plus
+The installer:
 
-### Manual Installation
+- Removes conflicting Fedora `plasma-discover` packages.
+- Installs build dependencies with `dnf`.
+- Builds the project.
+- Installs it under `/usr`.
+- Enables Discover offline updates in `/etc/xdg/discoverrc`.
 
-<details>
-<summary>Click to expand manual steps</summary>
+Do not run `install.sh` as root. It asks for `sudo` only when needed.
 
-#### Dependencies
+### Manual Build
 
-```bash
+```fish
 sudo dnf install -y cmake extra-cmake-modules gcc-c++ kf6-kconfig-devel kf6-kcoreaddons-devel kf6-kcrash-devel kf6-kdbusaddons-devel kf6-ki18n-devel kf6-karchive-devel kf6-kxmlgui-devel kf6-kio-devel kf6-kcmutils-devel kf6-kidletime-devel kf6-purpose-devel kf6-kiconthemes-devel kf6-kstatusnotifieritem-devel kf6-kauth-devel kf6-knotifications-devel kf6-kirigami-devel kf6-kirigami-addons-devel PackageKit-Qt6-devel appstream-qt-devel qcoro-qt6-devel qt6-qtbase-devel qt6-qtdeclarative-devel qt6-qtwebview-devel flatpak-devel fwupd-devel libmarkdown-devel
-```
 
-#### Remove conflicting packages
-
-```bash
 sudo dnf remove -y plasma-discover plasma-discover-flatpak plasma-discover-snap plasma-discover-packagekit plasma-discover-libs
-```
 
-#### Build
-
-```bash
-mkdir build
-cd build
-cmake .. \
+cmake -S . -B build \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DCMAKE_BUILD_TYPE=RelWithDebInfo \
     -DBUILD_TESTING=OFF \
@@ -110,70 +120,21 @@ cmake .. \
     -DBUILD_AlpineApkBackend=ON \
     -DBUILD_DummyBackend=OFF \
     -DBUILD_RpmOstreeBackend=OFF \
-    -DBUILD_HoloBackend=OFF \
+    -DBUILD_SteamOSBackend=OFF \
     -DBUILD_WITH_QT6=ON
-make -j$(nproc)
+
+cmake --build build --parallel (nproc)
+sudo cmake --install build
 ```
 
-#### Install
+## Debug
 
-```bash
-sudo make install
+```fish
+clear; and env QT_LOGGING_RULES='org.kde.plasma.libdiscover*.debug=true' plasma-discover
 ```
 
-</details>
+Useful COPR log lines come from `org.kde.plasma.libdiscover.backend.packagekit`.
 
-### Debug
+## Upstream
 
-```bash
-clear && QT_LOGGING_RULES="org.kde.plasma.libdiscover*.debug=true" plasma-discover
-```
-
-## Technical Details
-
-### Repository Mapping
-
-- `fedora`, `updates`, `updates-testing` → "Fedora Linux"
-- `rpmfusion-*` → "RPM Fusion"
-- `@copr:*`, `copr:*` → "COPR"
-- Other repositories displayed as-is (e.g., "google-chrome")
-
-### AppStream Pool Flags
-
-The following flags are used:
-- `FlagLoadOsCatalog` - Load system application catalog
-- `FlagLoadOsDesktopFiles` - Load .desktop files
-- `FlagLoadOsMetainfo` - Load meta information
-
-## Support
-
-For questions and bug reports, please use GitHub Issues.
-
-## Original Discover
-
-This project is based on KDE Discover. Original project: https://invent.kde.org/plasma/discover
-
-## Building (Original)
-
-The easiest way to make changes and test Discover during development is to [build it with kde-builder](https://community.kde.org/Get_Involved/development).
-
-## Vendor Customization
-
-Want to change the apps featured in the Editor's Choice section? Add a configuration file named `/usr/share/discover/featuredurlrc` that points to a JSON file patterned off the default one present at https://autoconfig.kde.org/discover/featured-5.9.json:
-```toml
-[Software]
-FeaturedListingURL="https://your-url-here/file.json"
-```
-
-## Contributing
-
-Like other projects in the KDE ecosystem, contributions are welcome from all. This repository is managed in [KDE Invent](https://invent.kde.org/plasma/discover), our GitLab instance.
-
-* Want to contribute code? See the [GitLab wiki page](https://community.kde.org/Infrastructure/GitLab) for a tutorial on how to send a merge request.
-* Reporting a bug? Please submit it on the [KDE Bugtracking System](https://bugs.kde.org/enter_bug.cgi?format=guided&product=Discover). Please do not use the Issues
-  tab to report bugs.
-* Is there a part of Discover that's not translated? See the [Getting Involved in Translation wiki page](https://community.kde.org/Get_Involved/translation) to see how
-  you can help translate!
-
-If you get stuck or need help with anything at all, head over to the [KDE New Contributors room](https://go.kde.org/matrix/#/#kde-welcome:kde.org) on Matrix. For questions about Discover, please ask in the [Plasma Discover room](https://go.kde.org/matrix/#/#plasma-discover:kde.org). See [Matrix](https://community.kde.org/Matrix) for more details.
-
+Discover Plus is based on KDE Discover: https://invent.kde.org/plasma/discover
