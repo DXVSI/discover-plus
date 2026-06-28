@@ -8,6 +8,7 @@
 
 #include <PackageKit/Transaction>
 #include <QPointer>
+#include <QProcess>
 #include <QSet>
 #include <Transaction/Transaction.h>
 
@@ -37,6 +38,13 @@ private:
     void cancellableChanged();
     void packageResolved(PackageKit::Transaction::Info info, const QString &packageId);
     void submitResolve();
+    void requestDnfRemoveFallback();
+    void startDnfRemoveFallback();
+    void dnfFallbackFinished(int exitCode, QProcess::ExitStatus exitStatus);
+    void dnfFallbackError(QProcess::ProcessError error);
+    void dnfFallbackOutput();
+    QString dnfFallbackDiagnosticOutput() const;
+    void refreshDnfFallbackPackageState();
     void repoSignatureRequired(const QString &packageID,
                                const QString &repoName,
                                const QString &keyUrl,
@@ -52,6 +60,14 @@ private:
     const QVector<AbstractResource *> m_apps;
     QSet<QString> m_pkgnames;
     QVector<std::function<PackageKit::Transaction *()>> m_proceedFunctions;
+    QPointer<QProcess> m_dnfFallbackProcess;
+    QStringList m_dnfFallbackPackages;
+    QString m_dnfFallbackStdoutBuffer;
+    QString m_dnfFallbackStderrBuffer;
+    bool m_packageKitRemoveFailedWithEmptyDetail = false;
+    bool m_waitingForDnfFallbackConfirmation = false;
+    bool m_dnfFallbackAttempted = false;
+    bool m_dnfFallbackCancelling = false;
 
     QMap<PackageKit::Transaction::Info, QStringList> m_newPackageStates;
 };

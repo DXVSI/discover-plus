@@ -48,12 +48,26 @@ int percentageWithStatus(PackageKit::Transaction::Status status, uint percentage
         };
         const auto idx = statuses.value(status, -1);
         if (idx < 0) {
-            qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "Status not present" << status << "among" << statuses.keys() << percentage;
+            static const QSet<PackageKit::Transaction::Status> nonProgressStatuses = {
+                PackageKit::Transaction::Status::StatusFinished,
+                PackageKit::Transaction::Status::StatusQuery,
+                PackageKit::Transaction::Status::StatusRunning,
+                PackageKit::Transaction::Status::StatusSetup,
+                PackageKit::Transaction::Status::StatusWait,
+                PackageKit::Transaction::Status::StatusWaitingForAuth,
+            };
+            if (!nonProgressStatuses.contains(status)) {
+                static QSet<PackageKit::Transaction::Status> reportedStatuses;
+                if (!reportedStatuses.contains(status)) {
+                    reportedStatuses.insert(status);
+                    qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "PackageKit status does not report transaction progress" << status;
+                }
+            }
             return -1;
         }
         percentage = (idx * 100 + percentage) / 2 /*the maximum in statuses*/;
     }
-    qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "reporting progress with status:" << status << percentage << was;
+    Q_UNUSED(was)
     return percentage;
 }
 
