@@ -42,6 +42,54 @@ static QStringList packageIds(const QVector<AbstractResource *> &resources, std:
     return ret;
 }
 
+static bool isEmptyPackageKitTransactionFailure(const QString &error)
+{
+    const QString trimmed = error.trimmed();
+    if (trimmed.isEmpty()) {
+        return true;
+    }
+
+    if (trimmed == QStringLiteral("Transaction failed")) {
+        return true;
+    }
+
+    if (trimmed.startsWith(QStringLiteral("Transaction failed:"))) {
+        return trimmed.mid(QStringLiteral("Transaction failed:").size()).trimmed().isEmpty();
+    }
+
+    return false;
+}
+
+static bool isValidDnfPackageName(const QString &packageName)
+{
+    if (packageName.isEmpty() || packageName.startsWith(QLatin1Char('-'))) {
+        return false;
+    }
+
+    for (const QChar &ch : packageName) {
+        if (!ch.isLetterOrNumber() && ch != QLatin1Char('_') && ch != QLatin1Char('+') && ch != QLatin1Char('.') && ch != QLatin1Char('-')) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+static QStringList dnfFallbackPackagesForPackageIds(const QStringList &packageIds)
+{
+    QStringList packages;
+    for (const QString &packageId : packageIds) {
+        const QString packageName = PackageKit::Daemon::packageName(packageId);
+        if (!isValidDnfPackageName(packageName)) {
+            qCWarning(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "Refusing DNF fallback package name from PackageKit package id" << packageId << packageName;
+            continue;
+        }
+        packages << packageName;
+    }
+    packages.removeDuplicates();
+    return packages;
+}
+
 bool PKTransaction::isLocal() const
 {
     return m_apps.size() == 1 && qobject_cast<LocalFilePKResource *>(m_apps.at(0));
@@ -58,6 +106,7 @@ void PKTransaction::trigger(PackageKit::Transaction::TransactionFlags flags)
         m_trans->deleteLater();
     }
     m_newPackageStates.clear();
+    m_packageKitRemoveFailedWithEmptyDetail = false;
 
     if (isLocal() && role() == Transaction::InstallRole) {
         auto resource = qobject_cast<LocalFilePKResource *>(m_apps.at(0));
@@ -89,13 +138,29 @@ void PKTransaction::trigger(PackageKit::Transaction::TransactionFlags flags)
 #else
             constexpr bool autoRemove = false;
 #endif
-            m_trans = PackageKit::Daemon::removePackages(packageIds(m_apps,
-                                                                    [](PackageKitResource *resource) {
-                                                                        return resource->installedPackageId();
-                                                                    }),
-                                                         true /*allowDeps*/,
-                                                         autoRemove,
-                                                         flags);
+            {
+                auto ids = packageIds(m_apps, [](PackageKitResource *resource) {
+                    return resource->installedPackageId();
+                });
+                ids.removeAll(QString());
+                m_dnfFallbackPackages = dnfFallbackPackagesForPackageIds(ids);
+
+                if (ids.isEmpty()) {
+                    for (auto resource : std::as_const(m_apps)) {
+                        auto pkResource = qobject_cast<PackageKitResource *>(resource);
+                        qWarning() << "Cannot remove PackageKit resource without installed package id"
+                                   << "resourceName=" << resource->name() << "packageName=" << (pkResource ? pkResource->packageName() : QString())
+                                   << "allPackageNames=" << (pkResource ? pkResource->allPackageNames() : QStringList()) << "state=" << resource->state();
+                    }
+                    Q_EMIT passiveMessage(
+                        i18n("Cannot determine the installed package for '%1'. Refresh the application list and try again.", resource()->name()));
+                    setStatus(Transaction::DoneWithErrorStatus);
+                    return;
+                }
+
+                qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "Removing PackageKit packages" << ids;
+                m_trans = PackageKit::Daemon::removePackages(ids, true /*allowDeps*/, autoRemove, flags);
+            }
             break;
         };
     Q_ASSERT(m_trans);
@@ -136,7 +201,6 @@ void PKTransaction::progressChanged()
 {
     auto percent = m_trans->percentage();
     if (percent == 101) {
-        qCWarning(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "percentage cannot be calculated";
         percent = 50;
     }
 
@@ -153,6 +217,20 @@ void PKTransaction::cancellableChanged()
 
 void PKTransaction::cancel()
 {
+    m_waitingForDnfFallbackConfirmation = false;
+
+    if (m_dnfFallbackProcess && m_dnfFallbackProcess->state() != QProcess::NotRunning) {
+        m_dnfFallbackCancelling = true;
+        m_dnfFallbackProcess->terminate();
+        if (!m_dnfFallbackProcess->waitForFinished(5000)) {
+            m_dnfFallbackProcess->kill();
+        }
+        if (status() < Transaction::DoneStatus) {
+            setStatus(CancelledStatus);
+        }
+        return;
+    }
+
     if (!m_trans) {
         setStatus(CancelledStatus);
     } else if (m_trans->allowCancel()) {
@@ -222,6 +300,11 @@ void PKTransaction::cleanup(PackageKit::Transaction::Exit exit, uint runtime)
         return;
     }
 
+    if (failed && !simulate && m_packageKitRemoveFailedWithEmptyDetail && !m_dnfFallbackAttempted && !m_dnfFallbackPackages.isEmpty()) {
+        requestDnfRemoveFallback();
+        return;
+    }
+
     this->submitResolve();
     if (isLocal()) {
         qobject_cast<LocalFilePKResource *>(m_apps.at(0))->resolve({});
@@ -255,10 +338,15 @@ void PKTransaction::processProceedFunction()
 
 void PKTransaction::proceed()
 {
+    if (m_waitingForDnfFallbackConfirmation) {
+        startDnfRemoveFallback();
+        return;
+    }
+
     if (!m_proceedFunctions.isEmpty()) {
         processProceedFunction();
     } else {
-        if (isLocal()) {
+        if (isLocal() || role() == Transaction::RemoveRole) {
             trigger(PackageKit::Transaction::TransactionFlagNone);
         } else {
             trigger(PackageKit::Transaction::TransactionFlagOnlyTrusted);
@@ -291,6 +379,187 @@ void PKTransaction::submitResolve()
     backend->resolvePackages(needResolving);
 }
 
+void PKTransaction::requestDnfRemoveFallback()
+{
+    m_waitingForDnfFallbackConfirmation = true;
+    setCancellable(true);
+    setStatus(Transaction::CommittingStatus);
+    setProgress(50);
+
+    const QString packageList = QStringLiteral("<ul><li>") + m_dnfFallbackPackages.join(QLatin1String("</li><li>")) + QStringLiteral("</li></ul>");
+    Q_EMIT proceedRequest(i18n("Retry removal with DNF"),
+                          i18np("PackageKit could not remove this package and did not provide a detailed error. Discover can retry the removal with DNF for "
+                                "the following RPM package:<nl/>%2<nl/>You will be asked for administrator privileges.",
+                                "PackageKit could not remove this package and did not provide a detailed error. Discover can retry the removal with DNF for "
+                                "the following RPM packages:<nl/>%2<nl/>You will be asked for administrator privileges.",
+                                m_dnfFallbackPackages.count(),
+                                packageList));
+}
+
+void PKTransaction::startDnfRemoveFallback()
+{
+    m_waitingForDnfFallbackConfirmation = false;
+    m_dnfFallbackAttempted = true;
+    m_dnfFallbackCancelling = false;
+
+    if (m_dnfFallbackPackages.isEmpty()) {
+        Q_EMIT passiveMessage(i18n("Cannot retry the removal with DNF because no RPM package name is known."));
+        setStatus(Transaction::DoneWithErrorStatus);
+        return;
+    }
+
+    QStringList arguments;
+    arguments << QStringLiteral("dnf");
+    arguments << QStringLiteral("remove");
+    arguments << QStringLiteral("-y");
+    arguments << m_dnfFallbackPackages;
+
+    m_dnfFallbackStdoutBuffer.clear();
+    m_dnfFallbackStderrBuffer.clear();
+
+    if (m_dnfFallbackProcess) {
+        m_dnfFallbackProcess->deleteLater();
+    }
+    m_dnfFallbackProcess = new QProcess(this);
+    connect(m_dnfFallbackProcess.data(), QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), this, &PKTransaction::dnfFallbackFinished);
+    connect(m_dnfFallbackProcess.data(), &QProcess::errorOccurred, this, &PKTransaction::dnfFallbackError);
+    connect(m_dnfFallbackProcess.data(), &QProcess::readyReadStandardOutput, this, &PKTransaction::dnfFallbackOutput);
+    connect(m_dnfFallbackProcess.data(), &QProcess::readyReadStandardError, this, &PKTransaction::dnfFallbackOutput);
+
+    setCancellable(true);
+    setStatus(Transaction::CommittingStatus);
+    setProgress(50);
+
+    qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "Starting DNF remove fallback: pkexec" << arguments;
+    m_dnfFallbackProcess->start(QStringLiteral("pkexec"), arguments);
+}
+
+void PKTransaction::dnfFallbackFinished(int exitCode, QProcess::ExitStatus exitStatus)
+{
+    dnfFallbackOutput();
+
+    if (m_dnfFallbackProcess) {
+        m_dnfFallbackProcess->deleteLater();
+        m_dnfFallbackProcess = nullptr;
+    }
+
+    qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "DNF remove fallback finished with exit code:" << exitCode << "status:" << exitStatus;
+
+    if (m_dnfFallbackCancelling) {
+        m_dnfFallbackCancelling = false;
+        if (status() < Transaction::DoneStatus) {
+            setStatus(Transaction::CancelledStatus);
+        }
+        return;
+    }
+
+    if (status() >= Transaction::DoneStatus) {
+        return;
+    }
+
+    if (exitStatus == QProcess::CrashExit) {
+        Q_EMIT passiveMessage(i18n("DNF removal crashed unexpectedly."));
+        setStatus(Transaction::DoneWithErrorStatus);
+        return;
+    }
+
+    if (exitCode != 0) {
+        const QString output = dnfFallbackDiagnosticOutput();
+        const QString errorMessage = output.isEmpty() ? i18n("No error output was returned") : output;
+        qCWarning(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "DNF remove fallback failed:" << errorMessage;
+        Q_EMIT passiveMessage(i18n("DNF could not remove the package: %1", errorMessage));
+        setStatus(Transaction::DoneWithErrorStatus);
+        return;
+    }
+
+    refreshDnfFallbackPackageState();
+    setProgress(100);
+    setStatus(Transaction::DoneStatus);
+}
+
+void PKTransaction::dnfFallbackError(QProcess::ProcessError error)
+{
+    qCWarning(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "DNF remove fallback process error:" << error;
+
+    if (m_dnfFallbackCancelling) {
+        return;
+    }
+
+    QString errorMessage;
+    switch (error) {
+    case QProcess::FailedToStart:
+        errorMessage = i18n("Failed to start DNF removal. Make sure 'pkexec' and 'dnf' are installed.");
+        break;
+    case QProcess::Crashed:
+        errorMessage = i18n("DNF removal crashed unexpectedly.");
+        break;
+    case QProcess::Timedout:
+        errorMessage = i18n("DNF removal timed out.");
+        break;
+    default:
+        errorMessage = i18n("An unknown error occurred during DNF removal.");
+        break;
+    }
+
+    Q_EMIT passiveMessage(errorMessage);
+    setStatus(Transaction::DoneWithErrorStatus);
+}
+
+void PKTransaction::dnfFallbackOutput()
+{
+    if (!m_dnfFallbackProcess) {
+        return;
+    }
+
+    const QString output = QString::fromUtf8(m_dnfFallbackProcess->readAllStandardOutput());
+    if (!output.isEmpty()) {
+        m_dnfFallbackStdoutBuffer += output;
+        qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "DNF remove fallback output:" << output;
+    }
+
+    const QString error = QString::fromUtf8(m_dnfFallbackProcess->readAllStandardError());
+    if (!error.isEmpty()) {
+        m_dnfFallbackStderrBuffer += error;
+        qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "DNF remove fallback stderr:" << error;
+    }
+}
+
+QString PKTransaction::dnfFallbackDiagnosticOutput() const
+{
+    QString output = m_dnfFallbackStderrBuffer.trimmed();
+    if (output.isEmpty()) {
+        output = m_dnfFallbackStdoutBuffer.trimmed();
+    }
+
+    constexpr qsizetype maxOutputLength = 800;
+    if (output.size() > maxOutputLength) {
+        output = output.left(maxOutputLength) + QStringLiteral("...");
+    }
+
+    return output;
+}
+
+void PKTransaction::refreshDnfFallbackPackageState()
+{
+    const auto backend = qobject_cast<PackageKitBackend *>(resource()->backend());
+    if (!backend) {
+        return;
+    }
+
+    QStringList needResolving = m_dnfFallbackPackages;
+    for (auto resource : std::as_const(m_apps)) {
+        auto pkResource = qobject_cast<PackageKitResource *>(resource);
+        if (!pkResource) {
+            continue;
+        }
+        pkResource->clearPackageIds();
+        Q_EMIT pkResource->stateChanged();
+        needResolving << pkResource->allPackageNames();
+    }
+    needResolving.removeDuplicates();
+    backend->resolvePackages(needResolving);
+}
+
 PackageKit::Transaction *PKTransaction::transaction()
 {
     return m_trans;
@@ -317,6 +586,15 @@ void PKTransaction::errorFound(PackageKit::Transaction::Error err, const QString
         || err == PackageKit::Transaction::ErrorNotAuthorized) {
         return;
     }
+
+    const bool simulate = m_trans && (m_trans->transactionFlags() & PackageKit::Transaction::TransactionFlagSimulate);
+    if (role() == Transaction::RemoveRole && !simulate && err == PackageKit::Transaction::ErrorTransactionError && isEmptyPackageKitTransactionFailure(error)
+        && !m_dnfFallbackAttempted && !m_dnfFallbackPackages.isEmpty()) {
+        m_packageKitRemoveFailedWithEmptyDetail = true;
+        qWarning() << "PackageKit remove failed with empty transaction detail, DNF fallback will be offered for packages:" << m_dnfFallbackPackages;
+        return;
+    }
+
     qWarning() << "PackageKit error:" << err << PackageKitMessages::errorMessage(err, error) << error;
     Q_EMIT passiveMessage(PackageKitMessages::errorMessage(err, error));
 }
