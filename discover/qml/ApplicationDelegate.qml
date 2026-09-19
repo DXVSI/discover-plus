@@ -291,9 +291,8 @@ BasicAbstractCard {
                     Layout.alignment: Qt.AlignBottom | Qt.AlignRight
                     visible: !root.compact
                     // Without an action there is nothing to show, but the card keeps its height
-                    opacity: hasAction ? 1 : 0
-                    enabled: hasAction
-                    Accessible.ignored: !hasAction
+                    opacity: hiddenWithoutAction ? 0 : 1
+                    enabled: !hiddenWithoutAction
                     application: root.application
                     installOrRemoveButtonDisplayStyle: QQC2.AbstractButton.IconOnly
                     listItem: true

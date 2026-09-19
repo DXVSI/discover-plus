@@ -26,6 +26,7 @@ Kirigami.Padding {
     padding: Kirigami.Units.largeSpacing
 
     contentItem: RowLayout {
+        id: row
         spacing: Kirigami.Units.largeSpacing
 
         Kirigami.IconTitleSubtitle {
@@ -53,9 +54,17 @@ Kirigami.Padding {
             buttonActiveFocusOnTab: true
             availableFromOnlySingleSource: stickyComponent.availableFromOnlySingleSource
             hideInvokeButton: false
+            // A long name of a COPR package must not take the header for itself: in a narrow
+            // window the title keeps its icon and some text first, the name gets what is left
+            maximumPackageNameWidth: {
+                const titleWidth = Kirigami.Units.iconSizes.medium + Kirigami.Units.gridUnit * 5;
+                const left = stickyComponent.availableWidth - titleWidth - packageNameSurroundingsWidth - scrollToTopButton.implicitWidth - row.spacing * 2;
+                return Math.max(Kirigami.Units.gridUnit, Math.min(Kirigami.Units.gridUnit * 10, left));
+            }
         }
 
         QQC2.Button {
+            id: scrollToTopButton
             icon.name: "go-top-symbolic"
             text: i18nc("@action:button", "Scroll to top")
             display: QQC2.AbstractButton.IconOnly

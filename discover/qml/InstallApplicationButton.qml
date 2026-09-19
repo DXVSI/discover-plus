@@ -27,6 +27,9 @@ ConditionalLoader {
     // worth showing when it does something
     property bool listItem: false
     readonly property bool hasAction: isActive || !["idle", "loading", "empty", "unavailable"].includes(coprStatus)
+    // A list does not show a button without an action but keeps its room. Screen readers
+    // find the buttons inside whatever is set on this loader: they are told themselves.
+    readonly property bool hiddenWithoutAction: listItem && !hasAction
     readonly property bool buttonEnabled: {
         switch (coprStatus) {
         case "failed":
@@ -66,16 +69,43 @@ ConditionalLoader {
         }
         return "";
     }
-    // What the button does, for the tooltip and for screen readers: from a COPR project
-    // the package is installed that was selected automatically or by the user
-    readonly property string actionName: coprStatus === "ready" && coprPackageName.length > 0
-        ? i18nc("@info:tooltip %1 is the name of a package", "Install %1", coprPackageName)
-        : action.text
+    // From a COPR project the package is installed that was selected automatically or by
+    // the user: the button names it. A name longer than this is elided in the button.
+    property real maximumPackageNameWidth: Kirigami.Units.gridUnit * 10
+    readonly property bool namesCoprPackage: coprStatus === "ready" && coprPackageName.length > 0
+    // What the button takes around that name: the rest of its text, and about an icon
+    // with the margins of a button. For those that work out how much room the name gets.
+    readonly property real packageNameSurroundingsWidth: packageNameSurroundingsMetrics.advanceWidth + Kirigami.Units.iconSizes.small + Kirigami.Units.largeSpacing * 3 + Kirigami.Units.smallSpacing
+    // The same as the text of the button with the whole name, for the tooltip and for screen readers
+    readonly property string actionName: namesCoprPackage ? installPackageText(coprPackageName) : action.text
+
+    // The words are the strings the other backends use, those are translated: the fork has no
+    // catalogs of its own, a new sentence would show up in English
+    function installPackageText(packageName: string): string {
+        const install = root.availableFromOnlySingleSource
+            ? i18nc("@action:button %1 is the name of a software repository", "Install from %1", root.application.displayOrigin)
+            : i18nc("@action:button", "Install");
+        return install + ": " + packageName;
+    }
 
     signal packageSelectionRequested()
 
     Discover.TransactionListener {
         id: listener
+    }
+
+    TextMetrics {
+        id: packageNameMetrics
+        font: Kirigami.Theme.defaultFont
+        text: root.coprPackageName
+        elide: Text.ElideMiddle
+        elideWidth: root.maximumPackageNameWidth
+    }
+
+    TextMetrics {
+        id: packageNameSurroundingsMetrics
+        font: Kirigami.Theme.defaultFont
+        text: root.namesCoprPackage ? root.installPackageText("") : ""
     }
 
     readonly property Kirigami.Action action: Kirigami.Action {
@@ -91,6 +121,9 @@ ConditionalLoader {
             }
             if (!root.isStateAvailable) {
                 return i18nc("State being fetched", "Loading…")
+            }
+            if (root.namesCoprPackage) {
+                return root.installPackageText(packageNameMetrics.elidedText);
             }
             if (!root.application.isInstalled) {
                 if (root.availableFromOnlySingleSource) {
@@ -202,6 +235,7 @@ ConditionalLoader {
         QQC2.Button {
             id: invokeButton
             visible: !root.hideInvokeButton && root.application.isInstalled && root.application.canExecute && !listener.isActive
+            Accessible.ignored: root.hiddenWithoutAction
             text: root.application.executeLabel
             icon.name: "media-playback-start-symbolic"
             onClicked: root.application.invokeApplication()
@@ -222,6 +256,7 @@ ConditionalLoader {
 
             Accessible.name: root.actionName
             Accessible.description: root.coprReason
+            Accessible.ignored: root.hiddenWithoutAction
 
             QQC2.ToolTip.text: root.coprReason.length > 0 ? root.coprReason : root.actionName
             QQC2.ToolTip.visible: ((hovered || activeFocus) && (display === QQC2.AbstractButton.IconOnly || root.actionName !== text || root.coprReason.length > 0))
