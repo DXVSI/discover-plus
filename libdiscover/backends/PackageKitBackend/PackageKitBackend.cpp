@@ -312,10 +312,28 @@ PackageKitBackend::PackageKitBackend(QObject *parent)
     // Initialize COPR client
     m_coprClient = new CoprClient(this);
     connect(m_coprClient, &CoprClient::projectsFound, this, &PackageKitBackend::onCoprProjectsFound);
-    connect(m_coprClient, &CoprClient::packagesFound, this, &PackageKitBackend::onCoprPackagesFound);
     connect(m_coprClient, &CoprClient::projectPackagesFound, this, &PackageKitBackend::onCoprProjectPackagesFound);
-    connect(m_coprClient, &CoprClient::errorOccurred, this, [](const QString &error) {
-        qCWarning(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "COPR error:" << error;
+    connect(m_coprClient, &CoprClient::errorOccurred, this, [this](const QString &requestType, const QString &error) {
+        qCWarning(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "COPR error:" << requestType << error;
+        // Only the list itself is worth a message: a failed list request ends the
+        // user action (the stream is finished), so this is one message per action.
+        QString message;
+        if (requestType == QStringLiteral("getLatestProjects")) {
+            message = i18n("Could not load COPR projects: %1", error);
+        } else if (requestType == QStringLiteral("searchProjects")) {
+            message = i18n("COPR search failed: %1", error);
+        } else {
+            return;
+        }
+
+        // The COPR page starts its stream twice while opening: do not repeat the message
+        if (message == m_lastCoprErrorMessage && m_lastCoprErrorTimer.isValid() && m_lastCoprErrorTimer.elapsed() < 5000) {
+            return;
+        }
+        m_lastCoprErrorMessage = message;
+        m_lastCoprErrorTimer.start();
+        qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "Showing COPR error to the user:" << message;
+        Q_EMIT passiveMessage(message);
     });
 
     // Hide the drivers category if there's no drivers
@@ -2034,41 +2052,6 @@ void PackageKitBackend::onCoprProjectsFound(const QList<CoprProjectInfo> &projec
 
     qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "COPR: processed" << results.size() << "relevant results from" << projectsToProcess.size() << "projects";
     m_coprBatchBuffer.clear();
-}
-
-void PackageKitBackend::onCoprPackagesFound(const QList<CoprPackageInfo> &packages)
-{
-    qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "Found" << packages.size() << "COPR packages";
-
-    QVector<StreamResult> results;
-
-    for (const CoprPackageInfo &packageInfo : packages) {
-        QString key = QStringLiteral("%1/%2:%3").arg(packageInfo.owner, packageInfo.projectName, packageInfo.name);
-
-        if (!m_coprResources.contains(key)) {
-            CoprResource *resource = new CoprResource(packageInfo, this);
-            m_coprResources[key] = resource;
-
-            // Add to packages registry
-            auto packageId = makeAppId(key);
-            m_packages.packages[packageId] = resource;
-
-            qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG)
-                << "Created new COPR resource:" << packageInfo.name << "from" << packageInfo.owner << "/" << packageInfo.projectName;
-        }
-
-        results.append(StreamResult(m_coprResources[key], 50)); // relevance 50 for COPR packages
-    }
-
-    // Add COPR results to the current search stream
-    if (!results.isEmpty() && m_currentSearchStream && !m_currentSearchStream.isNull()) {
-        qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "Adding" << results.size() << "COPR results to search stream";
-        Q_EMIT m_currentSearchStream->resourcesFound(results);
-    } else if (!results.isEmpty() && (!m_currentSearchStream || m_currentSearchStream.isNull())) {
-        qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "Have" << results.size() << "COPR results but stream was cancelled or deleted";
-    } else if (results.isEmpty()) {
-        qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "No COPR results to send";
-    }
 }
 
 void PackageKitBackend::onCoprProjectPackagesFound(const QString &owner, const QString &project, const QList<CoprPackageInfo> &packages)

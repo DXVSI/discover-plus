@@ -28,7 +28,7 @@ ColumnLayout {
         if (packageData.latestBuildState) {
             parts.push(i18nd("libdiscover", "latest build: %1", packageData.latestBuildState));
         }
-        if (packageData.availableChroots.length > 0) {
+        if (packageData.isAvailabilityKnown) {
             if (packageData.isAvailableForCurrentFedora) {
                 parts.push(i18nd("libdiscover", "available for this Fedora version"));
             } else {

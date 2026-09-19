@@ -42,8 +42,9 @@ public:
     QString coprProject() const { return m_project; }
     QStringList availableChroots() const { return m_availableChroots; }
     bool isAvailableForCurrentFedora() const { return m_isAvailableForCurrentFedora; }
+    // False when the chroot of this system could not be detected: availability is unknown then
+    bool isCurrentChrootKnown() const;
 
-    void setAvailableForCurrentFedora(bool available) { m_isAvailableForCurrentFedora = available; }
     void setState(AbstractResource::State state);
     void setInstalledStateFromSystem(bool installed);
     void setProjectPackages(const QList<CoprPackageInfo> &packages);
@@ -73,6 +74,7 @@ Q_SIGNALS:
 
 private:
     QString findDesktopFile() const;
+    QString currentChroot() const;
     const CoprPackageInfo *preferredProjectPackage() const;
     void applyPackageDetails(const CoprPackageInfo &package);
 

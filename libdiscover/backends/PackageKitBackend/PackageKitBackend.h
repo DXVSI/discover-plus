@@ -10,6 +10,7 @@
 
 #include <PackageKit/Offline>
 #include <PackageKit/Transaction>
+#include <QElapsedTimer>
 #include <QHash>
 #include <QPointer>
 #include <QQueue>
@@ -172,13 +173,11 @@ private Q_SLOTS:
     void loadAllPackages();
     void loadAllPackagesHybrid();
     void onCoprProjectsFound(const QList<CoprProjectInfo> &projects);
-    void onCoprPackagesFound(const QList<CoprPackageInfo> &packages);
     void onCoprProjectPackagesFound(const QString &owner, const QString &project, const QList<CoprPackageInfo> &packages);
 
 Q_SIGNALS:
     void loadedAppStream();
     void available();
-    void coprSearchResults(const QList<CoprResource *> &resources);
 
 private:
     friend class PackageKitResource;
@@ -252,4 +251,7 @@ private:
     // Batch loading: accumulate results from parallel initial requests
     QList<CoprProjectInfo> m_coprBatchBuffer;
     int m_coprBatchPending = 0;
+
+    QString m_lastCoprErrorMessage;
+    QElapsedTimer m_lastCoprErrorTimer;
 };
