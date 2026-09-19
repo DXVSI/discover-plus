@@ -21,6 +21,8 @@ BasicAbstractCard {
     property bool compact: false
     property bool showRating: true
     property bool showSize: false
+    // Whether the list is what the user is looking at, and not a page below another one
+    property bool listActive: true
 
     readonly property bool appIsFromNonDefaultBackend: Discover.ResourcesModel.currentApplicationBackend !== application.backend && application.backend.hasApplications
     showClickFeedback: true
@@ -39,6 +41,64 @@ BasicAbstractCard {
 
     Keys.onReturnPressed: trigger()
     onClicked: trigger()
+
+    // A COPR project only knows its packages after a request of its own. It is made for
+    // the rows the user really looks at: on screen for a moment, in the list on top.
+    // Everything else lacks coprInstallStatus and never gets here.
+    readonly property string coprPackageName: application?.isCoprProjectResource ? application.selectedCoprPackageName : ""
+    property bool pooled: false
+    readonly property bool onScreen: !pooled && listActive && ListView.view !== null
+        && y + height > ListView.view.contentY && y < ListView.view.contentY + ListView.view.height
+    readonly property bool wantsCoprPackages: onScreen && application?.coprInstallStatus === "idle"
+    // The resource this row has asked for, to take the request back when the row goes away
+    property Discover.AbstractResource coprRequested: null
+
+    function dropCoprRequest() {
+        coprFetchTimer.stop()
+        if (coprRequested) {
+            // Does nothing once the request is on its way or answered
+            coprRequested.dropLazyProjectMonitor()
+        }
+        coprRequested = null
+    }
+
+    function scheduleCoprFetch() {
+        if (wantsCoprPackages) {
+            // Long enough for a row that is only scrolled past to be gone again
+            coprFetchTimer.interval = Kirigami.Units.humanMoment / 4
+            coprFetchTimer.restart()
+        } else {
+            coprFetchTimer.stop()
+        }
+    }
+
+    onApplicationChanged: {
+        dropCoprRequest()
+        scheduleCoprFetch()
+    }
+    onOnScreenChanged: if (!onScreen) {
+        dropCoprRequest()
+    }
+    onWantsCoprPackagesChanged: scheduleCoprFetch()
+    ListView.onPooled: pooled = true
+    ListView.onReused: pooled = false
+    Component.onDestruction: dropCoprRequest()
+
+    Timer {
+        id: coprFetchTimer
+        onTriggered: {
+            if (!root.wantsCoprPackages) {
+                return
+            }
+            if (root.application.fetchProjectMonitorLazily()) {
+                root.coprRequested = root.application
+            } else {
+                // Lazy requests are paused: look again later, nothing was sent
+                interval = Kirigami.Units.humanMoment * 5
+                restart()
+            }
+        }
+    }
 
     content: Item {
         implicitHeight: Math.max(columnLayout.implicitHeight, resourceIconFrame.implicitHeight)
@@ -194,9 +254,23 @@ BasicAbstractCard {
                         id: sizeInfo
                         Layout.fillWidth: true
                         Layout.alignment: Qt.AlignBottom
-                        visible: !root.compact && root.showSize
+                        visible: !root.compact && root.showSize && !coprPackageInfo.visible
                         text: visible ? root.application.sizeDescription : ""
                         horizontalAlignment: Text.AlignRight
+                        opacity: 0.75
+                        font: Kirigami.Theme.smallFont
+                        elide: Text.ElideRight
+                        maximumLineCount: 1
+                    }
+
+                    // The package that the install button of a COPR project installs.
+                    // Takes the line of the size, which COPR does not know.
+                    QQC2.Label {
+                        id: coprPackageInfo
+                        Layout.fillWidth: true
+                        Layout.alignment: Qt.AlignBottom
+                        visible: !root.compact && root.coprPackageName.length > 0
+                        text: visible ? i18nc("@info %1 is the name of a package", "Package: %1", root.coprPackageName) : ""
                         opacity: 0.75
                         font: Kirigami.Theme.smallFont
                         elide: Text.ElideRight
@@ -213,8 +287,13 @@ BasicAbstractCard {
                     id: installButton
                     Layout.alignment: Qt.AlignBottom | Qt.AlignRight
                     visible: !root.compact
+                    // Without an action there is nothing to show, but the card keeps its height
+                    opacity: hasAction ? 1 : 0
+                    enabled: hasAction
                     application: root.application
                     installOrRemoveButtonDisplayStyle: QQC2.AbstractButton.IconOnly
+                    listItem: true
+                    onPackageSelectionRequested: root.trigger()
                 }
             }
         }

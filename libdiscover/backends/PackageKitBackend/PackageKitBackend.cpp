@@ -1823,6 +1823,13 @@ void PackageKitBackend::requestCoprInstalledStateCheck(CoprResource *resource)
     request.packageName = packageName;
     request.owner = owner;
     m_coprInstalledStateQueue.enqueue(request);
+    if (m_coprInstalledStateQueue.size() > MaxQueuedCoprInstalledStateChecks) {
+        // Forgotten, not answered: the next check of that resource queues it again
+        const CoprInstalledStateRequest dropped = m_coprInstalledStateQueue.dequeue();
+        if (m_coprInstalledStatePendingKeys.value(dropped.resourceKey) == dropped.key) {
+            m_coprInstalledStatePendingKeys.remove(dropped.resourceKey);
+        }
+    }
 
     qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "Queued COPR installed-state check for" << resource->coprOwner() << "/" << resource->coprProject()
                                                 << "package:" << packageName << "queue size:" << m_coprInstalledStateQueue.size();
@@ -1841,7 +1848,8 @@ void PackageKitBackend::setCoprInstalledStateCache(const QString &owner, const Q
 void PackageKitBackend::processNextCoprInstalledStateCheck()
 {
     while (m_activeCoprInstalledStateChecks < MaxConcurrentCoprInstalledStateChecks && !m_coprInstalledStateQueue.isEmpty()) {
-        const CoprInstalledStateRequest request = m_coprInstalledStateQueue.dequeue();
+        // The newest first: that is the package of a row the user is looking at
+        const CoprInstalledStateRequest request = m_coprInstalledStateQueue.takeLast();
         if (!request.resource) {
             if (m_coprInstalledStatePendingKeys.value(request.resourceKey) == request.key) {
                 m_coprInstalledStatePendingKeys.remove(request.resourceKey);

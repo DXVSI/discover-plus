@@ -253,6 +253,8 @@ private:
     QHash<QString, bool> m_coprInstalledStateCache;
     int m_activeCoprInstalledStateChecks = 0;
     static constexpr int MaxConcurrentCoprInstalledStateChecks = 2;
+    // Every automatically selected package of a list item asks for an rpm process
+    static constexpr int MaxQueuedCoprInstalledStateChecks = 100;
 
     // Browse mode. About 90% of the newest projects are hidden from the COPR
     // homepage (CI scratch projects) or lack the current chroot, so one user

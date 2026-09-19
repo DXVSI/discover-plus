@@ -15,10 +15,17 @@ ColumnLayout {
 
     required property Discover.AbstractResource resource
 
+    // Not needed for the only package of a project, unless there is something to say about it
     Discover.Activatable.active: resource.isCoprProjectResource
-        && (!resource.coprProjectPackagesLoaded || resource.coprProjectPackages.length !== 1)
+        && (resource.coprInstallStatus !== "ready" || resource.coprProjectPackages.length !== 1 || resource.coprInstallWarning.length > 0)
 
     spacing: Kirigami.Units.smallSpacing
+
+    // The install takes the package that was selected when it started
+    Discover.TransactionListener {
+        id: transactionListener
+        resource: root.resource
+    }
 
     Component.onCompleted: resource.fetchProjectPackages()
     onResourceChanged: resource.fetchProjectPackages()
@@ -40,23 +47,39 @@ ColumnLayout {
 
     Kirigami.InlineMessage {
         Layout.fillWidth: true
-        type: root.resource.coprProjectPackagesLoaded && root.resource.coprProjectPackages.length === 0
+        type: ["failed", "empty", "unavailable"].includes(root.resource.coprInstallStatus) || root.resource.coprInstallWarning.length > 0
             ? Kirigami.MessageType.Warning
             : Kirigami.MessageType.Information
         text: {
-            if (!root.resource.coprProjectPackagesLoaded) {
+            const selected = root.resource.selectedCoprPackageName;
+            switch (root.resource.coprInstallStatus) {
+            case "idle":
+            case "loading":
                 return i18nd("libdiscover", "Loading packages for this COPR project...");
-            }
-            if (root.resource.coprProjectPackages.length === 0) {
+            case "failed":
+                return i18nd("libdiscover", "The packages of this COPR project could not be loaded.");
+            case "empty":
                 return i18nd("libdiscover", "No installable packages were returned for this COPR project.");
-            }
-            if (root.resource.selectedCoprPackageName.length === 0) {
+            case "needs-selection":
                 return i18nd("libdiscover", "Choose which package to install from this COPR project.");
+            case "unavailable":
+                return selected.length > 0
+                    ? i18nd("libdiscover", "Selected package: %1. It is not built for this Fedora version and architecture.", selected)
+                    : i18nd("libdiscover", "Nothing in this COPR project is built for this Fedora version and architecture.");
             }
-            return i18nd("libdiscover", "Selected package: %1", root.resource.selectedCoprPackageName);
+            if (root.resource.coprInstallWarning.length > 0) {
+                return i18nd("libdiscover", "Selected package: %1. %2", selected, root.resource.coprInstallWarning);
+            }
+            return i18nd("libdiscover", "Selected package: %1", selected);
         }
         visible: true
         showCloseButton: false
+        actions: Kirigami.Action {
+            visible: root.resource.coprInstallStatus === "failed"
+            text: i18nd("libdiscover", "Retry")
+            icon.name: "view-refresh"
+            onTriggered: root.resource.fetchProjectPackages()
+        }
     }
 
     ColumnLayout {
@@ -73,6 +96,8 @@ ColumnLayout {
                 required property var modelData
 
                 Layout.fillWidth: true
+                // The radio button included
+                enabled: !transactionListener.isActive
                 onClicked: root.resource.selectCoprProjectPackage(modelData.name)
 
                 contentItem: RowLayout {

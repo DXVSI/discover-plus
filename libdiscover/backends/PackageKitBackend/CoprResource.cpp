@@ -370,9 +370,23 @@ void CoprResource::fetchProjectPackages()
     if (changed) {
         Q_EMIT projectPackagesChanged();
     }
+    // The backend forgets the oldest checks when too many are waiting; answered from its cache otherwise
+    if (!m_installPackageName.isEmpty()) {
+        checkInstalledState();
+    }
 }
 
 bool CoprResource::fetchProjectMonitor()
+{
+    return requestProjectMonitor(false);
+}
+
+bool CoprResource::fetchProjectMonitorLazily()
+{
+    return requestProjectMonitor(true);
+}
+
+bool CoprResource::requestProjectMonitor(bool lazy)
 {
     // Nothing can be installed from a project without the chroot of this system
     if (!m_isProjectResource || isProjectChrootMissing() || m_monitorFetch == Loaded) {
@@ -381,15 +395,40 @@ bool CoprResource::fetchProjectMonitor()
     if (m_monitorFetch == Requested) {
         return true;
     }
+    // Only the user repeats what failed
+    if (lazy && m_monitorFetch == Failed) {
+        return false;
+    }
 
     auto pkBackend = qobject_cast<PackageKitBackend *>(backend());
     CoprClient *client = pkBackend ? pkBackend->coprClient() : nullptr;
-    m_monitorFetch = client ? Requested : Failed;
-    if (client) {
-        client->getProjectMonitor(m_owner, m_project);
+    if (lazy) {
+        // A refusal leaves everything as it was: the list item may ask again later
+        if (!client || !client->getProjectMonitorLazily(m_owner, m_project)) {
+            return false;
+        }
+        m_monitorFetch = Requested;
+    } else {
+        m_monitorFetch = client ? Requested : Failed;
+        if (client) {
+            client->getProjectMonitor(m_owner, m_project);
+        }
     }
     Q_EMIT projectPackagesChanged();
     return client;
+}
+
+void CoprResource::dropLazyProjectMonitor()
+{
+    if (m_monitorFetch != Requested || m_monitorForOpenPage) {
+        return;
+    }
+    if (auto pkBackend = qobject_cast<PackageKitBackend *>(backend())) {
+        if (CoprClient *client = pkBackend->coprClient()) {
+            // Answers with a cancellation when the request was indeed still waiting
+            client->dropLazyProjectMonitor(m_owner, m_project);
+        }
+    }
 }
 
 QString CoprResource::availableVersion() const

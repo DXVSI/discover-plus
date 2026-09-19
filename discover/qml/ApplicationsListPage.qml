@@ -299,6 +299,7 @@ DiscoverPage {
         delegate: ApplicationDelegate {
             showRating: page.showRating
             showSize: page.showSize
+            listActive: page.isCurrentPage
         }
 
         section {

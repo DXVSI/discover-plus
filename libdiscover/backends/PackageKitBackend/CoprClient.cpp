@@ -248,7 +248,7 @@ void CoprClient::requestProjectPackagesPage(const QString &owner, const QString 
     queueRequest({url, projectPackagesRequestType(), true});
 }
 
-void CoprClient::getProjectMonitor(const QString &owner, const QString &project, bool forOpenPage)
+QUrl CoprClient::projectMonitorUrl(const QString &owner, const QString &project) const
 {
     QString endpoint = QStringLiteral("/monitor");
     QUrl url(m_baseUrl + endpoint);
@@ -257,8 +257,73 @@ void CoprClient::getProjectMonitor(const QString &owner, const QString &project,
     urlQuery.addQueryItem(QStringLiteral("ownername"), owner);
     urlQuery.addQueryItem(QStringLiteral("projectname"), project);
     url.setQuery(urlQuery);
+    return url;
+}
 
-    queueRequest({url, projectMonitorRequestType(), forOpenPage});
+void CoprClient::getProjectMonitor(const QString &owner, const QString &project, bool forOpenPage)
+{
+    queueRequest({projectMonitorUrl(owner, project), projectMonitorRequestType(), forOpenPage});
+}
+
+bool CoprClient::getProjectMonitorLazily(const QString &owner, const QString &project)
+{
+    const QUrl url = projectMonitorUrl(owner, project);
+
+    // What the cache still has costs the server nothing
+    const auto cached = m_cache.constFind(url.toString());
+    const bool isCached = cached != m_cache.cend() && QDateTime::currentMSecsSinceEpoch() - cached->timestamp < CacheTtlMs;
+    if (isLazyPaused() && !isCached) {
+        return false;
+    }
+
+    queueRequest({url, projectMonitorRequestType(), false, true});
+    return true;
+}
+
+void CoprClient::dropLazyProjectMonitor(const QString &owner, const QString &project)
+{
+    const QUrl url = projectMonitorUrl(owner, project);
+    for (auto it = m_lazyQueue.begin(); it != m_lazyQueue.end(); ++it) {
+        if (it->url == url) {
+            const Request dropped = *it;
+            m_lazyQueue.erase(it);
+            qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "Dropped lazy COPR request, still queued:" << m_lazyQueue.size();
+            cancelRequest(dropped);
+            return;
+        }
+    }
+}
+
+bool CoprClient::isLazyPaused() const
+{
+    return qMax(m_lazyPausedUntilMs, m_retryNotBeforeMs) > QDateTime::currentMSecsSinceEpoch();
+}
+
+void CoprClient::noteLazyResult(bool failed)
+{
+    if (!failed) {
+        m_lazyFailuresInARow = 0;
+        return;
+    }
+    if (++m_lazyFailuresInARow < MaxLazyFailuresInARow) {
+        return;
+    }
+
+    // Something is wrong with the server or the network: list items stop asking for
+    // a while. Open pages and an explicit retry are not held back by this.
+    m_lazyFailuresInARow = 0;
+    m_lazyPausedUntilMs = QDateTime::currentMSecsSinceEpoch() + qint64(LazyPauseSecs) * 1000;
+    qCWarning(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << MaxLazyFailuresInARow << "lazy COPR requests failed in a row - none for" << LazyPauseSecs << "s";
+    cancelLazyQueue();
+}
+
+void CoprClient::cancelLazyQueue()
+{
+    // Cancelled and not failed: nothing was sent, the list items simply have no answer yet
+    const auto dropped = std::exchange(m_lazyQueue, {});
+    for (const Request &request : dropped) {
+        cancelRequest(request);
+    }
 }
 
 void CoprClient::cancelStreamRequests()
@@ -273,6 +338,9 @@ void CoprClient::cancelStreamRequests()
         }
         if (reply) {
             cancelled.append({reply->request().url(), reply->property("requestType").toString()});
+            if (reply->property("lazy").toBool() && m_activeLazyRequests > 0) {
+                --m_activeLazyRequests;
+            }
             reply->disconnect(this);
             reply->abort();
             reply->deleteLater();
@@ -282,6 +350,8 @@ void CoprClient::cancelStreamRequests()
             --m_activeRequests;
         }
     }
+
+    cancelled.append(std::exchange(m_lazyQueue, {}));
 
     for (auto it = m_requestQueue.begin(); it != m_requestQueue.end();) {
         if (it->forOpenPage) {
@@ -317,8 +387,10 @@ void CoprClient::cancelAllRequests()
     }
     m_activeReplies.clear();
     m_requestQueue.clear();
+    m_lazyQueue.clear();
     m_packagePages.clear();
     m_activeRequests = 0;
+    m_activeLazyRequests = 0;
     // Answers that were deferred to the event loop (cache hits, refusals) are cancelled too
     ++m_requestGeneration;
 
@@ -382,10 +454,14 @@ void CoprClient::queueRequest(const Request &request)
     // Deduplication - skip if same URL already queued or in flight. The answer is a
     // signal that everybody hears, so nobody is left waiting. The URL carries the
     // variant and the offset of a request, so different pages never merge.
-    for (auto &queued : m_requestQueue) {
-        if (queued.url == url) {
+    for (auto it = m_requestQueue.begin(); it != m_requestQueue.end(); ++it) {
+        if (it->url == url) {
             qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "COPR request deduped, already queued:" << requestType << urlString;
-            queued.forOpenPage = queued.forOpenPage || request.forOpenPage;
+            if (request.forOpenPage && !it->forOpenPage) {
+                // Asked again by an open page: goes to the front like a new request of it would
+                m_requestQueue.erase(it);
+                break;
+            }
             return;
         }
     }
@@ -395,12 +471,39 @@ void CoprClient::queueRequest(const Request &request)
             if (request.forOpenPage) {
                 reply->setProperty("forOpenPage", true);
             }
+            // Somebody is really waiting for it now
+            if (!request.lazy && reply->property("lazy").toBool()) {
+                reply->setProperty("lazy", false);
+                m_activeLazyRequests = qMax(0, m_activeLazyRequests - 1);
+            }
             return;
         }
     }
+    for (auto it = m_lazyQueue.begin(); it != m_lazyQueue.end(); ++it) {
+        if (it->url == url) {
+            // Asked again: lazily it becomes the newest, otherwise it stops being lazy
+            m_lazyQueue.erase(it);
+            break;
+        }
+    }
 
-    m_requestQueue.enqueue(request);
-    qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "Queued COPR request:" << requestType << "queue size:" << m_requestQueue.size();
+    if (request.lazy) {
+        m_lazyQueue.append(request);
+        if (m_lazyQueue.size() > MaxLazyQueueLength) {
+            // The oldest one belongs to a row that was scrolled past long ago
+            cancelRequest(m_lazyQueue.takeFirst());
+        }
+    } else if (request.forOpenPage) {
+        // The user is looking at that page: before what lists and searches queued
+        const auto firstOther = std::find_if(m_requestQueue.begin(), m_requestQueue.end(), [](const Request &queued) {
+            return !queued.forOpenPage;
+        });
+        m_requestQueue.insert(firstOther, request);
+    } else {
+        m_requestQueue.enqueue(request);
+    }
+    qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "Queued COPR request:" << requestType << "queue size:" << m_requestQueue.size()
+                                                << "lazy:" << m_lazyQueue.size();
 
     if (m_activeRequests < MaxConcurrentRequests) {
         processNextRequest();
@@ -554,11 +657,20 @@ void CoprClient::processNextRequest()
             }
             failRequest(request, backOff);
         }
+        cancelLazyQueue();
         return;
     }
 
-    while (!m_requestQueue.isEmpty() && m_activeRequests < MaxConcurrentRequests) {
-        const Request requestData = m_requestQueue.dequeue();
+    while (m_activeRequests < MaxConcurrentRequests) {
+        Request requestData;
+        if (!m_requestQueue.isEmpty()) {
+            requestData = m_requestQueue.dequeue();
+        } else if (!m_lazyQueue.isEmpty() && m_activeLazyRequests < MaxConcurrentLazyRequests) {
+            requestData = m_lazyQueue.takeLast();
+            ++m_activeLazyRequests;
+        } else {
+            break;
+        }
         const QUrl url = requestData.url;
         const QString requestType = requestData.requestType;
         const QString urlString = url.toString();
@@ -572,6 +684,7 @@ void CoprClient::processNextRequest()
         reply->setProperty("requestType", requestType);
         reply->setProperty("urlString", urlString);
         reply->setProperty("forOpenPage", requestData.forOpenPage);
+        reply->setProperty("lazy", requestData.lazy);
 
         m_activeReplies.append(reply);
         ++m_activeRequests;
@@ -623,6 +736,11 @@ void CoprClient::processNextRequest()
             if (m_activeRequests > 0) {
                 --m_activeRequests;
             }
+            // Not lazy any more when somebody else asked for the same meanwhile
+            const bool lazy = reply->property("lazy").toBool();
+            if (lazy && m_activeLazyRequests > 0) {
+                --m_activeLazyRequests;
+            }
 
             QJsonParseError parseError;
             const QJsonDocument doc = QJsonDocument::fromJson(data, &parseError);
@@ -664,6 +782,9 @@ void CoprClient::processNextRequest()
                 errorMessage = apiError.isEmpty() ? i18n("Invalid response from the COPR API.") : i18n("COPR reported an error: %1", apiError);
             }
 
+            if (lazy) {
+                noteLazyResult(!errorMessage.isEmpty());
+            }
             if (!errorMessage.isEmpty()) {
                 failRequest(finishedRequest, errorMessage);
                 processNextRequest();

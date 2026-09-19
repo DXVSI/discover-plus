@@ -113,6 +113,12 @@ public:
     // Names, versions and availability of all packages, about 150 bytes per package.
     // A request for an open application page survives cancelStreamRequests().
     void getProjectMonitor(const QString &owner, const QString &project, bool forOpenPage = false);
+    // The same for a list item that merely became visible. Such requests are served
+    // after everything else, the newest first, and never use the last free slot.
+    // Returns false when nothing was queued because lazy requests are paused.
+    bool getProjectMonitorLazily(const QString &owner, const QString &project);
+    // The list item went away: takes its lazy request back while it is still queued
+    void dropLazyProjectMonitor(const QString &owner, const QString &project);
     // A new list or search replaces the previous one: cancels the list and search
     // requests and the monitor requests that were made for list items
     void cancelStreamRequests();
@@ -150,7 +156,13 @@ private:
         QString requestType;
         // Made for an open application page: not cancelled together with the list
         bool forOpenPage = false;
+        // Made for a visible list item: see getProjectMonitorLazily()
+        bool lazy = false;
     };
+    QUrl projectMonitorUrl(const QString &owner, const QString &project) const;
+    bool isLazyPaused() const;
+    void noteLazyResult(bool failed);
+    void cancelLazyQueue();
     void requestProjectPackagesPage(const QString &owner, const QString &project, int offset);
     void emitResultForRequest(const Request &request, const QJsonObject &json);
     void failRequest(const Request &request, const QString &errorMessage);
@@ -176,6 +188,19 @@ private:
     QQueue<Request> m_requestQueue;
     int m_activeRequests = 0;
     static constexpr int MaxConcurrentRequests = 3;
+
+    // Lazy requests: a stack, so that the rows on screen win over those that were
+    // scrolled past. One slot always stays free for lists, searches and open pages.
+    QList<Request> m_lazyQueue;
+    int m_activeLazyRequests = 0;
+    static constexpr int MaxConcurrentLazyRequests = MaxConcurrentRequests - 1;
+    static constexpr int MaxLazyQueueLength = 24;
+    // Circuit breaker: lazy requests are refused until this moment. A back-off that
+    // the server asked for (m_retryNotBeforeMs) pauses them as well.
+    qint64 m_lazyPausedUntilMs = 0;
+    int m_lazyFailuresInARow = 0;
+    static constexpr int MaxLazyFailuresInARow = 3;
+    static constexpr int LazyPauseSecs = 60;
 
     // Active network replies (for cancellation)
     QList<QPointer<QNetworkReply>> m_activeReplies;

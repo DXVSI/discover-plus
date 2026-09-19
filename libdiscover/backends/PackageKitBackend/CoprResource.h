@@ -75,6 +75,11 @@ public:
     // For a list item: the monitor only, and nothing when the project lacks the chroot
     // of this system. Returns whether an answer is on its way.
     Q_INVOKABLE bool fetchProjectMonitor();
+    // The same for a list item that merely became visible: only when nothing was asked
+    // yet (never again after a failure), and the client may refuse or drop it
+    Q_INVOKABLE bool fetchProjectMonitorLazily();
+    // That list item went away: takes the request back while the client still queues it
+    Q_INVOKABLE void dropLazyProjectMonitor();
     Q_INVOKABLE void selectCoprProjectPackage(const QString &packageName);
     void checkInstalledState();
 
@@ -104,6 +109,7 @@ private:
     const CoprPackageInfo *preferredProjectPackage() const;
     void applyPackageDetails(const CoprPackageInfo &package);
     bool isProjectChrootMissing() const;
+    bool requestProjectMonitor(bool lazy);
     void mergeProjectPackages();
     void projectPackagesUpdated();
 
