@@ -30,6 +30,11 @@ target_link_libraries(libdiscover-backend-logging-category
         Qt::Core
 )
 
+option(BUILD_AppStreamPreviewBackend "Build AppStream preview support." "${AppStreamQt_FOUND}")
+if (AppStreamQt_FOUND AND BUILD_AppStreamPreviewBackend)
+    add_subdirectory(AppStreamPreviewBackend)
+endif()
+
 if (KF6Attica_FOUND AND KF6NewStuff_FOUND AND AppStreamQt_FOUND)
    add_subdirectory(KNSBackend)
 endif()

@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: discover\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-04-02 00:45+0000\n"
+"POT-Creation-Date: 2026-08-05 00:48+0000\n"
 "PO-Revision-Date: 2026-05-24 17:33+0900\n"
 "Last-Translator: Ryuichi Yamada <ryuichi_ya220@outlook.jp>\n"
 "Language-Team: Japanese <kde-jp@kde.org>\n"
@@ -26,12 +26,12 @@ msgstr "ソフトウェアの更新:"
 msgid "Manually"
 msgstr "手動"
 
-#: kcm/ui/main.qml:51
+#: kcm/ui/main.qml:56
 #, kde-format
 msgid "Automatically"
 msgstr "自動"
 
-#: kcm/ui/main.qml:58
+#: kcm/ui/main.qml:68
 #, kde-kuit-format
 msgctxt "@info"
 msgid ""
@@ -43,48 +43,48 @@ msgstr ""
 "ケーションの更新は直ちにインストールされますが、システムの更新は次回の再起動"
 "時にインストールされます。"
 
-#: kcm/ui/main.qml:69
+#: kcm/ui/main.qml:74
 #, kde-format
 msgctxt "@title:group"
 msgid "Update frequency:"
 msgstr "更新間隔:"
 
-#: kcm/ui/main.qml:69
+#: kcm/ui/main.qml:74
 #, kde-format
 msgctxt "@title:group"
 msgid "Notification frequency:"
 msgstr "通知の頻度:"
 
-#: kcm/ui/main.qml:72
+#: kcm/ui/main.qml:79
 #, kde-format
 msgctxt "@item:inlistbox"
 msgid "Daily"
 msgstr "毎日"
 
-#: kcm/ui/main.qml:73
+#: kcm/ui/main.qml:80
 #, kde-format
 msgctxt "@item:inlistbox"
 msgid "Weekly"
 msgstr "毎週"
 
-#: kcm/ui/main.qml:74
+#: kcm/ui/main.qml:81
 #, kde-format
 msgctxt "@item:inlistbox"
 msgid "Monthly"
 msgstr "毎月"
 
-#: kcm/ui/main.qml:75
+#: kcm/ui/main.qml:82
 #, kde-format
 msgctxt "@item:inlistbox"
 msgid "Never"
 msgstr "しない"
 
-#: kcm/ui/main.qml:119
+#: kcm/ui/main.qml:120
 #, kde-format
 msgid "Apply system updates:"
 msgstr "システムの更新を適用:"
 
-#: kcm/ui/main.qml:126
+#: kcm/ui/main.qml:127
 #, kde-format
 msgctxt ""
 "@option:radio part of the logical sentence 'Apply system updates after "
@@ -92,7 +92,7 @@ msgctxt ""
 msgid "After rebooting"
 msgstr "再起動後"
 
-#: kcm/ui/main.qml:133
+#: kcm/ui/main.qml:139
 #, kde-format
 msgctxt ""
 "@label The thing being recommended is to use the 'apply updates when "
@@ -100,7 +100,7 @@ msgctxt ""
 msgid "Recommended to maximize system stability"
 msgstr "システムの安定性が最大化されるため推奨されます"
 
-#: kcm/ui/main.qml:139
+#: kcm/ui/main.qml:145
 #, kde-format
 msgctxt ""
 "@option:radio part of the logical sentence 'Apply system updates immediately'"

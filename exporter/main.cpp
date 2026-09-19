@@ -32,7 +32,7 @@ int main(int argc, char **argv)
     DiscoverExporter exp;
     {
         QCommandLineParser parser;
-        parser.addPositionalArgument(QStringLiteral("file"), i18n("File to which we'll export"));
+        parser.addPositionalArgument(QStringLiteral("file"), i18n("File to which we’ll export"));
         DiscoverBackendsFactory::setupCommandLine(&parser);
         about.setupCommandLine(&parser);
         parser.process(app);

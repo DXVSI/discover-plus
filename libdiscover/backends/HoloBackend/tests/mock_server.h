@@ -28,7 +28,7 @@
  * @AU_UPDATE_STATUS_SUCCESSFUL: The update process successfully completed
  * @AU_UPDATE_STATUS_FAILED: An Error occurred during the update
  * @AU_UPDATE_STATUS_CANCELLED: A special case of FAILED where the update attempt
- *  has been cancelled
+ *  has been canceled
  */
 typedef enum {
     AU_UPDATE_STATUS_IDLE = 0,

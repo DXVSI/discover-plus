@@ -1,27 +1,27 @@
 # Translation of plasma-discover.po to Catalan
-# Copyright (C) 2012-2023 This_file_is_part_of_KDE
+# Copyright (C) 2012-2026 This_file_is_part_of_KDE
 # This file is distributed under the same license as the PACKAGE package.
 #
 # SPDX-FileCopyrightText: 2012 Orestes Mas <orestes@tsc.upc.edu>
-# SPDX-FileCopyrightText: 2014, 2015, 2017, 2018, 2019, 2020, 2021, 2022, 2023 Antoni Bella Pérez <antonibella5@yahoo.com>
+# SPDX-FileCopyrightText: 2014-2015, 2017-2023 Antoni Bella Pérez <antonibella5@yahoo.com>
 # SPDX-FileCopyrightText: 2013-2020, 2022-2026 Josep M. Ferrer <txemaq@gmail.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: discover\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-05-22 00:45+0000\n"
-"PO-Revision-Date: 2026-05-13 07:51+0200\n"
+"POT-Creation-Date: 2026-09-17 00:45+0000\n"
+"PO-Revision-Date: 2026-08-23 08:59+0200\n"
 "Last-Translator: Josep M. Ferrer <txemaq@gmail.com>\n"
 "Language-Team: Catalan <kde-i18n-ca@kde.org>\n"
 "Language: ca\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Lokalize 25.04.0\n"
+"X-Generator: Lokalize 26.08.0\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Accelerator-Marker: &\n"
 
-#: discover/DiscoverObject.cpp:198
+#: discover/DiscoverObject.cpp:197
 #, kde-format
 msgctxt "@title %1 is the name"
 msgid ""
@@ -30,7 +30,7 @@ msgstr ""
 "%1 no està configurat per a instal·lar aplicacions mitjançant el Discover, "
 "només aplicacions i complements"
 
-#: discover/DiscoverObject.cpp:200
+#: discover/DiscoverObject.cpp:199
 #, kde-kuit-format
 msgctxt "@info:usagetip %2 is the name of the operating system"
 msgid ""
@@ -43,7 +43,7 @@ msgstr ""
 "<interface>Dorsals que manquen</interface>.<nl/><nl/><link url='%1'>Informeu "
 "d'aquest problema a %2.</link>"
 
-#: discover/DiscoverObject.cpp:207
+#: discover/DiscoverObject.cpp:206
 #, kde-kuit-format
 msgctxt ""
 "@info:usagetip %1 is the distro name; in this case it always contains 'Arch "
@@ -60,7 +60,7 @@ msgstr ""
 "Reviseu el <link url='https://archlinux.org/packages/extra/x86_64/"
 "discover/'>sistema de paquets de %1 per al Discover</link>"
 
-#: discover/DiscoverObject.cpp:217
+#: discover/DiscoverObject.cpp:216
 #, kde-kuit-format
 msgctxt "@info:usagetip %1 is the distro name"
 msgid ""
@@ -79,17 +79,17 @@ msgstr ""
 "l'eina <command>pacman</command> de la línia d'ordres per a gestionar "
 "paquets.</para>"
 
-#: discover/DiscoverObject.cpp:306
+#: discover/DiscoverObject.cpp:305
 #, kde-format
 msgid "Could not find category '%1'"
 msgstr "No s'ha pogut trobar la categoria «%1»"
 
-#: discover/DiscoverObject.cpp:328
+#: discover/DiscoverObject.cpp:327
 #, kde-format
 msgid "Trying to open inexisting file '%1'"
 msgstr "Esteu intentant obrir el fitxer inexistent «%1»"
 
-#: discover/DiscoverObject.cpp:350
+#: discover/DiscoverObject.cpp:349
 #, kde-format
 msgid ""
 "Cannot interact with flatpak resources without the flatpak backend %1. "
@@ -98,17 +98,17 @@ msgstr ""
 "No es pot interactuar amb els recursos del Flatpak sense el dorsal del "
 "«flatpak» %1. Si us plau, primer instal·leu-lo."
 
-#: discover/DiscoverObject.cpp:354
+#: discover/DiscoverObject.cpp:353
 #, kde-format
 msgid "Could not open %1"
 msgstr "No s'ha pogut obrir %1"
 
-#: discover/DiscoverObject.cpp:419
+#: discover/DiscoverObject.cpp:418
 #, kde-format
 msgid "Please make sure Snap support is installed"
 msgstr "Assegureu-vos que està instal·lat el suport de Snap"
 
-#: discover/DiscoverObject.cpp:422
+#: discover/DiscoverObject.cpp:421
 #, kde-format
 msgid ""
 "The requested application could not be found in any available software "
@@ -117,7 +117,7 @@ msgstr ""
 "No s'ha pogut trobar l'aplicació sol·licitada en cap repositori de "
 "programari disponible"
 
-#: discover/DiscoverObject.cpp:425
+#: discover/DiscoverObject.cpp:424
 #, kde-kuit-format
 msgctxt ""
 "@info %1 is an additional error reference and %3 is the name of the "
@@ -129,13 +129,13 @@ msgstr ""
 "(Cap entrada per a %1)<nl/><nl/><link url='%2'>Informeu d'aquest problema a "
 "%3.</link>"
 
-#: discover/DiscoverObject.cpp:509 discover/DiscoverObject.cpp:511
+#: discover/DiscoverObject.cpp:514 discover/DiscoverObject.cpp:516
 #: discover/main.cpp:120
 #, kde-format
 msgid "Discover"
 msgstr "Discover"
 
-#: discover/DiscoverObject.cpp:512
+#: discover/DiscoverObject.cpp:517
 #, kde-format
 msgid ""
 "Discover was closed before certain tasks were done, waiting for it to finish."
@@ -224,7 +224,7 @@ msgstr "Nate Graham"
 
 #: discover/main.cpp:127
 #, kde-format
-msgid "Quality Assurance, Design and Usability"
+msgid "Quality Assurance, Design, and Usability"
 msgstr "Control de qualitat, disseny i usabilitat"
 
 #: discover/main.cpp:131
@@ -289,15 +289,15 @@ msgstr "Afegeix un repositori nou %1"
 msgid "Add"
 msgstr "Afegeix"
 
-#: discover/qml/AddSourceDialog.qml:50 discover/qml/DiscoverWindow.qml:286
+#: discover/qml/AddSourceDialog.qml:50 discover/qml/DiscoverWindow.qml:289
 #: discover/qml/InstallApplicationButton.qml:51
-#: discover/qml/ProgressView.qml:155 discover/qml/SourcesPage.qml:207
+#: discover/qml/ProgressView.qml:163 discover/qml/SourcesPage.qml:207
 #: discover/qml/UpdatesPage.qml:316 discover/qml/WebflowDialog.qml:41
 #, kde-format
 msgid "Cancel"
 msgstr "Cancel·la"
 
-#: discover/qml/ApplicationDelegate.qml:160
+#: discover/qml/ApplicationDelegate.qml:162
 #, kde-format
 msgid "No ratings"
 msgstr "Cap valoració"
@@ -316,7 +316,7 @@ msgid ""
 "harvesting your personal information, tracking your location, or "
 "transmitting the contents of your data to someone else. Only use it if you "
 "fully trust its authors. More information may be available on <link "
-"url='%2'>the application's website</link>.<nl/><nl/>Learn more at <link "
+"url='%2'>the application’s website</link>.<nl/><nl/>Learn more at <link "
 "url='%3'>%3</link>."
 msgstr ""
 "Instal·leu %1 només si confieu completament en els seus autors perquè és "
@@ -373,7 +373,7 @@ msgid ""
 "make sure you fully trust the authors, as no one else can verify the "
 "trustworthiness and security of its code to ensure that it is not acting "
 "against you in hidden ways. More information may be available on <link "
-"url='%4'>the application's website</link>.<nl/><nl/>Learn more at <link "
+"url='%4'>the application’s website</link>.<nl/><nl/>Learn more at <link "
 "url='%5'>%5</link>."
 msgstr ""
 "%1 utilitza una o més llicències no certificades com a «programari lliure» "
@@ -420,7 +420,7 @@ msgstr ""
 msgctxt "@info"
 msgid ""
 "%1 does not indicate under which license it is distributed. You may be able "
-"to determine this on <link url='%2'>the application's website</link>. Find "
+"to determine this on <link url='%2'>the application’s website</link>. Find "
 "it there or contact the author if you want to use this application for "
 "anything other than private personal use."
 msgstr ""
@@ -434,7 +434,7 @@ msgstr ""
 msgctxt "@info"
 msgid ""
 "%1 does not indicate under which license it is distributed. Contact the "
-"application's author if you want to use it for anything other than private "
+"application’s author if you want to use it for anything other than private "
 "personal use."
 msgstr ""
 "%1 no indica amb quina llicència es distribueix. Poseu-vos en contacte amb "
@@ -487,7 +487,7 @@ msgstr "No hi ha captures de pantalla disponibles per a %1"
 
 #: discover/qml/ApplicationPage.qml:436
 #, kde-format
-msgid "What's New"
+msgid "What’s New"
 msgstr "Què hi ha de nou"
 
 #: discover/qml/ApplicationPage.qml:469
@@ -534,53 +534,77 @@ msgctxt "@action:button"
 msgid "Show All Reviews"
 msgstr "Mostra totes les ressenyes"
 
-#: discover/qml/ApplicationPage.qml:567
+#: discover/qml/ApplicationPage.qml:571
 #, kde-format
 msgctxt "@title"
 msgid "External Links"
 msgstr "Enllaços externs"
 
-#: discover/qml/ApplicationPage.qml:585
+#: discover/qml/ApplicationPage.qml:589
 #, kde-format
 msgctxt "@info text of a web URL"
-msgid "Read the documentation"
-msgstr "Llegiu la documentació"
+msgid "Read the FAQ"
+msgstr "Llegiu les preguntes més freqüents"
 
-#: discover/qml/ApplicationPage.qml:596
+#: discover/qml/ApplicationPage.qml:600
 #, kde-format
 msgctxt "@info text of a web URL"
-msgid "Visit the project's website"
+msgid "Read the full documentation"
+msgstr "Llegiu la documentació completa"
+
+#: discover/qml/ApplicationPage.qml:611
+#, kde-format
+msgctxt "@info text of a web URL"
+msgid "Visit the project’s website"
 msgstr "Visiteu el lloc web del projecte"
 
-#: discover/qml/ApplicationPage.qml:606
+#: discover/qml/ApplicationPage.qml:621
 #, kde-format
 msgctxt "@info text of a web URL"
 msgid "Donate to the project"
 msgstr "Feu una donació al projecte"
 
-#: discover/qml/ApplicationPage.qml:616
+#: discover/qml/ApplicationPage.qml:631
 #, kde-format
 msgctxt "@info text of a web URL"
 msgid "Report a bug"
 msgstr "Informeu d'un error"
 
-#: discover/qml/ApplicationPage.qml:626
+#: discover/qml/ApplicationPage.qml:641
 #, kde-format
 msgctxt "@info text of a web URL"
 msgid "Start contributing"
 msgstr "Comenceu a col·laborar"
 
-#: discover/qml/ApplicationPage.qml:655
+#: discover/qml/ApplicationPage.qml:651
+#, kde-format
+msgctxt "@info text of a web URL"
+msgid "Help with translations"
+msgstr "Ajudeu amb les traduccions"
+
+#: discover/qml/ApplicationPage.qml:661
+#, kde-format
+msgctxt "@info text of a web URL"
+msgid "Contact the developers"
+msgstr "Contacteu amb els desenvolupadors"
+
+#: discover/qml/ApplicationPage.qml:671
+#, kde-format
+msgctxt "@info text of a web URL"
+msgid "Browse the source code"
+msgstr "Exploreu el codi font"
+
+#: discover/qml/ApplicationPage.qml:700
 #, kde-format
 msgid "All Licenses"
 msgstr "Totes les llicències"
 
-#: discover/qml/ApplicationPage.qml:693
+#: discover/qml/ApplicationPage.qml:738
 #, kde-format
 msgid "Content Rating"
 msgstr "Valoració del contingut"
 
-#: discover/qml/ApplicationPage.qml:716
+#: discover/qml/ApplicationPage.qml:761
 #, kde-format
 msgctxt "@title:window"
 msgid "License Information"
@@ -825,7 +849,7 @@ msgstr "Vegeu-ne més"
 #: discover/qml/BrowsingPage.qml:141
 #, kde-format
 msgctxt "@title:group"
-msgid "Editor's Choice"
+msgid "Editor’s Choice"
 msgstr "Selecció de l'editor"
 
 #: discover/qml/BrowsingPage.qml:165
@@ -889,85 +913,85 @@ msgctxt "@action:button"
 msgid "Next Screenshot"
 msgstr "Captura de pantalla següent"
 
-#: discover/qml/DiscoverDrawer.qml:161
+#: discover/qml/DiscoverDrawer.qml:163
 #, kde-format
 msgid "Security updates available"
 msgstr "Actualitzacions de seguretat disponibles"
 
-#: discover/qml/DiscoverDrawer.qml:162
+#: discover/qml/DiscoverDrawer.qml:164
 #, kde-format
 msgid "Updates available"
 msgstr "Actualitzacions disponibles"
 
-#: discover/qml/DiscoverWindow.qml:48
+#: discover/qml/DiscoverWindow.qml:51
 #, kde-format
 msgid "Running as <em>root</em> is discouraged and unnecessary."
 msgstr "L'execució com a <em>root</em> es desaconsella i és innecessària."
 
-#: discover/qml/DiscoverWindow.qml:71
+#: discover/qml/DiscoverWindow.qml:74
 #, kde-format
 msgid "&Home"
 msgstr "&Inici"
 
-#: discover/qml/DiscoverWindow.qml:81
+#: discover/qml/DiscoverWindow.qml:84
 #, kde-format
 msgid "&Search"
 msgstr "&Cerca"
 
-#: discover/qml/DiscoverWindow.qml:89
+#: discover/qml/DiscoverWindow.qml:92
 #, kde-format
 msgid "&Installed"
 msgstr "&Instal·lat"
 
-#: discover/qml/DiscoverWindow.qml:101
+#: discover/qml/DiscoverWindow.qml:104
 #, kde-format
 msgid "&Updates (Fetching…)"
 msgstr "&Actualitzacions (Obtenció…)"
 
-#: discover/qml/DiscoverWindow.qml:102
+#: discover/qml/DiscoverWindow.qml:105
 #, kde-format
 msgid "&Updates"
 msgstr "&Actualitzacions"
 
-#: discover/qml/DiscoverWindow.qml:110
+#: discover/qml/DiscoverWindow.qml:113
 #, kde-format
 msgid "&About"
 msgstr "Qu&ant a"
 
-#: discover/qml/DiscoverWindow.qml:118
+#: discover/qml/DiscoverWindow.qml:121
 #, kde-format
 msgid "S&ettings"
 msgstr "A&rranjament"
 
-#: discover/qml/DiscoverWindow.qml:171 discover/qml/DiscoverWindow.qml:365
-#: discover/qml/DiscoverWindow.qml:477
+#: discover/qml/DiscoverWindow.qml:174 discover/qml/DiscoverWindow.qml:368
+#: discover/qml/DiscoverWindow.qml:480
 #, kde-format
 msgid "Error"
 msgstr "Error"
 
-#: discover/qml/DiscoverWindow.qml:175
+#: discover/qml/DiscoverWindow.qml:178
 #, kde-format
 msgid "Unable to find resource: %1"
 msgstr "No s'ha pogut trobar el recurs: %1"
 
-#: discover/qml/DiscoverWindow.qml:273 discover/qml/SourcesPage.qml:201
+#: discover/qml/DiscoverWindow.qml:276 discover/qml/SourcesPage.qml:201
 #, kde-format
 msgid "Proceed"
 msgstr "Continua"
 
-#: discover/qml/DiscoverWindow.qml:331
+#: discover/qml/DiscoverWindow.qml:334
 #, kde-format
 msgctxt "@info %1 is the name of the operating system"
 msgid "Report this issue to %1"
 msgstr "Informa d'aquest problema a %1"
 
-#: discover/qml/DiscoverWindow.qml:347
+#: discover/qml/DiscoverWindow.qml:350
 #, kde-format
 msgctxt "@title:dialog"
 msgid "Discover is Offline"
 msgstr "El Discover està fora de línia"
 
-#: discover/qml/DiscoverWindow.qml:348
+#: discover/qml/DiscoverWindow.qml:351
 #, kde-format
 msgctxt "@info"
 msgid ""
@@ -976,17 +1000,17 @@ msgstr ""
 "Connecteu-vos a una xarxa per a instal·lar aplicacions i actualitzar el "
 "sistema."
 
-#: discover/qml/DiscoverWindow.qml:365
+#: discover/qml/DiscoverWindow.qml:368
 #, kde-format
 msgid "Error %1 of %2"
 msgstr "Error %1 de %2"
 
-#: discover/qml/DiscoverWindow.qml:365 discover/qml/UpdatesPage.qml:47
+#: discover/qml/DiscoverWindow.qml:368 discover/qml/UpdatesPage.qml:47
 #, kde-format
 msgid "Update Issue"
 msgstr "Problema d'actualització"
 
-#: discover/qml/DiscoverWindow.qml:376
+#: discover/qml/DiscoverWindow.qml:379
 #, kde-format
 msgid ""
 "There was an issue during the update or installation process. Please try "
@@ -995,24 +1019,24 @@ msgstr ""
 "Hi ha hagut un problema durant el procés d'actualització o instal·lació. "
 "Torneu-ho a provar més tard."
 
-#: discover/qml/DiscoverWindow.qml:412
+#: discover/qml/DiscoverWindow.qml:415
 #, kde-format
 msgctxt "@action:button"
 msgid "Show Previous"
 msgstr "Mostra l'anterior"
 
-#: discover/qml/DiscoverWindow.qml:423
+#: discover/qml/DiscoverWindow.qml:426
 #, kde-format
 msgctxt "@action:button"
 msgid "Show Next"
 msgstr "Mostra el següent"
 
-#: discover/qml/DiscoverWindow.qml:435 discover/qml/UpdatesPage.qml:69
+#: discover/qml/DiscoverWindow.qml:438 discover/qml/UpdatesPage.qml:69
 #, kde-format
 msgid "See Technical Details"
 msgstr "Veure els detalls tècnics"
 
-#: discover/qml/DiscoverWindow.qml:443
+#: discover/qml/DiscoverWindow.qml:446
 #, kde-format
 msgid "Copy to Clipboard"
 msgstr "Copia al porta-retalls"
@@ -1105,36 +1129,30 @@ msgstr "Instal·lat"
 
 #: discover/qml/Navigation.qml:36
 #, kde-format
-msgid "Resources for '%1'"
+msgid "Resources for “%1”"
 msgstr "Recursos per a «%1»"
 
-#: discover/qml/ProgressView.qml:21
+#: discover/qml/ProgressView.qml:29
 #, kde-format
 msgid "Tasks (%1%)"
 msgstr "Tasques (%1%)"
 
-#: discover/qml/ProgressView.qml:22 discover/qml/ProgressView.qml:52
+#: discover/qml/ProgressView.qml:30 discover/qml/ProgressView.qml:60
 #, kde-format
 msgid "Tasks"
 msgstr "Tasques"
 
-#: discover/qml/ProgressView.qml:129
+#: discover/qml/ProgressView.qml:145
 #, kde-format
 msgctxt "TransactioName - TransactionStatus: speed, remaining time"
-msgid "%1 - %2: %3, %4 remaining"
-msgstr "%1 - %2: %3, manca %4"
+msgid "%1: %2, %3 remaining"
+msgstr "%1: %2, resta %3"
 
-#: discover/qml/ProgressView.qml:137
+#: discover/qml/ProgressView.qml:152
 #, kde-format
 msgctxt "TransactioName - TransactionStatus: speed"
-msgid "%1 - %2: %3"
-msgstr "%1 - %2: %3"
-
-#: discover/qml/ProgressView.qml:144
-#, kde-format
-msgctxt "TransactioName - TransactionStatus"
-msgid "%1 - %2"
-msgstr "%1 - %2"
+msgid "%1: %2"
+msgstr "%1: %2"
 
 #: discover/qml/Rating.qml:119
 #, kde-format
@@ -1182,7 +1200,7 @@ msgctxt "Keep this string as short as humanly possible"
 msgid "Yes"
 msgstr "Sí"
 
-#: discover/qml/ReviewDelegate.qml:122
+#: discover/qml/ReviewDelegate.qml:123
 #, kde-format
 msgctxt "Keep this string as short as humanly possible"
 msgid "No"
@@ -1201,8 +1219,8 @@ msgstr "Envia la ressenya"
 #: discover/qml/ReviewDialog.qml:48
 #, kde-format
 msgid ""
-"If you love %1, tell people what's great about it! Focus on functionality, "
-"usability, and appearance. If the app didn't meet your needs, explain why."
+"If you love %1, tell people what’s great about it! Focus on functionality, "
+"usability, and appearance. If the app didn’t meet your needs, explain why."
 msgstr ""
 "Si us agrada %1, digueu a la gent com és de genial! Centreu-vos en la "
 "funcionalitat, la usabilitat i l'aparença. Si l'aplicació no s'ajustava a "
@@ -1212,7 +1230,7 @@ msgstr ""
 #, kde-kuit-format
 msgctxt "@info"
 msgid ""
-"If %1 isn't launching, consider reporting this to its packagers in %2 at "
+"If %1 isn’t launching, consider reporting this to its packagers in %2 at "
 "<link url='%3'>%3</link> instead, as it may be an easily fixable packaging "
 "issue rather than a flaw in the app itself."
 msgstr ""
@@ -1224,7 +1242,7 @@ msgstr ""
 #, kde-kuit-format
 msgctxt "@info"
 msgid ""
-"If %1 isn't launching, consider reporting this its developers at <link "
+"If %1 isn’t launching, consider reporting this to its developers at <link "
 "url='%2'>%2</link> instead, as it may be an easily fixable packaging issue "
 "rather than a flaw in the app itself."
 msgstr ""
@@ -1236,21 +1254,21 @@ msgstr ""
 #, kde-kuit-format
 msgctxt "@info"
 msgid ""
-"If the app is crashing a lot, consider reporting this to the developers at "
+"If the app is crashing a lot, consider reporting this to its developers at "
 "<link url='%1'>%1</link> instead."
 msgstr ""
-"Si l'aplicació està fallant molt, considereu informar-ho als desenvolupadors "
-"a <link url='%1'>%1</link>."
+"Si l'aplicació està fallant molt, considereu informar-ho als seus "
+"desenvolupadors a <link url='%1'>%1</link>."
 
 #: discover/qml/ReviewDialog.qml:85
 #, kde-kuit-format
 msgctxt "@info"
 msgid ""
-"If you're having a problem with the app, consider reporting it to the "
+"If you’re having a problem with the app, consider reporting this to its "
 "developers at <link url='%1'>%1</link> instead, or else describe the problem "
 "here in greater detail."
 msgstr ""
-"Si teniu un problema amb l'aplicació, considereu informar-lo als "
+"Si teniu un problema amb l'aplicació, considereu informar-lo als seus "
 "desenvolupadors a <link url='%1'>%1</link>, o si no, descriviu el problema "
 "aquí amb més detall."
 
@@ -1292,7 +1310,7 @@ msgstr "fallada,fallar"
 #: discover/qml/ReviewDialog.qml:171
 #, kde-format
 msgctxt ""
-"Word the user might use in an unhelpful sentence saying an app isn't very "
+"Words the user might use in an unhelpful sentence saying an app isn't very "
 "good. Preserve the commas. If necessary, add more words used for this in "
 "your language and/or shorten to common stems contained by multiple forms of "
 "the words,"
@@ -1400,7 +1418,7 @@ msgstr "Cerca…"
 
 #: discover/qml/SearchField.qml:26
 #, kde-format
-msgid "Search in '%1'…"
+msgid "Search in “%1”…"
 msgstr "Cerca a «%1»…"
 
 #: discover/qml/SourcesPage.qml:19
@@ -1430,7 +1448,7 @@ msgstr "Augmenta la prioritat"
 
 #: discover/qml/SourcesPage.qml:258
 #, kde-format
-msgid "Failed to increase '%1' preference"
+msgid "Failed to increase “%1” preference"
 msgstr "Ha fallat en incrementar la preferència «%1»"
 
 #: discover/qml/SourcesPage.qml:264
@@ -1440,7 +1458,7 @@ msgstr "Disminueix la prioritat"
 
 #: discover/qml/SourcesPage.qml:270
 #, kde-format
-msgid "Failed to decrease '%1' preference"
+msgid "Failed to decrease “%1” preference"
 msgstr "Ha fallat en reduir la preferència «%1»"
 
 #: discover/qml/SourcesPage.qml:276
@@ -1568,9 +1586,9 @@ msgstr "Atura"
 
 #: discover/qml/UpdatesPage.qml:296
 #, kde-format
-msgctxt "@item:inlistbox after updates complete, quit"
-msgid "Quit"
-msgstr "Surt"
+msgctxt "@item:inlistbox after updates complete, quit Discover"
+msgid "Quit Discover"
+msgstr "Surt del Discover"
 
 #: discover/qml/UpdatesPage.qml:306
 #, kde-format
@@ -1629,7 +1647,7 @@ msgstr "Les actualitzacions s'instal·laran després de reiniciar el sistema"
 #: discover/qml/UpdatesPage.qml:672
 #, kde-format
 msgctxt "@info"
-msgid "You can keep using the system if you're not ready to restart yet."
+msgid "You can keep using the system if you’re not ready to restart yet."
 msgstr ""
 "Podeu continuar utilitzant el sistema si encara no esteu preparat/da per a "
 "reiniciar."
@@ -1652,6 +1670,18 @@ msgstr "Cal comprovar si hi ha actualitzacions"
 msgctxt "@info"
 msgid "Time of last update unknown"
 msgstr "Es desconeix l'hora de l'última actualització"
+
+#~ msgctxt "@item:inlistbox after updates complete, quit"
+#~ msgid "Quit"
+#~ msgstr "Surt"
+
+#~ msgctxt "TransactioName - TransactionStatus: speed"
+#~ msgid "%1 - %2: %3"
+#~ msgstr "%1 - %2: %3"
+
+#~ msgctxt "TransactioName - TransactionStatus"
+#~ msgid "%1 - %2"
+#~ msgstr "%1 - %2"
 
 #~ msgid ""
 #~ "You can help us improving this application by sharing statistics and "

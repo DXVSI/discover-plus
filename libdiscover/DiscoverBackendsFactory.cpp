@@ -72,13 +72,13 @@ QVector<AbstractResourcesBackend *> DiscoverBackendsFactory::backendForFile(cons
     }
 
     if (backendInitTime.elapsed() > 20) {
-        qDebug() << "Took" << backendInitTime.elapsed() << "ms to initialise" << name << instances.size();
+        qDebug() << "Took" << backendInitTime.elapsed() << "ms to initialize" << name << instances.size();
     }
 
     return instances;
 }
 
-QStringList DiscoverBackendsFactory::allBackendNames(bool whitelist, bool allowDummy) const
+QStringList DiscoverBackendsFactory::allBackendNames(bool whitelist, bool allowSpecialBackends) const
 {
     if (whitelist) {
         QStringList whitelistNames = *s_requestedBackends;
@@ -92,7 +92,8 @@ QStringList DiscoverBackendsFactory::allBackendNames(bool whitelist, bool allowD
         QDirIterator it(dir + QStringLiteral("/discover"), QDir::Files);
         while (it.hasNext()) {
             it.next();
-            if (QLibrary::isLibrary(it.fileName()) && (allowDummy || it.fileName() != QLatin1String("dummy-backend.so"))) {
+            const bool isSpecialBackend = it.fileName() == QLatin1String("dummy-backend.so") || it.fileName() == QLatin1String("appstream-preview-backend.so");
+            if (QLibrary::isLibrary(it.fileName()) && (allowSpecialBackends || !isSpecialBackend)) {
                 pluginNames += it.fileInfo().baseName();
             }
         }
@@ -124,7 +125,7 @@ int DiscoverBackendsFactory::backendsCount() const
 void DiscoverBackendsFactory::setupCommandLine(QCommandLineParser *parser)
 {
     parser->addOption(QCommandLineOption(QStringLiteral("backends"),
-                                         i18n("List all the backends we'll want to have loaded, separated by comma ','."),
+                                         i18n("List all the backends we’ll want to have loaded, separated by comma “,”."),
                                          QStringLiteral("names")));
 }
 

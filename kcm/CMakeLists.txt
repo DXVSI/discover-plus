@@ -21,6 +21,7 @@ kconfig_add_kcfg_files(kcm_updates updatessettings.kcfgc GENERATE_MOC)
 kconfig_add_kcfg_files(kcm_updates discoversettings.kcfgc GENERATE_MOC)
 
 target_link_libraries(kcm_updates PRIVATE
+    Qt::Qml
     KF6::I18n
     KF6::ConfigGui
     KF6::KCMUtilsQuick
@@ -37,3 +38,6 @@ endif()
 if (BUILD_SystemdSysupdateBackend)
     target_compile_definitions(kcm_updates PRIVATE WITH_SYSUPDATE_BACKEND)
 endif()
+
+install(FILES discoversettings.kcfg DESTINATION ${KDE_INSTALL_KCFGDIR} RENAME discoversettings-kcm.kcfg)
+install(FILES updatessettings.kcfg DESTINATION ${KDE_INSTALL_KCFGDIR} RENAME discover-updates.kcfg)

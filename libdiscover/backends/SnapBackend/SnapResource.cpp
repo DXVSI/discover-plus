@@ -502,12 +502,6 @@ QUrl SnapResource::homepage()
     return QUrl(m_snap->website());
 }
 
-QUrl SnapResource::url() const
-{
-    return QUrl(QStringLiteral("https://snapcraft.io/%1").arg(m_snap->name()));
-
-}
-
 void SnapResource::refreshSnap()
 {
     auto request = client()->find(QSnapdClient::FindFlag::MatchName, m_snap->name());

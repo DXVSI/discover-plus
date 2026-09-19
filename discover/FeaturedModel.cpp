@@ -18,7 +18,6 @@
 #include <QtGlobal>
 
 #include <resources/ResourcesModel.h>
-#include <resources/StoredResultsStream.h>
 #include <utils.h>
 
 using namespace Qt::StringLiterals;

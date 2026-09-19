@@ -32,26 +32,21 @@ RpmOstreeNotifier::RpmOstreeNotifier(QObject *parent)
     // Setup a  watcher to trigger a check for reboot when the deployments are changed
     // and there is thus likely an new deployment installed following an update.
     m_watcher = new QFileSystemWatcher(this);
+    connect(m_watcher, &QFileSystemWatcher::directoryChanged, this, [this]() {
+        // Stop watching all directories
+        m_watcher->removePaths(m_watcher->directories());
+        qCInfo(RPMOSTREE_LOG) << "Change in deployments. Triggering timer";
+        m_timer->start();
+    });
+    setupWatcherPaths();
 
     // We also setup a timer to avoid triggering a check immediately when a new
     // deployment is made available and instead wait a bit to let things settle down.
     m_timer = new QTimer(this);
     m_timer->setSingleShot(true);
-    // Wait 10 seconds for all rpm-ostree operations to complete
-    m_timer->setInterval(10000);
+    // Wait 60 seconds for all rpm-ostree operations to complete
+    m_timer->setInterval(60000);
     connect(m_timer, &QTimer::timeout, this, &RpmOstreeNotifier::checkForPendingDeployment);
-
-    // Find all ostree managed system installations available. There is usually only one but
-    // doing that dynamically here avoids hardcoding a specific value or doing a DBus call.
-    QDirIterator it(QStringLiteral("/ostree/deploy/"), QDir::AllDirs | QDir::NoDotAndDotDot);
-    while (it.hasNext()) {
-        QString path = QStringLiteral("%1/deploy/").arg(it.next());
-        m_watcher->addPath(path);
-        qCInfo(RPMOSTREE_LOG) << "Looking for new deployments in" << path;
-    }
-    connect(m_watcher, &QFileSystemWatcher::directoryChanged, this, [this]() {
-        m_timer->start();
-    });
 
     qCInfo(RPMOSTREE_LOG) << "Looking for ostree format";
     m_process = new QProcess(this);
@@ -140,11 +135,28 @@ bool RpmOstreeNotifier::isValid() const
     return QFile::exists(QStringLiteral("/run/ostree-booted"));
 }
 
+void RpmOstreeNotifier::setupWatcherPaths()
+{
+    // Find all ostree managed system installations available. There is usually only one but
+    // doing that dynamically here avoids hardcoding a specific value or doing a DBus call.
+    QDirIterator it(QStringLiteral("/ostree/deploy/"), QDir::AllDirs | QDir::NoDotAndDotDot);
+    while (it.hasNext()) {
+        const QString path = it.next() + QLatin1String("/deploy/");
+        m_watcher->addPath(path);
+        qCInfo(RPMOSTREE_LOG) << "Looking for new deployments in" << path;
+    }
+}
+
 void RpmOstreeNotifier::recheckSystemUpdateNeeded()
 {
     // Refuse to run on systems not managed by rpm-ostree
     if (!isValid()) {
         qCWarning(RPMOSTREE_LOG) << "Not starting on a system not managed by rpm-ostree";
+        return;
+    }
+
+    if (!m_ostreeFormat) {
+        qCInfo(RPMOSTREE_LOG) << "Checking for system updates too early";
         return;
     }
 
@@ -177,6 +189,10 @@ void RpmOstreeNotifier::checkSystemUpdateClassic()
 
     // Process command result
     connect(m_process, &QProcess::finished, this, [this](int exitCode, QProcess::ExitStatus exitStatus) {
+        if (sender() != m_process) {
+            // If we issued it twice, let's only trust the last one.
+            return;
+        }
         m_process->deleteLater();
         m_process = nullptr;
         if (exitStatus != QProcess::NormalExit) {
@@ -215,8 +231,8 @@ void RpmOstreeNotifier::checkSystemUpdateClassic()
 
         // Process the string to get just the version "number".
         newVersion = newVersion.trimmed();
-        newVersion.remove(0, QStringLiteral("Version: ").length());
-        newVersion.remove(newVersion.size() - QStringLiteral(" (XXXX-XX-XXTXX:XX:XXZ)").length(), newVersion.size() - 1);
+        newVersion.remove(0, QLatin1StringView("Version: ").length());
+        newVersion.remove(newVersion.size() - QLatin1StringView(" (XXXX-XX-XXTXX:XX:XXZ)").length(), newVersion.size() - 1);
         qCInfo(RPMOSTREE_LOG) << "Found new version:" << newVersion;
 
         // Have we already notified the user about this update?
@@ -314,6 +330,9 @@ void RpmOstreeNotifier::checkSystemUpdateOCI()
 
 void RpmOstreeNotifier::checkForPendingDeployment()
 {
+    // Re-setup the paths to watch for deployments now that the timer expired.
+    setupWatcherPaths();
+
     qCInfo(RPMOSTREE_LOG) << "Looking at existing deployments";
     m_process = new QProcess(this);
     m_stdout = QByteArray();

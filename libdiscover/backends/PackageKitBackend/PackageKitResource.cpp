@@ -517,7 +517,7 @@ void PackageKitResource::runService(KService::Ptr service) const
     auto *job = new KIO::ApplicationLauncherJob(service);
     connect(job, &KJob::finished, this, [this, service](KJob *job) {
         if (job->error()) {
-            Q_EMIT backend()->passiveMessage(i18n("Failed to start '%1': %2", service->name(), job->errorString()));
+            Q_EMIT backend()->passiveMessage(i18n("Failed to start “%1”: %2", service->name(), job->errorString()));
         }
     });
 

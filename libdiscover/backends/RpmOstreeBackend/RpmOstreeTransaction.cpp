@@ -150,11 +150,11 @@ void RpmOstreeTransaction::processCommand(int exitCode, QProcess::ExitStatus exi
     m_process = nullptr;
     if (exitStatus != QProcess::NormalExit) {
         if (m_cancelled) {
-            // If the user requested the transaction to be cancelled then we
+            // If the user requested the transaction to be canceled then we
             // don't need to show any error
-            qCWarning(RPMOSTREE_LOG) << "Transaction cancelled: rpm-ostree " << m_args;
+            qCWarning(RPMOSTREE_LOG) << "Transaction canceled: rpm-ostree " << m_args;
         } else {
-            // The transaction was cancelled unexpectedly so let's display the
+            // The transaction was canceled unexpectedly so let's display the
             // error to the user
             qCWarning(RPMOSTREE_LOG) << "Error while calling: rpm-ostree " << m_args;
             passiveMessage(i18n("rpm-ostree transaction failed with:\n%1", QString::fromUtf8(m_stderr)));
@@ -171,9 +171,9 @@ void RpmOstreeTransaction::processCommand(int exitCode, QProcess::ExitStatus exi
             setStatus(Status::DoneStatus);
             return;
         } else if (m_cancelled) {
-            // If the user requested the transaction to be cancelled then we
+            // If the user requested the transaction to be canceled then we
             // don't need to show any error
-            qCInfo(RPMOSTREE_LOG) << "Transaction cancelled: rpm-ostree " << m_args;
+            qCInfo(RPMOSTREE_LOG) << "Transaction canceled: rpm-ostree " << m_args;
             setStatus(Status::DoneWithErrorStatus);
             return;
         } else {
@@ -203,8 +203,8 @@ void RpmOstreeTransaction::processCommand(int exitCode, QProcess::ExitStatus exi
             // If we found a new version then offer it as an update
             if (!newVersion.isEmpty()) {
                 newVersion = newVersion.trimmed();
-                newVersion.remove(0, QStringLiteral("Version: ").length());
-                newVersion.remove(newVersion.size() - QStringLiteral(" (XXXX-XX-XXTXX:XX:XXZ)").length(), newVersion.size() - 1);
+                newVersion.remove(0, QLatin1StringView("Version: ").length());
+                newVersion.remove(newVersion.size() - QLatin1StringView(" (XXXX-XX-XXTXX:XX:XXZ)").length(), newVersion.size() - 1);
                 qCInfo(RPMOSTREE_LOG) << "Found new version:" << newVersion;
                 Q_EMIT newVersionFound(newVersion);
             }
@@ -362,8 +362,8 @@ void RpmOstreeTransaction::fakeProgress(const QByteArray &msg)
 
 void RpmOstreeTransaction::cancel()
 {
-    qCInfo(RPMOSTREE_LOG) << "Cancelling current transaction";
-    passiveMessage(i18n("Cancelling rpm-ostree transaction. This may take some time. Please wait."));
+    qCInfo(RPMOSTREE_LOG) << "Canceling current transaction";
+    passiveMessage(i18n("Canceling rpm-ostree transaction. This may take some time. Please wait."));
 
     // Cancel directly using the DBus interface to work in all cases whether we
     // started the transaction or if it's an externally started one.
@@ -372,7 +372,7 @@ void RpmOstreeTransaction::cancel()
     OrgProjectatomicRpmostree1TransactionInterface transactionInterface(DBusServiceName, QStringLiteral("/"), peerConnection, this);
     auto reply = transactionInterface.Cancel();
 
-    // Cancelled marker that is used to avoid displaying an error message to the
+    // Canceled marker that is used to avoid displaying an error message to the
     // user when they asked to cancel a transaction.
     m_cancelled = true;
 

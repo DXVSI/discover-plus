@@ -255,7 +255,7 @@ DiscoverPage {
                     onTriggered: {
                         const ret = delegate.model.sourcesBackend.moveSource(delegate.model.disambiguatedSourceId, -1)
                         if (!ret) {
-                            window.showPassiveNotification(i18n("Failed to increase '%1' preference", delegate.model.display))
+                            window.showPassiveNotification(i18n("Failed to increase “%1” preference", delegate.model.display))
                         }
                     }
                 },
@@ -267,7 +267,7 @@ DiscoverPage {
                     onTriggered: {
                         const ret = delegate.model.sourcesBackend.moveSource(delegate.model.disambiguatedSourceId, +1)
                         if (!ret) {
-                            window.showPassiveNotification(i18n("Failed to decrease '%1' preference", delegate.model.display))
+                            window.showPassiveNotification(i18n("Failed to decrease “%1” preference", delegate.model.display))
                         }
                     }
                 },

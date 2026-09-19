@@ -11,11 +11,11 @@ SPDX-License-Identifier: GPL-2.0-only OR GPL-3.0-only OR LicenseRef-KDE-Accepted
        http://www.kde.org/standards/kcfg/1.0/kcfg.xsd" >
     <kcfgfile name="PlasmaDiscoverUpdates" />
     <group name="Global">
-        <entry name="UseUnattendedUpdates" type="Bool">
+        <entry name="useUnattendedUpdates" key="UseUnattendedUpdates" type="Bool">
             <default>false</default>
         </entry>
         <entry name="LastUnattendedTrigger" type="DateTime" />
-        <entry name="RequiredNotificationInterval" type="Int" >
+        <entry name="requiredNotificationInterval" key="RequiredNotificationInterval" type="Int">
             <default code="true">60 * 60 * 24</default>
         </entry>
     </group>

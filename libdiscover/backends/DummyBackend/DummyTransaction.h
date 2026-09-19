@@ -9,6 +9,23 @@
 #include <Transaction/Transaction.h>
 
 class DummyResource;
+
+class OverseeTransactions : public QObject
+{
+    Q_OBJECT
+public:
+    static OverseeTransactions *self()
+    {
+        static OverseeTransactions *m_self = nullptr;
+        if (!m_self) {
+            m_self = new OverseeTransactions;
+        }
+        return m_self;
+    }
+Q_SIGNALS:
+    void transactionFinished();
+};
+
 class DummyTransaction : public Transaction
 {
     Q_OBJECT
@@ -24,6 +41,7 @@ private Q_SLOTS:
     void finishTransaction();
 
 private:
+    void considerStarting();
     bool m_iterate = true;
     DummyResource *m_app;
 };

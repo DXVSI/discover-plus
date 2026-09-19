@@ -11,7 +11,7 @@ SPDX-License-Identifier: GPL-2.0-only OR GPL-3.0-only OR LicenseRef-KDE-Accepted
        http://www.kde.org/standards/kcfg/1.0/kcfg.xsd" >
     <kcfgfile name="discoverrc" />
     <group name="Software">
-        <entry name="UseOfflineUpdates" type="Bool">
+        <entry name="useOfflineUpdates" key="UseOfflineUpdates" type="Bool">
             <default>false</default>
         </entry>
     </group>

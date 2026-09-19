@@ -19,7 +19,7 @@ public:
 
     QVector<AbstractResourcesBackend *> backend(const QString &name) const;
     QVector<AbstractResourcesBackend *> allBackends() const;
-    QStringList allBackendNames(bool whitelist = true, bool allowDummy = false) const;
+    QStringList allBackendNames(bool whitelist = true, bool allowSpecialBackends = false) const;
     int backendsCount() const;
 
     static void setupCommandLine(QCommandLineParser *parser);

@@ -147,10 +147,18 @@ bool ResourcesModel::addResourcesBackend(AbstractResourcesBackend *backend)
         return false;
     }
 
+    connect(backend, &AbstractResourcesBackend::invalidated, this, [backend, this]() {
+        CategoryModel::global()->blacklistPlugin(backend->name());
+        m_backends.removeAll(backend);
+        backend->deleteLater();
+        m_updatesCount.reevaluate();
+        qCWarning(LIBDISCOVER_LOG) << "Discarding invalid backend" << backend->name();
+        Q_EMIT backendsChanged();
+    });
+
     m_backends += backend;
     m_updatesCount.reevaluate();
 
-    connect(backend, &AbstractResourcesBackend::contentsChanged, this, &ResourcesModel::callerContentsChanged);
     connect(backend, &AbstractResourcesBackend::allDataChanged, this, &ResourcesModel::updateCaller);
     connect(backend, &AbstractResourcesBackend::resourcesChanged, this, &ResourcesModel::resourceDataChanged);
     connect(backend, &AbstractResourcesBackend::updatesCountChanged, &m_updatesCount, &EmitWhenChanged<int>::reevaluate);
@@ -162,22 +170,6 @@ bool ResourcesModel::addResourcesBackend(AbstractResourcesBackend *backend)
         connect(reviewsBackend, &AbstractReviewsBackend::error, this, &ResourcesModel::passiveMessage, Qt::UniqueConnection);
     }
     return true;
-}
-
-void ResourcesModel::callerContentsChanged()
-{
-    AbstractResourcesBackend *backend = qobject_cast<AbstractResourcesBackend *>(sender());
-
-    if (!backend->isValid()) {
-        qCWarning(LIBDISCOVER_LOG) << "Discarding invalid backend" << backend->name();
-        int idx = m_backends.indexOf(backend);
-        Q_ASSERT(idx >= 0);
-        m_backends.removeAt(idx);
-        Q_EMIT backendsChanged();
-        CategoryModel::global()->blacklistPlugin(backend->name());
-        backend->deleteLater();
-        return;
-    }
 }
 
 void ResourcesModel::updateCaller(const QVector<QByteArray> &properties)
@@ -277,6 +269,7 @@ void AggregatedResultsStream::emitResults()
 {
     if (!m_results.isEmpty()) {
         Q_EMIT resourcesFound(m_results);
+        m_allResults << m_results;
         m_results.clear();
     }
     m_delayedEmission.setInterval(m_delayedEmission.interval() + 100);
@@ -285,13 +278,11 @@ void AggregatedResultsStream::emitResults()
 
 void AggregatedResultsStream::resourceDestruction(QObject *obj)
 {
-    for (auto it = m_results.begin(); it != m_results.end(); ++it) {
-        if (obj == it->resource) {
-            it = m_results.erase(it);
-        } else {
-            ++it;
-        }
-    }
+    auto f = [obj](const StreamResult &result) {
+        return obj == result.resource;
+    };
+    m_results.removeIf(f);
+    m_allResults.removeIf(f);
 }
 
 void AggregatedResultsStream::streamDestruction(QObject *obj)
@@ -304,7 +295,7 @@ void AggregatedResultsStream::clear()
 {
     if (m_streams.isEmpty()) {
         emitResults();
-        Q_EMIT finished();
+        Q_EMIT finished(m_allResults);
         deleteLater();
     }
 }

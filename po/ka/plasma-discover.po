@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: discover\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-05-22 00:45+0000\n"
-"PO-Revision-Date: 2026-05-13 08:32+0200\n"
+"POT-Creation-Date: 2026-09-17 00:45+0000\n"
+"PO-Revision-Date: 2026-08-23 06:42+0200\n"
 "Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
 "Language-Team: Georgian <kde-i18n-doc@kde.org>\n"
 "Language: ka\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 3.9\n"
 
-#: discover/DiscoverObject.cpp:198
+#: discover/DiscoverObject.cpp:197
 #, kde-format
 msgctxt "@title %1 is the name"
 msgid ""
@@ -26,7 +26,7 @@ msgid ""
 msgstr ""
 "%1 აპების Discover-ით დასაყენებლად მორგებული არაა, - მხოლოდ აპის დამატებების"
 
-#: discover/DiscoverObject.cpp:200
+#: discover/DiscoverObject.cpp:199
 #, kde-kuit-format
 msgctxt "@info:usagetip %2 is the name of the operating system"
 msgid ""
@@ -39,7 +39,7 @@ msgstr ""
 "interface> ქვეშ.<nl/><nl/><link url='%1'>შეატყობინეთ ამ პრობლემის შესახებ %2-"
 "ს.</link>"
 
-#: discover/DiscoverObject.cpp:207
+#: discover/DiscoverObject.cpp:206
 #, kde-kuit-format
 msgctxt ""
 "@info:usagetip %1 is the distro name; in this case it always contains 'Arch "
@@ -56,7 +56,7 @@ msgstr ""
 "გადაავლეთ თვალი ბმულს <link url='https://archlinux.org/packages/extra/x86_64/"
 "discover/'>%1-ის პაკეტებისთვის Discover-ისთვის</link>"
 
-#: discover/DiscoverObject.cpp:217
+#: discover/DiscoverObject.cpp:216
 #, kde-kuit-format
 msgctxt "@info:usagetip %1 is the distro name"
 msgid ""
@@ -74,17 +74,17 @@ msgstr ""
 "<command>pacman</command>-ის ბრძანების სტრქონის ბრძანებების გამოყენებას "
 "პაკეტების სამართავად.</para>"
 
-#: discover/DiscoverObject.cpp:306
+#: discover/DiscoverObject.cpp:305
 #, kde-format
 msgid "Could not find category '%1'"
 msgstr "კატეგორია \"%1\" ვერ ვიპოვე"
 
-#: discover/DiscoverObject.cpp:328
+#: discover/DiscoverObject.cpp:327
 #, kde-format
 msgid "Trying to open inexisting file '%1'"
 msgstr "არარსებული ფაილის (%1) გახსნის მცდელობა"
 
-#: discover/DiscoverObject.cpp:350
+#: discover/DiscoverObject.cpp:349
 #, kde-format
 msgid ""
 "Cannot interact with flatpak resources without the flatpak backend %1. "
@@ -93,17 +93,17 @@ msgstr ""
 "Flatpack-ის რესურსებთან Flatpack-ის უკანაბოლო %1-ის გარეშე ურთიერთობა "
 "შეუძლებელია. ჯერ ის დააყენეთ."
 
-#: discover/DiscoverObject.cpp:354
+#: discover/DiscoverObject.cpp:353
 #, kde-format
 msgid "Could not open %1"
 msgstr "%1-ის გახსნა შეუძლებელია"
 
-#: discover/DiscoverObject.cpp:419
+#: discover/DiscoverObject.cpp:418
 #, kde-format
 msgid "Please make sure Snap support is installed"
 msgstr "დარწმუნდით, რომ Snap-ის მხარდაჭერა დაყენებულია"
 
-#: discover/DiscoverObject.cpp:422
+#: discover/DiscoverObject.cpp:421
 #, kde-format
 msgid ""
 "The requested application could not be found in any available software "
@@ -111,7 +111,7 @@ msgid ""
 msgstr ""
 "მოთხოვნილი აპლიკაცია ხელმისაწვდომ პროგრამის რეპოზიტორიებში აღმოჩენილი არაა"
 
-#: discover/DiscoverObject.cpp:425
+#: discover/DiscoverObject.cpp:424
 #, kde-kuit-format
 msgctxt ""
 "@info %1 is an additional error reference and %3 is the name of the "
@@ -123,13 +123,13 @@ msgstr ""
 "(%1-სთვის ჩანაწერი არ არსებობს)<nl/><nl/><link url='%2'>მიწერეთ ამ შეცდომის "
 "შესახებ %3-ს.</link>"
 
-#: discover/DiscoverObject.cpp:509 discover/DiscoverObject.cpp:511
+#: discover/DiscoverObject.cpp:514 discover/DiscoverObject.cpp:516
 #: discover/main.cpp:120
 #, kde-format
 msgid "Discover"
 msgstr "აღმოაჩინეთ"
 
-#: discover/DiscoverObject.cpp:512
+#: discover/DiscoverObject.cpp:517
 #, kde-format
 msgid ""
 "Discover was closed before certain tasks were done, waiting for it to finish."
@@ -214,7 +214,7 @@ msgstr "Nate Graham"
 
 #: discover/main.cpp:127
 #, kde-format
-msgid "Quality Assurance, Design and Usability"
+msgid "Quality Assurance, Design, and Usability"
 msgstr "დიზაინი და ხარისხის დამოწმება"
 
 #: discover/main.cpp:131
@@ -279,15 +279,15 @@ msgstr "ახალი %1-ის რეპოზიტორიის დამ
 msgid "Add"
 msgstr "დამატება"
 
-#: discover/qml/AddSourceDialog.qml:50 discover/qml/DiscoverWindow.qml:286
+#: discover/qml/AddSourceDialog.qml:50 discover/qml/DiscoverWindow.qml:289
 #: discover/qml/InstallApplicationButton.qml:51
-#: discover/qml/ProgressView.qml:155 discover/qml/SourcesPage.qml:207
+#: discover/qml/ProgressView.qml:163 discover/qml/SourcesPage.qml:207
 #: discover/qml/UpdatesPage.qml:316 discover/qml/WebflowDialog.qml:41
 #, kde-format
 msgid "Cancel"
 msgstr "გაუქმება"
 
-#: discover/qml/ApplicationDelegate.qml:160
+#: discover/qml/ApplicationDelegate.qml:162
 #, kde-format
 msgid "No ratings"
 msgstr "შეფასების გარეშე"
@@ -306,7 +306,7 @@ msgid ""
 "harvesting your personal information, tracking your location, or "
 "transmitting the contents of your data to someone else. Only use it if you "
 "fully trust its authors. More information may be available on <link "
-"url='%2'>the application's website</link>.<nl/><nl/>Learn more at <link "
+"url='%2'>the application’s website</link>.<nl/><nl/>Learn more at <link "
 "url='%3'>%3</link>."
 msgstr ""
 "%1, მხოლოდ, მაშინ დააყენეთ, თუ მის ავტორებს ენდობით.<nl/><nl/>ამ აპლიკაციის "
@@ -362,12 +362,12 @@ msgid ""
 "make sure you fully trust the authors, as no one else can verify the "
 "trustworthiness and security of its code to ensure that it is not acting "
 "against you in hidden ways. More information may be available on <link "
-"url='%4'>the application's website</link>.<nl/><nl/>Learn more at <link "
+"url='%4'>the application’s website</link>.<nl/><nl/>Learn more at <link "
 "url='%5'>%5</link>."
 msgstr ""
 "%1 იყენებს ერთ ან მეტ ლიცენზიას, რომელიც სერტიფიცირებული არაა, როგორც "
-"'თავისუფალი პროგრამა' არც <link url='%2'>Free Software Foundation</link>-ის "
-"მიერ და არც <link url='%3'>Open Source Initiavive</link>-ის მიერ. ეს "
+"\"თავისუფალი პროგრამა\" არც <link url='%2'>Free Software Foundation</link>-"
+"ის მიერ და არც <link url='%3'>Open Source Initiavive</link>-ის მიერ. ეს "
 "ნიშნავს, რომ თქვენი გამოყენების, შესწავლის, შეცვლის და გაზიარების უფლებები "
 "შეზღუდული იქნება..<nl/><nl/>დარწმუნდით, რომ ლიცენზიის ტექსტი წაიკითხეთ და "
 "გაითავისეთ ყველა შეზღუდვა, სანამ პროგრამის გამოყენებას დაიწყებთ.<nl/><nl/>თუ "
@@ -405,7 +405,7 @@ msgstr ""
 msgctxt "@info"
 msgid ""
 "%1 does not indicate under which license it is distributed. You may be able "
-"to determine this on <link url='%2'>the application's website</link>. Find "
+"to determine this on <link url='%2'>the application’s website</link>. Find "
 "it there or contact the author if you want to use this application for "
 "anything other than private personal use."
 msgstr ""
@@ -419,10 +419,10 @@ msgstr ""
 msgctxt "@info"
 msgid ""
 "%1 does not indicate under which license it is distributed. Contact the "
-"application's author if you want to use it for anything other than private "
+"application’s author if you want to use it for anything other than private "
 "personal use."
 msgstr ""
-"%1-ს გავრცელების ლიცენზია მითითებული არ აქვს. დაუკავშირდით აპლიკაციის "
+"%1-ის გავრცელების ლიცენზია მითითებული არ აქვს. დაუკავშირდით აპლიკაციის "
 "ავტორს, თუ გნებავთ, ის პირადი მოხმარების გარდა სხვა მიზნებისთვის გამოიყენოთ."
 
 #: discover/qml/ApplicationPage.qml:138
@@ -470,7 +470,7 @@ msgstr "%1-სთვის ეკრანის ანაბეჭდები 
 
 #: discover/qml/ApplicationPage.qml:436
 #, kde-format
-msgid "What's New"
+msgid "What’s New"
 msgstr "რა არის ახალი"
 
 #: discover/qml/ApplicationPage.qml:469
@@ -517,53 +517,77 @@ msgctxt "@action:button"
 msgid "Show All Reviews"
 msgstr "ყველა მიმოხილვის ჩვენება"
 
-#: discover/qml/ApplicationPage.qml:567
+#: discover/qml/ApplicationPage.qml:571
 #, kde-format
 msgctxt "@title"
 msgid "External Links"
 msgstr "გარე ბმულები"
 
-#: discover/qml/ApplicationPage.qml:585
+#: discover/qml/ApplicationPage.qml:589
 #, kde-format
 msgctxt "@info text of a web URL"
-msgid "Read the documentation"
-msgstr "წაიკითხეთ დოკუმენტაცია"
+msgid "Read the FAQ"
+msgstr "ხდკ-ის წაკითხვა"
 
-#: discover/qml/ApplicationPage.qml:596
+#: discover/qml/ApplicationPage.qml:600
 #, kde-format
 msgctxt "@info text of a web URL"
-msgid "Visit the project's website"
+msgid "Read the full documentation"
+msgstr "სრული დოკუმენტაციის წაკითხვა"
+
+#: discover/qml/ApplicationPage.qml:611
+#, kde-format
+msgctxt "@info text of a web URL"
+msgid "Visit the project’s website"
 msgstr "პროექტის ვებგვერდის ნახვა"
 
-#: discover/qml/ApplicationPage.qml:606
+#: discover/qml/ApplicationPage.qml:621
 #, kde-format
 msgctxt "@info text of a web URL"
 msgid "Donate to the project"
 msgstr "პროექტისთვის შეწირვა"
 
-#: discover/qml/ApplicationPage.qml:616
+#: discover/qml/ApplicationPage.qml:631
 #, kde-format
 msgctxt "@info text of a web URL"
 msgid "Report a bug"
 msgstr "შეტყობინება შეცდომის შესახებ"
 
-#: discover/qml/ApplicationPage.qml:626
+#: discover/qml/ApplicationPage.qml:641
 #, kde-format
 msgctxt "@info text of a web URL"
 msgid "Start contributing"
 msgstr "წვლილის შეტანის დაწყება"
 
-#: discover/qml/ApplicationPage.qml:655
+#: discover/qml/ApplicationPage.qml:651
+#, kde-format
+msgctxt "@info text of a web URL"
+msgid "Help with translations"
+msgstr "თარგმანში დახმარება"
+
+#: discover/qml/ApplicationPage.qml:661
+#, kde-format
+msgctxt "@info text of a web URL"
+msgid "Contact the developers"
+msgstr "კონტაქტი პროგრამისტებთან"
+
+#: discover/qml/ApplicationPage.qml:671
+#, kde-format
+msgctxt "@info text of a web URL"
+msgid "Browse the source code"
+msgstr "წყარო კოდის დათვალიერება"
+
+#: discover/qml/ApplicationPage.qml:700
 #, kde-format
 msgid "All Licenses"
 msgstr "ყველა ლიცენზია"
 
-#: discover/qml/ApplicationPage.qml:693
+#: discover/qml/ApplicationPage.qml:738
 #, kde-format
 msgid "Content Rating"
 msgstr "შემცველობის შეფასება"
 
-#: discover/qml/ApplicationPage.qml:716
+#: discover/qml/ApplicationPage.qml:761
 #, kde-format
 msgctxt "@title:window"
 msgid "License Information"
@@ -808,7 +832,7 @@ msgstr "იხილეთ მეტი"
 #: discover/qml/BrowsingPage.qml:141
 #, kde-format
 msgctxt "@title:group"
-msgid "Editor's Choice"
+msgid "Editor’s Choice"
 msgstr "რედაქტორის არჩევანი"
 
 #: discover/qml/BrowsingPage.qml:165
@@ -872,85 +896,85 @@ msgctxt "@action:button"
 msgid "Next Screenshot"
 msgstr "შემდეგი ეკრანის ანაბეჭდი"
 
-#: discover/qml/DiscoverDrawer.qml:161
+#: discover/qml/DiscoverDrawer.qml:163
 #, kde-format
 msgid "Security updates available"
 msgstr "ხელმისაწვდომია უსაფრთოხების განახლებები"
 
-#: discover/qml/DiscoverDrawer.qml:162
+#: discover/qml/DiscoverDrawer.qml:164
 #, kde-format
 msgid "Updates available"
 msgstr "ხელმისაწვდომი განახლებები"
 
-#: discover/qml/DiscoverWindow.qml:48
+#: discover/qml/DiscoverWindow.qml:51
 #, kde-format
 msgid "Running as <em>root</em> is discouraged and unnecessary."
 msgstr "<em>root</em> -ით გაშვება რეკომენდებული და საჭირო არაა."
 
-#: discover/qml/DiscoverWindow.qml:71
+#: discover/qml/DiscoverWindow.qml:74
 #, kde-format
 msgid "&Home"
 msgstr "&სახლი"
 
-#: discover/qml/DiscoverWindow.qml:81
+#: discover/qml/DiscoverWindow.qml:84
 #, kde-format
 msgid "&Search"
 msgstr "&ძებნა"
 
-#: discover/qml/DiscoverWindow.qml:89
+#: discover/qml/DiscoverWindow.qml:92
 #, kde-format
 msgid "&Installed"
 msgstr "&დაყენებული"
 
-#: discover/qml/DiscoverWindow.qml:101
+#: discover/qml/DiscoverWindow.qml:104
 #, kde-format
 msgid "&Updates (Fetching…)"
 msgstr "&განახლებები (გამოთხოვა…)"
 
-#: discover/qml/DiscoverWindow.qml:102
+#: discover/qml/DiscoverWindow.qml:105
 #, kde-format
 msgid "&Updates"
 msgstr "განა&ხლებები"
 
-#: discover/qml/DiscoverWindow.qml:110
+#: discover/qml/DiscoverWindow.qml:113
 #, kde-format
 msgid "&About"
 msgstr "შ&ესახებ"
 
-#: discover/qml/DiscoverWindow.qml:118
+#: discover/qml/DiscoverWindow.qml:121
 #, kde-format
 msgid "S&ettings"
 msgstr "&პარამეტრები"
 
-#: discover/qml/DiscoverWindow.qml:171 discover/qml/DiscoverWindow.qml:365
-#: discover/qml/DiscoverWindow.qml:477
+#: discover/qml/DiscoverWindow.qml:174 discover/qml/DiscoverWindow.qml:368
+#: discover/qml/DiscoverWindow.qml:480
 #, kde-format
 msgid "Error"
 msgstr "შეცდომა"
 
-#: discover/qml/DiscoverWindow.qml:175
+#: discover/qml/DiscoverWindow.qml:178
 #, kde-format
 msgid "Unable to find resource: %1"
 msgstr "რესურსის პოვნა შეუძლებელია: %1"
 
-#: discover/qml/DiscoverWindow.qml:273 discover/qml/SourcesPage.qml:201
+#: discover/qml/DiscoverWindow.qml:276 discover/qml/SourcesPage.qml:201
 #, kde-format
 msgid "Proceed"
 msgstr "გაგრძელება"
 
-#: discover/qml/DiscoverWindow.qml:331
+#: discover/qml/DiscoverWindow.qml:334
 #, kde-format
 msgctxt "@info %1 is the name of the operating system"
 msgid "Report this issue to %1"
 msgstr "ამ პრობლემის გადაგზავნა %1-სთვის"
 
-#: discover/qml/DiscoverWindow.qml:347
+#: discover/qml/DiscoverWindow.qml:350
 #, kde-format
 msgctxt "@title:dialog"
 msgid "Discover is Offline"
 msgstr "Discover ხაზგარეშეა"
 
-#: discover/qml/DiscoverWindow.qml:348
+#: discover/qml/DiscoverWindow.qml:351
 #, kde-format
 msgctxt "@info"
 msgid ""
@@ -958,41 +982,41 @@ msgid ""
 msgstr ""
 "აპლიკაციების დასაყენებლად და სისტემის განახლებისთვის დაუკავშირდით ქსელს."
 
-#: discover/qml/DiscoverWindow.qml:365
+#: discover/qml/DiscoverWindow.qml:368
 #, kde-format
 msgid "Error %1 of %2"
 msgstr "შეცდომა %1 %2-დან"
 
-#: discover/qml/DiscoverWindow.qml:365 discover/qml/UpdatesPage.qml:47
+#: discover/qml/DiscoverWindow.qml:368 discover/qml/UpdatesPage.qml:47
 #, kde-format
 msgid "Update Issue"
 msgstr "განახლების პრობლემა"
 
-#: discover/qml/DiscoverWindow.qml:376
+#: discover/qml/DiscoverWindow.qml:379
 #, kde-format
 msgid ""
 "There was an issue during the update or installation process. Please try "
 "again later."
 msgstr "პრობლემა დაყენების ან განახლების მიმდინარეობისას. მოგვიანებით სცადეთ."
 
-#: discover/qml/DiscoverWindow.qml:412
+#: discover/qml/DiscoverWindow.qml:415
 #, kde-format
 msgctxt "@action:button"
 msgid "Show Previous"
 msgstr "წინას ჩვენება"
 
-#: discover/qml/DiscoverWindow.qml:423
+#: discover/qml/DiscoverWindow.qml:426
 #, kde-format
 msgctxt "@action:button"
 msgid "Show Next"
 msgstr "შემდეგის ჩვენება"
 
-#: discover/qml/DiscoverWindow.qml:435 discover/qml/UpdatesPage.qml:69
+#: discover/qml/DiscoverWindow.qml:438 discover/qml/UpdatesPage.qml:69
 #, kde-format
 msgid "See Technical Details"
 msgstr "იხილეთ ტექნიკური დეტალები"
 
-#: discover/qml/DiscoverWindow.qml:443
+#: discover/qml/DiscoverWindow.qml:446
 #, kde-format
 msgid "Copy to Clipboard"
 msgstr "ბუფერში კოპირება"
@@ -1086,36 +1110,30 @@ msgstr "ჩადგმულია"
 
 #: discover/qml/Navigation.qml:36
 #, kde-format
-msgid "Resources for '%1'"
-msgstr "რესურსები '%1'-სთვის"
+msgid "Resources for “%1”"
+msgstr "რესურსები \"%1\"-ისთვის"
 
-#: discover/qml/ProgressView.qml:21
+#: discover/qml/ProgressView.qml:29
 #, kde-format
 msgid "Tasks (%1%)"
 msgstr "ამოცანა (%1%)"
 
-#: discover/qml/ProgressView.qml:22 discover/qml/ProgressView.qml:52
+#: discover/qml/ProgressView.qml:30 discover/qml/ProgressView.qml:60
 #, kde-format
 msgid "Tasks"
 msgstr "ამოცანები"
 
-#: discover/qml/ProgressView.qml:129
+#: discover/qml/ProgressView.qml:145
 #, kde-format
 msgctxt "TransactioName - TransactionStatus: speed, remaining time"
-msgid "%1 - %2: %3, %4 remaining"
-msgstr "%1 - %2: %3, %4 დარჩენილია"
+msgid "%1: %2, %3 remaining"
+msgstr "%1: %2, %3 დარჩენილია"
 
-#: discover/qml/ProgressView.qml:137
+#: discover/qml/ProgressView.qml:152
 #, kde-format
 msgctxt "TransactioName - TransactionStatus: speed"
-msgid "%1 - %2: %3"
-msgstr "%1 - %2: %3"
-
-#: discover/qml/ProgressView.qml:144
-#, kde-format
-msgctxt "TransactioName - TransactionStatus"
-msgid "%1 - %2"
-msgstr "%1 - %2"
+msgid "%1: %2"
+msgstr "%1: %2"
 
 #: discover/qml/Rating.qml:119
 #, kde-format
@@ -1163,7 +1181,7 @@ msgctxt "Keep this string as short as humanly possible"
 msgid "Yes"
 msgstr "დიახ"
 
-#: discover/qml/ReviewDelegate.qml:122
+#: discover/qml/ReviewDelegate.qml:123
 #, kde-format
 msgctxt "Keep this string as short as humanly possible"
 msgid "No"
@@ -1182,8 +1200,8 @@ msgstr "მიმოხილვის დამტკიცება"
 #: discover/qml/ReviewDialog.qml:48
 #, kde-format
 msgid ""
-"If you love %1, tell people what's great about it! Focus on functionality, "
-"usability, and appearance. If the app didn't meet your needs, explain why."
+"If you love %1, tell people what’s great about it! Focus on functionality, "
+"usability, and appearance. If the app didn’t meet your needs, explain why."
 msgstr ""
 "თუ %1 გიყვართ, უთხარით ამის შესახებ სხვებს! ფოკუსით ფუნქციონალზე, "
 "სასარგებლოობაზე და გარეგნობაზე. თუ აპი მაინც არ მოგწონთ, გვითხარით, რატომ."
@@ -1192,7 +1210,7 @@ msgstr ""
 #, kde-kuit-format
 msgctxt "@info"
 msgid ""
-"If %1 isn't launching, consider reporting this to its packagers in %2 at "
+"If %1 isn’t launching, consider reporting this to its packagers in %2 at "
 "<link url='%3'>%3</link> instead, as it may be an easily fixable packaging "
 "issue rather than a flaw in the app itself."
 msgstr ""
@@ -1204,7 +1222,7 @@ msgstr ""
 #, kde-kuit-format
 msgctxt "@info"
 msgid ""
-"If %1 isn't launching, consider reporting this its developers at <link "
+"If %1 isn’t launching, consider reporting this to its developers at <link "
 "url='%2'>%2</link> instead, as it may be an easily fixable packaging issue "
 "rather than a flaw in the app itself."
 msgstr ""
@@ -1216,7 +1234,7 @@ msgstr ""
 #, kde-kuit-format
 msgctxt "@info"
 msgid ""
-"If the app is crashing a lot, consider reporting this to the developers at "
+"If the app is crashing a lot, consider reporting this to its developers at "
 "<link url='%1'>%1</link> instead."
 msgstr ""
 "თუ აპი ხშირად სრულდება ავარიულად, იფიქრეთ, მისწეროთ მის პროგრამისტებს "
@@ -1226,7 +1244,7 @@ msgstr ""
 #, kde-kuit-format
 msgctxt "@info"
 msgid ""
-"If you're having a problem with the app, consider reporting it to the "
+"If you’re having a problem with the app, consider reporting this to its "
 "developers at <link url='%1'>%1</link> instead, or else describe the problem "
 "here in greater detail."
 msgstr ""
@@ -1271,7 +1289,7 @@ msgstr "ავარია,სეგჩავარდნა"
 #: discover/qml/ReviewDialog.qml:171
 #, kde-format
 msgctxt ""
-"Word the user might use in an unhelpful sentence saying an app isn't very "
+"Words the user might use in an unhelpful sentence saying an app isn't very "
 "good. Preserve the commas. If necessary, add more words used for this in "
 "your language and/or shorten to common stems contained by multiple forms of "
 "the words,"
@@ -1378,8 +1396,8 @@ msgstr "ძებნა…"
 
 #: discover/qml/SearchField.qml:26
 #, kde-format
-msgid "Search in '%1'…"
-msgstr "'%1'-ში ძებნა…"
+msgid "Search in “%1”…"
+msgstr "\"%1\"-ში ძებნა…"
 
 #: discover/qml/SourcesPage.qml:19
 #, kde-format
@@ -1408,8 +1426,8 @@ msgstr "პრიორიტეტის გაზრდა"
 
 #: discover/qml/SourcesPage.qml:258
 #, kde-format
-msgid "Failed to increase '%1' preference"
-msgstr "'%1'-ის უპირატესობის გაზრდის შეცდომა"
+msgid "Failed to increase “%1” preference"
+msgstr "\"%1\"-ის უპირატესობის გაზრდის შეცდომა"
 
 #: discover/qml/SourcesPage.qml:264
 #, kde-format
@@ -1418,8 +1436,8 @@ msgstr "პრიორიტეტის დაწევა"
 
 #: discover/qml/SourcesPage.qml:270
 #, kde-format
-msgid "Failed to decrease '%1' preference"
-msgstr "'%1'-ის უპირატესობის შემცირების შეცდომა"
+msgid "Failed to decrease “%1” preference"
+msgstr "\"%1\"-ის უპირატესობის შემცირების შეცდომა"
 
 #: discover/qml/SourcesPage.qml:276
 #, kde-format
@@ -1544,9 +1562,9 @@ msgstr "გამორთვა"
 
 #: discover/qml/UpdatesPage.qml:296
 #, kde-format
-msgctxt "@item:inlistbox after updates complete, quit"
-msgid "Quit"
-msgstr "გასვლა"
+msgctxt "@item:inlistbox after updates complete, quit Discover"
+msgid "Quit Discover"
+msgstr "Discover-დან გასვლა"
 
 #: discover/qml/UpdatesPage.qml:306
 #, kde-format
@@ -1605,7 +1623,7 @@ msgstr "განახლებების დაყენება სის�
 #: discover/qml/UpdatesPage.qml:672
 #, kde-format
 msgctxt "@info"
-msgid "You can keep using the system if you're not ready to restart yet."
+msgid "You can keep using the system if you’re not ready to restart yet."
 msgstr ""
 "თუ სისტემა გადატვირთვისთვის მზად არაა, მისი გამოყენება ჩვეულებრივ შეგიძლიათ."
 
@@ -1627,6 +1645,18 @@ msgstr "უნდა შემოწმდეს განახლებებ�
 msgctxt "@info"
 msgid "Time of last update unknown"
 msgstr "ბოლო განახლების თარიღი უცნობია"
+
+#~ msgctxt "@item:inlistbox after updates complete, quit"
+#~ msgid "Quit"
+#~ msgstr "გასვლა"
+
+#~ msgctxt "TransactioName - TransactionStatus: speed"
+#~ msgid "%1 - %2: %3"
+#~ msgstr "%1 - %2: %3"
+
+#~ msgctxt "TransactioName - TransactionStatus"
+#~ msgid "%1 - %2"
+#~ msgstr "%1 - %2"
 
 #~ msgid ""
 #~ "You can help us improving this application by sharing statistics and "

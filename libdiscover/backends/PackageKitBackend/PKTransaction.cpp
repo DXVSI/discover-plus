@@ -276,7 +276,7 @@ void PKTransaction::cleanup(PackageKit::Transaction::Exit exit, uint runtime)
         };
         if (!criticals.isEmpty()) {
             const QString msg = i18n(
-                "This action cannot be completed as it would remove the following software which is critical to the system's operation:<nl/>"
+                "This action cannot be completed as it would remove the following software which is critical to the system’s operation:<nl/>"
                 "<ul><li>%1</li></ul><nl/>"
                 "If you believe this is an error, please report it as a bug to the packagers of your distribution.",
                 resourceName(*criticals.begin()));
@@ -602,7 +602,7 @@ void PKTransaction::errorFound(PackageKit::Transaction::Error err, const QString
 void PKTransaction::mediaChange(PackageKit::Transaction::MediaType media, const QString &type, const QString &text)
 {
     Q_UNUSED(media)
-    Q_EMIT passiveMessage(i18n("Media Change of type '%1' is requested.\n%2", type, text));
+    Q_EMIT passiveMessage(i18n("Media Change of type “%1” is requested.\n%2", type, text));
 }
 
 void PKTransaction::requireRestart(PackageKit::Transaction::Restart restart, const QString &pkgid)

@@ -93,7 +93,7 @@ public:
     static void addSubcategory(QList<std::shared_ptr<Category>> &cats, const std::shared_ptr<Category> &cat);
     /**
      * Add a subcategory to this category. This function should only
-     * be used during the initialisation stage, before adding the local
+     * be used during the initialization stage, before adding the local
      * root category to the global root category model.
      */
     void addSubcategory(const std::shared_ptr<Category> &cat);

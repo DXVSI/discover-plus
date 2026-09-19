@@ -77,7 +77,6 @@ public:
     void updateSizes();
 
     QUrl homepage() override;
-    QUrl url() const override;
 
     QSharedPointer<QSnapdSnap> snap() const
     {

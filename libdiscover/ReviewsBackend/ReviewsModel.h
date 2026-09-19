@@ -7,6 +7,7 @@
 #pragma once
 
 #include "discovercommon_export.h"
+#include <QHash>
 #include <QModelIndex>
 #include <QPointer>
 #include <QSharedPointer>
@@ -80,6 +81,7 @@ Q_SIGNALS:
 
 private:
     void setReviewsJob(ReviewsJob *job);
+    void persistVote(quint64 reviewId, UserChoice choice);
 
     AbstractResource *m_app = nullptr;
     AbstractReviewsBackend *m_backend = nullptr;
@@ -88,4 +90,5 @@ private:
     int m_lastPage;
     bool m_canFetchMore = true;
     QPointer<ReviewsJob> m_job;
+    QHash<quint64, UserChoice> m_persistedVotes;
 };

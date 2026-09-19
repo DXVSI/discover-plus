@@ -210,8 +210,11 @@ Kirigami.OverlaySheet {
             width: ListView.view.width
             separator: index !== ListView.view.count - 1
             onMarkUseful: useful => {
-                page.model.markUseful(index, useful);
+                const modelIndex = sortModel.index(index, 0);
+                const sourceIndex = sortModel.mapToSource(modelIndex);
+                page.model.markUseful(sourceIndex.row, useful);
             }
+
         }
     }
 }

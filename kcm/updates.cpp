@@ -7,6 +7,7 @@
 #include "updates.h"
 
 #include <QFile>
+#include <qqml.h>
 
 #include <KAboutData>
 #include <KConfigGroup>

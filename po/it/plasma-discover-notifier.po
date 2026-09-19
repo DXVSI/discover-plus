@@ -1,22 +1,22 @@
 # Copyright (C) YEAR This_file_is_part_of_KDE
 # This file is distributed under the same license as the muon package.
 # SPDX-FileCopyrightText: 2015, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026 Vincenzo Reale <smart2128vr@gmail.com>
-# Paolo Zamponi <feus73@gmail.com>, 2018, 2019.
+# SPDX-FileCopyrightText: 2018-2019, 2026 Paolo Zamponi <feus73@gmail.com>
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: muon-notifier\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-04-23 00:45+0000\n"
-"PO-Revision-Date: 2026-04-02 14:11+0200\n"
-"Last-Translator: Vincenzo Reale <smart2128vr@gmail.com>\n"
+"PO-Revision-Date: 2026-07-21 09:23+0200\n"
+"Last-Translator: Paolo Zamponi <feus73@gmail.com>\n"
 "Language-Team: Italian <kde-i18n-it@kde.org>\n"
 "Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 25.12.3\n"
+"X-Generator: Lokalize 26.04.3\n"
 
 #: notifier/DiscoverNotifier.cpp:218
 #, kde-format
@@ -85,7 +85,7 @@ msgstr "Aggiornamento disponibile"
 #, kde-format
 msgctxt "A new distro release (name and version) is available for upgrade"
 msgid "%1 is now available."
-msgstr "%1 non è disponibile."
+msgstr "%1 è ora disponibile."
 
 #: notifier/DiscoverNotifier.cpp:453
 #, kde-format

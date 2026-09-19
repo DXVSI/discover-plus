@@ -42,6 +42,11 @@ SimpleKCM {
 
             QQC2.ButtonGroup.group: autoUpdatesGroup
             checked: !kcm.updatesSettings.useUnattendedUpdates
+
+            SettingStateBinding {
+                configObject: kcm.updatesSettings
+                settingName: "useUnattendedUpdates"
+            }
         }
         RowLayout {
             spacing: Kirigami.Units.smallSpacing
@@ -52,6 +57,11 @@ SimpleKCM {
 
                 QQC2.ButtonGroup.group: autoUpdatesGroup
                 checked: kcm.updatesSettings.useUnattendedUpdates
+
+                SettingStateBinding {
+                    configObject: kcm.updatesSettings
+                    settingName: "useUnattendedUpdates"
+                }
             }
 
             Kirigami.ContextualHelpButton {
@@ -59,20 +69,17 @@ SimpleKCM {
             }
         }
 
-        SettingStateBinding {
-            configObject: kcm.updatesSettings
-            settingName: "useUnattendedUpdates"
-            target: automaticallyRadio
-        }
-
         QQC2.ComboBox {
+            id: frequencyComboBox
             Kirigami.FormData.label: kcm.updatesSettings.useUnattendedUpdates ? i18nc("@title:group", "Update frequency:") : i18nc("@title:group", "Notification frequency:")
+            textRole: "text"
+            valueRole: "value"
 
             readonly property var updatesFrequencyModel: [
-                i18nc("@item:inlistbox", "Daily"),
-                i18nc("@item:inlistbox", "Weekly"),
-                i18nc("@item:inlistbox", "Monthly"),
-                i18nc("@item:inlistbox", "Never")
+                { text: i18nc("@item:inlistbox", "Daily"),   value: 60 * 60 * 24 },
+                { text: i18nc("@item:inlistbox", "Weekly"),  value: 60 * 60 * 24 * 7 },
+                { text: i18nc("@item:inlistbox", "Monthly"), value: 60 * 60 * 24 * 30 },
+                { text: i18nc("@item:inlistbox", "Never"),   value: -1 },
             ]
 
             // Same as updatesFrequencyModel but without "Never"
@@ -84,27 +91,21 @@ SimpleKCM {
 
             model: kcm.updatesSettings.useUnattendedUpdates ? unattendedUpdatesFrequencyModel : updatesFrequencyModel
 
-            readonly property var options: [
-                60 * 60 * 24,
-                60 * 60 * 24 * 7,
-                60 * 60 * 24 * 30,
-                -1
-            ]
+            currentValue: kcm.updatesSettings.requiredNotificationInterval
+            onActivated:  kcm.updatesSettings.requiredNotificationInterval = currentValue
 
-            currentIndex: {
-                let index = -1
-                for (const i in options) {
-                    if (options[i] === kcm.updatesSettings.requiredNotificationInterval) {
-                        index = i
+            Connections {
+                target: kcm.updatesSettings
+
+                function onUseUnattendedUpdatesChanged() {
+                    if (kcm.updatesSettings.useUnattendedUpdates &&
+                        kcm.updatesSettings.requiredNotificationInterval === frequencyComboBox.updatesFrequencyModel[3].value) {
+                        kcm.updatesSettings.requiredNotificationInterval = frequencyComboBox.updatesFrequencyModel[0].value
                     }
                 }
-                return index
             }
-            onActivated: index => {
-                kcm.updatesSettings.requiredNotificationInterval = options[index]
-            }
-            SettingStateProxy {
-                id: settingState
+
+            SettingStateBinding {
                 configObject: kcm.updatesSettings
                 settingName: "requiredNotificationInterval"
             }
@@ -127,6 +128,11 @@ SimpleKCM {
 
                 QQC2.ButtonGroup.group: offlineUpdatesGroup
                 checked: kcm.discoverSettings.useOfflineUpdates
+
+                SettingStateBinding {
+                    configObject: kcm.discoverSettings
+                    settingName: "useOfflineUpdates"
+                }
             }
 
             QQC2.Label {
@@ -141,13 +147,12 @@ SimpleKCM {
                 QQC2.ButtonGroup.group: offlineUpdatesGroup
                 enabled: !kcm.discoverSettings.isUseOfflineUpdatesImmutable
                 checked: !kcm.discoverSettings.useOfflineUpdates
-            }
-        }
 
-        SettingStateBinding {
-            configObject: kcm.discoverSettings
-            settingName: "useOfflineUpdates"
-            target: offlineUpdatesOption
+                SettingStateBinding {
+                    configObject: kcm.discoverSettings
+                    settingName: "useOfflineUpdates"
+                }
+            }
         }
     }
 }

@@ -74,7 +74,7 @@ DiscoverPage {
         switch(licenseType) {
             case "proprietary":
                 if (hasHomepageUrl) {
-                    return xi18nc("@info", "Only install %1 if you fully trust its authors because it is <emphasis strong='true'>proprietary</emphasis>: Your freedom to use, modify, and redistribute this application is restricted, and its source code is partially or entirely closed to public inspection and improvement. This means third parties and users like you cannot verify its operation, security, and trustworthiness.<nl/><nl/>The application may be perfectly safe to use, or it may be acting against you in various ways — such as harvesting your personal information, tracking your location, or transmitting the contents of your data to someone else. Only use it if you fully trust its authors. More information may be available on <link url='%2'>the application's website</link>.<nl/><nl/>Learn more at <link url='%3'>%3</link>.",
+                    return xi18nc("@info", "Only install %1 if you fully trust its authors because it is <emphasis strong='true'>proprietary</emphasis>: Your freedom to use, modify, and redistribute this application is restricted, and its source code is partially or entirely closed to public inspection and improvement. This means third parties and users like you cannot verify its operation, security, and trustworthiness.<nl/><nl/>The application may be perfectly safe to use, or it may be acting against you in various ways — such as harvesting your personal information, tracking your location, or transmitting the contents of your data to someone else. Only use it if you fully trust its authors. More information may be available on <link url='%2'>the application’s website</link>.<nl/><nl/>Learn more at <link url='%3'>%3</link>.",
                                 appInfo.application.name,
                                 appInfo.application.homepage.toString(),
                                 proprietarySoftwareUrl)
@@ -86,7 +86,7 @@ DiscoverPage {
 
             case "non-free":
                 if (hasHomepageUrl) {
-                    return xi18nc("@info", "%1 uses one or more licenses not certified as “Free Software” by either the <link url='%2'>Free Software Foundation</link> or the <link url='%3'>Open Source Initiative</link>. This means your freedom to use, study, modify, and share it may be restricted in some ways.<nl/><nl/>Make sure to read the license text and understand any restrictions before using the software.<nl/><nl/>If the license does not even grant access to read the source code, make sure you fully trust the authors, as no one else can verify the trustworthiness and security of its code to ensure that it is not acting against you in hidden ways. More information may be available on <link url='%4'>the application's website</link>.<nl/><nl/>Learn more at <link url='%5'>%5</link>.",
+                    return xi18nc("@info", "%1 uses one or more licenses not certified as “Free Software” by either the <link url='%2'>Free Software Foundation</link> or the <link url='%3'>Open Source Initiative</link>. This means your freedom to use, study, modify, and share it may be restricted in some ways.<nl/><nl/>Make sure to read the license text and understand any restrictions before using the software.<nl/><nl/>If the license does not even grant access to read the source code, make sure you fully trust the authors, as no one else can verify the trustworthiness and security of its code to ensure that it is not acting against you in hidden ways. More information may be available on <link url='%4'>the application’s website</link>.<nl/><nl/>Learn more at <link url='%5'>%5</link>.",
                                 appInfo.application.name,
                                 fsfUrl,
                                 osiUrl,
@@ -102,11 +102,11 @@ DiscoverPage {
 
             case "unknown":
                 if (hasHomepageUrl) {
-                    return xi18nc("@info", "%1 does not indicate under which license it is distributed. You may be able to determine this on <link url='%2'>the application's website</link>. Find it there or contact the author if you want to use this application for anything other than private personal use.",
+                    return xi18nc("@info", "%1 does not indicate under which license it is distributed. You may be able to determine this on <link url='%2'>the application’s website</link>. Find it there or contact the author if you want to use this application for anything other than private personal use.",
                                  appInfo.application.name,
                                  appInfo.application.homepage.toString());
                 } else {
-                    return i18nc("@info", "%1 does not indicate under which license it is distributed. Contact the application's author if you want to use it for anything other than private personal use.",
+                    return i18nc("@info", "%1 does not indicate under which license it is distributed. Contact the application’s author if you want to use it for anything other than private personal use.",
                                  appInfo.application.name);
                 }
 
@@ -443,7 +443,7 @@ DiscoverPage {
             visible: changelogLabel.visible
 
             Kirigami.Heading {
-                text: i18n("What's New")
+                text: i18n("What’s New")
                 level: 2
                 type: Kirigami.Heading.Type.Primary
                 wrapMode: Text.Wrap
@@ -569,6 +569,10 @@ DiscoverPage {
                                                 + (donateButton.visible ? 1 : 0)
                                                 + (bugButton.visible ? 1 : 0)
                                                 + (contributeButton.visible ? 1 : 0)
+                                                + (faqButton.visible ? 1 : 0)
+                                                + (translateButton.visible ? 1 : 0)
+                                                + (contactButton.visible ? 1 : 0)
+                                                + (vcsBrowserButton.visible ? 1 : 0)
             visible: visibleButtons > 0 && !appInfo.isTechnicalPackage
 
             spacing: Kirigami.Units.smallSpacing
@@ -586,24 +590,35 @@ DiscoverPage {
                 spacing: Kirigami.Units.largeSpacing
 
                 ApplicationResourceButton {
+                    id: faqButton
+
+                    visible: website.length > 0
+
+                    icon: "question-symbolic"
+                    website: application.faqURL.toString()
+                    linkText: i18nc("@info text of a web URL", "Read the FAQ")
+                }
+
+                ApplicationResourceButton {
                     id: helpButton
 
                     visible: website.length > 0
 
                     icon: "documentation-symbolic"
                     website: application.helpURL.toString()
-                    linkText: i18nc("@info text of a web URL", "Read the documentation")
+                    linkText: i18nc("@info text of a web URL", faqButton.visible
+                        ? "Read the full documentation"
+                        : "Read the documentation")
                 }
 
                 ApplicationResourceButton {
                     id: homepageButton
 
-
                     visible: website.length > 0
 
                     icon: "internet-services-symbolic"
                     website: application.homepage.toString()
-                    linkText: i18nc("@info text of a web URL", "Visit the project's website")
+                    linkText: i18nc("@info text of a web URL", "Visit the project’s website")
                 }
 
                 ApplicationResourceButton {
@@ -634,6 +649,36 @@ DiscoverPage {
                     icon: "applications-development-symbolic"
                     website: application.contributeURL.toString()
                     linkText: i18nc("@info text of a web URL", "Start contributing")
+                }
+
+                ApplicationResourceButton {
+                    id: translateButton
+
+                    visible: website.length > 0
+
+                    icon: "translate-symbolic"
+                    website: application.translateURL.toString()
+                    linkText: i18nc("@info text of a web URL", "Help with translations")
+                }
+
+                ApplicationResourceButton {
+                    id: contactButton
+
+                    visible: website.length > 0
+
+                    icon: "mail-message-new-symbolic"
+                    website: application.contactURL.toString()
+                    linkText: i18nc("@info text of a web URL", "Contact the developers")
+                }
+
+                ApplicationResourceButton {
+                    id: vcsBrowserButton
+
+                    visible: website.length > 0
+
+                    icon: "folder-git-symbolic"
+                    website: application.vcsBrowserURL.toString()
+                    linkText: i18nc("@info text of a web URL", "Browse the source code")
                 }
             }
         }

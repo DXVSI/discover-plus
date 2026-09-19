@@ -1310,7 +1310,7 @@ PKResultsStream *PackageKitBackend::findResourceByPackageName(const QUrl &url)
     } else if (url.scheme() == QLatin1String("appstream")) {
         const auto appstreamIds = AppStreamUtils::appstreamIds(url);
         if (appstreamIds.isEmpty()) {
-            Q_EMIT passiveMessage(i18n("Malformed appstream url '%1'", url.toDisplayString()));
+            Q_EMIT passiveMessage(i18n("Malformed appstream url “%1”", url.toDisplayString()));
         } else {
             return deferredResultStream(u"PackageKitStream-appstream-url"_s, [this, appstreamIds](PKResultsStream *stream) {
                 auto toSend = QSet<StreamResult>();
@@ -1431,7 +1431,7 @@ Transaction *PackageKitBackend::removeApplication(AbstractResource *app)
     }
 
     if (!qobject_cast<PackageKitResource *>(app)) {
-        Q_EMIT passiveMessage(i18n("Cannot remove '%1'", app->name()));
+        Q_EMIT passiveMessage(i18n("Cannot remove “%1”", app->name()));
         return nullptr;
     }
     return new PKTransaction({app}, Transaction::RemoveRole);
