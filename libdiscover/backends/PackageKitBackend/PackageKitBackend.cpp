@@ -2053,8 +2053,8 @@ void PackageKitBackend::onCoprProjectsFound(const QList<CoprProjectInfo> &projec
             continue;
         }
 
-        // Browse mode shows what the COPR homepage shows (no projects hidden from it)
-        // minus projects without the current chroot. The chroot check is negative
+        // Browse mode leaves out the projects marked as hidden from the COPR homepage
+        // and those without the current chroot. The chroot check is negative
         // only: an enabled chroot does not guarantee that builds exist.
         if (project.unlistedOnHomepage) {
             ++unlistedCount;
