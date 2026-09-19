@@ -326,14 +326,7 @@ PackageKitBackend::PackageKitBackend(QObject *parent)
             return;
         }
 
-        // The COPR page starts its stream twice while opening: do not repeat the message
-        if (message == m_lastCoprErrorMessage && m_lastCoprErrorTimer.isValid() && m_lastCoprErrorTimer.elapsed() < 5000) {
-            return;
-        }
-        m_lastCoprErrorMessage = message;
-        m_lastCoprErrorTimer.start();
-        qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "Showing COPR error to the user:" << message;
-        Q_EMIT passiveMessage(message);
+        showCoprMessageOnce(requestType, message);
     });
 
     // Hide the drivers category if there's no drivers
@@ -821,6 +814,15 @@ public:
         }
     }
 
+    // The server answered, but nothing passed the filters yet: browsing needs several
+    // requests in a row, which together may take longer than the no-data timeout
+    void noteCoprResponse()
+    {
+        if (m_timeoutTimer && !m_hasReceivedData) {
+            m_timeoutTimer->start();
+        }
+    }
+
     void sendResources(const QVector<StreamResult> &resources, bool waitForResolved = false)
     {
         if (resources.isEmpty()) {
@@ -933,9 +935,15 @@ ResultsStream *PackageKitBackend::search(const AbstractResourcesBackend::Filters
     if (filter.origin == QStringLiteral("COPR") && filter.search.isEmpty()) {
         qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "Loading popular COPR projects for COPR category";
 
+        // The COPR page starts its stream twice while opening. While the first page of
+        // the previous browse stream is still in flight, hand it over to the new stream
+        // instead of cancelling it and asking the server for the same 0.5 MB again.
+        const bool reuseFirstPage = m_currentSearchStream && m_lastCoprSearchQuery.isEmpty() && m_coprBrowsePagePending && m_coprBrowseRequests == 1
+            && m_coprOffset == 0 && m_coprBrowseSeenKeys.isEmpty();
+
         // Close any previous COPR stream and cancel pending requests
         if (m_currentSearchStream) {
-            if (m_coprClient) {
+            if (m_coprClient && !reuseFirstPage) {
                 m_coprClient->cancelAllRequests();
             }
             auto oldStream = qobject_cast<PKResultsStream *>(m_currentSearchStream.data());
@@ -948,6 +956,11 @@ ResultsStream *PackageKitBackend::search(const AbstractResourcesBackend::Filters
         auto stream = PKResultsStream::create(this, QStringLiteral("COPR-popular"));
         m_currentSearchStream = stream;
         qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "Created and saved stream for COPR popular projects";
+
+        if (reuseFirstPage) {
+            qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "COPR browse: the first page is already on its way, reusing it for the new stream";
+            return stream;
+        }
 
         // Reset state for new session
         m_coprOffset = 0;
@@ -1849,6 +1862,21 @@ void PackageKitBackend::processNextCoprInstalledStateCheck()
     }
 }
 
+void PackageKitBackend::showCoprMessageOnce(const QString &kind, const QString &message)
+{
+    // The COPR page starts its stream twice while opening, about two seconds apart,
+    // and both can end the same way: do not repeat the message. The text is not
+    // compared because it may carry a countdown. The first message is still on
+    // screen during this window, so a quick retry by the user is not left unexplained.
+    if (kind == m_lastCoprMessageKind && m_lastCoprMessageTimer.isValid() && m_lastCoprMessageTimer.elapsed() < 5000) {
+        return;
+    }
+    m_lastCoprMessageKind = kind;
+    m_lastCoprMessageTimer.start();
+    qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "Showing COPR message to the user:" << message;
+    Q_EMIT passiveMessage(message);
+}
+
 void PackageKitBackend::searchCoprPackages(const QString &query)
 {
     if (!m_coprClient) {
@@ -1886,8 +1914,8 @@ void PackageKitBackend::requestNextCoprBrowsePage()
     qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "Loading COPR projects, offset:" << m_coprOffset << "request" << m_coprBrowseRequests << "of at most"
                                                 << CoprBrowseMaxRequestsPerAction << "for this action";
 
+    // m_coprOffset moves on when the page arrives, by what the server really sent
     m_coprClient->getLatestProjects(CoprBrowsePageSize, m_coprOffset);
-    m_coprOffset += CoprBrowsePageSize;
 }
 
 void PackageKitBackend::loadMoreCoprProjects()
@@ -1933,6 +1961,10 @@ void PackageKitBackend::onCoprProjectsFound(const QList<CoprProjectInfo> &projec
         m_coprSearchPagePending = false;
     } else {
         m_coprBrowsePagePending = false;
+        m_coprOffset += projects.size();
+    }
+    if (auto coprStream = qobject_cast<PKResultsStream *>(m_currentSearchStream.data())) {
+        coprStream->noteCoprResponse();
     }
 
     // Get the current search query if we're in search mode
@@ -2080,17 +2112,28 @@ void PackageKitBackend::onCoprProjectsFound(const QList<CoprProjectInfo> &projec
                                                 << "duplicates; accepted for this action:" << m_coprBrowseAccepted << "after" << m_coprBrowseRequests
                                                 << "requests";
 
-    if (projects.size() < CoprBrowsePageSize) {
-        // A short page is the end of the list (an empty one also follows a failed request)
+    if (projects.isEmpty()) {
+        // Only an empty page is the end of the list (it also follows a failed request):
+        // a short one may just mean that the server capped the limit. The stream
+        // was finished above.
         m_coprBrowseExhausted = true;
-        if (!projects.isEmpty()) {
-            auto coprStream = qobject_cast<PKResultsStream *>(m_currentSearchStream.data());
-            if (coprStream) {
-                coprStream->finishCoprStream();
-            }
-        }
     } else if (m_coprBrowseAccepted < CoprBrowseTargetCount && m_coprBrowseRequests < CoprBrowseMaxRequestsPerAction) {
         requestNextCoprBrowsePage();
+    } else if (m_coprBrowseAccepted == 0) {
+        // Nothing to show after the whole budget of this action: asking again would give
+        // the same, so end the stream instead of leaving the view waiting
+        qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "COPR browse: request cap reached without a single project, finishing the stream";
+        m_coprBrowseExhausted = true;
+        const bool nothingShown = m_coprBrowseSeenKeys.isEmpty();
+        if (auto coprStream = qobject_cast<PKResultsStream *>(m_currentSearchStream.data())) {
+            coprStream->finishCoprStream();
+        }
+        if (nothingShown) {
+            showCoprMessageOnce(QStringLiteral("emptyBrowse"),
+                                currentChroot.isEmpty()
+                                    ? i18n("No recently created COPR projects to show. Use the search to find a project.")
+                                    : i18n("None of the recently created COPR projects supports %1. Use the search to find a project.", currentChroot));
+        }
     } else if (m_coprBrowseAccepted < CoprBrowseTargetCount) {
         qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "COPR browse: request cap reached with" << m_coprBrowseAccepted
                                                     << "projects, waiting for the next fetchMore";

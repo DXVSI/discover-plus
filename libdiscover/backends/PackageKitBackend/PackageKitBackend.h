@@ -202,6 +202,7 @@ private:
     void setRefresher(PackageKit::Transaction *refresh);
     void processNextCoprInstalledStateCheck();
     void requestNextCoprBrowsePage();
+    void showCoprMessageOnce(const QString &kind, const QString &message);
 
     QScopedPointer<AppStream::ConcurrentPool> m_appdata;
     bool m_appdataLoaded = false;
@@ -262,6 +263,6 @@ private:
     static constexpr int CoprBrowseTargetCount = 30;
     static constexpr int CoprBrowseMaxRequestsPerAction = 4;
 
-    QString m_lastCoprErrorMessage;
-    QElapsedTimer m_lastCoprErrorTimer;
+    QString m_lastCoprMessageKind;
+    QElapsedTimer m_lastCoprMessageTimer;
 };
