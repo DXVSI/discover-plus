@@ -181,6 +181,47 @@ QUrl CoprClient::projectWebUrl(const QString &owner, const QString &project)
     return QUrl(QStringLiteral("%1/coprs/%2/%3/").arg(coprHubUrl(), owner, project));
 }
 
+// Letters, digits and "_.+-" only, never a leading "-" or ".": nothing that a command
+// line could take for an option, a path or a separator of the repository id.
+// \z and not $, which would let a trailing newline pass.
+static bool isValidCoprName(const QString &name)
+{
+    static const QRegularExpression pattern(QStringLiteral("\\A[A-Za-z0-9_][A-Za-z0-9_.+-]{0,127}\\z"));
+    return pattern.match(name).hasMatch();
+}
+
+bool CoprClient::isValidOwnerName(const QString &owner)
+{
+    return isValidCoprName(owner.startsWith(QLatin1Char('@')) ? owner.mid(1) : owner);
+}
+
+bool CoprClient::isValidProjectName(const QString &project)
+{
+    return isValidCoprName(project);
+}
+
+bool CoprClient::isValidPackageName(const QString &packageName)
+{
+    return isValidCoprName(packageName);
+}
+
+QString CoprClient::repositoryId(const QString &owner, const QString &project)
+{
+    if (!isValidOwnerName(owner) || !isValidProjectName(project)) {
+        return {};
+    }
+    const QString repoOwner = owner.startsWith(QLatin1Char('@')) ? QStringLiteral("group_") + owner.mid(1) : owner;
+    return QStringLiteral("copr:%1:%2:%3").arg(QUrl(coprHubUrl()).host(), repoOwner, project);
+}
+
+QString CoprClient::dnfProjectSpec(const QString &owner, const QString &project)
+{
+    if (!isValidOwnerName(owner) || !isValidProjectName(project)) {
+        return {};
+    }
+    return QStringLiteral("%1/%2/%3").arg(QUrl(coprHubUrl()).host(), owner, project);
+}
+
 void CoprClient::searchProjects(const QString &query, int limit, int offset)
 {
     QString endpoint = QStringLiteral("/project/search");

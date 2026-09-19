@@ -31,14 +31,19 @@ private Q_SLOTS:
     void processError(QProcess::ProcessError error);
     void processOutput();
 
+    void installedPackagesRefreshed();
+
 private:
+    bool hasValidNames();
     bool canInstallForCurrentChroot();
     QString processDiagnosticOutput() const;
-    void startPkexec(const QStringList &arguments);
+    void startDnf(const QStringList &dnfArguments);
     void enableCoprRepo();
     void installPackage();
     void removePackage();
     void removeCoprRepo();
+    void checkInstalledPackages();
+    void finishRemoval();
 
     QPointer<CoprResource> m_resource;
     PackageKitBackend *m_backend;
@@ -46,12 +51,18 @@ private:
     Transaction::Role m_role;
     // Taken once in proceed(): the selection of the resource may change while pkexec runs
     QString m_packageName;
+    QString m_owner;
+    QString m_project;
+    // dnf recorded that the package to remove came from the repository of this project
+    bool m_packageCameFromRepository = false;
+    bool m_cancelled = false;
     QString m_stdoutBuffer;
     QString m_stderrBuffer;
     enum State {
         EnableRepo,
         InstallPackage,
         RemovePackage,
+        CheckInstalledPackages,
         RemoveRepo,
         Done
     };

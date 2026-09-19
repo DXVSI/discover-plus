@@ -13,7 +13,6 @@
 #include <QElapsedTimer>
 #include <QHash>
 #include <QPointer>
-#include <QQueue>
 #include <QSet>
 #include <QSharedPointer>
 #include <QStringList>
@@ -31,6 +30,7 @@ class OdrsReviewsBackend;
 class PKResultsStream;
 class PKResolveTransaction;
 class CoprClient;
+class CoprInstalledPackages;
 class CoprResource;
 struct CoprProjectInfo;
 struct CoprPackageInfo;
@@ -156,8 +156,13 @@ public:
     void searchCoprPackages(const QString &query);
     void loadPopularCoprProjects();
     void loadMoreCoprProjects();
+    CoprInstalledPackages *coprInstalledPackages() const
+    {
+        return m_coprInstalledPackages;
+    }
     void requestCoprInstalledStateCheck(CoprResource *resource);
-    void setCoprInstalledStateCache(const QString &owner, const QString &packageName, bool installed);
+    // A COPR transaction changed the repositories of the system: PackageKit does not watch them
+    void coprRepositoriesChanged();
     void refreshSources();
 
 public Q_SLOTS:
@@ -203,7 +208,7 @@ private:
     void updateProxy();
     void foundNewMajorVersion(const AppStream::Release &release);
     void setRefresher(PackageKit::Transaction *refresh);
-    void processNextCoprInstalledStateCheck();
+    void applyCoprInstalledPackages();
     void requestNextCoprBrowsePage();
     void requestNextCoprSearchPage();
     void resetCoprStreamState();
@@ -259,20 +264,10 @@ private:
     // further ones wait for a fetchMore.
     static constexpr int CoprSearchPageSize = 100;
     static constexpr int CoprSearchAutomaticPages = 2;
-    struct CoprInstalledStateRequest {
-        QPointer<CoprResource> resource;
-        CoprResource *resourceKey = nullptr;
-        QString key;
-        QString packageName;
-        QString owner;
-    };
-    QQueue<CoprInstalledStateRequest> m_coprInstalledStateQueue;
-    QHash<CoprResource *, QString> m_coprInstalledStatePendingKeys;
-    QHash<QString, bool> m_coprInstalledStateCache;
-    int m_activeCoprInstalledStateChecks = 0;
-    static constexpr int MaxConcurrentCoprInstalledStateChecks = 2;
-    // Every automatically selected package of a list item asks for an rpm process
-    static constexpr int MaxQueuedCoprInstalledStateChecks = 100;
+    // What is installed from which COPR repository; asked again after the transactions of
+    // this backend and when PackageKit reports that the packages of the system changed
+    CoprInstalledPackages *m_coprInstalledPackages = nullptr;
+    bool m_coprRepositoriesChanged = false;
 
     // Browse mode. About 90% of the newest projects are hidden from the COPR
     // homepage (CI scratch projects) or lack the current chroot, so one user

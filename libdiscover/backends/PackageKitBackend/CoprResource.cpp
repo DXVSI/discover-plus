@@ -386,7 +386,7 @@ void CoprResource::fetchProjectPackages()
     if (changed) {
         Q_EMIT projectPackagesChanged();
     }
-    // The backend forgets the oldest checks when too many are waiting; answered from its cache otherwise
+    // Answered from what the backend knows about the installed packages
     if (!m_installPackageName.isEmpty()) {
         checkInstalledState();
     }
@@ -454,7 +454,7 @@ QString CoprResource::availableVersion() const
 
 QString CoprResource::installedVersion() const
 {
-    return QString();
+    return m_installedVersion;
 }
 
 QUrl CoprResource::homepage()
@@ -525,20 +525,16 @@ AbstractResource::State CoprResource::state()
     return AbstractResource::None;
 }
 
-void CoprResource::setState(AbstractResource::State state)
-{
-    setInstalledStateFromSystem(state == AbstractResource::Installed);
-}
-
-void CoprResource::setInstalledStateFromSystem(bool installed)
+void CoprResource::setInstalledStateFromSystem(const QString &installedVersion)
 {
     const bool wasInstalled = m_isInstalled;
-    m_isInstalled = installed;
+    const QString previousVersion = m_installedVersion;
+    m_isInstalled = !installedVersion.isEmpty();
+    m_installedVersion = installedVersion;
 
-    if (auto pkBackend = qobject_cast<PackageKitBackend *>(backend())) {
-        pkBackend->setCoprInstalledStateCache(m_owner, m_installPackageName, installed);
+    if (previousVersion != m_installedVersion) {
+        Q_EMIT versionsChanged();
     }
-
     // Also emit the change through the backend so the UI updates
     if (wasInstalled != m_isInstalled) {
         Q_EMIT stateChanged();
@@ -915,14 +911,14 @@ QDate CoprResource::releaseDate() const
 void CoprResource::checkInstalledState()
 {
     if (m_installPackageName.isEmpty()) {
-        setInstalledStateFromSystem(false);
+        setInstalledStateFromSystem({});
         return;
     }
 
     if (auto pkBackend = qobject_cast<PackageKitBackend *>(backend())) {
         pkBackend->requestCoprInstalledStateCheck(this);
     } else {
-        setInstalledStateFromSystem(false);
+        setInstalledStateFromSystem({});
     }
 }
 

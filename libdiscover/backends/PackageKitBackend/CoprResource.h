@@ -80,8 +80,8 @@ public:
     // What the list was searched for (empty when browsing) and whether the name, the
     // owner or the description of the project shows it
     void setCoprSearchQuery(const QString &query, bool matchIsVisible);
-    void setState(AbstractResource::State state);
-    void setInstalledStateFromSystem(bool installed);
+    // The version is empty when the package is not installed from the repository of this project
+    void setInstalledStateFromSystem(const QString &installedVersion);
     // What the client delivered; requestType is one of CoprClient::project*RequestType()
     void setProjectPackages(const QList<CoprPackageInfo> &packages, bool complete);
     void setProjectMonitor(const QList<CoprPackageInfo> &packages, bool complete);
@@ -191,6 +191,7 @@ private:
     bool m_packageListComplete = true;
     bool m_monitorComplete = true;
     bool m_isInstalled = false;
+    QString m_installedVersion;
     QString m_searchQuery;
     bool m_searchMatchIsVisible = true;
 };

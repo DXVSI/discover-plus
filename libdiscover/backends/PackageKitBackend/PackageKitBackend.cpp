@@ -9,6 +9,7 @@
 #include "PackageKitBackend.h"
 #include "AppPackageKitResource.h"
 #include "CoprClient.h"
+#include "CoprInstalledPackages.h"
 #include "CoprResource.h"
 #include "CoprTransaction.h"
 #include "LocalFilePKResource.h"
@@ -129,14 +130,21 @@ static CoprPackageInfo packageInfoFromProject(const CoprProjectInfo &project)
 // A query that names one project: "owner/project", a link to its page
 // (/coprs/<owner>/<project>/, for a group /coprs/g/<group>/<project>/) or the command
 // that enables it, with or without the hub in front. Group owners are "@group" in the API.
-static bool coprProjectFromQuery(const QString &query, QString *owner, QString *project)
+static bool coprProjectFromQuery(const QString &pastedQuery, QString *owner, QString *project)
 {
     static const QString name = QStringLiteral("[A-Za-z0-9_.+-]+");
     static const QRegularExpression pageLink(QStringLiteral("/coprs/(g/)?(%1)/(%1)(?:[/?#]|$)").arg(name));
-    static const QRegularExpression enableCommand(QStringLiteral("\\bcopr\\s+enable\\s+(?:-\\S+\\s+)*(?:[^/\\s]+/)?(@?%1)/(%1)(?:\\s|$)").arg(name));
+    static const QRegularExpression enableCommand(QStringLiteral("\\bcopr\\s+enable\\s+(?:-\\S+\\s+)*(?:[^/\\s]+/)?(@?%1)/(%1)(?:[\\s;&|]|$)").arg(name));
     static const QRegularExpression fullName(QStringLiteral("^(@?%1)/(%1)$").arg(name));
+    // What a sentence, brackets or quotes leave around a pasted name or link
+    static const QRegularExpression pastedAround(QStringLiteral("^[\\s(\\[<\"'`]+|[\\s.,;:!?)\\]>\"'`/]+$"));
 
+    const QString query = QString(pastedQuery).remove(pastedAround);
     QRegularExpressionMatch match = pageLink.match(query);
+    // "/coprs/g/<group>/" is the page of a group, not the project <group> of an owner "g"
+    if (match.hasMatch() && match.capturedLength(1) == 0 && match.captured(2) == QLatin1String("g")) {
+        return false;
+    }
     if (match.hasMatch()) {
         *owner = (match.capturedLength(1) > 0 ? QStringLiteral("@") : QString()) + match.captured(2);
         *project = match.captured(3);
@@ -156,8 +164,9 @@ static bool coprProjectFromQuery(const QString &query, QString *owner, QString *
 
 // Above every score of coprSearchRelevance() and what the model adds to it
 static constexpr int CoprExactProjectRelevance = 150;
-// From here on the name, the owner or the description of a project shows the query
-static constexpr int CoprVisibleMatchRelevance = 60;
+// From here on the name, the owner or the description of a project shows the query, or
+// one of its words at least
+static constexpr int CoprVisibleMatchRelevance = 45;
 
 // Only the order of the results. The server has searched the package names and the
 // instructions as well, so a project that shows no match is still a result: it goes
@@ -187,30 +196,24 @@ static int coprSearchRelevance(const CoprProjectInfo &project, const QString &ow
     }
     // Description contains query
     if (lowerDesc.contains(lowerQuery)) {
-        return CoprVisibleMatchRelevance;
+        return 60;
     }
-    // Several words: the server looks for each of them on its own
-    const QStringList words = lowerQuery.split(QLatin1Char(' '), Qt::SkipEmptyParts);
+    // Several words: the server looks for each of them on its own, and one is enough for it
+    static const QRegularExpression whitespace(QStringLiteral("\\s+"));
+    const QStringList words = lowerQuery.split(whitespace, Qt::SkipEmptyParts);
     const auto isShown = [&](const QString &word) {
         return lowerName.contains(word) || lowerOwner.contains(word) || lowerDesc.contains(word);
     };
-    return words.size() > 1 && std::all_of(words.cbegin(), words.cend(), isShown) ? CoprVisibleMatchRelevance : 30;
-}
-
-static bool rpmInfoMatchesCoprOwner(const QString &packageName, const QString &owner, const QString &rpmInfo)
-{
-    const QString userVendor = QStringLiteral("Fedora Copr - user ") + owner;
-    const QString groupVendor = QStringLiteral("Fedora Copr - group ") + owner;
-    const QString sourcePattern = owner + QStringLiteral("-") + packageName;
-    const QString sourcePatternWithCopr = QStringLiteral("copr:") + owner;
-
-    return rpmInfo.contains(userVendor, Qt::CaseInsensitive) || rpmInfo.contains(groupVendor, Qt::CaseInsensitive)
-        || rpmInfo.contains(sourcePattern, Qt::CaseInsensitive) || rpmInfo.contains(sourcePatternWithCopr, Qt::CaseInsensitive);
-}
-
-static QString coprInstalledStateKey(const QString &owner, const QString &packageName)
-{
-    return owner + QLatin1Char('\n') + packageName;
+    if (words.size() > 1 && std::all_of(words.cbegin(), words.cend(), isShown)) {
+        return 60;
+    }
+    if (words.size() > 1 && std::any_of(words.cbegin(), words.cend(), isShown)) {
+        const bool inName = std::any_of(words.cbegin(), words.cend(), [&](const QString &word) {
+            return lowerName.contains(word);
+        });
+        return inName ? 50 : CoprVisibleMatchRelevance;
+    }
+    return 30;
 }
 
 PackageOrAppId makeResourceId(PackageKitResource *resource)
@@ -353,6 +356,19 @@ PackageKitBackend::PackageKitBackend(QObject *parent)
 
     // Initialize COPR client
     m_coprClient = new CoprClient(this);
+    m_coprInstalledPackages = new CoprInstalledPackages(this);
+    connect(m_coprInstalledPackages, &CoprInstalledPackages::refreshed, this, &PackageKitBackend::applyCoprInstalledPackages);
+    // Something was installed, removed or updated, by whatever tool. Only when it was asked before.
+    connect(PackageKit::Daemon::global(), &PackageKit::Daemon::updatesChanged, m_coprInstalledPackages, [this] {
+        if (m_coprInstalledPackages->isCurrent() || m_coprInstalledPackages->isRunning()) {
+            m_coprInstalledPackages->refresh();
+        }
+        // Only now does PackageKit know the repositories that a COPR transaction changed
+        if (m_coprRepositoriesChanged) {
+            m_coprRepositoriesChanged = false;
+            refreshSources();
+        }
+    });
     connect(m_coprClient, &CoprClient::projectsFound, this, &PackageKitBackend::onCoprProjectsFound);
     connect(m_coprClient, &CoprClient::projectFound, this, &PackageKitBackend::onCoprProjectFound);
     connect(m_coprClient, &CoprClient::projectNotFound, this, &PackageKitBackend::onCoprProjectNotFound);
@@ -1819,106 +1835,32 @@ void PackageKitBackend::requestCoprInstalledStateCheck(CoprResource *resource)
         return;
     }
 
-    const QString packageName = resource->packageName();
-    if (packageName.isEmpty()) {
-        resource->setInstalledStateFromSystem(false);
-        return;
+    // One query answers for every resource: applyCoprInstalledPackages() follows it
+    if (m_coprInstalledPackages->isCurrent()) {
+        resource->setInstalledStateFromSystem(
+            m_coprInstalledPackages->installedVersion(resource->coprOwner(), resource->coprProject(), resource->packageName()));
+    } else if (!m_coprInstalledPackages->isRunning()) {
+        m_coprInstalledPackages->refresh();
     }
-
-    const QString owner = resource->coprOwner();
-    const QString key = coprInstalledStateKey(owner, packageName);
-    const auto cachedState = m_coprInstalledStateCache.constFind(key);
-    if (cachedState != m_coprInstalledStateCache.cend()) {
-        resource->setInstalledStateFromSystem(*cachedState);
-        return;
-    }
-
-    const auto pendingKey = m_coprInstalledStatePendingKeys.constFind(resource);
-    if (pendingKey != m_coprInstalledStatePendingKeys.cend() && *pendingKey == key) {
-        return;
-    }
-
-    m_coprInstalledStatePendingKeys.insert(resource, key);
-    connect(resource, &QObject::destroyed, this, [this, resource] {
-        m_coprInstalledStatePendingKeys.remove(resource);
-    });
-
-    CoprInstalledStateRequest request;
-    request.resource = resource;
-    request.resourceKey = resource;
-    request.key = key;
-    request.packageName = packageName;
-    request.owner = owner;
-    m_coprInstalledStateQueue.enqueue(request);
-    if (m_coprInstalledStateQueue.size() > MaxQueuedCoprInstalledStateChecks) {
-        // Forgotten, not answered: the next check of that resource queues it again
-        const CoprInstalledStateRequest dropped = m_coprInstalledStateQueue.dequeue();
-        if (m_coprInstalledStatePendingKeys.value(dropped.resourceKey) == dropped.key) {
-            m_coprInstalledStatePendingKeys.remove(dropped.resourceKey);
-        }
-    }
-
-    qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "Queued COPR installed-state check for" << resource->coprOwner() << "/" << resource->coprProject()
-                                                << "package:" << packageName << "queue size:" << m_coprInstalledStateQueue.size();
-    processNextCoprInstalledStateCheck();
 }
 
-void PackageKitBackend::setCoprInstalledStateCache(const QString &owner, const QString &packageName, bool installed)
+void PackageKitBackend::applyCoprInstalledPackages()
 {
-    if (owner.isEmpty() || packageName.isEmpty()) {
-        return;
+    for (CoprResource *resource : std::as_const(m_coprResources)) {
+        if (resource) {
+            resource->setInstalledStateFromSystem(
+                m_coprInstalledPackages->installedVersion(resource->coprOwner(), resource->coprProject(), resource->packageName()));
+        }
     }
-
-    m_coprInstalledStateCache.insert(coprInstalledStateKey(owner, packageName), installed);
 }
 
-void PackageKitBackend::processNextCoprInstalledStateCheck()
+void PackageKitBackend::coprRepositoriesChanged()
 {
-    while (m_activeCoprInstalledStateChecks < MaxConcurrentCoprInstalledStateChecks && !m_coprInstalledStateQueue.isEmpty()) {
-        // The newest first: that is the package of a row the user is looking at
-        const CoprInstalledStateRequest request = m_coprInstalledStateQueue.takeLast();
-        if (!request.resource) {
-            if (m_coprInstalledStatePendingKeys.value(request.resourceKey) == request.key) {
-                m_coprInstalledStatePendingKeys.remove(request.resourceKey);
-            }
-            continue;
-        }
-
-        auto *process = new QProcess(this);
-        ++m_activeCoprInstalledStateChecks;
-
-        qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "Checking COPR installed state via rpm for" << request.owner << request.packageName
-                                                    << "active:" << m_activeCoprInstalledStateChecks << "queued:" << m_coprInstalledStateQueue.size();
-
-        connect(process,
-                QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished),
-                this,
-                [this, process, request](int exitCode, QProcess::ExitStatus exitStatus) {
-                    const QString output = QString::fromUtf8(process->readAllStandardOutput());
-                    const bool installedFromCopr =
-                        exitStatus == QProcess::NormalExit && exitCode == 0 && rpmInfoMatchesCoprOwner(request.packageName, request.owner, output);
-
-                    setCoprInstalledStateCache(request.owner, request.packageName, installedFromCopr);
-
-                    const bool isCurrentRequest = request.resource && m_coprInstalledStatePendingKeys.value(request.resourceKey) == request.key;
-                    if (isCurrentRequest) {
-                        request.resource->setInstalledStateFromSystem(installedFromCopr);
-                        m_coprInstalledStatePendingKeys.remove(request.resourceKey);
-                    } else {
-                        qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "Ignoring stale COPR installed-state result for" << request.owner << request.packageName;
-                    }
-
-                    --m_activeCoprInstalledStateChecks;
-                    process->deleteLater();
-                    processNextCoprInstalledStateCheck();
-                });
-
-        connect(process, &QProcess::errorOccurred, this, [process](QProcess::ProcessError error) {
-            qCWarning(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "COPR installed-state rpm process error:" << error << process->program() << process->arguments();
-        });
-
-        process->start(QStringLiteral("rpm"), {QStringLiteral("-qi"), request.packageName});
-    }
+    // The dnf5 backend of PackageKit keeps its repositories until it is told that the
+    // system changed; updatesChanged() follows when it has reloaded them, the sources are
+    // listed again then. Not waited for: the answer is of no use here.
+    PackageKit::Daemon::global()->stateHasChanged(QStringLiteral("posttrans"));
+    m_coprRepositoriesChanged = true;
 }
 
 void PackageKitBackend::showCoprMessageOnce(const QString &kind, const QString &message)
@@ -2227,6 +2169,8 @@ void PackageKitBackend::onCoprProjectFound(const CoprProjectInfo &project)
         return;
     }
     qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "COPR project named by the query:" << project.owner << "/" << project.name;
+    // The owner may have been completed to a group, see onCoprProjectNotFound()
+    m_coprSearchServerQuery = m_coprSearchOwner + QLatin1Char('/') + m_coprSearchName;
 
     // First in the list, whatever else the search finds
     m_coprSearchSeenKeys.insert(coprProjectKey(project.owner, project.name));
@@ -2242,10 +2186,20 @@ void PackageKitBackend::onCoprProjectNotFound(const QString &owner, const QStrin
     if (owner != m_coprSearchOwner || project != m_coprSearchName || !m_currentSearchStream) {
         return;
     }
-    qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "No COPR project" << owner << "/" << project << "- searching for similar names";
     if (auto coprStream = qobject_cast<PKResultsStream *>(m_currentSearchStream.data())) {
         coprStream->noteCoprResponse();
     }
+    if (!owner.startsWith(QLatin1Char('@'))) {
+        // A group without its "@", or the way its repository id writes it: "group_<name>"
+        const QLatin1String repositoryPrefix("group_");
+        m_coprSearchOwner = QLatin1Char('@') + (owner.startsWith(repositoryPrefix) ? owner.mid(repositoryPrefix.size()) : owner);
+        qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "No COPR project" << owner << "/" << project << "- looking up the group" << m_coprSearchOwner;
+        m_coprClient->getProject(m_coprSearchOwner, m_coprSearchName);
+        return;
+    }
+    // Back to the owner as it was typed, for the order of the results
+    m_coprSearchOwner = m_coprSearchServerQuery.section(QLatin1Char('/'), 0, 0);
+    qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "No COPR project" << owner << "/" << project << "- searching for similar names";
     requestNextCoprSearchPage();
 }
 

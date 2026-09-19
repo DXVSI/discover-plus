@@ -110,6 +110,15 @@ public:
     }
 
     static QUrl projectWebUrl(const QString &owner, const QString &project);
+    // What dnf calls the repository of a project: copr:<hub>:<owner>:<project>, where a
+    // group owner "@group" is written "group_group". Empty when a name is not valid.
+    static QString repositoryId(const QString &owner, const QString &project);
+    // What "dnf copr" calls the same project: <hub>/<owner>/<project>. Empty when a name is not valid.
+    static QString dnfProjectSpec(const QString &owner, const QString &project);
+    // Strict allow-lists: these names come from the API and end up in a privileged command line
+    static bool isValidOwnerName(const QString &owner);
+    static bool isValidProjectName(const QString &project);
+    static bool isValidPackageName(const QString &packageName);
 
     void searchProjects(const QString &query, int limit = 50, int offset = 0);
     // One project by its exact name; group owners are written "@group". Answers with

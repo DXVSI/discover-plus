@@ -32,6 +32,7 @@ set(packagekit-backend_SRCS
     LocalFilePKResource.cpp
     PKResolveTransaction.cpp
     CoprClient.cpp
+    CoprInstalledPackages.cpp
     CoprResource.cpp
     CoprTransaction.cpp
     pkui.qrc
