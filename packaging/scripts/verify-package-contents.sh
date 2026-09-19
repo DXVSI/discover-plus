@@ -308,7 +308,7 @@ require_loaded() {
 # window that imports it is silently left out.
 forbid_load_errors() {
     if grep -E "doesn't have the right IID|error loading|Didn't find any Discover backend|Failed to create main window|module \"[^\"]*\" is not installed" "$1" >&2; then
-        echo "Discover reported a plugin loading error" >&2
+        echo "Discover reported a plugin or QML module loading error" >&2
         exit 1
     fi
 }
