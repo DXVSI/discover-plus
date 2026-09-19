@@ -20,13 +20,18 @@ if [ -n "$worktree_status" ]; then
     exit 1
 fi
 
+# git runs inside the project root below while mkdir, tar and mv run in the
+# directory of the caller: a relative output directory must mean the same
+# place for all of them.
+mkdir -p -- "$output_dir"
+output_dir=$(unset CDPATH; cd -- "$output_dir" && pwd)
+
 version=$(sed -n '1p' "$project_root/VERSION")
 archive_name="discover-plus-$version.tar.xz"
 archive_path=$output_dir/$archive_name
 temporary_path=$archive_path.tmp
 temporary_tar=$archive_path.tar.tmp
 
-mkdir -p "$output_dir"
 cleanup() {
     rm -f -- "$temporary_path" "$temporary_tar"
 }
