@@ -5,12 +5,15 @@
 #include <KOSRelease>
 #include <QDateTime>
 #include <QDebug>
+#include <QDir>
+#include <QFile>
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QLocale>
 #include <QNetworkRequest>
 #include <QRegularExpression>
+#include <QSettings>
 #include <QSysInfo>
 #include <QTimeZone>
 #include <QTimer>
@@ -65,6 +68,37 @@ static QString rpmBaseArch(const QString &cpuArchitecture)
     return sameInRpm.contains(cpuArchitecture) ? cpuArchitecture : QString();
 }
 
+// The dnf copr plugin lets a distribution declare which COPR chroots it uses:
+// [main] distribution and releasever, read in this order, later files win
+static void readDnfCoprOverrides(QString &distribution, QString &releasever)
+{
+    QStringList files = {
+        QStringLiteral("/usr/share/dnf/plugins/copr.vendor.conf"),
+        QStringLiteral("/etc/dnf/plugins/copr.vendor.conf"),
+        QStringLiteral("/etc/dnf/plugins/copr.conf"),
+    };
+    const QDir dropInDir(QStringLiteral("/etc/dnf/plugins/copr.d"));
+    const QStringList dropIns = dropInDir.entryList({QStringLiteral("*.conf")}, QDir::Files, QDir::Name);
+    for (const QString &dropIn : dropIns) {
+        files.append(dropInDir.filePath(dropIn));
+    }
+
+    for (const QString &file : std::as_const(files)) {
+        if (!QFile::exists(file)) {
+            continue;
+        }
+        const QSettings config(file, QSettings::IniFormat);
+        const QString fileDistribution = config.value(QStringLiteral("main/distribution")).toString().trimmed();
+        if (!fileDistribution.isEmpty()) {
+            distribution = fileDistribution;
+        }
+        const QString fileReleasever = config.value(QStringLiteral("main/releasever")).toString().trimmed();
+        if (!fileReleasever.isEmpty()) {
+            releasever = fileReleasever;
+        }
+    }
+}
+
 CoprClient::CoprClient(QObject *parent)
     : QObject(parent)
     , m_baseUrl(coprHubUrl() + QStringLiteral("/api_3"))
@@ -75,7 +109,8 @@ CoprClient::CoprClient(QObject *parent)
     if (m_currentChroot.isEmpty()) {
         qCWarning(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "CoprClient: could not detect the COPR chroot of this system (os-release ID:" << KOSRelease().id()
                                                       << "VERSION_ID:" << KOSRelease().versionId() << "CPU:" << QSysInfo::currentCpuArchitecture()
-                                                      << "). COPR availability is unknown: projects are not filtered and installs are not blocked.";
+                                                      << "). A distribution other than fedora is only trusted when it is declared in the dnf copr plugin"
+                                                      << "configuration. COPR availability is unknown: projects are not filtered and installs are not blocked.";
     } else {
         qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "CoprClient initialized. Chroot:" << m_currentChroot;
     }
@@ -86,20 +121,36 @@ CoprClient::~CoprClient()
     cancelAllRequests();
 }
 
-// Same logic as the dnf5 copr plugin (copr_config.cpp): <ID>-<VERSION_ID>-<arch>,
-// where Fedora Rawhide is recognised by REDHAT_SUPPORT_PRODUCT_VERSION because
-// its VERSION_ID is numeric.
+// Same logic as the dnf5 copr plugin (copr_config.cpp): <distribution>-<releasever>-<arch>
+// from the plugin configuration, else from os-release, where Fedora Rawhide is
+// recognised by REDHAT_SUPPORT_PRODUCT_VERSION because its VERSION_ID is numeric.
+// dnf5 hands that name to the server, which picks the chroot. We compare it with
+// chroot names ourselves, so an os-release ID of a Fedora derivative ("nobara-42")
+// would match nothing, hide every project and refuse every install. Only "fedora"
+// and what the distribution itself declared for dnf are trusted; anything else
+// is an unknown chroot.
 QString CoprClient::detectCurrentChroot() const
 {
+    QString distribution;
+    QString releasever;
+    readDnfCoprOverrides(distribution, releasever);
+
     const KOSRelease osRelease;
-    const QString distribution = osRelease.id();
-    QString releasever = osRelease.versionId();
-    if (distribution == QLatin1String("fedora") && osRelease.extraValue(QStringLiteral("REDHAT_SUPPORT_PRODUCT_VERSION")) == QLatin1String("rawhide")) {
-        releasever = QStringLiteral("rawhide");
+    if (distribution.isEmpty()) {
+        distribution = osRelease.id();
+        if (distribution != QLatin1String("fedora")) {
+            return {};
+        }
+    }
+    if (releasever.isEmpty()) {
+        releasever = osRelease.versionId();
+        if (distribution == QLatin1String("fedora") && osRelease.extraValue(QStringLiteral("REDHAT_SUPPORT_PRODUCT_VERSION")) == QLatin1String("rawhide")) {
+            releasever = QStringLiteral("rawhide");
+        }
     }
 
     const QString arch = rpmBaseArch(QSysInfo::currentCpuArchitecture());
-    if (distribution.isEmpty() || releasever.isEmpty() || arch.isEmpty()) {
+    if (releasever.isEmpty() || arch.isEmpty()) {
         return {};
     }
 
