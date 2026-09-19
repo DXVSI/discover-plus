@@ -60,11 +60,15 @@ ColumnLayout {
             ? Kirigami.MessageType.Warning
             : Kirigami.MessageType.Information
         text: {
+            // A large project is cut short: what the user looks for may be in the rest
+            const status = root.resource.coprPackageListLimited
+                ? i18nd("libdiscover", "%1\nThis COPR project has more packages than Discover loads: the list below is limited, and a package that is missing from it cannot be installed from here.", statusText)
+                : statusText;
             // One of the two requests may fail while the other one answers
             const error = root.resource.coprInstallError;
             return error.length > 0 && root.resource.coprInstallStatus !== "failed"
-                ? i18nd("libdiscover", "%1 Not everything about this COPR project could be loaded: %2", statusText, error)
-                : statusText;
+                ? i18nd("libdiscover", "%1 Not everything about this COPR project could be loaded: %2", status, error)
+                : status;
         }
         readonly property string statusText: {
             const selected = root.resource.selectedCoprPackageName;

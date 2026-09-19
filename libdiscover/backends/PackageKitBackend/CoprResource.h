@@ -25,6 +25,8 @@ class CoprResource : public PackageKitResource
     // Not empty while a request for the packages has failed and can be repeated: what went wrong.
     // Also when the other source answered, that is with any status.
     Q_PROPERTY(QString coprInstallError READ coprInstallError NOTIFY projectPackagesChanged)
+    // True when the project has more packages than were loaded: one that is not listed may still exist
+    Q_PROPERTY(bool coprPackageListLimited READ isCoprPackageListLimited NOTIFY projectPackagesChanged)
 
 public:
     explicit CoprResource(const CoprPackageInfo &packageInfo, AbstractResourcesBackend *parent);
@@ -63,6 +65,7 @@ public:
     QString coprInstallStatus() const;
     QString coprInstallWarning() const;
     QString coprInstallError() const;
+    bool isCoprPackageListLimited() const;
 
     void setState(AbstractResource::State state);
     void setInstalledStateFromSystem(bool installed);

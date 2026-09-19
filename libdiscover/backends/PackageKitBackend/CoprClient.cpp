@@ -753,8 +753,9 @@ void CoprClient::processNextRequest()
                 --m_activeLazyRequests;
             }
 
+            // What is rejected as a whole is not worth parsing
             QJsonParseError parseError;
-            const QJsonDocument doc = QJsonDocument::fromJson(data, &parseError);
+            const QJsonDocument doc = timedOut || tooLarge ? QJsonDocument() : QJsonDocument::fromJson(data, &parseError);
             // API errors come as {"error": "..."} with a 4xx/5xx status
             const QString apiError = doc.object().value(QStringLiteral("error")).toString();
 
@@ -1045,15 +1046,35 @@ QList<CoprPackageInfo> CoprClient::parseMonitorResponse(const QJsonObject &json,
     const QJsonArray items = json.value(QStringLiteral("packages")).toArray();
     *complete = items.size() <= MaxPackagesPerProject;
 
-    for (const QJsonValue &value : items) {
-        const QJsonObject obj = value.toObject();
-        const QString name = obj.value(QStringLiteral("name")).toString();
+    // Of a project that is too large keep the beginning and the package that would be
+    // chosen by default: the first one named like the project that may be installable
+    // here, or else the first one named like it. When it comes later, the last place is
+    // left for it
+    qsizetype namedIndex = -1;
+    if (!*complete) {
+        for (qsizetype i = 0; i < items.size(); ++i) {
+            const QJsonObject obj = items.at(i).toObject();
+            if (obj.value(QStringLiteral("name")).toString().compare(project, Qt::CaseInsensitive) != 0) {
+                continue;
+            }
+            if (m_currentChroot.isEmpty() || obj.value(QStringLiteral("chroots")).toObject().contains(m_currentChroot)) {
+                namedIndex = i;
+                break;
+            }
+            if (namedIndex < 0) {
+                namedIndex = i;
+            }
+        }
+    }
+    const qsizetype keptFromBeginning = namedIndex >= MaxPackagesPerProject ? MaxPackagesPerProject - 1 : MaxPackagesPerProject;
 
-        // Of a project that is too large keep the beginning and the package that would be
-        // chosen by default, the one named like the project
-        if (packages.size() >= MaxPackagesPerProject && name.compare(project, Qt::CaseInsensitive) != 0) {
+    for (qsizetype i = 0; i < items.size(); ++i) {
+        if (i >= keptFromBeginning && i != namedIndex) {
             continue;
         }
+
+        const QJsonObject obj = items.at(i).toObject();
+        const QString name = obj.value(QStringLiteral("name")).toString();
 
         CoprPackageInfo package;
         package.name = name;

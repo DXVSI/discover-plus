@@ -590,7 +590,15 @@ QString CoprResource::coprInstallStatus() const
     const bool anyInstallable = std::any_of(m_projectPackages.cbegin(), m_projectPackages.cend(), [](const CoprPackageInfo &package) {
         return package.availability != CoprAvailability::NotAvailable;
     });
-    return anyInstallable || !isCurrentChrootKnown() ? QStringLiteral("needs-selection") : QStringLiteral("unavailable");
+    // Nothing is said about the whole project from a monitor that was cut short: what is
+    // built for this system may be in the part that was dropped
+    const bool monitorCutShort = m_monitorFetch == Loaded && !m_monitorComplete;
+    return anyInstallable || !isCurrentChrootKnown() || monitorCutShort ? QStringLiteral("needs-selection") : QStringLiteral("unavailable");
+}
+
+bool CoprResource::isCoprPackageListLimited() const
+{
+    return (m_packageListFetch == Loaded && !m_packageListComplete) || (m_monitorFetch == Loaded && !m_monitorComplete);
 }
 
 CoprResource::FetchState &CoprResource::fetchStateFor(const QString &requestType)
@@ -783,8 +791,7 @@ const CoprPackageInfo *CoprResource::preferredProjectPackage() const
     }
 
     // The only package, unless the list was cut short
-    const bool complete = (m_packageListFetch != Loaded || m_packageListComplete) && (m_monitorFetch != Loaded || m_monitorComplete);
-    if (candidates.size() == 1 && complete) {
+    if (candidates.size() == 1 && !isCoprPackageListLimited()) {
         return candidates.constFirst();
     }
 
