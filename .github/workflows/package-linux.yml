@@ -1,0 +1,557 @@
+---
+name: Linux packages
+
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+      - development
+  workflow_dispatch:
+    inputs:
+      fedora-version:
+        description: >-
+          Stable Fedora release to build for, for example the previous one
+          after a new Fedora came out. Empty means the latest stable release.
+        required: false
+        type: string
+        default: ""
+  workflow_call:
+    inputs:
+      fedora-version:
+        description: Stable Fedora release to build for; empty means the latest one
+        required: false
+        type: string
+        default: ""
+      source-sha:
+        description: Commit the caller has verified; the build refuses any other commit
+        required: false
+        type: string
+        default: ""
+    outputs:
+      fedora-version:
+        description: Stable Fedora release used for the RPM
+        value: ${{ jobs.fedora-release.outputs.version }}
+
+permissions:
+  contents: read
+
+concurrency:
+  group: linux-packages-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name != 'push' || !startsWith(github.ref, 'refs/tags/') }}
+
+env:
+  LC_ALL: C.UTF-8
+
+jobs:
+  fedora-release:
+    name: Resolve Fedora release
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    outputs:
+      version: ${{ steps.release.outputs.version }}
+      image: ${{ steps.release.outputs.image }}
+    steps:
+      - name: Resolve stable Fedora and pin the image
+        id: release
+        shell: bash
+        env:
+          REQUESTED_FEDORA_VERSION: ${{ inputs.fedora-version }}
+        run: |
+          set -euo pipefail
+          release_metadata=$(curl --fail --silent --show-error --location \
+            --retry 3 --connect-timeout 15 --max-time 60 \
+            https://fedoraproject.org/releases.json)
+          stable_versions=$(jq -er '
+            if type != "array" then error("Expected Fedora releases array") else . end
+            | [
+                .[]
+                | select(.version | type == "string")
+                | select(.version | test("^[1-9][0-9]*$"))
+                | .version as $version
+                | select(.link | type == "string")
+                | select(.link | startswith(
+                    "https://download.fedoraproject.org/pub/fedora/linux/releases/"
+                    + $version + "/"))
+                | $version | tonumber
+              ]
+            | if length == 0 then error("No stable Fedora release found")
+              else unique | map(tostring) | join(" ") end
+          ' <<< "$release_metadata")
+          echo "stable Fedora releases: $stable_versions"
+
+          if [[ -n "$REQUESTED_FEDORA_VERSION" ]]; then
+            fedora_version=""
+            for stable_version in $stable_versions; do
+              if [[ "$stable_version" == "$REQUESTED_FEDORA_VERSION" ]]; then
+                fedora_version=$stable_version
+              fi
+            done
+            if [[ -z "$fedora_version" ]]; then
+              echo "requested Fedora $REQUESTED_FEDORA_VERSION is not a stable release ($stable_versions)" >&2
+              exit 1
+            fi
+          else
+            fedora_version=${stable_versions##* }
+          fi
+
+          # Resolve once so build and clean-runtime verification share one image.
+          image_tag="registry.fedoraproject.org/fedora:$fedora_version"
+          pulled=false
+          for attempt in 1 2 3; do
+            if docker pull "$image_tag"; then
+              pulled=true
+              break
+            fi
+            echo "docker pull attempt $attempt failed" >&2
+            sleep $((attempt * 15))
+          done
+          if [[ "$pulled" != true ]]; then
+            echo "could not pull $image_tag" >&2
+            exit 1
+          fi
+          image=$(docker image inspect --format '{{index .RepoDigests 0}}' "$image_tag")
+          if [[ ! "$image" =~ ^registry\.fedoraproject\.org/fedora@sha256:[0-9a-f]{64}$ ]]; then
+            echo "Fedora image did not resolve to an immutable registry digest" >&2
+            exit 1
+          fi
+          actual_version=$(docker run --rm --read-only --network none \
+            --entrypoint /bin/sh "$image" -eu -c \
+            '. /etc/os-release; test "$ID" = fedora; printf "%s\n" "$VERSION_ID"')
+          if [[ "$actual_version" != "$fedora_version" ]]; then
+            echo "Fedora image version $actual_version does not match release $fedora_version" >&2
+            exit 1
+          fi
+          printf 'version=%s\nimage=%s\n' "$fedora_version" "$image" >> "$GITHUB_OUTPUT"
+
+  rpm:
+    name: RPM / Fedora ${{ needs.fedora-release.outputs.version }}
+    needs: fedora-release
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    env:
+      FEDORA_VERSION: ${{ needs.fedora-release.outputs.version }}
+      FEDORA_IMAGE: ${{ needs.fedora-release.outputs.image }}
+    container:
+      image: ${{ needs.fedora-release.outputs.image }}
+    defaults:
+      run:
+        shell: bash
+    steps:
+      # git must be present before the checkout: without it actions/checkout
+      # downloads an archive and there is no repository to verify or archive.
+      - name: Install Fedora packaging tools
+        run: |
+          set -euo pipefail
+          for attempt in 1 2 3; do
+            if dnf install -y \
+              cpio \
+              dbus-daemon \
+              dnf5-plugins \
+              git \
+              rpm-build \
+              rpmlint \
+              shadow-utils \
+              util-linux \
+              xz; then
+              exit 0
+            fi
+            echo "dnf install attempt $attempt failed" >&2
+            sleep $((attempt * 20))
+          done
+          echo "could not install the Fedora packaging tools" >&2
+          exit 1
+
+      - name: Check out source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ inputs.source-sha }}
+          persist-credentials: false
+
+      - name: Verify clean source and release contract
+        env:
+          EXPECTED_SOURCE_SHA: ${{ inputs.source-sha }}
+        run: |
+          set -euo pipefail
+          test -d "$GITHUB_WORKSPACE/.git"
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          if [[ -n "$EXPECTED_SOURCE_SHA" ]] &&
+             [[ "$(git rev-parse HEAD)" != "$EXPECTED_SOURCE_SHA" ]]; then
+            echo "checked out $(git rev-parse HEAD) instead of the verified $EXPECTED_SOURCE_SHA" >&2
+            exit 1
+          fi
+          worktree_status=$(git status --porcelain --untracked-files=all)
+          test -z "$worktree_status"
+          packaging/scripts/check-release-contract.sh
+
+      # The spec is the only list of build dependencies.
+      - name: Install build dependencies from the spec
+        run: |
+          set -euo pipefail
+          for attempt in 1 2 3; do
+            if dnf builddep -y packaging/rpm/discover-plus.spec; then
+              # Travels with the packages into the release: the image digest
+              # is otherwise only visible in the log of this run.
+              {
+                printf '# image: %s\n' "$FEDORA_IMAGE"
+                printf '# source: %s\n' "$(git rev-parse HEAD)"
+                rpm -qa | LC_ALL=C sort
+              } > "$RUNNER_TEMP/build-environment.txt"
+              exit 0
+            fi
+            echo "dnf builddep attempt $attempt failed" >&2
+            sleep $((attempt * 20))
+          done
+          echo "could not install the build dependencies" >&2
+          exit 1
+
+      - name: Build and test RPM
+        id: package
+        run: |
+          set -euo pipefail
+          version=$(tr -d '\r\n' < VERSION)
+          kde_base_version=$(awk \
+            '$1 == "%global" && $2 == "kde_base_version" { print $3; exit }' \
+            packaging/rpm/discover-plus.spec)
+          # check-release-contract.sh has verified the form of the Release tag.
+          rpm_release=$(awk '$1 == "Release:" { print $2; exit }' \
+            packaging/rpm/discover-plus.spec)
+          rpm_release=${rpm_release%'%{?dist}'}
+          rpm_topdir="$RUNNER_TEMP/rpmbuild"
+          mkdir -p \
+            "$rpm_topdir/BUILD" \
+            "$rpm_topdir/BUILDROOT" \
+            "$rpm_topdir/RPMS" \
+            "$rpm_topdir/SOURCES" \
+            "$rpm_topdir/SPECS" \
+            "$rpm_topdir/SRPMS"
+
+          packaging/scripts/create-source-archive.sh "$rpm_topdir/SOURCES"
+
+          useradd --create-home builder
+          chown -R builder:builder "$GITHUB_WORKSPACE" "$rpm_topdir"
+          runuser -u builder -- \
+            rpmbuild \
+              -ba \
+              --define "_topdir $rpm_topdir" \
+              packaging/rpm/discover-plus.spec
+
+          nvr="$version-$rpm_release.fc$FEDORA_VERSION"
+          mkdir -p dist
+          for package_file in \
+            "$rpm_topdir/RPMS/x86_64/discover-plus-$nvr.x86_64.rpm" \
+            "$rpm_topdir/RPMS/x86_64/discover-plus-debuginfo-$nvr.x86_64.rpm" \
+            "$rpm_topdir/RPMS/x86_64/discover-plus-debugsource-$nvr.x86_64.rpm" \
+            "$rpm_topdir/SRPMS/discover-plus-$nvr.src.rpm" \
+            "$rpm_topdir/SOURCES/discover-plus-$version.tar.xz"
+          do
+            test -f "$package_file"
+            install -m 0644 "$package_file" "dist/$(basename "$package_file")"
+          done
+          test "$(find "$rpm_topdir/RPMS" "$rpm_topdir/SRPMS" -type f -name '*.rpm' | wc -l)" -eq 4
+          rpm_file="dist/discover-plus-$nvr.x86_64.rpm"
+
+          rpmlint \
+            --rpmlintrc packaging/rpm/discover-plus.rpmlintrc \
+            packaging/rpm/discover-plus.spec \
+            "dist/discover-plus-$nvr.src.rpm" \
+            "$rpm_file" \
+            "dist/discover-plus-debuginfo-$nvr.x86_64.rpm" \
+            "dist/discover-plus-debugsource-$nvr.x86_64.rpm"
+
+          rpm -qpl "$rpm_file"
+          test "$(rpm -qp --qf '%{VERSION}\n' "$rpm_file")" = "$version"
+          # Translations are not installed in containers, check the payload.
+          test "$(rpm -qpl "$rpm_file" | grep -c '/LC_MESSAGES/plasma-discover\.mo$')" -ge 50
+
+          replaced_packages="
+            plasma-discover
+            plasma-discover-flatpak
+            plasma-discover-kns
+            plasma-discover-libs
+            plasma-discover-notifier
+            plasma-discover-offline-updates
+            plasma-discover-packagekit
+            plasma-discover-rpm-ostree
+            plasma-discover-snap
+          "
+          rpm -qp --obsoletes "$rpm_file" > "$RUNNER_TEMP/obsoletes.txt"
+          rpm -qp --conflicts "$rpm_file" > "$RUNNER_TEMP/conflicts.txt"
+          rpm -qp --provides "$rpm_file" > "$RUNNER_TEMP/provides.txt"
+          rpm -qp --requires "$rpm_file" > "$RUNNER_TEMP/requires.txt"
+          for replaced_package in $replaced_packages; do
+            grep -Fxq "$replaced_package" "$RUNNER_TEMP/obsoletes.txt"
+            grep -Fxq "$replaced_package" "$RUNNER_TEMP/conflicts.txt"
+          done
+          # Exact capability names: "bundled(plasma-discover)" is expected, a
+          # capability called plasma-discover or libDiscover* is not.
+          if awk '{ print $1 }' "$RUNNER_TEMP/provides.txt" |
+              grep -Ex 'plasma-discover(-[a-z-]+)?|libDiscover.*'; then
+            echo "the package must not provide Fedora Discover capabilities" >&2
+            exit 1
+          fi
+          grep -Fxq "bundled(plasma-discover) = $kde_base_version" "$RUNNER_TEMP/provides.txt"
+          grep -Eq '^kf6-kirigami\(x86-64\) >= [0-9]+\.[0-9]+' "$RUNNER_TEMP/requires.txt"
+          grep -Eq '^qt6-qtbase\(x86-64\) >= [0-9]+\.[0-9]+' "$RUNNER_TEMP/requires.txt"
+          for required_package in polkit dnf5 dnf5-plugins rpm flatpak PackageKit; do
+            grep -Fxq "$required_package" "$RUNNER_TEMP/requires.txt"
+          done
+          if grep -Ei 'snapd|rpm-?ostree' "$RUNNER_TEMP/requires.txt"; then
+            echo "disabled backends leaked into the dependencies" >&2
+            exit 1
+          fi
+
+          # Staged root: the script sets the library and plugin search paths
+          # itself because the RUNPATH of the binaries is absolute.
+          package_root="$RUNNER_TEMP/rpm-root"
+          package_cpio="$RUNNER_TEMP/discover-plus.cpio"
+          mkdir -p "$package_root"
+          rpm2cpio "$rpm_file" > "$package_cpio"
+          (
+            cd "$package_root"
+            cpio -idm --quiet < "$package_cpio"
+          )
+          chown -R builder:builder "$package_root"
+          runuser -u builder -- \
+            packaging/scripts/verify-package-contents.sh \
+              "$package_root" /usr/lib64 "$kde_base_version"
+
+          grep -Eq '^# image: registry\.fedoraproject\.org/fedora@sha256:[0-9a-f]{64}$' \
+            "$RUNNER_TEMP/build-environment.txt"
+          install -m 0644 "$RUNNER_TEMP/build-environment.txt" \
+            "dist/discover-plus-$nvr.build-environment.txt"
+          echo "file=$rpm_file" >> "$GITHUB_OUTPUT"
+          echo "kde-base-version=$kde_base_version" >> "$GITHUB_OUTPUT"
+
+      # Installed package: no search path overrides. Discover, the notifier
+      # and the settings module (through kcmshell6) are really started: every
+      # plugin must be loaded and accepted by the program that asked for it.
+      - name: Install RPM and load every plugin
+        env:
+          RPM_FILE: ${{ steps.package.outputs.file }}
+          KDE_BASE_VERSION: ${{ steps.package.outputs.kde-base-version }}
+        run: |
+          set -euo pipefail
+          installed=false
+          for attempt in 1 2 3; do
+            if dnf install -y "$RPM_FILE"; then
+              installed=true
+              break
+            fi
+            echo "dnf install attempt $attempt failed" >&2
+            sleep $((attempt * 20))
+          done
+          test "$installed" = true
+          rpm -V discover-plus
+          runuser -u builder -- \
+            packaging/scripts/verify-package-contents.sh \
+              --installed --load-plugins / /usr/lib64 "$KDE_BASE_VERSION"
+
+      - name: Upload Fedora package
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: discover-plus-rpm-f${{ env.FEDORA_VERSION }}-${{ github.run_id }}
+          path: |
+            dist/*.rpm
+            dist/*.tar.xz
+            dist/*.build-environment.txt
+          if-no-files-found: error
+          overwrite: true
+          retention-days: 7
+
+  rpm-runtime-smoke:
+    name: Clean RPM install / Fedora ${{ needs.fedora-release.outputs.version }}
+    needs:
+      - fedora-release
+      - rpm
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      FEDORA_VERSION: ${{ needs.fedora-release.outputs.version }}
+    container:
+      image: ${{ needs.fedora-release.outputs.image }}
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Download RPM built in this workflow
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: discover-plus-rpm-f${{ env.FEDORA_VERSION }}-${{ github.run_id }}
+          path: dist
+
+      # The checks come from the source archive of this very build, so the job
+      # needs neither a checkout nor git.
+      - name: Unpack the packaging scripts from the source archive
+        run: |
+          set -euo pipefail
+          source_archive=$(find dist -maxdepth 1 -type f -name 'discover-plus-*.tar.xz' -print)
+          test "$(printf '%s\n' "$source_archive" | wc -l)" -eq 1
+          mkdir -p "$RUNNER_TEMP/source"
+          tar -xJf "$source_archive" -C "$RUNNER_TEMP/source" --strip-components=1 \
+            --wildcards '*/VERSION' '*/packaging/scripts' \
+            '*/packaging/rpm/discover-plus.spec'
+          version=$(tr -d '\r\n' < "$RUNNER_TEMP/source/VERSION")
+          rpm_release=$(awk '$1 == "Release:" { print $2; exit }' \
+            "$RUNNER_TEMP/source/packaging/rpm/discover-plus.spec")
+          rpm_release=${rpm_release%'%{?dist}'}
+          rpm_file="dist/discover-plus-$version-$rpm_release.fc$FEDORA_VERSION.x86_64.rpm"
+          test -f "$rpm_file"
+          echo "RPM_FILE=$rpm_file" >> "$GITHUB_ENV"
+
+      - name: Install the stock Fedora Discover without the updates repository
+        run: |
+          set -euo pipefail
+          # The state of a system installed from the release media and never
+          # updated: Discover and its libraries come from the "fedora" repository.
+          for attempt in 1 2 3; do
+            if dnf install -y --disablerepo=updates \
+              dbus-daemon \
+              plasma-discover \
+              plasma-discover-flatpak \
+              plasma-discover-notifier \
+              plasma-discover-offline-updates \
+              plasma-discover-packagekit \
+              shadow-utils \
+              util-linux; then
+              rpm -q plasma-discover plasma-discover-libs kf6-kcoreaddons qt6-qtbase
+              exit 0
+            fi
+            echo "dnf install attempt $attempt failed" >&2
+            sleep $((attempt * 20))
+          done
+          echo "could not install the stock Fedora Discover" >&2
+          exit 1
+
+      - name: Refuse cleanly when the system is too old
+        run: |
+          set -euo pipefail
+          # Without updates dnf must either satisfy the versioned KF6 and Qt
+          # requirements or refuse the transaction as a whole. It must never
+          # remove the stock Discover and leave a fork that cannot start.
+          if dnf install -y --disablerepo=updates "$RPM_FILE" \
+              > "$RUNNER_TEMP/outdated-install.log" 2>&1; then
+            cat "$RUNNER_TEMP/outdated-install.log"
+            echo "the release repository alone satisfies the package"
+            rpm -q discover-plus
+          else
+            cat "$RUNNER_TEMP/outdated-install.log"
+            grep -Eq 'kf6-|qt6-' "$RUNNER_TEMP/outdated-install.log"
+            rpm -q plasma-discover plasma-discover-libs plasma-discover-notifier
+            if rpm -q discover-plus; then
+              echo "a refused transaction must not install discover-plus" >&2
+              exit 1
+            fi
+          fi
+
+      - name: Replace the stock Discover in one transaction
+        run: |
+          set -euo pipefail
+          # Exactly the documented user command: no --allowerasing, no swap.
+          installed=false
+          for attempt in 1 2 3; do
+            if dnf install -y "$RPM_FILE"; then
+              installed=true
+              break
+            fi
+            echo "dnf install attempt $attempt failed" >&2
+            sleep $((attempt * 20))
+          done
+          test "$installed" = true
+          rpm -q discover-plus
+          for replaced_package in \
+            plasma-discover \
+            plasma-discover-flatpak \
+            plasma-discover-kns \
+            plasma-discover-libs \
+            plasma-discover-notifier \
+            plasma-discover-offline-updates \
+            plasma-discover-packagekit \
+            plasma-discover-rpm-ostree \
+            plasma-discover-snap
+          do
+            if rpm -q "$replaced_package"; then
+              echo "$replaced_package is still installed" >&2
+              exit 1
+            fi
+          done
+          rpm -V discover-plus
+          test -f /usr/lib64/qt6/qml/Qt5Compat/GraphicalEffects/qmldir
+          test -f /usr/lib64/qt6/qml/org/kde/desktop/qmldir
+          test -f /usr/lib64/qt6/qml/org/kde/userfeedback/qmldir
+
+      - name: Run Discover as a regular user
+        run: |
+          set -euo pipefail
+          kde_base_version=$(rpm -q --provides discover-plus |
+            sed -n 's/^bundled(plasma-discover) = //p')
+          test -n "$kde_base_version"
+          useradd --create-home smoke
+          install -d -o smoke -g smoke "$RUNNER_TEMP/smoke"
+          cp -a "$RUNNER_TEMP/source/packaging" "$RUNNER_TEMP/smoke/packaging"
+          chown -R smoke:smoke "$RUNNER_TEMP/smoke"
+          runuser -u smoke -- \
+            "$RUNNER_TEMP/smoke/packaging/scripts/verify-package-contents.sh" \
+              --installed --load-plugins / /usr/lib64 "$kde_base_version"
+
+      - name: Stay installed through a system upgrade
+        run: |
+          set -euo pipefail
+          for attempt in 1 2 3; do
+            if dnf upgrade -y --refresh > "$RUNNER_TEMP/upgrade.log" 2>&1; then
+              break
+            fi
+            echo "dnf upgrade attempt $attempt failed" >&2
+            cat "$RUNNER_TEMP/upgrade.log" >&2
+            test "$attempt" -lt 3
+            sleep $((attempt * 20))
+          done
+          cat "$RUNNER_TEMP/upgrade.log"
+          if grep -E '(^| )plasma-discover' "$RUNNER_TEMP/upgrade.log"; then
+            echo "a system upgrade touched the Fedora Discover packages" >&2
+            exit 1
+          fi
+          rpm -q discover-plus
+          if rpm -q plasma-discover; then
+            exit 1
+          fi
+          # The KDE desktop group lists plasma-discover; installing the group
+          # must neither fail nor bring the Fedora package back. --assumeno
+          # always ends with a non-zero status, so the log is the evidence:
+          # dnf must get as far as a transaction and report no problem.
+          dnf group install -y --assumeno kde-desktop \
+            > "$RUNNER_TEMP/group.log" 2>&1 || true
+          cat "$RUNNER_TEMP/group.log"
+          grep -Fxq 'Transaction Summary:' "$RUNNER_TEMP/group.log"
+          if grep -Ei 'Problem|conflict|Failed to resolve' "$RUNNER_TEMP/group.log"; then
+            echo "dnf cannot install the kde-desktop group next to discover-plus" >&2
+            exit 1
+          fi
+          if grep -E '^ *plasma-discover' "$RUNNER_TEMP/group.log"; then
+            echo "the kde-desktop group wants to install the Fedora Discover" >&2
+            exit 1
+          fi
+
+      - name: Go back to the stock Discover
+        run: |
+          set -euo pipefail
+          # The rollback documented in README.md.
+          swapped=false
+          for attempt in 1 2 3; do
+            if dnf swap -y discover-plus plasma-discover; then
+              swapped=true
+              break
+            fi
+            echo "dnf swap attempt $attempt failed" >&2
+            sleep $((attempt * 20))
+          done
+          test "$swapped" = true
+          # The swap only names plasma-discover; the notifier is a separate
+          # Fedora package that nothing pulls in.
+          dnf install -y plasma-discover-notifier
+          rpm -q plasma-discover plasma-discover-libs plasma-discover-notifier
+          if rpm -q discover-plus; then
+            echo "discover-plus is still installed after the rollback" >&2
+            exit 1
+          fi
+          QT_QPA_PLATFORM=offscreen plasma-discover --version
