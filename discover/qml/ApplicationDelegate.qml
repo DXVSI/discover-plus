@@ -45,9 +45,12 @@ BasicAbstractCard {
     // A COPR project only knows its packages after a request of its own. It is made for
     // the rows the user really looks at: on screen for a moment, in the list on top.
     // Everything else lacks coprInstallStatus and never gets here.
-    readonly property string coprPackageName: application?.isCoprProjectResource ? application.selectedCoprPackageName : ""
+    readonly property bool isCoprProject: application?.isCoprProjectResource === true
+    readonly property string coprPackageName: isCoprProject ? application.selectedCoprPackageName : ""
+    // Only set by a view that reuses its items
     property bool pooled: false
-    readonly property bool onScreen: !pooled && listActive && ListView.view !== null
+    // The rows of every other list stop at the first condition and never follow the scrolling
+    readonly property bool onScreen: isCoprProject && !pooled && listActive && ListView.view !== null
         && y + height > ListView.view.contentY && y < ListView.view.contentY + ListView.view.height
     readonly property bool wantsCoprPackages: onScreen && application?.coprInstallStatus === "idle"
     // The resource this row has asked for, to take the request back when the row goes away
@@ -290,6 +293,7 @@ BasicAbstractCard {
                     // Without an action there is nothing to show, but the card keeps its height
                     opacity: hasAction ? 1 : 0
                     enabled: hasAction
+                    Accessible.ignored: !hasAction
                     application: root.application
                     installOrRemoveButtonDisplayStyle: QQC2.AbstractButton.IconOnly
                     listItem: true

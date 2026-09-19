@@ -51,6 +51,7 @@
 #include <KLocalizedString>
 #include <KProtocolManager>
 
+#include <limits>
 #include <optional>
 
 #include "config-paths.h"
@@ -311,12 +312,15 @@ PackageKitBackend::PackageKitBackend(QObject *parent)
     connect(m_coprClient, &CoprClient::projectsFound, this, &PackageKitBackend::onCoprProjectsFound);
     connect(m_coprClient, &CoprClient::projectPackagesFound, this, &PackageKitBackend::onCoprProjectPackagesFound);
     connect(m_coprClient, &CoprClient::projectMonitorFound, this, &PackageKitBackend::onCoprProjectMonitorFound);
-    connect(m_coprClient, &CoprClient::projectRequestFailed, this, [this](const QString &requestType, const QString &owner, const QString &project) {
-        const QList<CoprResource *> resources = coprResourcesOfProject(owner, project);
-        for (CoprResource *resource : resources) {
-            resource->projectRequestFailed(requestType);
-        }
-    });
+    connect(m_coprClient,
+            &CoprClient::projectRequestFailed,
+            this,
+            [this](const QString &requestType, const QString &owner, const QString &project, const QString &errorMessage) {
+                const QList<CoprResource *> resources = coprResourcesOfProject(owner, project);
+                for (CoprResource *resource : resources) {
+                    resource->projectRequestFailed(requestType, errorMessage);
+                }
+            });
     connect(m_coprClient, &CoprClient::projectRequestCancelled, this, [this](const QString &requestType, const QString &owner, const QString &project) {
         const QList<CoprResource *> resources = coprResourcesOfProject(owner, project);
         for (CoprResource *resource : resources) {
@@ -2113,8 +2117,11 @@ void PackageKitBackend::onCoprProjectsFound(const QList<CoprProjectInfo> &projec
         }
 
         // The server sends the newest project first, that is the highest id: as the sort
-        // score it keeps that order in the model across all pages
-        const StreamResult result(resource, uint(qMax(project.id, 0)));
+        // score it keeps that order in the model across all pages. By name the score
+        // counts down instead: the collation of the server is not the one of this
+        // system, and what a later page brings has to land at the end.
+        const uint sortScore = m_coprBrowseByName ? uint(std::numeric_limits<int>::max()) - uint(m_coprBrowseSeenKeys.size()) : uint(qMax(project.id, 0));
+        const StreamResult result(resource, sortScore);
         results.append(result);
         m_coprBrowseResults.append(result);
         qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "COPR result:" << project.owner << "/" << project.name << "id:" << project.id;

@@ -13,7 +13,8 @@ class CoprResource : public PackageKitResource
     Q_OBJECT
     Q_PROPERTY(bool isCoprProjectResource READ isCoprProjectResource CONSTANT)
     Q_PROPERTY(bool coprProjectPackagesLoaded READ coprProjectPackagesLoaded NOTIFY projectPackagesChanged)
-    Q_PROPERTY(QVariantList coprProjectPackages READ coprProjectPackages NOTIFY projectPackagesChanged)
+    // Not with projectPackagesChanged: selecting a package must not rebuild a list of hundreds of rows
+    Q_PROPERTY(QVariantList coprProjectPackages READ coprProjectPackages NOTIFY projectPackageListChanged)
     Q_PROPERTY(QString selectedCoprPackageName READ selectedCoprPackageName NOTIFY projectPackagesChanged)
     // "idle", "loading", "failed", "empty", "needs-selection", "unavailable" or "ready".
     // A string, because this class is not registered as a QML type. state() cannot tell
@@ -21,6 +22,9 @@ class CoprResource : public PackageKitResource
     Q_PROPERTY(QString coprInstallStatus READ coprInstallStatus NOTIFY projectPackagesChanged)
     // Not empty when the install is allowed although the monitor could not confirm a build
     Q_PROPERTY(QString coprInstallWarning READ coprInstallWarning NOTIFY projectPackagesChanged)
+    // Not empty while a request for the packages has failed and can be repeated: what went wrong.
+    // Also when the other source answered, that is with any status.
+    Q_PROPERTY(QString coprInstallError READ coprInstallError NOTIFY projectPackagesChanged)
 
 public:
     explicit CoprResource(const CoprPackageInfo &packageInfo, AbstractResourcesBackend *parent);
@@ -58,13 +62,14 @@ public:
     bool isInstallBlocked() const;
     QString coprInstallStatus() const;
     QString coprInstallWarning() const;
+    QString coprInstallError() const;
 
     void setState(AbstractResource::State state);
     void setInstalledStateFromSystem(bool installed);
     // What the client delivered; requestType is one of CoprClient::project*RequestType()
     void setProjectPackages(const QList<CoprPackageInfo> &packages, bool complete);
     void setProjectMonitor(const QList<CoprPackageInfo> &packages, bool complete);
-    void projectRequestFailed(const QString &requestType);
+    void projectRequestFailed(const QString &requestType, const QString &errorMessage);
     void projectRequestCancelled(const QString &requestType);
     bool isProjectMonitorLoaded() const
     {
@@ -102,6 +107,7 @@ public:
 
 Q_SIGNALS:
     void projectPackagesChanged();
+    void projectPackageListChanged();
 
 private:
     QString findDesktopFile() const;
@@ -162,6 +168,9 @@ private:
     FetchState m_packageListFetch = NotRequested;
     FetchState m_monitorFetch = NotRequested;
     bool m_monitorForOpenPage = false;
+    QString m_requestError;
+    // An automatic selection is made again whenever a source answers, this one is kept
+    bool m_packageSelectedByUser = false;
     // False when the project has more packages than the client keeps
     bool m_packageListComplete = true;
     bool m_monitorComplete = true;

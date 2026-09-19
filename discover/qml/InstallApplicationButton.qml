@@ -46,8 +46,13 @@ ConditionalLoader {
         case "idle":
         case "loading":
             return i18nc("@info:tooltip", "Loading the packages of this COPR project…");
-        case "failed":
-            return i18nc("@info:tooltip", "The packages of this COPR project could not be loaded. Click to try again.");
+        case "failed": {
+            // Why, when the resource knows: the server may have asked to wait, and a retry fails at once then
+            const error = application.coprInstallError ?? "";
+            return error.length > 0
+                ? i18nc("@info:tooltip %1 is an error message", "The packages of this COPR project could not be loaded: %1 Click to try again.", error)
+                : i18nc("@info:tooltip", "The packages of this COPR project could not be loaded. Click to try again.");
+        }
         case "needs-selection":
             return listItem
                 ? i18nc("@info:tooltip", "This COPR project has several packages. Click to choose which one to install.")

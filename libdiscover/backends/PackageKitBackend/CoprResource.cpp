@@ -111,6 +111,9 @@ static QStringList mergedChroots(const QStringList &baseChroots, const QList<Cop
     return chroots;
 }
 
+// A project may have hundreds of packages
+static constexpr int MaxPackagesInDescription = 20;
+
 static QString packageSummaryLine(const CoprPackageInfo &package)
 {
     QString summary = package.name.toHtmlEscaped();
@@ -238,8 +241,14 @@ QString CoprResource::longDescription()
         desc += QStringLiteral("<br>");
         desc += htmlLabel(i18n("Packages in this project:"));
         desc += QStringLiteral("<ul>");
-        for (const CoprPackageInfo &package : m_projectPackages) {
+        // The package selector above lists them all
+        const qsizetype listed = qMin(m_projectPackages.size(), qsizetype(MaxPackagesInDescription));
+        for (const CoprPackageInfo &package : m_projectPackages.first(listed)) {
             desc += QStringLiteral("<li>") + packageSummaryLine(package) + QStringLiteral("</li>");
+        }
+        if (listed < m_projectPackages.size()) {
+            const int more = int(m_projectPackages.size() - listed);
+            desc += QStringLiteral("<li>") + i18np("and %1 more package", "and %1 more packages", more) + QStringLiteral("</li>");
         }
         desc += QStringLiteral("</ul>");
     }
@@ -552,6 +561,11 @@ QString CoprResource::coprInstallWarning() const
                 m_currentChrootState);
 }
 
+QString CoprResource::coprInstallError() const
+{
+    return m_monitorFetch == Failed || m_packageListFetch == Failed ? m_requestError : QString();
+}
+
 QString CoprResource::coprInstallStatus() const
 {
     if (!m_installPackageName.isEmpty()) {
@@ -613,7 +627,7 @@ void CoprResource::setProjectMonitor(const QList<CoprPackageInfo> &packages, boo
     projectPackagesUpdated();
 }
 
-void CoprResource::projectRequestFailed(const QString &requestType)
+void CoprResource::projectRequestFailed(const QString &requestType, const QString &errorMessage)
 {
     // What was loaded before stays; without it the request can be repeated
     FetchState &fetchState = fetchStateFor(requestType);
@@ -621,6 +635,7 @@ void CoprResource::projectRequestFailed(const QString &requestType)
         return;
     }
     fetchState = Failed;
+    m_requestError = errorMessage;
     if (requestType == CoprClient::projectMonitorRequestType()) {
         m_monitorForOpenPage = false;
     }
@@ -691,11 +706,16 @@ void CoprResource::projectPackagesUpdated()
     mergeProjectPackages();
 
     // What the user selected stays selected for as long as that package is listed:
-    // the same list is delivered again by a cache hit, a search or the second source
+    // the same list is delivered again by a cache hit, a search or the second source.
+    // An automatic selection is made again instead: the package list may have answered
+    // first, and only the monitor knows what is built for this system.
     const auto selected = std::find_if(m_projectPackages.cbegin(), m_projectPackages.cend(), [this](const CoprPackageInfo &package) {
         return !m_installPackageName.isEmpty() && package.name == m_installPackageName;
     });
-    if (selected != m_projectPackages.cend()) {
+    if (selected == m_projectPackages.cend()) {
+        m_packageSelectedByUser = false;
+    }
+    if (selected != m_projectPackages.cend() && (!m_isProjectResource || m_packageSelectedByUser || m_isInstalled)) {
         applyPackageDetails(*selected);
     } else if (m_isProjectResource) {
         if (const CoprPackageInfo *package = preferredProjectPackage()) {
@@ -711,6 +731,7 @@ void CoprResource::projectPackagesUpdated()
 
     Q_EMIT longDescriptionChanged();
     Q_EMIT versionsChanged();
+    Q_EMIT projectPackageListChanged();
     Q_EMIT projectPackagesChanged();
     if (previousState != state() || previousInstallPackageName != m_installPackageName) {
         Q_EMIT stateChanged();
@@ -737,6 +758,7 @@ void CoprResource::selectCoprProjectPackage(const QString &packageName)
     const QString previousInstallPackageName = m_installPackageName;
 
     m_installPackageName = it->name;
+    m_packageSelectedByUser = true;
     applyPackageDetails(*it);
 
     Q_EMIT longDescriptionChanged();

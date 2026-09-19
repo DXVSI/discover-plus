@@ -222,6 +222,14 @@ static QString packagePagesKey(const QString &owner, const QString &project)
 
 void CoprClient::getProjectPackages(const QString &owner, const QString &project)
 {
+    // One run through the pages at a time: its result is a signal that everybody hears,
+    // and a second run would mix its pages into the same list
+    const QString key = packagePagesKey(owner, project);
+    if (m_packagePages.contains(key)) {
+        qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "COPR package list of" << key << "is already being fetched";
+        return;
+    }
+    m_packagePages.insert(key, {});
     requestProjectPackagesPage(owner, project, 0);
 }
 
@@ -530,8 +538,8 @@ void CoprClient::emitResultForRequest(const Request &request, const QJsonObject 
         const QString key = packagePagesKey(owner, project);
         const QList<CoprPackageInfo> page = parsePackagesResponse(json, owner, project);
 
-        // The first page starts the list over, whatever an earlier attempt left behind
-        QList<CoprPackageInfo> packages = offset == 0 ? QList<CoprPackageInfo>() : m_packagePages.take(key);
+        // Every end of a run (result, failure, cancellation) removes what it collected
+        QList<CoprPackageInfo> packages = m_packagePages.take(key);
         packages.append(page);
 
         const bool fullPage = page.size() >= PackagesPageSize;
@@ -652,10 +660,13 @@ void CoprClient::processNextRequest()
         const auto dropped = std::exchange(m_requestQueue, {});
         const quint64 generation = m_requestGeneration;
         for (const auto &request : dropped) {
-            if (generation != m_requestGeneration) {
-                break;
+            // Whoever hears about a failure may cancel the list requests: that includes
+            // the rest of these, but never what an open page is waiting for
+            if (generation != m_requestGeneration && !request.forOpenPage) {
+                cancelRequest(request);
+            } else {
+                failRequest(request, backOff);
             }
-            failRequest(request, backOff);
         }
         cancelLazyQueue();
         return;

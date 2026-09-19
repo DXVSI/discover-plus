@@ -15,9 +15,17 @@ ColumnLayout {
 
     required property Discover.AbstractResource resource
 
+    // Read once per delivery: every read of the property builds the whole list anew
+    readonly property var packages: resource.coprProjectPackages
+    readonly property var shownPackages: {
+        const filter = filterField.text.toLowerCase();
+        return filter.length > 0 ? packages.filter(packageData => packageData.name.toLowerCase().includes(filter)) : packages;
+    }
+
     // Not needed for the only package of a project, unless there is something to say about it
     Discover.Activatable.active: resource.isCoprProjectResource
-        && (resource.coprInstallStatus !== "ready" || resource.coprProjectPackages.length !== 1 || resource.coprInstallWarning.length > 0)
+        && (resource.coprInstallStatus !== "ready" || packages.length !== 1 || resource.coprInstallWarning.length > 0
+            || resource.coprInstallError.length > 0)
 
     spacing: Kirigami.Units.smallSpacing
 
@@ -48,16 +56,26 @@ ColumnLayout {
     Kirigami.InlineMessage {
         Layout.fillWidth: true
         type: ["failed", "empty", "unavailable"].includes(root.resource.coprInstallStatus) || root.resource.coprInstallWarning.length > 0
+                || root.resource.coprInstallError.length > 0
             ? Kirigami.MessageType.Warning
             : Kirigami.MessageType.Information
         text: {
+            // One of the two requests may fail while the other one answers
+            const error = root.resource.coprInstallError;
+            return error.length > 0 && root.resource.coprInstallStatus !== "failed"
+                ? i18nd("libdiscover", "%1 Not everything about this COPR project could be loaded: %2", statusText, error)
+                : statusText;
+        }
+        readonly property string statusText: {
             const selected = root.resource.selectedCoprPackageName;
             switch (root.resource.coprInstallStatus) {
             case "idle":
             case "loading":
                 return i18nd("libdiscover", "Loading packages for this COPR project...");
             case "failed":
-                return i18nd("libdiscover", "The packages of this COPR project could not be loaded.");
+                return root.resource.coprInstallError.length > 0
+                    ? i18nd("libdiscover", "The packages of this COPR project could not be loaded: %1", root.resource.coprInstallError)
+                    : i18nd("libdiscover", "The packages of this COPR project could not be loaded.");
             case "empty":
                 return i18nd("libdiscover", "No installable packages were returned for this COPR project.");
             case "needs-selection":
@@ -75,27 +93,51 @@ ColumnLayout {
         visible: true
         showCloseButton: false
         actions: Kirigami.Action {
-            visible: root.resource.coprInstallStatus === "failed"
+            visible: root.resource.coprInstallStatus === "failed" || root.resource.coprInstallError.length > 0
             text: i18nd("libdiscover", "Retry")
             icon.name: "view-refresh"
             onTriggered: root.resource.fetchProjectPackages()
         }
     }
 
-    ColumnLayout {
+    Kirigami.SearchField {
+        id: filterField
         Layout.fillWidth: true
-        spacing: Kirigami.Units.smallSpacing
-        visible: root.resource.coprProjectPackagesLoaded && root.resource.coprProjectPackages.length > 1
+        // For a list that does not fit into its frame
+        visible: packagesScroll.visible && root.packages.length > 20
+        placeholderText: i18nd("libdiscover", "Filter packages…")
+    }
 
-        Repeater {
-            model: root.resource.coprProjectPackages
+    // A project may have hundreds of packages: only the rows in the frame exist
+    QQC2.ScrollView {
+        id: packagesScroll
+        Layout.fillWidth: true
+        Layout.preferredHeight: Math.min(packagesView.contentHeight, Kirigami.Units.gridUnit * 18)
+        visible: root.resource.coprProjectPackagesLoaded && root.packages.length > 1
+
+        ListView {
+            id: packagesView
+
+            function showSelectedPackage() {
+                const selected = root.resource.selectedCoprPackageName;
+                const index = root.shownPackages.findIndex(packageData => packageData.name === selected);
+                if (index >= 0) {
+                    positionViewAtIndex(index, ListView.Contain);
+                }
+            }
+
+            clip: true
+            reuseItems: true
+            spacing: Kirigami.Units.smallSpacing
+            model: root.shownPackages
+            onModelChanged: Qt.callLater(showSelectedPackage)
 
             delegate: QQC2.ItemDelegate {
                 id: delegate
 
                 required property var modelData
 
-                Layout.fillWidth: true
+                width: ListView.view.width
                 // The radio button included
                 enabled: !transactionListener.isActive
                 onClicked: root.resource.selectCoprProjectPackage(modelData.name)
