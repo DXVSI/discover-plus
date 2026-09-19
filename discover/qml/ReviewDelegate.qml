@@ -107,6 +107,7 @@ QQC2.ItemDelegate {
 
                     checkable: true
                     checked: root.model.usefulChoice === Discover.ReviewsModel.Yes
+                    enabled: root.model.usefulChoice === Discover.ReviewsModel.None
                     onClicked: {
                         noButton.checked = false
                         root.markUseful(true)
@@ -123,6 +124,7 @@ QQC2.ItemDelegate {
 
                     checkable: true
                     checked: root.model.usefulChoice === Discover.ReviewsModel.No
+                    enabled: root.model.usefulChoice === Discover.ReviewsModel.None
                     onClicked: {
                         yesButton.checked = false
                         root.markUseful(false)

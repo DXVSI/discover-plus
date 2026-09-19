@@ -35,6 +35,14 @@ DiscoverPage {
     property bool showRating: true
     property bool showSize: false
     property bool searchPage: false
+    // For a list that the backend delivers newest first: the default is that order, the
+    // choice is local to the page and sorting by data such a list lacks is not offered
+    property bool newestFirstSorting: false
+    // Such a list by name instead: the backend asks the server for that order
+    property bool nameOrderFromServer: false
+    // A source that is not asked for shorter searches: say so instead of "was not found"
+    property int minimumSearchLength: 0
+    readonly property bool searchIsTooShort: appsModel.search.trim().length < page.minimumSearchLength
 
     property bool canNavigate: true
     readonly property alias subcategories: appsModel.subcategories
@@ -63,6 +71,16 @@ DiscoverPage {
     }
 
     function applySavedSortRole(role) {
+        if (page.newestFirstSorting) {
+            // The saved role belongs to the regular lists. Without a search the list is
+            // fetched page by page and the server sorts it, see orderedByName below.
+            if (page.search.length === 0) {
+                page.nameOrderFromServer = role === Discover.ResourcesProxyModel.NameRole
+                role = -1
+            }
+            page.applyTemporarySortRole(role)
+            return
+        }
         page.resetAppsViewPosition()
         DiscoverApp.DiscoverSettings[page.sortProperty] = role
         appsModel.tempSortRole = -1
@@ -113,6 +131,16 @@ DiscoverPage {
         }
     }
 
+    // A top-level page comes back from the page pool as the same instance: start it over when
+    // it is put into the stack again, the search field is empty by then
+    Kirigami.ColumnView.onViewChanged: {
+        if (page.newestFirstSorting && Kirigami.ColumnView.view) {
+            page.nameOrderFromServer = false
+            page.search = ""
+            appsModel.tempSortRole = -1
+        }
+    }
+
     supportsRefreshing: true
     onRefreshingChanged: if (refreshing) {
         appsModel.invalidateFilter()
@@ -141,6 +169,7 @@ DiscoverPage {
                 checked: appsModel.sortRole === Discover.ResourcesProxyModel.SearchRelevanceRole
             }
             Kirigami.Action {
+                visible: !page.newestFirstSorting
                 QQC2.ActionGroup.group: sortGroup
                 text: i18nc("@item:inmenu sort with RPM Fusion applications first", "RPM Fusion first")
                 icon.name: "folder-download-symbolic"
@@ -149,6 +178,7 @@ DiscoverPage {
                 checked: appsModel.sortRole === Discover.ResourcesProxyModel.RpmFusionSourceRole
             }
             Kirigami.Action {
+                visible: !page.newestFirstSorting
                 QQC2.ActionGroup.group: sortGroup
                 text: i18nc("@item:inmenu sort with Fedora Linux applications first", "Fedora Linux first")
                 icon.name: "folder-download-symbolic"
@@ -157,6 +187,7 @@ DiscoverPage {
                 checked: appsModel.sortRole === Discover.ResourcesProxyModel.FedoraLinuxSourceRole
             }
             Kirigami.Action {
+                visible: !page.newestFirstSorting
                 QQC2.ActionGroup.group: sortGroup
                 text: i18nc("@item:inmenu sort with Fedora Flatpaks first", "Fedora Flatpaks first")
                 icon.name: "flatpak-discover"
@@ -165,6 +196,7 @@ DiscoverPage {
                 checked: appsModel.sortRole === Discover.ResourcesProxyModel.FedoraFlatpaksSourceRole
             }
             Kirigami.Action {
+                visible: !page.newestFirstSorting
                 QQC2.ActionGroup.group: sortGroup
                 text: i18nc("@item:inmenu sort with Flathub applications first", "Flathub first")
                 icon.name: "flatpak-discover"
@@ -174,6 +206,20 @@ DiscoverPage {
             }
             Kirigami.Action {
                 separator: true
+                visible: !page.newestFirstSorting
+            }
+            Kirigami.Action {
+                // A search result has no such order: its sort score is the relevance
+                visible: page.newestFirstSorting && appsModel.search.length === 0
+                QQC2.ActionGroup.group: sortGroup
+                text: i18nc("@item:inmenu sort with the most recently created entries first", "Newest first")
+                icon.name: "change-date-symbolic"
+                onTriggered: {
+                    page.nameOrderFromServer = false
+                    page.applyTemporarySortRole(-1)
+                }
+                checkable: true
+                checked: appsModel.sortRole === Discover.ResourcesProxyModel.SortScoreRole && !page.nameOrderFromServer
             }
             Kirigami.Action {
                 QQC2.ActionGroup.group: sortGroup
@@ -182,8 +228,10 @@ DiscoverPage {
                 onTriggered: page.applySavedSortRole(Discover.ResourcesProxyModel.NameRole)
                 checkable: true
                 checked: appsModel.sortRole === Discover.ResourcesProxyModel.NameRole
+                    || (page.nameOrderFromServer && appsModel.sortRole === Discover.ResourcesProxyModel.SortScoreRole)
             }
             Kirigami.Action {
+                visible: !page.newestFirstSorting
                 QQC2.ActionGroup.group: sortGroup
                 text: i18n("Number of reviews")
                 icon.name: "view-pages-overview-symbolic"
@@ -192,6 +240,7 @@ DiscoverPage {
                 checked: appsModel.sortRole === Discover.ResourcesProxyModel.RatingCountRole
             }
             Kirigami.Action {
+                visible: !page.newestFirstSorting
                 QQC2.ActionGroup.group: sortGroup
                 text: i18nc("@item:inmenu sort by highest-rated apps", "Rating")
                 icon.name: "rating"
@@ -200,6 +249,7 @@ DiscoverPage {
                 checked: appsModel.sortRole === Discover.ResourcesProxyModel.SortableRatingRole
             }
             Kirigami.Action {
+                visible: !page.newestFirstSorting
                 QQC2.ActionGroup.group: sortGroup
                 text: i18n("Size")
                 icon.name: "download"
@@ -208,6 +258,7 @@ DiscoverPage {
                 checked: appsModel.sortRole === Discover.ResourcesProxyModel.SizeRole
             }
             Kirigami.Action {
+                visible: !page.newestFirstSorting
                 QQC2.ActionGroup.group: sortGroup
                 text: i18n("Release date")
                 icon.name: "change-date-symbolic"
@@ -248,7 +299,12 @@ DiscoverPage {
         model: Discover.ResourcesProxyModel {
             id: appsModel
             property int tempSortRole: -1
-            sortRole: tempSortRole >= 0 ? tempSortRole : DiscoverApp.DiscoverSettings.appsListPageSorting
+            sortRole: tempSortRole >= 0 ? tempSortRole
+                : page.newestFirstSorting ? Discover.ResourcesProxyModel.SortScoreRole : DiscoverApp.DiscoverSettings.appsListPageSorting
+            // Such a list is fetched page by page: the backend asks the server for the pages by
+            // name and scores the rows in the order they arrive in, so that what is appended
+            // lands at the end. The sort role stays the sort score; a search ignores this.
+            orderedByName: page.newestFirstSorting && page.nameOrderFromServer
             sortOrder: sortRole === Discover.ResourcesProxyModel.NameRole ? Qt.AscendingOrder : Qt.DescendingOrder
             categorize: page.categorize
 
@@ -262,6 +318,8 @@ DiscoverPage {
         delegate: ApplicationDelegate {
             showRating: page.showRating
             showSize: page.showSize
+            // A top-level page that went back into the page pool still says it is the current one
+            listActive: page.isCurrentPage && page.visible
         }
 
         section {
@@ -324,16 +382,17 @@ DiscoverPage {
                 visible: appsModel.search.length > 0 && stateFilter !== Discover.AbstractResource.Installed
 
                 icon.name: "edit-none"
-                text: page.categoryObject ? i18nc("@info:placeholder %1 is the name of an application; %2 is the name of a category of apps or add-ons",
+                text: page.searchIsTooShort ? i18n("Type at least %1 characters to search here", page.minimumSearchLength)
+                    : page.categoryObject ? i18nc("@info:placeholder %1 is the name of an application; %2 is the name of a category of apps or add-ons",
                                             "\"%1\" was not found in the \"%2\" category", appsModel.search, page.categoryObject.name)
                                     : i18nc("@info:placeholder %1 is the name of an application",
                                             "\"%1\" was not found in the available sources", appsModel.search)
-                explanation: page.categoryObject ? "" : i18nc("@info:placeholder %1 is the name of an application", "\"%1\" may be available on the web. Software acquired from the web has not been reviewed by your distributor for functionality or stability. Use with caution.", appsModel.search)
+                explanation: page.categoryObject || page.searchIsTooShort ? "" : i18nc("@info:placeholder %1 is the name of an application", "\"%1\" may be available on the web. Software acquired from the web has not been reviewed by your distributor for functionality or stability. Use with caution.", appsModel.search)
 
                 // If we're in a category, first direct the user to search globally,
                 // because they might not have realized they were in a category and
                 // therefore the results were limited to just what was in the category
-                helpfulAction: page.categoryObject ? searchAllCategoriesAction : searchTheWebAction
+                helpfulAction: page.searchIsTooShort ? null : page.categoryObject ? searchAllCategoriesAction : searchTheWebAction
             }
         }
 

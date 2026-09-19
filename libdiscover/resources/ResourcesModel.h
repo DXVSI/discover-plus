@@ -29,7 +29,7 @@ public:
     }
 
 Q_SIGNALS:
-    void finished();
+    void finished(const QVector<StreamResult> &results);
 
 private:
     void addResults(const QVector<StreamResult> &res);
@@ -40,6 +40,7 @@ private:
 
     QSet<QObject *> m_streams;
     QVector<StreamResult> m_results;
+    QVector<StreamResult> m_allResults;
     QTimer m_delayedEmission;
 };
 
@@ -121,7 +122,6 @@ Q_SIGNALS:
     void switchToUpdates();
 
 private Q_SLOTS:
-    void callerContentsChanged();
     void updateCaller(const QVector<QByteArray> &properties);
     void registerAllBackends();
 

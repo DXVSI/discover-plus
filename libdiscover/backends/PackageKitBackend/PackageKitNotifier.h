@@ -5,7 +5,6 @@
  */
 #pragma once
 
-#include <AppStreamQt/pool.h>
 #include <BackendNotifierModule.h>
 #include <PackageKit/Transaction>
 #include <QPointer>
@@ -56,5 +55,4 @@ private:
     QTimer *m_recheckTimer;
 
     QHash<QString, PackageKit::Transaction *> m_transactions;
-    std::unique_ptr<AppStream::Pool> m_appdata;
 };

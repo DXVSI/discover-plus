@@ -33,7 +33,7 @@ QtObject {
         const mimeTypeComment = app.mimeTypeComment(mime);
         openApplicationList({
             mimeTypeFilter: mime,
-            title: i18n("Resources for '%1'", mimeTypeComment),
+            title: i18n("Resources for “%1”", mimeTypeComment),
         });
     }
 

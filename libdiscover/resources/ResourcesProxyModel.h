@@ -61,6 +61,7 @@ class DISCOVERCOMMON_EXPORT ResourcesProxyModel : public QAbstractListModel, pub
     Q_PROPERTY(QUrl resourcesUrl READ resourcesUrl WRITE setResourcesUrl NOTIFY resourcesUrlChanged)
     Q_PROPERTY(QString extending READ extends WRITE setExtends)
     Q_PROPERTY(bool allBackends READ allBackends WRITE setAllBackends)
+    Q_PROPERTY(bool orderedByName READ orderedByName WRITE setOrderedByName)
     Q_PROPERTY(QVariantList subcategories READ subcategories NOTIFY subcategoriesChanged)
     Q_PROPERTY(bool busy READ isBusy NOTIFY busyChanged)
     Q_PROPERTY(ResourcesCount count READ count NOTIFY countChanged FINAL)
@@ -95,6 +96,8 @@ public:
         FedoraLinuxSourceRole,
         FedoraFlatpaksSourceRole,
         FlathubSourceRole,
+        // The order given by the backend alone (StreamResult::sortScore). Never saved to disk either
+        SortScoreRole,
         // This is better that's always the last value as this one should be never saved to disk
         SearchRelevanceRole
     };
@@ -137,6 +140,9 @@ public:
 
     bool allBackends() const;
     void setAllBackends(bool allBackends);
+
+    bool orderedByName() const;
+    void setOrderedByName(bool orderedByName);
 
     AbstractResourcesBackend *backendFilter() const;
     void setBackendFilter(AbstractResourcesBackend *filtered);

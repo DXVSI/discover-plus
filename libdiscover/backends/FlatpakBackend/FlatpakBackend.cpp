@@ -1912,7 +1912,7 @@ QCoro::Task<QHash<FlatpakInstallation *, QList<FlatpakInstalledRef *>>> FlatpakB
         [](GCancellable *cancellable, QList<FlatpakInstallation *> installations) {
             QHash<FlatpakInstallation *, QVector<FlatpakInstalledRef *>> ret;
             if (g_cancellable_is_cancelled(cancellable)) {
-                qCWarning(LIBDISCOVER_BACKEND_FLATPAK_LOG) << "Job cancelled";
+                qCWarning(LIBDISCOVER_BACKEND_FLATPAK_LOG) << "Job canceled";
                 return ret;
             }
 
@@ -1924,7 +1924,7 @@ QCoro::Task<QHash<FlatpakInstallation *, QList<FlatpakInstalledRef *>>> FlatpakB
                     continue;
                 }
                 if (g_cancellable_is_cancelled(cancellable)) {
-                    qCWarning(LIBDISCOVER_BACKEND_FLATPAK_LOG) << "Job cancelled";
+                    qCWarning(LIBDISCOVER_BACKEND_FLATPAK_LOG) << "Job canceled";
                     ret.clear();
                     break;
                 }
@@ -1960,7 +1960,7 @@ ResultsStream *FlatpakBackend::findResourceByPackageName(const QUrl &url)
     if (url.scheme() == QLatin1String("appstream")) {
         const auto appstreamIds = AppStreamUtils::appstreamIds(url);
         if (appstreamIds.isEmpty()) {
-            Q_EMIT passiveMessage(i18n("Malformed appstream url '%1'", url.toDisplayString()));
+            Q_EMIT passiveMessage(i18n("Malformed appstream url “%1”", url.toDisplayString()));
         } else {
             auto stream = new ResultsStream(QStringLiteral("FlatpakStream-AppStreamUrl"));
             auto f = [this, stream, appstreamIds] {
@@ -2074,6 +2074,7 @@ FlatpakRemote *FlatpakBackend::installSource(FlatpakResource *resource)
 
     if (g_autoptr(FlatpakRemote) remote =
             flatpak_installation_get_remote_by_name(preferredInstallation(), resource->flatpakName().toUtf8().constData(), cancellable, nullptr)) {
+        Q_EMIT passiveMessage(i18n("Source “%1” already exists", resource->flatpakName()));
         qCWarning(LIBDISCOVER_BACKEND_FLATPAK_LOG) << "Source" << resource->flatpakName() << "already exists in"
                                                    << flatpak_installation_get_path(preferredInstallation());
         return nullptr;
@@ -2090,7 +2091,7 @@ FlatpakRemote *FlatpakBackend::installSource(FlatpakResource *resource)
 
     g_autoptr(GError) error = nullptr;
     if (!flatpak_installation_add_remote(preferredInstallation(), remote, false, cancellable, &error)) {
-        Q_EMIT passiveMessage(i18n("Failed to add source '%1': %2", resource->flatpakName(), QString::fromUtf8(error->message)));
+        Q_EMIT passiveMessage(i18n("Failed to add source “%1”: %2", resource->flatpakName(), QString::fromUtf8(error->message)));
         qCWarning(LIBDISCOVER_BACKEND_FLATPAK_LOG) << "Failed to add source" << resource->flatpakName() << error->message;
         return nullptr;
     }

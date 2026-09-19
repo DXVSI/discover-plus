@@ -19,14 +19,111 @@ ConditionalLoader {
     readonly property bool isStateAvailable: application.state !== Discover.AbstractResource.Broken
     readonly property alias listener: listener
 
+    // COPR resources say why nothing can be installed yet. Everything else has no such
+    // property, the status is empty then and nothing below applies.
+    readonly property string coprStatus: application.isInstalled ? "" : (application.coprInstallStatus ?? "")
+    readonly property string coprPackageName: application.selectedCoprPackageName ?? ""
+    // In a list the button opens the application page to choose a package and is only
+    // worth showing when it does something
+    property bool listItem: false
+    readonly property bool hasAction: isActive || !["idle", "loading", "empty", "unavailable"].includes(coprStatus)
+    // A list does not show a button without an action but keeps its room. Screen readers
+    // find the buttons inside whatever is set on this loader: they are told themselves.
+    readonly property bool hiddenWithoutAction: listItem && !hasAction
+    readonly property bool buttonEnabled: {
+        switch (coprStatus) {
+        case "failed":
+            return true;
+        case "needs-selection":
+            return listItem;
+        case "idle":
+        case "loading":
+        case "empty":
+        case "unavailable":
+            return false;
+        }
+        return isStateAvailable;
+    }
+    readonly property string coprReason: {
+        switch (coprStatus) {
+        case "idle":
+        case "loading":
+            return i18nc("@info:tooltip", "Loading the packages of this COPR project…");
+        case "failed": {
+            // Why, when the resource knows: the server may have asked to wait, and a retry fails at once then
+            const error = application.coprInstallError ?? "";
+            return error.length > 0
+                ? i18nc("@info:tooltip %1 is an error message", "The packages of this COPR project could not be loaded: %1 Click to try again.", error)
+                : i18nc("@info:tooltip", "The packages of this COPR project could not be loaded. Click to try again.");
+        }
+        case "needs-selection":
+            return listItem
+                ? i18nc("@info:tooltip", "This COPR project has several packages. Click to choose which one to install.")
+                : i18nc("@info:tooltip", "This COPR project has several packages. Choose which one to install in the package list on this page.");
+        case "empty":
+            return i18nc("@info:tooltip", "This COPR project has no packages.");
+        case "unavailable":
+            return coprPackageName.length > 0
+                ? i18nc("@info:tooltip %1 is the name of a package", "%1 is not built for this Fedora version and architecture.", coprPackageName)
+                : i18nc("@info:tooltip", "Nothing in this COPR project is built for this Fedora version and architecture.");
+        }
+        return "";
+    }
+    // From a COPR project the package is installed that was selected automatically or by
+    // the user: the button names it. A name longer than this is elided in the button.
+    property real maximumPackageNameWidth: Kirigami.Units.gridUnit * 10
+    readonly property bool namesCoprPackage: coprStatus === "ready" && coprPackageName.length > 0
+    // What the button takes around that name: the rest of its text, and about an icon
+    // with the margins of a button. For those that work out how much room the name gets.
+    readonly property real packageNameSurroundingsWidth: packageNameSurroundingsMetrics.advanceWidth + Kirigami.Units.iconSizes.small + Kirigami.Units.largeSpacing * 3 + Kirigami.Units.smallSpacing
+    // The same as the text of the button with the whole name, for the tooltip and for screen readers
+    readonly property string actionName: namesCoprPackage ? installPackageText(coprPackageName) : action.text
+
+    // The words are the strings the other backends use, those are translated: the fork has no
+    // catalogs of its own, a new sentence would show up in English
+    function installPackageText(packageName: string): string {
+        const install = root.availableFromOnlySingleSource
+            ? i18nc("@action:button %1 is the name of a software repository", "Install from %1", root.application.displayOrigin)
+            : i18nc("@action:button", "Install");
+        return install + ": " + packageName;
+    }
+
+    signal packageSelectionRequested()
+
     Discover.TransactionListener {
         id: listener
     }
 
+    TextMetrics {
+        id: packageNameMetrics
+        font: Kirigami.Theme.defaultFont
+        text: root.coprPackageName
+        elide: Text.ElideMiddle
+        elideWidth: root.maximumPackageNameWidth
+    }
+
+    TextMetrics {
+        id: packageNameSurroundingsMetrics
+        font: Kirigami.Theme.defaultFont
+        text: root.namesCoprPackage ? root.installPackageText("") : ""
+    }
+
     readonly property Kirigami.Action action: Kirigami.Action {
         text: {
+            switch (root.coprStatus) {
+            case "failed":
+                return i18nc("@action:button", "Retry");
+            case "needs-selection":
+                return i18nc("@action:button", "Choose Package…");
+            case "empty":
+            case "unavailable":
+                return i18nc("@action:button", "Not Available");
+            }
             if (!root.isStateAvailable) {
                 return i18nc("State being fetched", "Loading…")
+            }
+            if (root.namesCoprPackage) {
+                return root.installPackageText(packageNameMetrics.elidedText);
             }
             if (!root.application.isInstalled) {
                 if (root.availableFromOnlySingleSource) {
@@ -37,13 +134,27 @@ ConditionalLoader {
             return i18n("Remove");
         }
         icon {
-            name: root.application.isInstalled ? "edit-delete" : "download"
-            color: !root.isActive && enabled
-                ? (root.application.isInstalled ? Kirigami.Theme.negativeTextColor : Kirigami.Theme.positiveTextColor)
-                : Kirigami.Theme.backgroundColor
+            name: {
+                switch (root.coprStatus) {
+                case "failed":
+                    return "view-refresh";
+                case "needs-selection":
+                    return "view-list-details";
+                }
+                return root.application.isInstalled ? "edit-delete" : "download";
+            }
+            color: {
+                if (root.isActive || !enabled) {
+                    return Kirigami.Theme.backgroundColor;
+                }
+                if (root.coprStatus === "failed" || root.coprStatus === "needs-selection") {
+                    return Kirigami.Theme.textColor;
+                }
+                return root.application.isInstalled ? Kirigami.Theme.negativeTextColor : Kirigami.Theme.positiveTextColor;
+            }
         }
         visible: !root.isActive && (!root.application.isInstalled || root.application.isRemovable)
-        enabled: !root.isActive && root.isStateAvailable
+        enabled: !root.isActive && root.buttonEnabled
         onTriggered: root.click()
     }
 
@@ -62,6 +173,23 @@ ConditionalLoader {
 
     function click() {
         if (!isActive) {
+            // Never an install in these states
+            if (root.coprStatus === "failed") {
+                // A list item only needs the monitor, the application page the details as well
+                if (root.listItem) {
+                    root.application.fetchProjectMonitor();
+                } else {
+                    root.application.fetchProjectPackages();
+                }
+                return;
+            }
+            if (root.coprStatus === "needs-selection") {
+                root.packageSelectionRequested();
+                return;
+            }
+            if (!root.buttonEnabled) {
+                return;
+            }
             if (root.application.isInstalled) {
                 Discover.ResourcesModel.removeApplication(root.application);
             } else {
@@ -97,9 +225,17 @@ ConditionalLoader {
     componentFalse: RowLayout {
         spacing: Kirigami.Units.smallSpacing
 
+        // A disabled button is not hovered: the reason of a COPR state is shown for the row,
+        // unless a list has disabled it as a whole to hide it
+        HoverHandler {
+            id: rowHover
+            enabled: root.coprReason.length > 0 && !installOrRemoveButton.enabled && root.enabled
+        }
+
         QQC2.Button {
             id: invokeButton
             visible: !root.hideInvokeButton && root.application.isInstalled && root.application.canExecute && !listener.isActive
+            Accessible.ignored: root.hiddenWithoutAction
             text: root.application.executeLabel
             icon.name: "media-playback-start-symbolic"
             onClicked: root.application.invokeApplication()
@@ -110,7 +246,7 @@ ConditionalLoader {
             id: installOrRemoveButton
 
             visible: !root.application.isInstalled || root.application.isRemovable
-            enabled: root.application.state !== Discover.AbstractResource.Broken
+            enabled: root.buttonEnabled
             activeFocusOnTab: root.buttonActiveFocusOnTab
 
             display: invokeButton.visible ? QQC2.AbstractButton.IconOnly : root.installOrRemoveButtonDisplayStyle
@@ -118,8 +254,13 @@ ConditionalLoader {
             icon.name: root.action.icon.name
             icon.color: root.action.icon.color
 
-            QQC2.ToolTip.text: text
-            QQC2.ToolTip.visible: (hovered || activeFocus) && display === QQC2.AbstractButton.IconOnly
+            Accessible.name: root.actionName
+            Accessible.description: root.coprReason
+            Accessible.ignored: root.hiddenWithoutAction
+
+            QQC2.ToolTip.text: root.coprReason.length > 0 ? root.coprReason : root.actionName
+            QQC2.ToolTip.visible: ((hovered || activeFocus) && (display === QQC2.AbstractButton.IconOnly || root.actionName !== text || root.coprReason.length > 0))
+                || rowHover.hovered
             QQC2.ToolTip.delay: Kirigami.Units.toolTipDelay
 
             onClicked: root.click()

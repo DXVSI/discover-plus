@@ -12,8 +12,10 @@ if (TARGET AppStreamQt)
     add_library(DiscoverAppStreamIntegration STATIC
         appstream/AppStreamIntegration.cpp
     )
+    kconfig_target_kcfg_file(DiscoverAppStreamIntegration FILE ${CMAKE_CURRENT_SOURCE_DIR}/appstream/discover-appstream-settings.kcfg CLASS_NAME AppstreamSettings INHERITS KCoreConfigSkeleton)
     target_link_libraries(DiscoverAppStreamIntegration KF6::CoreAddons KF6::ConfigCore AppStreamQt)
     set_property(TARGET DiscoverAppStreamIntegration PROPERTY POSITION_INDEPENDENT_CODE ON)
+    install(FILES appstream/discover-appstream-settings.kcfg DESTINATION ${KDE_INSTALL_KCFGDIR})
 endif()
 
 set(discovercommon_SRCS
@@ -41,7 +43,6 @@ set(discovercommon_SRCS
     resources/AbstractResource.cpp
     resources/AbstractBackendUpdater.cpp
     resources/AbstractSourcesBackend.cpp
-    resources/StoredResultsStream.cpp
     DiscoverBackendsFactory.cpp
     ScreenshotsModel.cpp
     ApplicationAddonsModel.cpp
@@ -72,6 +73,7 @@ if(TARGET AppStreamQt)
         appstream/AppStreamIntegration.cpp
         appstream/AppStreamUtils.cpp
     )
+    kconfig_target_kcfg_file(DiscoverCommon FILE ${CMAKE_CURRENT_SOURCE_DIR}/appstream/discover-appstream-settings.kcfg CLASS_NAME AppstreamSettings INHERITS KCoreConfigSkeleton)
     target_link_libraries(DiscoverCommon PRIVATE
         Qt::Concurrent
         KF6::IconThemes

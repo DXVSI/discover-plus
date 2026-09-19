@@ -9,6 +9,7 @@
 #include "utils.h"
 #include <AppStreamQt/category.h>
 #include <AppStreamQt/component.h>
+#include <AppStreamQt/icon.h>
 #include <AppStreamQt/pool.h>
 #include <AppStreamQt/release.h>
 #include <AppStreamQt/screenshot.h>
@@ -19,6 +20,8 @@
 #include <KLocalizedString>
 #include <QCoroTimer>
 #include <QDebug>
+#include <QDir>
+#include <QDirIterator>
 #include <QJsonArray>
 #include <QJsonObject>
 #include <QMetaEnum>
@@ -234,4 +237,40 @@ DISCOVERCOMMON_EXPORT bool AppStreamUtils::kIconLoaderHasIcon(const QString &nam
         return QSet<QString>(icons.cbegin(), icons.cend());
     }();
     return icons.contains(name);
+}
+
+QIcon AppStreamUtils::iconForComponent(const AppStream::Component &component, const QString &iconPath)
+{
+    QIcon ret;
+    for (const AppStream::Icon &icon : component.icons()) {
+        switch (icon.kind()) {
+        case AppStream::Icon::KindLocal:
+        case AppStream::Icon::KindCached: {
+            const QString path = icon.url().toLocalFile();
+            if (QDir::isRelativePath(path) && !iconPath.isEmpty()) {
+                QDirIterator it(iconPath, QDirIterator::Subdirectories);
+                while (it.hasNext()) {
+                    const auto currentPath = it.next();
+                    if (it.fileName() == path) {
+                        ret.addFile(currentPath, icon.size());
+                    }
+                }
+            } else {
+                ret.addFile(path, icon.size());
+            }
+            break;
+        }
+        case AppStream::Icon::KindRemote:
+            break;
+        case AppStream::Icon::KindStock:
+            if (kIconLoaderHasIcon(icon.name())) {
+                ret = QIcon::fromTheme(icon.name());
+            }
+            break;
+        case AppStream::Icon::KindUnknown:
+            break;
+        }
+    }
+
+    return ret;
 }

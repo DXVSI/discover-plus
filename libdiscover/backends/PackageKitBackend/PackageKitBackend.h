@@ -10,9 +10,9 @@
 
 #include <PackageKit/Offline>
 #include <PackageKit/Transaction>
+#include <QElapsedTimer>
 #include <QHash>
 #include <QPointer>
-#include <QQueue>
 #include <QSet>
 #include <QSharedPointer>
 #include <QStringList>
@@ -30,6 +30,7 @@ class OdrsReviewsBackend;
 class PKResultsStream;
 class PKResolveTransaction;
 class CoprClient;
+class CoprInstalledPackages;
 class CoprResource;
 struct CoprProjectInfo;
 struct CoprPackageInfo;
@@ -155,8 +156,13 @@ public:
     void searchCoprPackages(const QString &query);
     void loadPopularCoprProjects();
     void loadMoreCoprProjects();
+    CoprInstalledPackages *coprInstalledPackages() const
+    {
+        return m_coprInstalledPackages;
+    }
     void requestCoprInstalledStateCheck(CoprResource *resource);
-    void setCoprInstalledStateCache(const QString &owner, const QString &packageName, bool installed);
+    // A COPR transaction changed the repositories of the system: PackageKit does not watch them
+    void coprRepositoriesChanged();
     void refreshSources();
 
 public Q_SLOTS:
@@ -172,13 +178,14 @@ private Q_SLOTS:
     void loadAllPackages();
     void loadAllPackagesHybrid();
     void onCoprProjectsFound(const QList<CoprProjectInfo> &projects);
-    void onCoprPackagesFound(const QList<CoprPackageInfo> &packages);
-    void onCoprProjectPackagesFound(const QString &owner, const QString &project, const QList<CoprPackageInfo> &packages);
+    void onCoprProjectFound(const CoprProjectInfo &project);
+    void onCoprProjectNotFound(const QString &owner, const QString &project);
+    void onCoprProjectPackagesFound(const QString &owner, const QString &project, const QList<CoprPackageInfo> &packages, bool complete);
+    void onCoprProjectMonitorFound(const QString &owner, const QString &project, const QList<CoprPackageInfo> &packages, bool complete);
 
 Q_SIGNALS:
     void loadedAppStream();
     void available();
-    void coprSearchResults(const QList<CoprResource *> &resources);
 
 private:
     friend class PackageKitResource;
@@ -201,7 +208,13 @@ private:
     void updateProxy();
     void foundNewMajorVersion(const AppStream::Release &release);
     void setRefresher(PackageKit::Transaction *refresh);
-    void processNextCoprInstalledStateCheck();
+    void applyCoprInstalledPackages();
+    void requestNextCoprBrowsePage();
+    void requestNextCoprSearchPage();
+    void resetCoprStreamState();
+    CoprResource *coprProjectResource(const CoprProjectInfo &project);
+    void showCoprMessageOnce(const QString &kind, const QString &message);
+    QList<CoprResource *> coprResourcesOfProject(const QString &owner, const QString &project) const;
 
     QScopedPointer<AppStream::ConcurrentPool> m_appdata;
     bool m_appdataLoaded = false;
@@ -232,24 +245,47 @@ private:
     QPointer<PKResultsStream> m_currentSearchStream;
     int m_coprOffset = 0;
     QString m_lastCoprSearchQuery;
-    QHash<QString, CoprProjectInfo> m_coprProjectMetadata;
-    QHash<QString, int> m_coprProjectRelevance;
-    QSet<QString> m_coprPackageRequests;
+    // Search mode. The server is asked for the query itself, or for "owner/project" when
+    // the query names one project: a full name, a link to its page or the command that
+    // enables it. That project is looked up first and m_coprSearchOwner is set then.
+    // m_coprSearchName is what the names of the results are compared with.
+    QString m_coprSearchServerQuery;
+    QString m_coprSearchOwner;
+    QString m_coprSearchName;
     bool m_coprSearchPagePending = false;
-    struct CoprInstalledStateRequest {
-        QPointer<CoprResource> resource;
-        CoprResource *resourceKey = nullptr;
-        QString key;
-        QString packageName;
-        QString owner;
-    };
-    QQueue<CoprInstalledStateRequest> m_coprInstalledStateQueue;
-    QHash<CoprResource *, QString> m_coprInstalledStatePendingKeys;
-    QHash<QString, bool> m_coprInstalledStateCache;
-    int m_activeCoprInstalledStateChecks = 0;
-    static constexpr int MaxConcurrentCoprInstalledStateChecks = 2;
+    bool m_coprSearchExhausted = false;
+    int m_coprSearchRequests = 0;
+    QSet<QString> m_coprSearchSeenKeys;
+    // A shorter query costs the server a full search of about 8 s and returns junk
+    static constexpr int CoprSearchMinimumLength = 3;
+    // The cost of a search does not depend on the limit (about 7 s, 2 KB per result), and
+    // the server sorts by creation date: what a page cuts off are the oldest projects,
+    // often the established ones. A full page is therefore followed by one more at once,
+    // further ones wait for a fetchMore.
+    static constexpr int CoprSearchPageSize = 100;
+    static constexpr int CoprSearchAutomaticPages = 2;
+    // What is installed from which COPR repository; asked again after the transactions of
+    // this backend and when PackageKit reports that the packages of the system changed
+    CoprInstalledPackages *m_coprInstalledPackages = nullptr;
+    bool m_coprRepositoriesChanged = false;
 
-    // Batch loading: accumulate results from parallel initial requests
-    QList<CoprProjectInfo> m_coprBatchBuffer;
-    int m_coprBatchPending = 0;
+    // Browse mode. About 90% of the newest projects are hidden from the COPR
+    // homepage (CI scratch projects) or lack the current chroot, so one user
+    // action (opening the page, a fetchMore) requests large pages one after
+    // another until about a screenful passed the filters, up to a hard cap.
+    bool m_coprBrowsePagePending = false;
+    // The order the list is browsed in: by name instead of newest first
+    bool m_coprBrowseByName = false;
+    bool m_coprBrowseExhausted = false;
+    int m_coprBrowseRequests = 0;
+    int m_coprBrowseAccepted = 0;
+    QSet<QString> m_coprBrowseSeenKeys;
+    // What the browse stream was given so far, to hand over to a stream that replaces it
+    QVector<StreamResult> m_coprBrowseResults;
+    static constexpr int CoprBrowsePageSize = 300;
+    static constexpr int CoprBrowseTargetCount = 30;
+    static constexpr int CoprBrowseMaxRequestsPerAction = 4;
+
+    QString m_lastCoprMessageKind;
+    QElapsedTimer m_lastCoprMessageTimer;
 };

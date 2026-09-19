@@ -1,12 +1,13 @@
 # Translation of plasma-discover to Norwegian Nynorsk
 #
+# Karl Ove Hufthammer <karl@huftis.org>, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2026.
 # Øystein Steffensen-Alværvik <oysteins.omsetting@protonmail.com>, 2018, 2022.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-05-22 00:45+0000\n"
-"PO-Revision-Date: 2026-03-05 20:28+0100\n"
+"POT-Creation-Date: 2026-09-17 00:45+0000\n"
+"PO-Revision-Date: 2026-07-26 12:39+0200\n"
 "Last-Translator: Karl Ove Hufthammer <karl@huftis.org>\n"
 "Language-Team: Norwegian Nynorsk <l10n-no@nuug.no>\n"
 "Language: nn\n"
@@ -14,16 +15,13 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 26.03.70\n"
+"X-Generator: Lokalize 26.11.70\n"
 "X-Environment: kde\n"
 "X-Accelerator-Marker: &\n"
 "X-Text-Markup: kde4\n"
 
-#: discover/DiscoverObject.cpp:198
-#, fuzzy, kde-format
-#| msgctxt "@title %1 is the distro name"
-#| msgid ""
-#| "%1 is not configured for installing apps through Discover—only app add-ons"
+#: discover/DiscoverObject.cpp:197
+#, kde-format
 msgctxt "@title %1 is the name"
 msgid ""
 "%1 is not configured for installing apps through Discover—only app add-ons"
@@ -31,13 +29,8 @@ msgstr ""
 "%1 er ikkje sett opp for installering av program via Discover, berre for "
 "programtillegg"
 
-#: discover/DiscoverObject.cpp:200
-#, fuzzy, kde-kuit-format
-#| msgctxt "@info:usagetip %1 is the distro name"
-#| msgid ""
-#| "To use Discover for apps, install your preferred module on the "
-#| "<interface>Settings</interface> page, under <interface>Missing Backends</"
-#| "interface>."
+#: discover/DiscoverObject.cpp:199
+#, kde-kuit-format
 msgctxt "@info:usagetip %2 is the name of the operating system"
 msgid ""
 "To use Discover for apps, install your preferred module on the "
@@ -46,9 +39,10 @@ msgid ""
 msgstr ""
 "For å bruka Discover for å installera program må du først installera ein "
 "pakkemotor via <interface>Innstillingar</interface>-sida (under "
-"<interface>Manglande pakkemotorar</interface>)."
+"<interface>Manglande pakkemotorar</interface>).<nl/><nl/><link url='%1'>Meld "
+"frå om problemet til %2.</link>"
 
-#: discover/DiscoverObject.cpp:207
+#: discover/DiscoverObject.cpp:206
 #, kde-kuit-format
 msgctxt ""
 "@info:usagetip %1 is the distro name; in this case it always contains 'Arch "
@@ -65,7 +59,7 @@ msgstr ""
 "url='https://archlinux.org/packages/extra/x86_64/discover/'>%1-pakkar for "
 "Discover</link>"
 
-#: discover/DiscoverObject.cpp:217
+#: discover/DiscoverObject.cpp:216
 #, kde-kuit-format
 msgctxt "@info:usagetip %1 is the distro name"
 msgid ""
@@ -83,18 +77,18 @@ msgstr ""
 "vedlikehaldarane tilrår å bruka kommando­linje­programmet <command>pacman</"
 "command> for å handsama pakkar i staden for.</para>"
 
-#: discover/DiscoverObject.cpp:306
+#: discover/DiscoverObject.cpp:305
 #, kde-format
 msgid "Could not find category '%1'"
 msgstr "Fann ikkje kategorien «%1»"
 
 # skip-rule: eksistera
-#: discover/DiscoverObject.cpp:328
+#: discover/DiscoverObject.cpp:327
 #, kde-format
 msgid "Trying to open inexisting file '%1'"
 msgstr "Prøver å opna den ikkje-eksisterande fila «%1»"
 
-#: discover/DiscoverObject.cpp:350
+#: discover/DiscoverObject.cpp:349
 #, kde-format
 msgid ""
 "Cannot interact with flatpak resources without the flatpak backend %1. "
@@ -103,28 +97,25 @@ msgstr ""
 "Kan ikkje bruka Flatpak-ressursar med mindre Flatpak-motoren %1 er "
 "tilgjengeleg. Installer han først."
 
-#: discover/DiscoverObject.cpp:354
+#: discover/DiscoverObject.cpp:353
 #, kde-format
 msgid "Could not open %1"
 msgstr "Klarte ikkje opna %1"
 
-#: discover/DiscoverObject.cpp:419
+#: discover/DiscoverObject.cpp:418
 #, kde-format
 msgid "Please make sure Snap support is installed"
 msgstr "Kontroller at Snap-støtte er installert"
 
-#: discover/DiscoverObject.cpp:422
-#, fuzzy, kde-format
-#| msgid ""
-#| "Could not open %1 because it was not found in any available software "
-#| "repositories."
+#: discover/DiscoverObject.cpp:421
+#, kde-format
 msgid ""
 "The requested application could not be found in any available software "
 "repositories"
 msgstr ""
-"Klarte ikkje opna %1, då programmet ikkje finst i nokon av pakkebrønnane."
+"Fann ikkje det søkte programmet i nokon av dei tilgjengelege pakkebrønnane"
 
-#: discover/DiscoverObject.cpp:425
+#: discover/DiscoverObject.cpp:424
 #, kde-kuit-format
 msgctxt ""
 "@info %1 is an additional error reference and %3 is the name of the "
@@ -133,15 +124,17 @@ msgid ""
 "(No entry for %1)<nl/><nl/>Please <link url='%2'>report this issue to %3.</"
 "link>"
 msgstr ""
+"(Manglar oppføring for %1)<nl/><nl/><link url='%2'>Meld frå om feilen til %3."
+"</link>"
 
 # Namnet på programmet, som eg til slutt har funne ut at ikkje bør omsetjast. – KOH
-#: discover/DiscoverObject.cpp:509 discover/DiscoverObject.cpp:511
+#: discover/DiscoverObject.cpp:514 discover/DiscoverObject.cpp:516
 #: discover/main.cpp:120
 #, kde-format
 msgid "Discover"
 msgstr "Discover"
 
-#: discover/DiscoverObject.cpp:512
+#: discover/DiscoverObject.cpp:517
 #, kde-format
 msgid ""
 "Discover was closed before certain tasks were done, waiting for it to finish."
@@ -197,7 +190,7 @@ msgstr "Vis tilgjengelege val for tilbakemeldingar"
 #: discover/main.cpp:43
 #, kde-format
 msgid "Starts an update automatically, headless"
-msgstr ""
+msgstr "Startar oppdatering automatisk, utan bruk av skjerm"
 
 # skip-rule: url
 #: discover/main.cpp:45
@@ -227,7 +220,7 @@ msgstr "Nate Graham"
 
 #: discover/main.cpp:127
 #, kde-format
-msgid "Quality Assurance, Design and Usability"
+msgid "Quality Assurance, Design, and Usability"
 msgstr "Kvalitetskontroll, design og brukskvalitet"
 
 #: discover/main.cpp:131
@@ -292,22 +285,22 @@ msgstr "Legg til nytt %1-depot"
 msgid "Add"
 msgstr "Legg til"
 
-#: discover/qml/AddSourceDialog.qml:50 discover/qml/DiscoverWindow.qml:286
+#: discover/qml/AddSourceDialog.qml:50 discover/qml/DiscoverWindow.qml:289
 #: discover/qml/InstallApplicationButton.qml:51
-#: discover/qml/ProgressView.qml:155 discover/qml/SourcesPage.qml:207
+#: discover/qml/ProgressView.qml:163 discover/qml/SourcesPage.qml:207
 #: discover/qml/UpdatesPage.qml:316 discover/qml/WebflowDialog.qml:41
 #, kde-format
 msgid "Cancel"
 msgstr "Avbryt"
 
-#: discover/qml/ApplicationDelegate.qml:160
-#, fuzzy, kde-format
-#| msgid "No ratings yet"
+#: discover/qml/ApplicationDelegate.qml:162
+#, kde-format
 msgid "No ratings"
-msgstr "Ingen karakterar enno"
+msgstr "Ingen karakterar"
 
+# Omsetjinga skal vera nesten lik som neste tekst. Har forkorta «security» og «trustworthiness» til «trygt å bruka». Det første viser til sikkerheitshòl og sånt, og det andre viser til at ein kan stola på at programmet ikkje gjer noko gale/vondsinna. Men begge delar er dekt av «trygt å bruka», og risikoane er uansett vidare forklart i neste avsnitt.
 #: discover/qml/ApplicationPage.qml:67
-#, fuzzy, kde-kuit-format
+#, kde-kuit-format
 msgctxt "@info"
 msgid ""
 "Only install %1 if you fully trust its authors because it is <emphasis "
@@ -320,22 +313,25 @@ msgid ""
 "harvesting your personal information, tracking your location, or "
 "transmitting the contents of your data to someone else. Only use it if you "
 "fully trust its authors. More information may be available on <link "
-"url='%2'>the application's website</link>.<nl/><nl/>Learn more at <link "
+"url='%2'>the application’s website</link>.<nl/><nl/>Learn more at <link "
 "url='%3'>%3</link>."
 msgstr ""
-"Berre installer dette programmet om du stolar fullt og heilt på utviklarane "
-"(%1).<nl/><nl/>Kjeldekoden til programmet er heilt eller delvis lukka for "
-"innsyn og forbetring. Dette medfører at tredje­partar og brukarar som deg "
-"ikkje kan stadfesta at programmet er trygt å bruka og fungerer slik det "
-"skal. De kan heller ikkje gjera endringar i programmet eller vidare­formidla "
-"det til andre utan eksplisitt samtykke frå opphavspersonane.<nl/><nl/>Det "
-"kan vera at programmet er heilt trygt å bruka, men det kan òg vera at det "
-"arbeider mot deg – for eksempel ved å samla inn persondata, spora kor du "
-"oppheld deg eller senda filene dine til andre.<nl/><nl/>Du finn meir "
-"informasjon på <link url='%2'>%2</link>."
+"Berre installer %1 dersom du fullt og heilt stolar på utviklarane, då dette "
+"programmet er <emphasis strong='true'>proprietært</emphasis>: Du har "
+"avgrensa fridom til å bruka, endra og vidare­formidla det, og kjelde­koden er "
+"heilt eller delvis lukka for innsyn og forbetring. Dette gjer at tredje­"
+"partar og brukarar som deg ikkje kan stad­festa at programmet verkar som det "
+"skal og at det er trygt å bruka.<nl/><nl/>Det kan vera at programmet er "
+"heilt trygt å bruka, men det kan òg vera at det arbeider mot deg – for "
+"eksempel ved å samla inn person­data, spora kor du oppheld deg eller senda "
+"filene dine til andre. Du bør derfor berre bruka det dersom du fullt og "
+"heilt stolar på utviklarane bak. Det kan vera du finn meir informasjon på "
+"<link url='%2'>heimesida til programmet</link>.<nl/><nl/>Les meir på <link "
+"url='%3'>%3</link>."
 
+# Omsetjinga skal vera nesten lik som førre tekst. Sjå òg kommentar der.
 #: discover/qml/ApplicationPage.qml:72
-#, fuzzy, kde-kuit-format
+#, kde-kuit-format
 msgctxt "@info"
 msgid ""
 "Only install %1 if you fully trust its authors because it is <emphasis "
@@ -349,16 +345,16 @@ msgid ""
 "transmitting the contents of your data to someone else. Only use it if you "
 "fully trust its authors. Learn more at <link url='%2'>%2</link>."
 msgstr ""
-"Berre installer dette programmet om du stolar fullt og heilt på utviklarane "
-"(%1).<nl/><nl/>Kjeldekoden til programmet er heilt eller delvis lukka for "
-"innsyn og forbetring. Dette medfører at tredje­partar og brukarar som deg "
-"ikkje kan stadfesta at programmet er trygt å bruka og fungerer slik det "
-"skal. De kan heller ikkje gjera endringar i programmet eller vidare­formidla "
-"det til andre utan eksplisitt samtykke frå opphavspersonane.<nl/><nl/>Det "
-"kan vera at programmet er heilt trygt å bruka, men det kan òg vera at det "
-"arbeider mot deg – for eksempel ved å samla inn persondata, spora kor du "
-"oppheld deg eller senda filene dine til andre.<nl/><nl/>Du finn meir "
-"informasjon på <link url='%2'>%2</link>."
+"Berre installer %1 dersom du fullt og heilt stolar på utviklarane, då dette "
+"programmet er <emphasis strong='true'>proprietært</emphasis>: Du har "
+"avgrensa fridom til å bruka, endra og vidare­formidla det, og kjelde­koden er "
+"heilt eller delvis lukka for innsyn og forbetring. Dette gjer at tredje­"
+"partar og brukarar som deg ikkje kan stad­festa at programmet verkar som det "
+"skal og at det er trygt å bruka.<nl/><nl/>Det kan vera at programmet er "
+"heilt trygt å bruka, men det kan òg vera at det arbeider mot deg – for "
+"eksempel ved å samla inn person­data, spora kor du oppheld deg eller senda "
+"filene dine til andre. Du bør derfor berre bruka det dersom du fullt og "
+"heilt stolar på utviklarane bak. Les meir på <link url='%2'>%2</link>."
 
 #: discover/qml/ApplicationPage.qml:79
 #, kde-kuit-format
@@ -373,9 +369,20 @@ msgid ""
 "make sure you fully trust the authors, as no one else can verify the "
 "trustworthiness and security of its code to ensure that it is not acting "
 "against you in hidden ways. More information may be available on <link "
-"url='%4'>the application's website</link>.<nl/><nl/>Learn more at <link "
+"url='%4'>the application’s website</link>.<nl/><nl/>Learn more at <link "
 "url='%5'>%5</link>."
 msgstr ""
+"%1 brukar éin eller fleire lisensar som ikkje vert rekna som «fri "
+"programvare» ifølgje anten <link url='%2'>Free Software Foundation</link> "
+"eller <link url='%3'>Open Source Initiative</link>. Det medfører at du kan "
+"ha avgrensa fridom til å bruka, endra og vidare­formidla programmet.<nl/><nl/"
+">Du bør lesa lisens­teksten og forstå avgrensingane før du tek programmet i "
+"bruk.<nl/><nl/>Viss lisensteksen ikkje ein gong gjev deg tilgang til å lesa "
+"kjeldekoden, er det viktig at du stolar heilt og fullt på utviklarane bak, "
+"då ingen andre kan stadfesta at programmet er trygt å bruka og ikkje har "
+"noko skjult funksjonalitet som arbeider mot dine interesser. Det kan vera du "
+"finn meir informasjon på <link url='%4'>heimesida til programmet</link>.<nl/"
+"><nl/>Les meir på <link url='%5'>%5</link>."
 
 #: discover/qml/ApplicationPage.qml:86
 #, kde-kuit-format
@@ -391,25 +398,42 @@ msgid ""
 "trustworthiness and security of its code to ensure that it is not acting "
 "against you in hidden ways.<nl/><nl/>Learn more at <link url='%4'>%4</link>."
 msgstr ""
+"%1 brukar éin eller fleire lisensar som ikkje vert rekna som «fri "
+"programvare» ifølgje anten <link url='%2'>Free Software Foundation</link> "
+"eller <link url='%3'>Open Source Initiative</link>. Det medfører at du kan "
+"ha avgrensa fridom til å bruka, endra og vidare­formidla programmet.<nl/><nl/"
+">Du bør lesa lisens­teksten og forstå avgrensingane før du tek programmet i "
+"bruk.<nl/><nl/>Viss lisensteksen ikkje ein gong gjev deg tilgang til å lesa "
+"kjeldekoden, er det viktig at du stolar heilt og fullt på utviklarane bak, "
+"då ingen andre kan stadfesta at programmet er trygt å bruka og ikkje har "
+"noko skjult funksjonalitet som arbeider mot dine interesser.<nl/><nl/>Les "
+"meir på <link url='%4'>%4</link>."
 
 #: discover/qml/ApplicationPage.qml:95
 #, kde-kuit-format
 msgctxt "@info"
 msgid ""
 "%1 does not indicate under which license it is distributed. You may be able "
-"to determine this on <link url='%2'>the application's website</link>. Find "
+"to determine this on <link url='%2'>the application’s website</link>. Find "
 "it there or contact the author if you want to use this application for "
 "anything other than private personal use."
 msgstr ""
+"%1 oppgjev ikkje kva lisens det er tilgjengeleg under. Det kan vera du finn "
+"informasjon om dette på <link url='%2'>heimesida til programmet</link>. Sjå "
+"der eller ta kontakt med utviklarane dersom du ønskjer å bruka programmet "
+"til anna enn privat, personleg bruk."
 
 #: discover/qml/ApplicationPage.qml:99
 #, kde-format
 msgctxt "@info"
 msgid ""
 "%1 does not indicate under which license it is distributed. Contact the "
-"application's author if you want to use it for anything other than private "
+"application’s author if you want to use it for anything other than private "
 "personal use."
 msgstr ""
+"%1 oppgjev ikkje kva lisens det er tilgjengeleg under. Ta kontakt med "
+"utviklarane dersom du ønskjer å bruka det til anna enn privat, personleg "
+"bruk."
 
 #: discover/qml/ApplicationPage.qml:138
 #, kde-format
@@ -456,7 +480,7 @@ msgstr "Skjermbilete er ikkje tilgjengelege for %1"
 
 #: discover/qml/ApplicationPage.qml:436
 #, kde-format
-msgid "What's New"
+msgid "What’s New"
 msgstr "Nytt i denne utgåva"
 
 #: discover/qml/ApplicationPage.qml:469
@@ -503,54 +527,80 @@ msgctxt "@action:button"
 msgid "Show All Reviews"
 msgstr "Vis alle vurderingane"
 
-#: discover/qml/ApplicationPage.qml:567
+#: discover/qml/ApplicationPage.qml:571
 #, kde-format
 msgctxt "@title"
 msgid "External Links"
 msgstr "Eksterne lenkjer"
 
-#: discover/qml/ApplicationPage.qml:585
-#, fuzzy, kde-format
-msgctxt "@info text of a web URL"
-msgid "Read the documentation"
-msgstr "Les den offisielle dokumentasjonen til prosjektet"
-
-#: discover/qml/ApplicationPage.qml:596
+#: discover/qml/ApplicationPage.qml:589
 #, kde-format
 msgctxt "@info text of a web URL"
-msgid "Visit the project's website"
+msgid "Read the FAQ"
+msgstr ""
+
+#: discover/qml/ApplicationPage.qml:600
+#, fuzzy, kde-format
+#| msgctxt "@info text of a web URL"
+#| msgid "Read the documentation"
+msgctxt "@info text of a web URL"
+msgid "Read the full documentation"
+msgstr "Les hjelpeteksten"
+
+#: discover/qml/ApplicationPage.qml:611
+#, kde-format
+msgctxt "@info text of a web URL"
+msgid "Visit the project’s website"
 msgstr "Besøk heimesida til prosjektet"
 
-#: discover/qml/ApplicationPage.qml:606
+#: discover/qml/ApplicationPage.qml:621
 #, kde-format
 msgctxt "@info text of a web URL"
 msgid "Donate to the project"
 msgstr "Gje pengegåve til prosjektet"
 
-#: discover/qml/ApplicationPage.qml:616
+#: discover/qml/ApplicationPage.qml:631
 #, kde-format
 msgctxt "@info text of a web URL"
 msgid "Report a bug"
 msgstr "Meld frå om feil"
 
-#: discover/qml/ApplicationPage.qml:626
+#: discover/qml/ApplicationPage.qml:641
 #, kde-format
 msgctxt "@info text of a web URL"
 msgid "Start contributing"
+msgstr "Bidra sjølv"
+
+#: discover/qml/ApplicationPage.qml:651
+#, kde-format
+msgctxt "@info text of a web URL"
+msgid "Help with translations"
 msgstr ""
 
-#: discover/qml/ApplicationPage.qml:655
+#: discover/qml/ApplicationPage.qml:661
+#, kde-format
+msgctxt "@info text of a web URL"
+msgid "Contact the developers"
+msgstr ""
+
+#: discover/qml/ApplicationPage.qml:671
+#, kde-format
+msgctxt "@info text of a web URL"
+msgid "Browse the source code"
+msgstr ""
+
+#: discover/qml/ApplicationPage.qml:700
 #, kde-format
 msgid "All Licenses"
 msgstr "Alle lisensane"
 
 # Er snakk om OARS, altså i praksis aldersgrenser (med info om vald, nakenheit, språkbruk osv.).
-#: discover/qml/ApplicationPage.qml:693
+#: discover/qml/ApplicationPage.qml:738
 #, kde-format
 msgid "Content Rating"
 msgstr "Aldersgrense"
 
-#: discover/qml/ApplicationPage.qml:716
+#: discover/qml/ApplicationPage.qml:761
 #, kde-format
 msgctxt "@title:window"
 msgid "License Information"
@@ -558,16 +608,13 @@ msgstr "Lisensinformasjon"
 
 #: discover/qml/ApplicationPageFullComponent.qml:114
 #: discover/qml/ApplicationPageStickyComponent.qml:46
-#, fuzzy, kde-format
-#| msgid "Unknown author"
+#, kde-format
 msgctxt "As in 'this app is made by an unknown author'"
 msgid "Unknown author"
 msgstr "Ukjend opphavsperson"
 
 #: discover/qml/ApplicationPageFullComponent.qml:148
-#, fuzzy, kde-format
-#| msgid "%1 rating"
-#| msgid_plural "%1 ratings"
+#, kde-format
 msgctxt "@info as in the number of ratings an application has"
 msgid "%1 rating"
 msgid_plural "%1 ratings"
@@ -575,15 +622,13 @@ msgstr[0] "%1 karakter"
 msgstr[1] "%1 karakterar"
 
 #: discover/qml/ApplicationPageFullComponent.qml:148
-#, fuzzy, kde-format
-#| msgid "No ratings yet"
+#, kde-format
 msgctxt "@info"
 msgid "No ratings yet"
 msgstr "Ingen karakterar enno"
 
 #: discover/qml/ApplicationPageFullComponent.qml:196
-#, fuzzy, kde-format
-#| msgid "Version:"
+#, kde-format
 msgctxt "@info"
 msgid "Version:"
 msgstr "Versjon:"
@@ -594,9 +639,7 @@ msgid "Size:"
 msgstr "Storleik:"
 
 #: discover/qml/ApplicationPageFullComponent.qml:242
-#, fuzzy, kde-format
-#| msgid "License:"
-#| msgid_plural "Licenses:"
+#, kde-format
 msgctxt "@info"
 msgid "License:"
 msgid_plural "Licenses:"
@@ -617,20 +660,16 @@ msgid "What does this mean?"
 msgstr "Kva tyder dette?"
 
 #: discover/qml/ApplicationPageFullComponent.qml:348
-#, fuzzy, kde-format
-#| msgid "All Licenses"
+#, kde-format
 msgctxt "Show all licenses of the package"
 msgid "All licenses…"
-msgstr "Alle lisensane"
+msgstr "Alle lisensane …"
 
 #: discover/qml/ApplicationPageFullComponent.qml:361
-#, fuzzy, kde-format
-#| msgctxt ""
-#| "@label The app is suitable for people of the following ages or older"
-#| msgid "Ages:"
+#, kde-format
 msgctxt "@info The app is suitable for people of the following ages or older"
 msgid "Ages:"
-msgstr "Alder:"
+msgstr "Aldrar:"
 
 #: discover/qml/ApplicationPageFullComponent.qml:380
 #, kde-format
@@ -645,8 +684,7 @@ msgid "%1+"
 msgstr "%1+"
 
 #: discover/qml/ApplicationPageFullComponent.qml:391
-#, fuzzy, kde-format
-#| msgid "See details"
+#, kde-format
 msgctxt "@action:button See content rating details"
 msgid "See details"
 msgstr "Vis detaljar"
@@ -655,7 +693,7 @@ msgstr "Vis detaljar"
 #, kde-format
 msgctxt "@action:button"
 msgid "Scroll to top"
-msgstr ""
+msgstr "Rull til toppen"
 
 #: discover/qml/ApplicationsListPage.qml:57
 #, kde-format
@@ -706,14 +744,12 @@ msgid "Name"
 msgstr "Namn"
 
 #: discover/qml/ApplicationsListPage.qml:129
-#, fuzzy, kde-format
-#| msgid "Submit review"
+#, kde-format
 msgid "Number of reviews"
-msgstr "Send inn vurdering"
+msgstr "Talet på omtalar"
 
 #: discover/qml/ApplicationsListPage.qml:140
-#, fuzzy, kde-format
-#| msgid "Rating"
+#, kde-format
 msgctxt "@item:inmenu sort by highest-rated apps"
 msgid "Rating"
 msgstr "Karakter"
@@ -732,7 +768,7 @@ msgstr "Utgjevingsdato"
 #, kde-format
 msgctxt "@info"
 msgid "Group by Type"
-msgstr ""
+msgstr "Grupper etter type"
 
 #: discover/qml/ApplicationsListPage.qml:248
 #, kde-format
@@ -809,7 +845,7 @@ msgstr "Vis fleire"
 #: discover/qml/BrowsingPage.qml:141
 #, kde-format
 msgctxt "@title:group"
-msgid "Editor's Choice"
+msgid "Editor’s Choice"
 msgstr "Redaktørens utvalde"
 
 #: discover/qml/BrowsingPage.qml:165
@@ -873,127 +909,127 @@ msgctxt "@action:button"
 msgid "Next Screenshot"
 msgstr "Neste skjermbilete"
 
-#: discover/qml/DiscoverDrawer.qml:161
+#: discover/qml/DiscoverDrawer.qml:163
 #, kde-format
 msgid "Security updates available"
 msgstr "Tryggleiksoppdateringar er tilgjengelege"
 
-#: discover/qml/DiscoverDrawer.qml:162
+#: discover/qml/DiscoverDrawer.qml:164
 #, kde-format
 msgid "Updates available"
 msgstr "Oppdateringar er tilgjengelege"
 
-#: discover/qml/DiscoverWindow.qml:48
+#: discover/qml/DiscoverWindow.qml:51
 #, kde-format
 msgid "Running as <em>root</em> is discouraged and unnecessary."
 msgstr "Å køyra som <em>rotbrukar</em> er unødvendig og sterkt frårådd."
 
-#: discover/qml/DiscoverWindow.qml:71
+#: discover/qml/DiscoverWindow.qml:74
 #, kde-format
 msgid "&Home"
 msgstr "&Heim"
 
-#: discover/qml/DiscoverWindow.qml:81
+#: discover/qml/DiscoverWindow.qml:84
 #, kde-format
 msgid "&Search"
 msgstr "&Søk"
 
-#: discover/qml/DiscoverWindow.qml:89
+#: discover/qml/DiscoverWindow.qml:92
 #, kde-format
 msgid "&Installed"
 msgstr "&Installerte"
 
-#: discover/qml/DiscoverWindow.qml:101
+#: discover/qml/DiscoverWindow.qml:104
 #, kde-format
 msgid "&Updates (Fetching…)"
 msgstr "&Oppdateringar (hentar …)"
 
-#: discover/qml/DiscoverWindow.qml:102
+#: discover/qml/DiscoverWindow.qml:105
 #, kde-format
 msgid "&Updates"
 msgstr "&Oppdateringar"
 
-#: discover/qml/DiscoverWindow.qml:110
+#: discover/qml/DiscoverWindow.qml:113
 #, kde-format
 msgid "&About"
 msgstr "&Om"
 
-#: discover/qml/DiscoverWindow.qml:118
+#: discover/qml/DiscoverWindow.qml:121
 #, kde-format
 msgid "S&ettings"
 msgstr "&Innstillingar"
 
-#: discover/qml/DiscoverWindow.qml:171 discover/qml/DiscoverWindow.qml:365
-#: discover/qml/DiscoverWindow.qml:477
+#: discover/qml/DiscoverWindow.qml:174 discover/qml/DiscoverWindow.qml:368
+#: discover/qml/DiscoverWindow.qml:480
 #, kde-format
 msgid "Error"
 msgstr "Feil"
 
-#: discover/qml/DiscoverWindow.qml:175
+#: discover/qml/DiscoverWindow.qml:178
 #, kde-format
 msgid "Unable to find resource: %1"
 msgstr "Finn ikkje ressurs: %1"
 
-#: discover/qml/DiscoverWindow.qml:273 discover/qml/SourcesPage.qml:201
+#: discover/qml/DiscoverWindow.qml:276 discover/qml/SourcesPage.qml:201
 #, kde-format
 msgid "Proceed"
 msgstr "Hald fram"
 
-#: discover/qml/DiscoverWindow.qml:331
+#: discover/qml/DiscoverWindow.qml:334
 #, kde-format
 msgctxt "@info %1 is the name of the operating system"
 msgid "Report this issue to %1"
 msgstr "Meld frå om feilen til %1"
 
-#: discover/qml/DiscoverWindow.qml:347
+#: discover/qml/DiscoverWindow.qml:350
 #, kde-format
 msgctxt "@title:dialog"
 msgid "Discover is Offline"
-msgstr ""
+msgstr "Disover er fråkopla"
 
-#: discover/qml/DiscoverWindow.qml:348
+#: discover/qml/DiscoverWindow.qml:351
 #, kde-format
 msgctxt "@info"
 msgid ""
 "Please connect to a network to install applications and update the system."
-msgstr ""
+msgstr "Kopla til eit nettverk for å installera program og oppdatera systemet."
 
-#: discover/qml/DiscoverWindow.qml:365
+#: discover/qml/DiscoverWindow.qml:368
 #, kde-format
 msgid "Error %1 of %2"
 msgstr "Feil %1 av %2"
 
-#: discover/qml/DiscoverWindow.qml:365 discover/qml/UpdatesPage.qml:47
+#: discover/qml/DiscoverWindow.qml:368 discover/qml/UpdatesPage.qml:47
 #, kde-format
 msgid "Update Issue"
 msgstr "Oppdateringsproblem"
 
-#: discover/qml/DiscoverWindow.qml:376
-#, fuzzy, kde-format
+#: discover/qml/DiscoverWindow.qml:379
+#, kde-format
 msgid ""
 "There was an issue during the update or installation process. Please try "
 "again later."
 msgstr ""
-"Det oppstod ein feil ved installering av oppdateringa. Prøv igjen seinare."
+"Det oppstod ein feil ved installeringa/oppdateringa. Prøv igjen seinare."
 
-#: discover/qml/DiscoverWindow.qml:412
+#: discover/qml/DiscoverWindow.qml:415
 #, kde-format
 msgctxt "@action:button"
 msgid "Show Previous"
 msgstr "Vis førre"
 
-#: discover/qml/DiscoverWindow.qml:423
+#: discover/qml/DiscoverWindow.qml:426
 #, kde-format
 msgctxt "@action:button"
 msgid "Show Next"
 msgstr "Vis neste"
 
-#: discover/qml/DiscoverWindow.qml:435 discover/qml/UpdatesPage.qml:69
+#: discover/qml/DiscoverWindow.qml:438 discover/qml/UpdatesPage.qml:69
 #, kde-format
 msgid "See Technical Details"
 msgstr "Vis tekniske detaljar"
 
-#: discover/qml/DiscoverWindow.qml:443
+#: discover/qml/DiscoverWindow.qml:446
 #, kde-format
 msgid "Copy to Clipboard"
 msgstr "Kopier til utklippstavla"
@@ -1038,6 +1074,8 @@ msgid ""
 "You can help KDE improve Discover by sharing anonymous information on how "
 "you use it."
 msgstr ""
+"Du kan hjelpa KDE å forbetra Discover ved å dela anonym informasjon om "
+"korleis du brukar programmet."
 
 #: discover/qml/Feedback.qml:60
 #, kde-format
@@ -1084,36 +1122,30 @@ msgstr "Installerte"
 
 #: discover/qml/Navigation.qml:36
 #, kde-format
-msgid "Resources for '%1'"
+msgid "Resources for “%1”"
 msgstr "Ressursar for «%1»"
 
-#: discover/qml/ProgressView.qml:21
+#: discover/qml/ProgressView.qml:29
 #, kde-format
 msgid "Tasks (%1%)"
 msgstr "Oppgåver (%1 %)"
 
-#: discover/qml/ProgressView.qml:22 discover/qml/ProgressView.qml:52
+#: discover/qml/ProgressView.qml:30 discover/qml/ProgressView.qml:60
 #, kde-format
 msgid "Tasks"
 msgstr "Oppgåver"
 
-#: discover/qml/ProgressView.qml:129
+#: discover/qml/ProgressView.qml:145
 #, kde-format
 msgctxt "TransactioName - TransactionStatus: speed, remaining time"
-msgid "%1 - %2: %3, %4 remaining"
-msgstr "%1 – %2: %3, %4 att"
+msgid "%1: %2, %3 remaining"
+msgstr "%1: %2, %3 att"
 
-#: discover/qml/ProgressView.qml:137
+#: discover/qml/ProgressView.qml:152
 #, kde-format
 msgctxt "TransactioName - TransactionStatus: speed"
-msgid "%1 - %2: %3"
-msgstr "%1 – %2: %3"
-
-#: discover/qml/ProgressView.qml:144
-#, kde-format
-msgctxt "TransactioName - TransactionStatus"
-msgid "%1 - %2"
-msgstr "%1 – %2"
+msgid "%1: %2"
+msgstr "%1: %2"
 
 #: discover/qml/Rating.qml:119
 #, kde-format
@@ -1161,7 +1193,7 @@ msgctxt "Keep this string as short as humanly possible"
 msgid "Yes"
 msgstr "Ja"
 
-#: discover/qml/ReviewDelegate.qml:122
+#: discover/qml/ReviewDelegate.qml:123
 #, kde-format
 msgctxt "Keep this string as short as humanly possible"
 msgid "No"
@@ -1180,33 +1212,42 @@ msgstr "Send inn vurdering"
 #: discover/qml/ReviewDialog.qml:48
 #, kde-format
 msgid ""
-"If you love %1, tell people what's great about it! Focus on functionality, "
-"usability, and appearance. If the app didn't meet your needs, explain why."
+"If you love %1, tell people what’s great about it! Focus on functionality, "
+"usability, and appearance. If the app didn’t meet your needs, explain why."
 msgstr ""
+"Viss du likar %1, skriv kva du synest er så bra med det! Fokuser på kva "
+"funksjonar som finst i programmet, kor enkelt det er å bruka og korleis det "
+"ser ut. Viss du synest programmet ikkje held mål, forklar korfor."
 
 #: discover/qml/ReviewDialog.qml:72
 #, kde-kuit-format
 msgctxt "@info"
 msgid ""
-"If %1 isn't launching, consider reporting this to its packagers in %2 at "
+"If %1 isn’t launching, consider reporting this to its packagers in %2 at "
 "<link url='%3'>%3</link> instead, as it may be an easily fixable packaging "
 "issue rather than a flaw in the app itself."
 msgstr ""
+"Viss %1 ikkje vert starta, vurder å heller melda dette som ein feil til "
+"pakkarane i %2 på <link url='%3'>%3</link>, då det kan skuldast ein pakke­"
+"feil som er enkel å løysa, ikkje ein feil i sjølve programmet."
 
 #: discover/qml/ReviewDialog.qml:77
 #, kde-kuit-format
 msgctxt "@info"
 msgid ""
-"If %1 isn't launching, consider reporting this its developers at <link "
+"If %1 isn’t launching, consider reporting this to its developers at <link "
 "url='%2'>%2</link> instead, as it may be an easily fixable packaging issue "
 "rather than a flaw in the app itself."
 msgstr ""
+"Viss %1 ikkje vert starta, vurder å heller melda dette som ein feil "
+"utviklarane på <link url='%2'>%2</link>, då det kan skuldast ein pakke­feil "
+"som er enkel å løysa, ikkje ein feil i sjølve programmet."
 
 #: discover/qml/ReviewDialog.qml:82
 #, kde-kuit-format
 msgctxt "@info"
 msgid ""
-"If the app is crashing a lot, consider reporting this to the developers at "
+"If the app is crashing a lot, consider reporting this to its developers at "
 "<link url='%1'>%1</link> instead."
 msgstr ""
 "Viss programmet krasjar ofte, vurder å heller melda frå om dette direkte til "
@@ -1216,7 +1257,7 @@ msgstr ""
 #, kde-kuit-format
 msgctxt "@info"
 msgid ""
-"If you're having a problem with the app, consider reporting it to the "
+"If you’re having a problem with the app, consider reporting this to its "
 "developers at <link url='%1'>%1</link> instead, or else describe the problem "
 "here in greater detail."
 msgstr ""
@@ -1259,17 +1300,19 @@ msgctxt ""
 msgid "crash,segfault"
 msgstr "krasj,segfault"
 
+# «grusom» er strengt tatt berre eit bokmålsord, men folk kan jo bruka det for det.
+# skip-rule: bokmålsord
 #: discover/qml/ReviewDialog.qml:171
 #, kde-format
 msgctxt ""
-"Word the user might use in an unhelpful sentence saying an app isn't very "
+"Words the user might use in an unhelpful sentence saying an app isn't very "
 "good. Preserve the commas. If necessary, add more words used for this in "
 "your language and/or shorten to common stems contained by multiple forms of "
 "the words,"
 msgid "doesn't work,dumb,stupid,crap,junk,suck,terrible,hate"
 msgstr ""
-"verkar ikkje,fungerer ikkje,dumt,dårleg,teit,elendig,ubrukeleg,suger,syg,"
-"forferdeleg,grusom,hatar"
+"verkar ikkje,fungerer ikkje,dumt,kjempedårleg,teit,elendig,ubrukeleg,suger,"
+"syg,forferdeleg,grusom,hatar"
 
 #: discover/qml/ReviewDialog.qml:193
 #, kde-format
@@ -1371,7 +1414,7 @@ msgstr "Søk …"
 
 #: discover/qml/SearchField.qml:26
 #, kde-format
-msgid "Search in '%1'…"
+msgid "Search in “%1”…"
 msgstr "Søk i «%1» …"
 
 #: discover/qml/SourcesPage.qml:19
@@ -1401,7 +1444,7 @@ msgstr "Høgare prioritet"
 
 #: discover/qml/SourcesPage.qml:258
 #, kde-format
-msgid "Failed to increase '%1' preference"
+msgid "Failed to increase “%1” preference"
 msgstr "Klarte ikkje auka prioriteten for «%1»"
 
 #: discover/qml/SourcesPage.qml:264
@@ -1411,7 +1454,7 @@ msgstr "Lågare prioritet"
 
 #: discover/qml/SourcesPage.qml:270
 #, kde-format
-msgid "Failed to decrease '%1' preference"
+msgid "Failed to decrease “%1” preference"
 msgstr "Klarte ikkje senka prioriteten for «%1»"
 
 #: discover/qml/SourcesPage.qml:276
@@ -1425,11 +1468,10 @@ msgid "Show contents"
 msgstr "Vis innhald"
 
 #: discover/qml/SourcesPage.qml:309
-#, fuzzy, kde-format
-#| msgid "Unable to find resource: %1"
+#, kde-format
 msgctxt "@info:tooltip"
 msgid "Enable this source"
-msgstr "Finn ikkje ressurs: %1"
+msgstr "Gjer kjelda verksam"
 
 # Sjå tilsvarande feilmeldingar.
 #: discover/qml/SourcesPage.qml:330
@@ -1498,7 +1540,7 @@ msgstr "Oppdater alle"
 #, kde-format
 msgctxt "@info"
 msgid "A pending update will be installed when restarting the system."
-msgstr ""
+msgstr "Ei oppdatering vert installert når maskina vert starta på nytt."
 
 #: discover/qml/UpdatesPage.qml:210
 #, kde-format
@@ -1519,35 +1561,33 @@ msgstr "Fjern merking"
 #, kde-format
 msgctxt "@info After updates complete, shut down/restart/quit"
 msgid "After updates complete:"
-msgstr ""
+msgstr "Etter oppdatering:"
 
 #: discover/qml/UpdatesPage.qml:293
 #, kde-format
 msgctxt "@item:inlistbox after updates complete, do nothing"
 msgid "Do nothing"
-msgstr ""
+msgstr "Ikkje gjer noko"
 
 #: discover/qml/UpdatesPage.qml:294
-#, fuzzy, kde-format
-#| msgctxt "@item:inlistbox"
-#| msgid "Restart"
+#, kde-format
 msgctxt "@item:inlistbox after updates complete, restart"
 msgid "Restart"
 msgstr "Start på nytt"
 
 #: discover/qml/UpdatesPage.qml:295
-#, fuzzy, kde-format
-#| msgctxt "@item:inlistbox"
-#| msgid "Shut down"
+#, kde-format
 msgctxt "@item:inlistbox after updates complete, shut down"
 msgid "Shut down"
 msgstr "Slå av maskina"
 
+# Namnet på programmet, som eg til slutt har funne ut at ikkje bør omsetjast. – KOH
 #: discover/qml/UpdatesPage.qml:296
-#, kde-format
-msgctxt "@item:inlistbox after updates complete, quit"
-msgid "Quit"
-msgstr ""
+#, fuzzy, kde-format
+#| msgid "Discover"
+msgctxt "@item:inlistbox after updates complete, quit Discover"
+msgid "Quit Discover"
+msgstr "Discover"
 
 #: discover/qml/UpdatesPage.qml:306
 #, kde-format
@@ -1555,12 +1595,10 @@ msgid "Total size: %1"
 msgstr "Total storleik: %1"
 
 #: discover/qml/UpdatesPage.qml:336
-#, fuzzy, kde-format
-#| msgctxt "@action:button"
-#| msgid "Restart to Install Updates Now"
+#, kde-format
 msgctxt "@action:button"
 msgid "Restart and Install Updates"
-msgstr "Start på nytt for å installera oppdateringar no"
+msgstr "Start på nytt og installer oppdateringane"
 
 #: discover/qml/UpdatesPage.qml:527
 #, kde-format
@@ -1568,14 +1606,10 @@ msgid "Installing"
 msgstr "Installerer"
 
 #: discover/qml/UpdatesPage.qml:543
-#, fuzzy, kde-format
-#| msgctxt ""
-#| "@item:inlistbox %1 is the name of an app source e.g. \"Flathub\" or "
-#| "\"Ubuntu\""
-#| msgid "From %1"
+#, kde-format
 msgctxt "@info This update is from the following source"
 msgid "From:"
-msgstr "Frå %1"
+msgstr "Frå:"
 
 #: discover/qml/UpdatesPage.qml:560
 #, kde-format
@@ -1586,8 +1620,7 @@ msgid "%1 (%2)"
 msgstr "%1 (%2)"
 
 #: discover/qml/UpdatesPage.qml:572
-#, fuzzy, kde-format
-#| msgid "More Information…"
+#, kde-format
 msgctxt "@action:button minimize the length of this label"
 msgid "More Info…"
 msgstr "Meir informasjon …"
@@ -1608,13 +1641,15 @@ msgstr "Oppdateringar"
 #, kde-format
 msgctxt "@info"
 msgid "Updates will be installed after the system is restarted"
-msgstr ""
+msgstr "Oppdateringane vert installerte neste gong maskina vert starta på nytt"
 
 #: discover/qml/UpdatesPage.qml:672
 #, kde-format
 msgctxt "@info"
-msgid "You can keep using the system if you're not ready to restart yet."
+msgid "You can keep using the system if you’re not ready to restart yet."
 msgstr ""
+"Du kan halda fram med å bruka systemet dersom du ikkje ønskjer å starta på "
+"nytt enno."
 
 #: discover/qml/UpdatesPage.qml:677 discover/qml/UpdatesPage.qml:684
 #: discover/qml/UpdatesPage.qml:691

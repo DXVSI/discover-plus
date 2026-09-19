@@ -45,7 +45,8 @@ const QHash<int, QByteArray> ResourcesProxyModel::s_roles = {{NameRole, "name"},
                                                              {RpmFusionSourceRole, "rpmFusionSourcePriority"},
                                                              {FedoraLinuxSourceRole, "fedoraLinuxSourcePriority"},
                                                              {FedoraFlatpaksSourceRole, "fedoraFlatpaksSourcePriority"},
-                                                             {FlathubSourceRole, "flathubSourcePriority"}};
+                                                             {FlathubSourceRole, "flathubSourcePriority"},
+                                                             {SortScoreRole, "sortScore"}};
 
 enum class PreferredSource {
     RpmFusion,
@@ -564,6 +565,22 @@ void ResourcesProxyModel::setAllBackends(bool allBackends)
     m_filters.allBackends = allBackends;
 }
 
+bool ResourcesProxyModel::orderedByName() const
+{
+    return m_filters.orderedByName;
+}
+
+void ResourcesProxyModel::setOrderedByName(bool orderedByName)
+{
+    if (m_filters.orderedByName != orderedByName) {
+        m_filters.orderedByName = orderedByName;
+        // Search results have an order of their own
+        if (m_filters.search.isEmpty()) {
+            invalidateFilter();
+        }
+    }
+}
+
 AbstractResourcesBackend *ResourcesProxyModel::backendFilter() const
 {
     return m_filters.backend;
@@ -641,6 +658,8 @@ QVariant ResourcesProxyModel::roleToValue(const StreamResult &result, int role) 
         return preferredSourcePriority(resource, PreferredSource::FedoraFlatpaks);
     case FlathubSourceRole:
         return preferredSourcePriority(resource, PreferredSource::Flathub);
+    case SortScoreRole:
+        return result.sortScore;
     case SearchRelevanceRole: {
         qreal rating = roleToValue(result, SortableRatingRole).value<qreal>();
 

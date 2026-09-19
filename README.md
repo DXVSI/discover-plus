@@ -75,19 +75,83 @@ COPR is intentionally handled from the COPR sidebar page, not from global search
 
 The COPR flow is:
 
-1. Browse recent projects or search COPR from the COPR page.
+1. Browse recently created COPR projects that have your Fedora release enabled (projects marked as hidden from the COPR homepage are excluded), or search COPR from the COPR page. The list shows the newest projects first by default and can be sorted by name instead. When the Fedora release cannot be detected, the list is not filtered by release. A COPR search needs at least three characters; `owner/project`, a link to a project page, or a pasted `dnf copr enable` command finds that project directly.
 2. Open a project page and review warnings, availability, build information, source links, repository flags, and instructions.
 3. If the project exposes multiple packages, select the package to install.
-4. Install enables the COPR repository and installs the selected package.
-5. Uninstall removes the installed package and then removes the matching COPR repository.
+4. Install enables the COPR repository and installs the selected package from that repository only, so a package of the same name in Fedora is never installed in its place. Dependencies still come from all enabled repositories.
+5. Uninstall removes the installed package. The matching COPR repository is removed afterwards only when no other installed package came from it; otherwise it stays enabled so those packages keep receiving updates. Removing the repository asks for the password a second time; when that prompt is dismissed, or the operation is cancelled midway, the repository stays enabled and can be removed with `dnf copr remove owner/project`. The same applies when an install stops after the repository was enabled.
+
+A package is shown as installed from COPR when DNF recorded that it was installed from the repository of that owner and project. Packages without such a record (installed with `rpm`, from a downloaded file, or before DNF kept the record) are matched by their `Fedora Copr` vendor tag instead, which names the owner but not the project; removing such a package never removes a repository.
 
 COPR API responses are cached, duplicate requests are deduplicated, and concurrent requests are limited to keep the UI responsive.
 
 ## Installation
 
+### Install from RPM
+
+Releases provide an x86_64 RPM for the current stable Fedora release: https://github.com/DXVSI/discover-plus/releases
+
+Download `discover-plus-<version>-1.fc<N>.x86_64.rpm`. The `debuginfo`, `debugsource` and `src` packages next to it are only needed for debugging and rebuilding.
+
+Update the system first. The package requires the KF6 and Qt versions it was built with, and a system installed from the release media and never updated has older ones. Use the exact name of the downloaded file, here the one of version 1.0.0 for Fedora 44:
+
+```bash
+sudo dnf upgrade --refresh
+sudo dnf install ./discover-plus-1.0.0-1.fc44.x86_64.rpm
+```
+
+Do not shorten the name to `./discover-plus-*.rpm`: the pattern also matches the `debuginfo`, `debugsource` and `src` packages and the file of an older release in the same directory, and `dnf` refuses to install two versions at once.
+
+The package replaces the stock `plasma-discover` packages in the same transaction, including the update notifier and the offline updates setting. It conflicts with them, so both cannot be installed at once.
+
+Optional check of the download, with `SHA256SUMS` from the same release and the GitHub CLI:
+
+```bash
+sha256sum --check --ignore-missing SHA256SUMS
+gh attestation verify discover-plus-1.0.0-1.fc44.x86_64.rpm -R DXVSI/discover-plus
+```
+
+#### Updating
+
+There is no package repository yet, so `dnf upgrade` does not see new versions of Discover Plus. Download the RPM of the new release and install it the same way, again with the exact file name (`1.1.0` stands for the new version):
+
+```bash
+sudo dnf upgrade --refresh
+sudo dnf install ./discover-plus-1.1.0-1.fc44.x86_64.rpm
+```
+
+A COPR repository with automatic updates is planned. Regular system updates keep working and do not bring the stock Discover back.
+
+#### Going back to the stock Discover
+
+```bash
+sudo dnf swap discover-plus plasma-discover
+sudo dnf install plasma-discover-notifier
+```
+
+`dnf swap` prints `Problem: cannot install the best candidate for the job` and still offers the right transaction: it removes `discover-plus` and installs `plasma-discover` with its PackageKit, Flatpak and offline updates packages. The notifier is a separate Fedora package, hence the second command. A plain `dnf install plasma-discover` does nothing while Discover Plus is installed.
+
+Do this before upgrading to the next Fedora release as well: the RPM is built against the libraries of one Fedora release.
+
+#### Migrating from install.sh
+
+The RPM takes over the files of an earlier source install. Two files of the source install are not part of the package and stay behind, remove them after installing the RPM:
+
+```bash
+sudo rm -f /usr/lib64/libexec/DiscoverNotifier /usr/share/applications/org.kde.discover.snap.desktop
+```
+
+Unlike the source install, the RPM is built with `PACKAGEKIT_AUTOREMOVE`, like the stock Fedora Discover: removing an application also removes its unused dependencies.
+
+#### Supported Fedora releases
+
+Only the current stable Fedora release is supported. Each release is built and tested for the Fedora version named in the file name (`fc44` means Fedora 44). Snap and rpm-ostree backends are not included.
+
+The package is made for the regular, `dnf`-managed Fedora KDE. Fedora Kinoite and the other Atomic desktops are not supported: the commands above do not apply there, and the package conflicts with the `plasma-discover` of the base image.
+
 ### Quick Install
 
-```fish
+```bash
 chmod +x install.sh
 ./install.sh
 ```
@@ -104,7 +168,7 @@ Do not run `install.sh` as root. It asks for `sudo` only when needed.
 
 ### Manual Build
 
-```fish
+```bash
 sudo dnf install -y cmake extra-cmake-modules gcc-c++ kf6-kconfig-devel kf6-kcoreaddons-devel kf6-kcrash-devel kf6-kdbusaddons-devel kf6-ki18n-devel kf6-karchive-devel kf6-kxmlgui-devel kf6-kio-devel kf6-kcmutils-devel kf6-kidletime-devel kf6-purpose-devel kf6-kiconthemes-devel kf6-kstatusnotifieritem-devel kf6-kauth-devel kf6-knotifications-devel kf6-kirigami-devel kf6-kirigami-addons-devel PackageKit-Qt6-devel appstream-qt-devel qcoro-qt6-devel qt6-qtbase-devel qt6-qtdeclarative-devel qt6-qtwebview-devel flatpak-devel fwupd-devel libmarkdown-devel
 
 sudo dnf remove -y plasma-discover plasma-discover-flatpak plasma-discover-snap plasma-discover-packagekit plasma-discover-libs
@@ -123,14 +187,14 @@ cmake -S . -B build \
     -DBUILD_SteamOSBackend=OFF \
     -DBUILD_WITH_QT6=ON
 
-cmake --build build --parallel (nproc)
+cmake --build build --parallel "$(nproc)"
 sudo cmake --install build
 ```
 
 ## Debug
 
-```fish
-clear; and env QT_LOGGING_RULES='org.kde.plasma.libdiscover*.debug=true' plasma-discover
+```bash
+clear && env QT_LOGGING_RULES='org.kde.plasma.libdiscover*.debug=true' plasma-discover
 ```
 
 Useful COPR log lines come from `org.kde.plasma.libdiscover.backend.packagekit`.

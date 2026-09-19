@@ -1,5 +1,5 @@
 /*
- *   SPDX-FileCopyrightText: 2025
+ *   SPDX-FileCopyrightText: 2025-2026 DXVSI <https://github.com/DXVSI>
  *
  *   SPDX-License-Identifier: LGPL-2.0-or-later
  */
@@ -17,6 +17,9 @@ ApplicationsListPage {
     // Show COPR packages from already enabled repos
     originFilter: "COPR"
     allBackends: true
+    newestFirstSorting: true
+    // CoprSearchMinimumLength of the backend
+    minimumSearchLength: 3
 
     // Don't allow navigation to other categories within COPR page
     // This ensures proper transition when switching from COPR to other categories

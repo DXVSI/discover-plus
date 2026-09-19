@@ -1,12 +1,13 @@
 # Translation of plasma-discover-notifier to Norwegian Nynorsk
 #
+# Karl Ove Hufthammer <karl@huftis.org>, 2015, 2018, 2019, 2020, 2021, 2023, 2024, 2026.
 # Øystein Steffensen-Alværvik <oysteins.omsetting@protonmail.com>, 2022.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-04-23 00:45+0000\n"
-"PO-Revision-Date: 2026-03-05 20:29+0100\n"
+"PO-Revision-Date: 2026-06-27 11:29+0200\n"
 "Last-Translator: Karl Ove Hufthammer <karl@huftis.org>\n"
 "Language-Team: Norwegian Nynorsk <l10n-no@nuug.no>\n"
 "Language: nn\n"
@@ -14,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 26.03.70\n"
+"X-Generator: Lokalize 26.07.70\n"
 "X-Environment: kde\n"
 "X-Accelerator-Marker: &\n"
 "X-Text-Markup: kde4\n"
@@ -40,10 +41,9 @@ msgid "System up to date"
 msgstr "Systemet er à jour"
 
 #: notifier/DiscoverNotifier.cpp:369
-#, fuzzy, kde-format
-#| msgid "Install Updates and Restart…"
+#, kde-format
 msgid "System will install updates when restarted"
-msgstr "Installer oppdateringar og start på nytt …"
+msgstr "Maskina vil installera oppdateringane etter omstart"
 
 #: notifier/DiscoverNotifier.cpp:371
 #, kde-format
@@ -175,7 +175,6 @@ msgid "Restart to apply installed updates"
 msgstr "Start på nytt for å ta i bruk oppdateringane"
 
 #: notifier/NotifierItem.cpp:65
-#, fuzzy, kde-format
-#| msgid "Click to restart the device"
+#, kde-format
 msgid "Click to restart the system"
-msgstr "Trykk for å starta eininga på nytt"
+msgstr "Trykk for å starta maskina på nytt"

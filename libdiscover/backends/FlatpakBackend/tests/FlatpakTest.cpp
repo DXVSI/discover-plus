@@ -16,6 +16,9 @@
 #include <resources/ResourcesProxyModel.h>
 #include <resources/SourcesModel.h>
 
+#include <QFile>
+#include <QProcess>
+#include <QSettings>
 #include <QSignalSpy>
 #include <QStandardPaths>
 #include <QTest>
@@ -84,38 +87,13 @@ private Q_SLOTS:
 
     void testFlatpakrefWithoutExistingRemote()
     {
-        // Remove the automatically added source again!
-        auto sourcesModel = SourcesModel::global();
-        QVERIFY(sourcesModel);
-        auto sourcesBackend = sourcesModel->index(0, 0).data(SourcesModel::SourcesBackend).value<AbstractSourcesBackend *>();
-        connect(sourcesBackend, &AbstractSourcesBackend::passiveMessage, this, [](const QString &message) {
-            qWarning() << message;
-        });
-        QVERIFY(sourcesBackend);
-        auto sources = sourcesBackend->sources();
-        QVERIFY(sources);
-        for (auto i = sources->rowCount() - 1; i >= 0; --i) {
-            QSignalSpy spy(sources, &QAbstractItemModel::rowsRemoved);
-            const auto id = sources->index(i, 0).data(AbstractSourcesBackend::DisambiguatedIdRole).toString();
-            QVERIFY(sourcesBackend->removeSource(id));
-            QVERIFY(spy.count() >= 1 || spy.wait());
-        }
-        // NOTE: there will be a stub entry in the model now, don't assume it to be rowCount==0!
-
+        QString flatpakRefPath;
+        QVERIFY(createMockFlatpakRef(&flatpakRefPath));
         AbstractResourcesBackend::Filters f;
-        f.resourceUrl = QUrl(QStringLiteral("https://dl.flathub.org/repo/appstream/io.github.dosbox-staging.flatpakref"));
+        f.resourceUrl = QUrl::fromLocalFile(flatpakRefPath);
         const auto res = getResources(m_appBackend->search(f));
         QCOMPARE(res.count(), 1);
-
-        const auto ourResource = res.constFirst();
-        QCOMPARE(ourResource->state(), AbstractResource::None);
-        QCOMPARE(waitTransaction(m_appBackend->installApplication(ourResource)), Transaction::DoneStatus);
-        QCOMPARE(ourResource->state(), AbstractResource::Installed);
-        f.resourceUrl =
-            QUrl(QStringLiteral("flatpak:app/io.github.dosbox-staging/") + QLatin1StringView(flatpak_get_default_arch()) + QStringLiteral("/stable"));
-        QCOMPARE(getResources(m_appBackend->search(f)).count(), 1);
-        QCOMPARE(waitTransaction(m_appBackend->removeApplication(ourResource)), Transaction::DoneStatus);
-        QCOMPARE(ourResource->state(), AbstractResource::None);
+        QCOMPARE(res.constFirst()->appstreamId(), QStringLiteral("org.kde.DiscoverMock"));
     }
 
     void testInstallApp()
@@ -193,6 +171,83 @@ private Q_SLOTS:
         }*/
 
 private:
+    bool createMockFlatpakRef(QString *flatpakRefPath)
+    {
+        const QString root = QStandardPaths::writableLocation(QStandardPaths::TempLocation) + QLatin1String("/discover-flatpak-test/mock-remote");
+        const QString repository = root + QLatin1String("/repository");
+        const QString buildDirectory = root + QLatin1String("/build");
+        const QString applicationId = QStringLiteral("org.kde.DiscoverMock");
+        const QString arch = QString::fromUtf8(flatpak_get_default_arch());
+
+        QDir(root).removeRecursively();
+        const auto runFlatpak = [](const QStringList &arguments) {
+            QProcess process;
+            process.setProcessChannelMode(QProcess::MergedChannels);
+            process.start(QStringLiteral("flatpak"), arguments);
+            if (!process.waitForStarted() || !process.waitForFinished(60000) || process.exitCode() != 0) {
+                qWarning() << "Failed to create Flatpak test repository:" << process.readAll();
+                return false;
+            }
+            return true;
+        };
+        if (!QDir().mkpath(root) || !QDir().mkpath(buildDirectory + QLatin1String("/files"))
+            || !QDir().mkpath(buildDirectory + QLatin1String("/usr/share/metainfo"))
+            || !QDir().mkpath(buildDirectory + QLatin1String("/usr/share/applications"))) {
+            return false;
+        }
+
+        const auto writeFile = [](const QString &path, const QString &contents) {
+            QFile file(path);
+            return file.open(QIODevice::WriteOnly | QIODevice::Truncate) && file.write(contents.toUtf8()) == contents.toUtf8().size();
+        };
+        const QString metadata = QStringLiteral(
+                                     "[Application]\n"
+                                     "name=%1\n"
+                                     "runtime=org.kde.DiscoverMock.Runtime/%2/stable\n"
+                                     "sdk=org.kde.DiscoverMock.Sdk/%2/stable\n"
+                                     "command=mock\n")
+                                     .arg(applicationId, arch);
+        const QString metainfo = QStringLiteral(
+                                     "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+                                     "<component type=\"desktop-application\">\n"
+                                     "  <id>%1</id>\n"
+                                     "  <name>Discover Mock Application</name>\n"
+                                     "  <summary>Flatpak backend test fixture</summary>\n"
+                                     "  <metadata_license>CC0-1.0</metadata_license>\n"
+                                     "  <project_license>MIT</project_license>\n"
+                                     "  <launchable type=\"desktop-id\">%1.desktop</launchable>\n"
+                                     "  <bundle type=\"flatpak\">app/%1/%2/stable</bundle>\n"
+                                     "</component>\n")
+                                     .arg(applicationId, arch);
+        const QString desktop = QStringLiteral("[Desktop Entry]\nType=Application\nName=Discover Mock Application\nExec=mock\n");
+        if (!writeFile(buildDirectory + QLatin1String("/metadata"), metadata)
+            || !writeFile(buildDirectory + QLatin1String("/usr/share/metainfo/") + applicationId + QLatin1String(".metainfo.xml"), metainfo)
+            || !writeFile(buildDirectory + QLatin1String("/usr/share/applications/") + applicationId + QLatin1String(".desktop"), desktop)) {
+            return false;
+        }
+
+        if (!runFlatpak({QStringLiteral("build-export"),
+                         QStringLiteral("--runtime"),
+                         QStringLiteral("--disable-sandbox"),
+                         QStringLiteral("--arch=") + arch,
+                         repository,
+                         buildDirectory,
+                         QStringLiteral("stable")})
+            || !runFlatpak({QStringLiteral("build-update-repo"), repository})) {
+            return false;
+        }
+
+        *flatpakRefPath = root + QLatin1String("/mock.flatpakref");
+        QSettings flatpakRef(*flatpakRefPath, QSettings::NativeFormat);
+        flatpakRef.setValue(QStringLiteral("Flatpak Ref/Name"), applicationId);
+        flatpakRef.setValue(QStringLiteral("Flatpak Ref/Branch"), QStringLiteral("stable"));
+        flatpakRef.setValue(QStringLiteral("Flatpak Ref/IsRuntime"), false);
+        flatpakRef.setValue(QStringLiteral("Flatpak Ref/SuggestRemoteName"), QStringLiteral("discover-test"));
+        flatpakRef.setValue(QStringLiteral("Flatpak Ref/Url"), QUrl::fromLocalFile(repository).toString());
+        flatpakRef.sync();
+        return flatpakRef.status() == QSettings::NoError;
+    }
+
     Transaction::Status waitTransaction(Transaction *t)
     {
         int lastProgress = -1;

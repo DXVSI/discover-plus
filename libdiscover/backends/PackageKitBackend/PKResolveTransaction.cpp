@@ -24,16 +24,15 @@ void PKResolveTransaction::start()
 
     PackageKit::Transaction *tArch = PackageKit::Daemon::resolve(m_packageNames, PackageKit::Transaction::FilterArch);
     connect(tArch, &PackageKit::Transaction::package, m_backend, &PackageKitBackend::addPackageArch);
-    connect(tArch, &PackageKit::Transaction::errorCode, m_backend, &PackageKitBackend::transactionError);
 
     PackageKit::Transaction *tNotArch = PackageKit::Daemon::resolve(m_packageNames, PackageKit::Transaction::FilterNotArch);
     connect(tNotArch, &PackageKit::Transaction::package, m_backend, &PackageKitBackend::addPackageNotArch);
-    connect(tNotArch, &PackageKit::Transaction::errorCode, m_backend, &PackageKitBackend::transactionError);
 
     m_transactions = {tArch, tNotArch};
 
     for (auto transaction : std::as_const(m_transactions)) {
         connect(transaction, &PackageKit::Transaction::finished, this, &PKResolveTransaction::transactionFinished);
+        connect(transaction, &PackageKit::Transaction::errorCode, m_backend, &PackageKitBackend::transactionError);
     }
 }
 

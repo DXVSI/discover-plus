@@ -343,7 +343,7 @@ QString RpmOstreeResource::longDescription()
         QTextStream(&desc) << "</ul>\n";
     }
     if (m_pinned) {
-        desc += i18nc("@label OS updater message", "<br/>This version is pinned and won't be automatically removed on updates.");
+        desc += i18nc("@label OS updater message", "<br/>This version is pinned and won’t be automatically removed on updates.");
     }
     return desc;
 }

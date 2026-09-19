@@ -9,9 +9,9 @@
 #include <AppStreamQt/systeminfo.h>
 #include <AppStreamQt/utils.h>
 #include <AppStreamQt/version.h>
-#include <KConfigGroup>
-#include <KSharedConfig>
 #include <QDebug>
+
+#include "discover-appstream-settings.h"
 
 using namespace Qt::StringLiterals;
 
@@ -53,9 +53,9 @@ std::optional<AppStream::Release> AppStreamIntegration::getDistroUpgrade(AppStre
     // In Appstream metadata terms:
     // - Development releases are specified as KindSnapshot
     // - Pre-releases are specified as KindDevelopment
-    KConfigGroup settings(KSharedConfig::openConfig(QStringLiteral("discoverrc")), QStringLiteral("DistroUpgrade"));
-    bool allowPreRelease = settings.readEntry<bool>("AllowPreRelease", false);
-    bool allowDevelopmentRelease = settings.readEntry<bool>("AllowDevelopmentRelease", false);
+    AppstreamSettings settings;
+    bool allowPreRelease = settings.allowPreRelease();
+    bool allowDevelopmentRelease = settings.allowDevelopmentRelease();
 
     QString currentVersion = osRelease()->versionId();
 

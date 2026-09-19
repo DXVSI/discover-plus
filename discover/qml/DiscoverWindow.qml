@@ -55,8 +55,11 @@ Kirigami.ApplicationWindow {
         return true;
     }
 
-    KConfig.WindowStateSaver {
-        configGroupName: "MainWindow"
+    Loader {
+        sourceComponent: KConfig.WindowStateSaver {
+            configGroupName: "MainWindow"
+        }
+        active: window.visible
     }
 
     Component.onCompleted: {

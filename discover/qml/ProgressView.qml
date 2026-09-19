@@ -1,3 +1,11 @@
+/*
+ *   SPDX-FileCopyrightText: 2012-2025 Aleix Pol Gonzalez <aleixpol@kde.org>
+ *   SPDX-FileCopyrightText: 2022 Nate Graham <nate@kde.org>
+ *   SPDX-FileCopyrightText: 2023 ivan tkachenko <me@ratijas.tk>
+ *
+ *   SPDX-License-Identifier: LGPL-2.0-or-later
+ */
+
 pragma ComponentBehavior: Bound
 
 import QtQuick
@@ -66,11 +74,19 @@ QQC2.ToolButton {
                 }
                 model: KItemModels.KSortFilterProxyModel {
                     sourceModel: Discover.TransactionModel
+                    sortRoleName: "status"
+                    sortOrder: Qt.DescendingOrder
                     filterRoleName: "visible"
                     filterRowCallback: (sourceRow, sourceParent) => {
                         const index = sourceModel.index(sourceRow, 0, sourceParent);
                         return sourceModel.data(index, Discover.TransactionModel.VisibleRole) === true;
                     }
+                }
+                section.property: "statusText"
+                section.delegate: Kirigami.ListSectionHeader {
+                    required property string section
+                    width: tasksView.width
+                    text: section
                 }
 
                 Connections {
@@ -126,24 +142,16 @@ QQC2.ToolButton {
 
                                     if (li.isActive && tr.remainingTime > 0) {
                                         return i18nc(
-                                            "TransactioName - TransactionStatus: speed, remaining time", "%1 - %2: %3, %4 remaining",
+                                            "TransactioName - TransactionStatus: speed, remaining time", "%1: %2, %3 remaining",
                                             tr.name,
-                                            li.statusText,
                                             tr.downloadSpeedString,
                                             tr.remainingTime
                                         );
                                     } else if (li.isActive && tr.downloadSpeed > 0) {
                                         return i18nc(
-                                            "TransactioName - TransactionStatus: speed", "%1 - %2: %3",
+                                            "TransactioName - TransactionStatus: speed", "%1: %2",
                                             tr.name,
-                                            li.statusText,
                                             tr.downloadSpeedString
-                                        );
-                                    } else if (li.isActive) {
-                                        return i18nc(
-                                            "TransactioName - TransactionStatus", "%1 - %2",
-                                            tr.name,
-                                            li.statusText
                                         );
                                     } else {
                                         return tr.name;

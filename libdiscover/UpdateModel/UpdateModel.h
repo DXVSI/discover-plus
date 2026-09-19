@@ -82,6 +82,7 @@ private:
     QModelIndex indexFromResource(AbstractResource *res) const;
     void resourceHasProgressed(AbstractResource *res, qreal progress, AbstractBackendUpdater::State state);
     void activityChanged();
+    void resourceDestroyed(QObject *resource);
 
     QTimer *const m_updateSizeTimer;
     QVector<UpdateItem *> m_updateItems;

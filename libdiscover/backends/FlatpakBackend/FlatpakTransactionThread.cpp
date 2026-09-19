@@ -32,7 +32,7 @@ gboolean FlatpakTransactionThread::add_new_remote_cb(FlatpakTransaction *object,
     // TODO ask instead
     auto name = QString::fromUtf8(suggested_remote_name);
     obj->m_addedRepositories[FlatpakResource::installationPath(flatpak_transaction_get_installation(object))].append(name);
-    Q_EMIT obj->passiveMessage(i18n("Adding remote '%1' in %2 from %3", name, QString::fromUtf8(url), QString::fromUtf8(from_id)));
+    Q_EMIT obj->passiveMessage(i18n("Adding remote “%1” in %2 from %3", name, QString::fromUtf8(url), QString::fromUtf8(from_id)));
     return true;
 }
 
@@ -241,7 +241,7 @@ FlatpakTransactionThread::~FlatpakTransactionThread()
 
 void FlatpakTransactionThread::cancel()
 {
-    qCDebug(LIBDISCOVER_BACKEND_FLATPAK_LOG) << "cancelling transaction thread";
+    qCDebug(LIBDISCOVER_BACKEND_FLATPAK_LOG) << "canceling transaction thread";
     QMutexLocker lock(&m_proceedMutex);
     m_proceed = false;
     m_proceedCondition.wakeAll();
@@ -335,7 +335,7 @@ void FlatpakTransactionThread::run()
             auto transaction = flatpak_transaction_new_for_installation(installation, m_cancellable, &localError);
             if (!transaction) {
                 m_errorMessage = i18nc("@info:status",
-                                       "Cannot create transaction for '%1':<nl/>%2<nl/><nl/>Please report this to <a href='%3'>%3</a>",
+                                       "Cannot create transaction for “%1”:<nl/>%2<nl/><nl/>Please report this to <a href='%3'>%3</a>",
                                        QString::fromUtf8(flatpak_installation_get_display_name(installation)),
                                        QString::fromUtf8(localError->message),
                                        KOSRelease().bugReportUrl());

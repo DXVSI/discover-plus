@@ -13,6 +13,9 @@
 
 // #define TEST_PROCEED
 
+static int m_concurrentTransactions = 0;
+constexpr int MAX_CONCURRENT_TRANSACTIONS = 2;
+
 DummyTransaction::DummyTransaction(DummyResource *app, Role role)
     : DummyTransaction(app, {}, role)
 {
@@ -23,9 +26,21 @@ DummyTransaction::DummyTransaction(DummyResource *app, const AddonList &addons, 
     , m_app(app)
 {
     setCancellable(true);
-    setStatus(DownloadingStatus);
 
-    iterateTransaction();
+    considerStarting();
+}
+
+void DummyTransaction::considerStarting()
+{
+    // We can limit the concurrent jobs. Added to test the ProgressView with mixed statuses
+    if (m_concurrentTransactions < MAX_CONCURRENT_TRANSACTIONS) {
+        disconnect(OverseeTransactions::self(), &OverseeTransactions::transactionFinished, this, &DummyTransaction::considerStarting);
+        m_concurrentTransactions++;
+        iterateTransaction();
+    } else {
+        connect(OverseeTransactions::self(), &OverseeTransactions::transactionFinished, this, &DummyTransaction::considerStarting);
+        setStatus(QueuedStatus);
+    }
 }
 
 void DummyTransaction::iterateTransaction()
@@ -34,11 +49,12 @@ void DummyTransaction::iterateTransaction()
         return;
 
     if (progress() < 100) {
+        setStatus(DownloadingStatus);
         setProgress(qBound(0, progress() + QRandomGenerator::global()->bounded(5), 100));
-        QTimer::singleShot(/*KRandom::random()%*/ 10, this, &DummyTransaction::iterateTransaction);
+        QTimer::singleShot(/*KRandom::random()%*/ 100, this, &DummyTransaction::iterateTransaction);
     } else if (status() == DownloadingStatus) {
         setStatus(CommittingStatus);
-        QTimer::singleShot(/*KRandom::random()%*/ 10, this, &DummyTransaction::iterateTransaction);
+        QTimer::singleShot(/*KRandom::random()%*/ 100, this, &DummyTransaction::iterateTransaction);
 #ifdef TEST_PROCEED
     } else if (resource()->name() == "Dummy 101") {
         Q_EMIT proceedRequest(QStringLiteral("yadda yadda"),
@@ -60,10 +76,14 @@ void DummyTransaction::cancel()
     m_iterate = false;
 
     setStatus(CancelledStatus);
+    m_concurrentTransactions--;
+    Q_EMIT OverseeTransactions::self()->transactionFinished();
 }
 
 void DummyTransaction::finishTransaction()
 {
+    m_concurrentTransactions--;
+    Q_EMIT OverseeTransactions::self()->transactionFinished();
     AbstractResource::State newState = AbstractResource::State::Broken;
     switch (role()) {
     case InstallRole:

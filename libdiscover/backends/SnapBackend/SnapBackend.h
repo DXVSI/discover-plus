@@ -14,7 +14,7 @@
 #include <functional>
 #include <resources/AbstractResource.h>
 #include <resources/AbstractResourcesBackend.h>
-#include <resources/StoredResultsStream.h>
+#include <resources/ResourcesModel.h>
 
 class OdrsReviewsBackend;
 class StandardBackendUpdater;
@@ -79,5 +79,5 @@ private:
     bool m_valid = true;
     QSnapdClient m_client;
     QThreadPool m_threadPool;
-    QPointer<StoredResultsStream> m_updatesFetcher;
+    QPointer<AggregatedResultsStream> m_updatesFetcher;
 };
