@@ -1,3 +1,9 @@
+/*
+ *   SPDX-FileCopyrightText: 2025-2026 DXVSI <https://github.com/DXVSI>
+ *
+ *   SPDX-License-Identifier: GPL-2.0-only OR GPL-3.0-only OR LicenseRef-KDE-Accepted-GPL
+ */
+
 #include "CoprClient.h"
 #include "libdiscover_backend_packagekit_debug.h"
 
