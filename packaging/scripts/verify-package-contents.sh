@@ -265,14 +265,24 @@ fi
 
 # Real plugin loading. The programs have no self-test mode, so they run
 # headless for a fixed time inside a private D-Bus session: they must still be
-# alive when the timeout fires (exit status 124) and Qt must report every
-# plugin as loaded. This needs the runtime dependencies (QML modules) of the
+# alive when the timeout fires (exit status 124), Qt must report every plugin
+# as loaded and the program that asked for the plugin must not reject it
+# afterwards. This needs the runtime dependencies (QML modules) of the
 # package, so it is meant for a system where the package is installed.
 if [ "$(id -u)" -eq 0 ]; then
     echo "--load-plugins must run as a regular user" >&2
     exit 2
 fi
 load_seconds=30
+
+# Fedora switches every debug category off in qtlogging.ini. The rules bring
+# back what the checks read: the library and plugin loader of Qt and the
+# default category (the notifier reports a wrong interface id with a plain
+# qDebug). The warnings are named as well so that no local logging
+# configuration hides the error messages the checks look for.
+logging_rules='qt.core.plugin.*.debug=true;qt.core.library.debug=true'
+logging_rules="$logging_rules;default.debug=true;default.warning=true"
+logging_rules="$logging_rules;org.kde.plasma.libdiscover.warning=true"
 
 run_headless() {
     log_file=$1
@@ -282,7 +292,7 @@ run_headless() {
         QT_QPA_PLATFORM=offscreen \
         QT_FORCE_STDERR_LOGGING=1 \
         QT_DEBUG_PLUGINS=1 \
-        'QT_LOGGING_RULES=qt.core.plugin.*.debug=true;qt.core.library.debug=true' \
+        "QT_LOGGING_RULES=$logging_rules" \
         LC_ALL=C.UTF-8 \
         timeout "$load_seconds" "$@" > "$log_file" 2>&1 || status=$?
     if [ "$status" -ne 124 ]; then
@@ -326,7 +336,18 @@ forbid_load_errors "$work_dir/preview.log"
 require_loaded "$work_dir/preview.log" \
     "$qt_plugindir/discover/appstream-preview-backend.so"
 
+# The notifier loads the library first and only then looks at the interface
+# id and at the type of the plugin object. A plugin it rejects is therefore
+# reported by Qt as a loaded library all the same.
+forbid_notifier_errors() {
+    if grep -E "doesn't have the right IID|couldn't load|couldn't find any notifier backend" "$1" >&2; then
+        echo "DiscoverNotifier rejected a notifier plugin" >&2
+        exit 1
+    fi
+}
+
 run_headless "$work_dir/notifier.log" "$root$notifier_bin"
+forbid_notifier_errors "$work_dir/notifier.log"
 for plugin in $notifier_plugins; do
     require_loaded "$work_dir/notifier.log" \
         "$qt_plugindir/discover-notifier/$plugin.so"
