@@ -42,12 +42,24 @@ if [ "$kde_base_version" != "$project_version" ]; then
     exit 1
 fi
 
+# Release is the packaging counter of one VERSION: an integer followed by the
+# dist tag. CI builds the package file names from it.
+rpm_release=$(awk '$1 == "Release:" { print $2; exit }' "$spec_file")
+case $rpm_release in
+    *'%{?dist}') rpm_release=${rpm_release%'%{?dist}'} ;;
+    *) echo "spec Release must end with %{?dist}: $rpm_release" >&2; exit 1 ;;
+esac
+if ! printf '%s\n' "$rpm_release" | grep -Eq '^[1-9][0-9]*$'; then
+    echo "spec Release must be a positive integer before %{?dist}: $rpm_release" >&2
+    exit 1
+fi
+
 changelog_version=$(awk '
     found && /^\*/ { print $NF; exit }
     $1 == "%changelog" { found = 1 }
 ' "$spec_file")
-if [ "$changelog_version" != "$version-1" ]; then
-    echo "first %changelog entry $changelog_version does not match $version-1" >&2
+if [ "$changelog_version" != "$version-$rpm_release" ]; then
+    echo "first %changelog entry $changelog_version does not match $version-$rpm_release" >&2
     exit 1
 fi
 
@@ -78,4 +90,4 @@ if [ "$#" -eq 1 ] && [ "$1" != "plus-v$version" ]; then
     exit 1
 fi
 
-echo "release contract verified: $version (KDE Discover $kde_base_version)"
+echo "release contract verified: $version-$rpm_release (KDE Discover $kde_base_version)"

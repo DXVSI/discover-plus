@@ -131,6 +131,7 @@ jobs:
     timeout-minutes: 60
     env:
       FEDORA_VERSION: ${{ needs.fedora-release.outputs.version }}
+      FEDORA_IMAGE: ${{ needs.fedora-release.outputs.image }}
     container:
       image: ${{ needs.fedora-release.outputs.image }}
     defaults:
@@ -189,7 +190,13 @@ jobs:
           set -euo pipefail
           for attempt in 1 2 3; do
             if dnf builddep -y packaging/rpm/discover-plus.spec; then
-              rpm -qa | LC_ALL=C sort > "$RUNNER_TEMP/build-environment.txt"
+              # Travels with the packages into the release: the image digest
+              # is otherwise only visible in the log of this run.
+              {
+                printf '# image: %s\n' "$FEDORA_IMAGE"
+                printf '# source: %s\n' "$(git rev-parse HEAD)"
+                rpm -qa | LC_ALL=C sort
+              } > "$RUNNER_TEMP/build-environment.txt"
               exit 0
             fi
             echo "dnf builddep attempt $attempt failed" >&2
@@ -206,6 +213,10 @@ jobs:
           kde_base_version=$(awk \
             '$1 == "%global" && $2 == "kde_base_version" { print $3; exit }' \
             packaging/rpm/discover-plus.spec)
+          # check-release-contract.sh has verified the form of the Release tag.
+          rpm_release=$(awk '$1 == "Release:" { print $2; exit }' \
+            packaging/rpm/discover-plus.spec)
+          rpm_release=${rpm_release%'%{?dist}'}
           rpm_topdir="$RUNNER_TEMP/rpmbuild"
           mkdir -p \
             "$rpm_topdir/BUILD" \
@@ -225,7 +236,7 @@ jobs:
               --define "_topdir $rpm_topdir" \
               packaging/rpm/discover-plus.spec
 
-          nvr="$version-1.fc$FEDORA_VERSION"
+          nvr="$version-$rpm_release.fc$FEDORA_VERSION"
           mkdir -p dist
           for package_file in \
             "$rpm_topdir/RPMS/x86_64/discover-plus-$nvr.x86_64.rpm" \
@@ -305,7 +316,10 @@ jobs:
             packaging/scripts/verify-package-contents.sh \
               "$package_root" /usr/lib64 "$kde_base_version"
 
-          install -m 0644 "$RUNNER_TEMP/build-environment.txt" dist/build-environment.txt
+          grep -Eq '^# image: registry\.fedoraproject\.org/fedora@sha256:[0-9a-f]{64}$' \
+            "$RUNNER_TEMP/build-environment.txt"
+          install -m 0644 "$RUNNER_TEMP/build-environment.txt" \
+            "dist/discover-plus-$nvr.build-environment.txt"
           echo "file=$rpm_file" >> "$GITHUB_OUTPUT"
           echo "kde-base-version=$kde_base_version" >> "$GITHUB_OUTPUT"
 
@@ -339,15 +353,7 @@ jobs:
           path: |
             dist/*.rpm
             dist/*.tar.xz
-          if-no-files-found: error
-          overwrite: true
-          retention-days: 7
-
-      - name: Upload build environment record
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
-        with:
-          name: discover-plus-build-environment-f${{ env.FEDORA_VERSION }}-${{ github.run_id }}
-          path: dist/build-environment.txt
+            dist/*.build-environment.txt
           if-no-files-found: error
           overwrite: true
           retention-days: 7
@@ -382,9 +388,13 @@ jobs:
           test "$(printf '%s\n' "$source_archive" | wc -l)" -eq 1
           mkdir -p "$RUNNER_TEMP/source"
           tar -xJf "$source_archive" -C "$RUNNER_TEMP/source" --strip-components=1 \
-            --wildcards '*/VERSION' '*/packaging/scripts'
+            --wildcards '*/VERSION' '*/packaging/scripts' \
+            '*/packaging/rpm/discover-plus.spec'
           version=$(tr -d '\r\n' < "$RUNNER_TEMP/source/VERSION")
-          rpm_file="dist/discover-plus-$version-1.fc$FEDORA_VERSION.x86_64.rpm"
+          rpm_release=$(awk '$1 == "Release:" { print $2; exit }' \
+            "$RUNNER_TEMP/source/packaging/rpm/discover-plus.spec")
+          rpm_release=${rpm_release%'%{?dist}'}
+          rpm_file="dist/discover-plus-$version-$rpm_release.fc$FEDORA_VERSION.x86_64.rpm"
           test -f "$rpm_file"
           echo "RPM_FILE=$rpm_file" >> "$GITHUB_ENV"
 
@@ -467,6 +477,7 @@ jobs:
           rpm -V discover-plus
           test -f /usr/lib64/qt6/qml/Qt5Compat/GraphicalEffects/qmldir
           test -f /usr/lib64/qt6/qml/org/kde/desktop/qmldir
+          test -f /usr/lib64/qt6/qml/org/kde/userfeedback/qmldir
 
       - name: Run Discover as a regular user
         run: |
@@ -504,10 +515,17 @@ jobs:
             exit 1
           fi
           # The KDE desktop group lists plasma-discover; installing the group
-          # must neither fail nor bring the Fedora package back.
+          # must neither fail nor bring the Fedora package back. --assumeno
+          # always ends with a non-zero status, so the log is the evidence:
+          # dnf must get as far as a transaction and report no problem.
           dnf group install -y --assumeno kde-desktop \
             > "$RUNNER_TEMP/group.log" 2>&1 || true
           cat "$RUNNER_TEMP/group.log"
+          grep -Fxq 'Transaction Summary:' "$RUNNER_TEMP/group.log"
+          if grep -Ei 'Problem|conflict|Failed to resolve' "$RUNNER_TEMP/group.log"; then
+            echo "dnf cannot install the kde-desktop group next to discover-plus" >&2
+            exit 1
+          fi
           if grep -E '^ *plasma-discover' "$RUNNER_TEMP/group.log"; then
             echo "the kde-desktop group wants to install the Fedora Discover" >&2
             exit 1
