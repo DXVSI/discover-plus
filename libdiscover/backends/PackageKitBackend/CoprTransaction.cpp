@@ -312,13 +312,17 @@ void CoprTransaction::finishRemoval()
     }
 
     const QStringList otherPackages = installed->packagesFromRepository(m_owner, m_project);
+    // Nothing records which project of the owner they came from: it may be this one, and
+    // without the repository they would get no updates
+    const QStringList unattributedPackages = installed->packagesWithoutRepositoryRecord(m_owner);
     const QString repositoryId = CoprClient::repositoryId(m_owner, m_project);
 
     // The repository goes only when the removed package came from it and nothing else does.
     // A package that was recognised by its vendor says nothing about this project.
-    if (!installed->isKnown() || !m_packageCameFromRepository || !otherPackages.isEmpty()) {
+    if (!installed->isKnown() || !m_packageCameFromRepository || !otherPackages.isEmpty() || !unattributedPackages.isEmpty()) {
         // Not told to the user: every message of a transaction is shown as an issue
-        qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "Keeping COPR repository" << repositoryId << "- installed from it:" << otherPackages;
+        qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "Keeping COPR repository" << repositoryId << "- installed from it:" << otherPackages
+                                                    << "possibly from it:" << unattributedPackages;
     } else if (QFile::exists(QStringLiteral("/etc/yum.repos.d/_%1.repo").arg(repositoryId))) {
         removeCoprRepo();
         return;

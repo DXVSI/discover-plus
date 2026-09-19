@@ -155,3 +155,10 @@ QStringList CoprInstalledPackages::packagesFromRepository(const QString &owner, 
     packages.sort();
     return packages;
 }
+
+QStringList CoprInstalledPackages::packagesWithoutRepositoryRecord(const QString &owner) const
+{
+    QStringList packages = m_byVendor.value(owner).keys();
+    packages.sort();
+    return packages;
+}

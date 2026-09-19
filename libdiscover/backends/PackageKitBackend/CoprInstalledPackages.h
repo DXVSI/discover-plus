@@ -51,6 +51,9 @@ public:
     QString installedVersion(const QString &owner, const QString &project, const QString &packageName) const;
     // The installed packages that came from the repository of this project, by that record only
     QStringList packagesFromRepository(const QString &owner, const QString &project) const;
+    // The installed packages of this owner that are known by their vendor only: any of them
+    // may have come from any project of the owner
+    QStringList packagesWithoutRepositoryRecord(const QString &owner) const;
 
     // Lines of "name<TAB>evr<TAB>from_repo<TAB>vendor"
     void setQueryOutput(const QByteArray &output);
