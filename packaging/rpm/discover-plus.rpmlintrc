@@ -1,0 +1,31 @@
+# Every filter below silences a finding that rpmlint really reported for this
+# package and states why it is accepted. Do not add filters in advance.
+
+# The fork has its own version line, so there is no Fedora EVR below which the
+# Obsoletes could be bounded: a versioned one would stop replacing the stock
+# packages as soon as Fedora ships a newer Discover. rpmbuild prints the same
+# complaint as a spec parser warning.
+addFilter(r"unversioned-explicit-obsoletes plasma-discover")
+addFilter(r"specfile-warning warning: line \d+: It's not recommended to have unversioned Obsoletes: Obsoletes:\s+plasma-discover")
+
+# Deliberate: the package replaces plasma-discover but is not a compatible
+# provider of it, so nothing that requires the Fedora packages may be satisfied
+# by the fork.
+addFilter(r"obsolete-not-provided plasma-discover")
+
+# "fwupd" is the name of the firmware update daemon.
+addFilter(r"spelling-error \('fwupd',")
+
+# The XDG autostart entry is not a configuration file. Users override it in
+# ~/.config/autostart; Fedora's plasma-discover-notifier ships it the same way.
+addFilter(r"non-conffile-in-etc /etc/xdg/autostart/org\.kde\.discover\.notifier\.desktop")
+
+# KDE Discover does not ship manual pages.
+addFilter(r"no-manual-page-for-binary plasma-discover")
+
+# Verbatim REUSE license texts from upstream; license files must not be edited.
+addFilter(r"incorrect-fsf-address /usr/share/licenses/discover-plus/")
+
+# systemsettings belongs to plasma-systemsettings, which is only recommended:
+# the Updates module is useless without System Settings but Discover is not.
+addFilter(r"desktopfile-without-binary /usr/share/applications/kcm_updates\.desktop systemsettings")

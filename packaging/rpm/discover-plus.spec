@@ -3,10 +3,12 @@
 # enforces that) because the plugin interface id and "--version" derive from it.
 %global kde_base_version 6.8.80
 
-# Build-time versions that become the runtime minimums below. KF6 libraries do
-# not version their symbols, so the generated libKF6*.so.6 dependencies would
-# also be satisfied by the older KF6 shipped on the Fedora installation media.
-%global qt6_build_version %(pkg-config --modversion Qt6Core 2>/dev/null)
+# libDiscoverCommon.so and libDiscoverNotifiers.so are private libraries and
+# the Qt plugins are not linkable at all. They have the same names as the ones
+# in Fedora's plasma-discover-libs, so they must not show up as capabilities
+# that could satisfy a dependency of the Fedora packages.
+%global __provides_exclude_from ^(%{_libdir}/plasma-discover|%{_libdir}/qt6/plugins)/.*\\.so$
+%global __requires_exclude ^libDiscover(Common|Notifiers)\\.so.*$
 
 Name:           discover-plus
 Version:        1.0.0
@@ -113,8 +115,11 @@ Requires:       sed
 Requires:       PackageKit
 Requires:       hicolor-icon-theme
 
-# The macros are empty while "dnf builddep" parses this spec on a system that
-# does not have the KF6 and Qt build tools yet; %%prep refuses to build then.
+# The KF6 and Qt versions of the build become runtime minimums. KF6 libraries
+# do not version their symbols, so the generated libKF6*.so.6 dependencies
+# would also be satisfied by the older KF6 of the Fedora installation media.
+# The macros are undefined while "dnf builddep" parses this spec on a system
+# without kf6-rpm-macros; %%prep refuses to build in that state.
 %if "%{?_kf6_version}" != ""
 Requires:       kf6-kirigami%{?_isa} >= %{_kf6_version}
 Requires:       kf6-kitemmodels%{?_isa} >= %{_kf6_version}
@@ -127,11 +132,11 @@ Requires:       kf6-kcmutils%{?_isa} >= %{_kf6_version}
 Requires:       kf6-knewstuff%{?_isa} >= %{_kf6_version}
 %endif
 Requires:       kf6-kirigami-addons%{?_isa} >= 1.10.0
-%if "%{?qt6_build_version}" != ""
-Requires:       qt6-qtbase%{?_isa} >= %{qt6_build_version}
-Requires:       qt6-qtdeclarative%{?_isa} >= %{qt6_build_version}
-Requires:       qt6-qtwebview%{?_isa} >= %{qt6_build_version}
-Requires:       qt6-qt5compat%{?_isa} >= %{qt6_build_version}
+%if "%{?_qt6_version}" != ""
+Requires:       qt6-qtbase%{?_isa} >= %{_qt6_version}
+Requires:       qt6-qtdeclarative%{?_isa} >= %{_qt6_version}
+Requires:       qt6-qtwebview%{?_isa} >= %{_qt6_version}
+Requires:       qt6-qt5compat%{?_isa} >= %{_qt6_version}
 %endif
 
 Recommends:     fedora-appstream-metadata
@@ -152,7 +157,7 @@ replaces the plasma-discover packages of Fedora.
 %autosetup
 test ! -e .git
 test "$(tr -d '\r\n' < VERSION)" = "%{version}"
-%if "%{?_kf6_version}" == "" || "%{?qt6_build_version}" == ""
+%if "%{?_kf6_version}" == "" || "%{?_qt6_version}" == ""
 echo "KF6 or Qt build version is unknown; versioned runtime requirements cannot be generated" >&2
 exit 1
 %endif

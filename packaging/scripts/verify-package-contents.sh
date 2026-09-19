@@ -126,8 +126,13 @@ require_file /usr/share/knotifications6/discoverabstractnotifier.notifyrc
 require_file /usr/share/qlogging-categories6/discover.categories
 require_file /usr/share/libdiscover/categories/packagekit-backend-categories.xml
 require_file /usr/share/libdiscover/categories/flatpak-backend-categories.xml
-require_file /usr/share/locale/ru/LC_MESSAGES/plasma-discover.mo
-require_file /usr/share/locale/ru/LC_MESSAGES/libdiscover.mo
+# Container images install no translations (%_install_langs), so the catalogs
+# can only be checked in the package payload.
+if [ "$installed" -eq 0 ]; then
+    for catalog in plasma-discover libdiscover plasma-discover-notifier kcm_updates; do
+        require_file "/usr/share/locale/ru/LC_MESSAGES/$catalog.mo"
+    done
+fi
 
 # Backends that are switched off in the spec, and the libexec location used by
 # a plain "cmake --install" (install.sh) instead of the Fedora one.
@@ -139,16 +144,18 @@ forbid_path "$qt_plugindir/discover/dummy-backend.so"
 forbid_path "$qt_plugindir/discover-notifier/rpm-ostree-notifier.so"
 forbid_path "$libdir/libexec"
 
+# The command of an Exec= line, with or without arguments.
+require_exec() {
+    if ! grep -Eq "^Exec=$2( |\$)" "$root$1"; then
+        echo "$1 must start $2" >&2
+        exit 1
+    fi
+}
+
 require_line /usr/share/applications/org.kde.discover.desktop 'Icon=plasmadiscover'
-if ! grep -Eq '^Exec=plasma-discover( |$)' \
-    "$root/usr/share/applications/org.kde.discover.desktop"; then
-    echo "desktop launcher must start plasma-discover" >&2
-    exit 1
-fi
-require_line /etc/xdg/autostart/org.kde.discover.notifier.desktop \
-    "Exec=$notifier_bin"
-require_line /usr/share/applications/org.kde.discover.notifier.desktop \
-    "Exec=$notifier_bin"
+require_exec /usr/share/applications/org.kde.discover.desktop plasma-discover
+require_exec /etc/xdg/autostart/org.kde.discover.notifier.desktop "$notifier_bin"
+require_exec /usr/share/applications/org.kde.discover.notifier.desktop "$notifier_bin"
 require_line /etc/xdg/discoverrc '[Software]'
 require_line /etc/xdg/discoverrc 'UseOfflineUpdates=true'
 
@@ -184,20 +191,6 @@ for plugin in $notifier_plugins; do
     fi
 done
 
-elf_files="$discover_bin
-$notifier_bin
-$private_libdir/libDiscoverCommon.so
-$private_libdir/libDiscoverNotifiers.so
-$qt_plugindir/plasma/kcms/systemsettings/kcm_updates.so"
-for plugin in $backend_plugins; do
-    elf_files="$elf_files
-$qt_plugindir/discover/$plugin.so"
-done
-for plugin in $notifier_plugins; do
-    elf_files="$elf_files
-$qt_plugindir/discover-notifier/$plugin.so"
-done
-
 if [ "$installed" -eq 0 ]; then
     for elf_file in "$discover_bin" "$notifier_bin"; do
         if ! readelf -d "$root$elf_file" |
@@ -208,24 +201,42 @@ if [ "$installed" -eq 0 ]; then
     done
 fi
 
-# "ldd -r" also performs the relocations, so it reports symbols that a plain
-# "ldd" misses and that would only fail when Qt loads the plugin.
 work_dir=$(mktemp -d)
 cleanup() {
     rm -rf -- "$work_dir"
 }
 trap cleanup 0 1 2 15
 
-printf '%s\n' "$elf_files" | while IFS= read -r elf_file; do
-    if ! run_in_root ldd -r "$root$elf_file" > "$work_dir/ldd.log" 2>&1; then
+# "ldd -r" also performs the relocations, so it reports symbols that a plain
+# "ldd" misses and that would only fail when Qt loads the plugin.
+check_symbols() {
+    if ! "$@" > "$work_dir/ldd.log" 2>&1; then
         cat "$work_dir/ldd.log" >&2
-        echo "ldd failed for $elf_file" >&2
+        echo "ldd failed: $*" >&2
         exit 1
     fi
     if grep -E 'not found|undefined symbol' "$work_dir/ldd.log" >&2; then
-        echo "unresolved libraries or symbols in $elf_file" >&2
+        echo "unresolved libraries or symbols: $*" >&2
         exit 1
     fi
+}
+
+check_symbols run_in_root ldd -r "$root$discover_bin"
+check_symbols run_in_root ldd -r "$root$notifier_bin"
+check_symbols run_in_root ldd -r "$root$private_libdir/libDiscoverCommon.so"
+check_symbols run_in_root ldd -r "$root$private_libdir/libDiscoverNotifiers.so"
+check_symbols run_in_root ldd -r \
+    "$root$qt_plugindir/plasma/kcms/systemsettings/kcm_updates.so"
+for plugin in $notifier_plugins; do
+    check_symbols run_in_root ldd -r \
+        "$root$qt_plugindir/discover-notifier/$plugin.so"
+done
+# The backend plugins have no RUNPATH of their own: they are only ever loaded
+# by plasma-discover, which has libDiscoverCommon.so mapped already. On their
+# own they need the private library directory even when they are installed.
+for plugin in $backend_plugins; do
+    check_symbols env "LD_LIBRARY_PATH=$root$private_libdir" ldd -r \
+        "$root$qt_plugindir/discover/$plugin.so"
 done
 
 actual_version=$(run_in_root env QT_QPA_PLATFORM=offscreen LC_ALL=C \
@@ -255,7 +266,8 @@ fi
 # Real plugin loading. The programs have no self-test mode, so they run
 # headless for a fixed time inside a private D-Bus session: they must still be
 # alive when the timeout fires (exit status 124) and Qt must report every
-# plugin as loaded.
+# plugin as loaded. This needs the runtime dependencies (QML modules) of the
+# package, so it is meant for a system where the package is installed.
 if [ "$(id -u)" -eq 0 ]; then
     echo "--load-plugins must run as a regular user" >&2
     exit 2
@@ -270,6 +282,7 @@ run_headless() {
         QT_QPA_PLATFORM=offscreen \
         QT_FORCE_STDERR_LOGGING=1 \
         QT_DEBUG_PLUGINS=1 \
+        'QT_LOGGING_RULES=qt.core.plugin.*.debug=true;qt.core.library.debug=true' \
         LC_ALL=C.UTF-8 \
         timeout "$load_seconds" "$@" > "$log_file" 2>&1 || status=$?
     if [ "$status" -ne 124 ]; then
@@ -289,8 +302,10 @@ require_loaded() {
     fi
 }
 
+# "Couldn't find the backend" is not in the list: a loaded backend may have
+# nothing to offer, like KNewStuff on a system without any .knsrc file.
 forbid_load_errors() {
-    if grep -E "doesn't have the right IID|error loading|Couldn't find the backend|Didn't find any Discover backend" "$1" >&2; then
+    if grep -E "doesn't have the right IID|error loading|Didn't find any Discover backend|Failed to create main window" "$1" >&2; then
         echo "Discover reported a plugin loading error" >&2
         exit 1
     fi
