@@ -145,12 +145,14 @@ jobs:
           refuse_existing_release
           require_unmoved_tag
 
+      # The exact name, not a pattern: github.run_id stays the same when the
+      # workflow is re-run, so an earlier attempt that resolved another Fedora
+      # release may have left a second artifact in this run.
       - name: Download package artifacts
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
-          pattern: discover-plus-rpm-f*-${{ github.run_id }}
+          name: discover-plus-rpm-f${{ needs.build-packages.outputs.fedora-version }}-${{ github.run_id }}
           path: release-assets
-          merge-multiple: true
 
       - name: Verify release asset set and create checksums
         env:
