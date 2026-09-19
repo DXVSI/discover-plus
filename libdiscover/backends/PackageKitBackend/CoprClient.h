@@ -16,6 +16,14 @@
 #include <QStringList>
 #include <QUrl>
 
+// What the monitor says about one package in the chroot of this system
+enum class CoprAvailability {
+    Unknown, // not asked, or the chroot of this system is unknown
+    Available,
+    NotConfirmed, // the last build for this chroot did not succeed, an older one may still be published
+    NotAvailable, // never built for this chroot
+};
+
 struct CoprPackageInfo {
     QString name;
     QString description;
@@ -23,8 +31,13 @@ struct CoprPackageInfo {
     QString projectName;
     QString projectFullName;
     QString version;
+    // Chroots with an installable build of this package (from the monitor)
     QStringList availableChroots;
-    bool isAvailableForCurrentFedora = false;
+    // Chroots enabled in the project (chroot_repos), never the chroots of a single build
+    QStringList projectChroots;
+    CoprAvailability availability = CoprAvailability::Unknown;
+    // Monitor state of the last build for the chroot of this system
+    QString currentChrootState;
     int projectId = 0;
     QString homepage;
     QString instructions;
@@ -93,13 +106,42 @@ public:
     static QUrl projectWebUrl(const QString &owner, const QString &project);
 
     void searchProjects(const QString &query, int limit = 50, int offset = 0);
-    void getLatestProjects(int limit, int offset);
+    // Newest first, or by name
+    void getLatestProjects(int limit, int offset, bool byName = false);
+    // The package list of an application page: details, versions and dates. The server
+    // walks the builds of every package for it, so it is never used for many projects.
     void getProjectPackages(const QString &owner, const QString &project);
+    // Names, versions and availability of all packages, about 150 bytes per package.
+    // A request for an open application page survives cancelStreamRequests().
+    void getProjectMonitor(const QString &owner, const QString &project, bool forOpenPage = false);
+    // The same for a list item that merely became visible. Such requests are served
+    // after everything else, the newest first, and never use the last free slot.
+    // Returns false when nothing was queued because lazy requests are paused.
+    bool getProjectMonitorLazily(const QString &owner, const QString &project);
+    // The list item went away: takes its lazy request back while it is still queued
+    void dropLazyProjectMonitor(const QString &owner, const QString &project);
+    // A new list or search replaces the previous one: cancels the list and search
+    // requests and the monitor requests that were made for list items
+    void cancelStreamRequests();
     void cancelAllRequests();
+
+    static QString projectPackagesRequestType()
+    {
+        return QStringLiteral("getProjectPackages");
+    }
+    static QString projectMonitorRequestType()
+    {
+        return QStringLiteral("getProjectMonitor");
+    }
 
 Q_SIGNALS:
     void projectsFound(const QList<CoprProjectInfo> &projects);
-    void projectPackagesFound(const QString &owner, const QString &project, const QList<CoprPackageInfo> &packages);
+    // complete is false when the project has more packages than the client keeps
+    void projectPackagesFound(const QString &owner, const QString &project, const QList<CoprPackageInfo> &packages, bool complete);
+    void projectMonitorFound(const QString &owner, const QString &project, const QList<CoprPackageInfo> &packages, bool complete);
+    // requestType is projectPackagesRequestType() or projectMonitorRequestType()
+    void projectRequestFailed(const QString &requestType, const QString &owner, const QString &project, const QString &errorMessage);
+    void projectRequestCancelled(const QString &requestType, const QString &owner, const QString &project);
     void errorOccurred(const QString &requestType, const QString &errorMessage);
 
 private:
@@ -107,18 +149,32 @@ private:
     QList<CoprProjectInfo> parseProjectsResponse(const QJsonObject &json);
     CoprProjectInfo parseProjectObject(const QJsonObject &json);
     QList<CoprPackageInfo> parsePackagesResponse(const QJsonObject &json, const QString &owner, const QString &project);
+    QList<CoprPackageInfo> parseMonitorResponse(const QJsonObject &json, const QString &owner, const QString &project, bool *complete);
     QString convertMarkdownToHtml(const QString &markdown) const;
-    void emitResultForRequest(const QString &requestType, const QJsonObject &json);
-    void emitEmptyResultForRequest(const QString &requestType);
 
-    void failRequest(const QString &requestType, const QString &errorMessage);
+    struct Request {
+        QUrl url;
+        QString requestType;
+        // Made for an open application page: not cancelled together with the list
+        bool forOpenPage = false;
+        // Made for a visible list item: see getProjectMonitorLazily()
+        bool lazy = false;
+    };
+    QUrl projectMonitorUrl(const QString &owner, const QString &project) const;
+    bool isLazyPaused() const;
+    void noteLazyResult(bool failed);
+    void cancelLazyQueue();
+    void requestProjectPackagesPage(const QString &owner, const QString &project, int offset);
+    void emitResultForRequest(const Request &request, const QJsonObject &json);
+    void failRequest(const Request &request, const QString &errorMessage);
+    void cancelRequest(const Request &request);
     void noteRetryAfter(const QNetworkReply *reply);
     // Empty unless the server asked us to back off
     QString backOffMessage() const;
     void storeInCache(const QString &urlString, const QJsonObject &json, qint64 size);
 
     void processNextRequest();
-    void queueRequest(const QUrl &url, const QString &requestType);
+    void queueRequest(const Request &request);
 
     QString m_baseUrl;
     QNetworkAccessManager *m_networkAccessManager = nullptr;
@@ -130,14 +186,35 @@ private:
     static constexpr int MaxRetryAfterSecs = 3600;
 
     // Request queue with limited concurrency
-    QQueue<QPair<QUrl, QString>> m_requestQueue;
+    QQueue<Request> m_requestQueue;
     int m_activeRequests = 0;
     static constexpr int MaxConcurrentRequests = 3;
 
+    // Lazy requests: a stack, so that the rows on screen win over those that were
+    // scrolled past. One slot always stays free for lists, searches and open pages.
+    QList<Request> m_lazyQueue;
+    int m_activeLazyRequests = 0;
+    static constexpr int MaxConcurrentLazyRequests = MaxConcurrentRequests - 1;
+    static constexpr int MaxLazyQueueLength = 24;
+    // Circuit breaker: lazy requests are refused until this moment. A back-off that
+    // the server asked for (m_retryNotBeforeMs) pauses them as well.
+    qint64 m_lazyPausedUntilMs = 0;
+    int m_lazyFailuresInARow = 0;
+    static constexpr int MaxLazyFailuresInARow = 3;
+    static constexpr int LazyPauseSecs = 60;
+
     // Active network replies (for cancellation)
     QList<QPointer<QNetworkReply>> m_activeReplies;
-    // Bumped by cancelAllRequests() so that deferred answers of cancelled requests are dropped
+    // Bumped by every cancellation so that deferred answers of cancelled requests are dropped
     quint64 m_requestGeneration = 0;
+
+    // Pages of a package list that is still being collected, by "owner/project"
+    QHash<QString, QList<CoprPackageInfo>> m_packagePages;
+    static constexpr int PackagesPageSize = 100;
+    // What is kept per project from the package list and from the monitor. The monitor
+    // is not paginated: iucar/cran answers with 12.5 MB for 24500 packages.
+    static constexpr int MaxPackagesPerProject = 500;
+    static constexpr qint64 MaxMonitorBytes = 2 * 1024 * 1024;
 
     // Response cache with TTL
     struct CacheEntry {

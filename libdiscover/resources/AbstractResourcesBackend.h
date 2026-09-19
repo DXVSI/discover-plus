@@ -154,6 +154,9 @@ public:
         bool allBackends = false;
         bool filterMinimumState = true;
         AbstractResourcesBackend *backend = nullptr;
+        // Not a filter: the list is shown by name. A backend that pages through a
+        // remote list (COPR) asks for it in that order, everything else ignores this.
+        bool orderedByName = false;
 
         bool isEmpty() const
         {

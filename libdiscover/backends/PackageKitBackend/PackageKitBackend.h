@@ -173,7 +173,8 @@ private Q_SLOTS:
     void loadAllPackages();
     void loadAllPackagesHybrid();
     void onCoprProjectsFound(const QList<CoprProjectInfo> &projects);
-    void onCoprProjectPackagesFound(const QString &owner, const QString &project, const QList<CoprPackageInfo> &packages);
+    void onCoprProjectPackagesFound(const QString &owner, const QString &project, const QList<CoprPackageInfo> &packages, bool complete);
+    void onCoprProjectMonitorFound(const QString &owner, const QString &project, const QList<CoprPackageInfo> &packages, bool complete);
 
 Q_SIGNALS:
     void loadedAppStream();
@@ -203,6 +204,7 @@ private:
     void processNextCoprInstalledStateCheck();
     void requestNextCoprBrowsePage();
     void showCoprMessageOnce(const QString &kind, const QString &message);
+    QList<CoprResource *> coprResourcesOfProject(const QString &owner, const QString &project) const;
 
     QScopedPointer<AppStream::ConcurrentPool> m_appdata;
     bool m_appdataLoaded = false;
@@ -236,6 +238,8 @@ private:
     QHash<QString, CoprProjectInfo> m_coprProjectMetadata;
     QHash<QString, int> m_coprProjectRelevance;
     QSet<QString> m_coprPackageRequests;
+    // As many as the package list request of a search used to return
+    static constexpr int CoprSearchPackagesPerProject = 10;
     bool m_coprSearchPagePending = false;
     struct CoprInstalledStateRequest {
         QPointer<CoprResource> resource;
@@ -249,12 +253,16 @@ private:
     QHash<QString, bool> m_coprInstalledStateCache;
     int m_activeCoprInstalledStateChecks = 0;
     static constexpr int MaxConcurrentCoprInstalledStateChecks = 2;
+    // Every automatically selected package of a list item asks for an rpm process
+    static constexpr int MaxQueuedCoprInstalledStateChecks = 100;
 
     // Browse mode. About 90% of the newest projects are hidden from the COPR
     // homepage (CI scratch projects) or lack the current chroot, so one user
     // action (opening the page, a fetchMore) requests large pages one after
     // another until about a screenful passed the filters, up to a hard cap.
     bool m_coprBrowsePagePending = false;
+    // The order the list is browsed in: by name instead of newest first
+    bool m_coprBrowseByName = false;
     bool m_coprBrowseExhausted = false;
     int m_coprBrowseRequests = 0;
     int m_coprBrowseAccepted = 0;

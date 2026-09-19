@@ -8,7 +8,9 @@
 #include <QDir>
 #include <QDirIterator>
 #include <QFileInfo>
+#include <QHash>
 #include <QLocale>
+#include <QSet>
 #include <QVariantMap>
 
 #include <algorithm>
@@ -109,6 +111,9 @@ static QStringList mergedChroots(const QStringList &baseChroots, const QList<Cop
     return chroots;
 }
 
+// A project may have hundreds of packages
+static constexpr int MaxPackagesInDescription = 20;
+
 static QString packageSummaryLine(const CoprPackageInfo &package)
 {
     QString summary = package.name.toHtmlEscaped();
@@ -136,7 +141,9 @@ CoprResource::CoprResource(const CoprPackageInfo &packageInfo, AbstractResources
     , m_description(packageInfo.description)
     , m_version(packageInfo.version)
     , m_availableChroots(packageInfo.availableChroots)
-    , m_isAvailableForCurrentFedora(packageInfo.isAvailableForCurrentFedora)
+    , m_projectChroots(packageInfo.projectChroots)
+    , m_availability(packageInfo.availability)
+    , m_currentChrootState(packageInfo.currentChrootState)
     , m_homepage(packageInfo.homepage)
     , m_instructions(packageInfo.instructions)
     , m_contact(packageInfo.contact)
@@ -160,6 +167,13 @@ CoprResource::CoprResource(const CoprPackageInfo &packageInfo, AbstractResources
     , m_latestBuildStartedOn(packageInfo.latestBuildStartedOn)
     , m_latestBuildEndedOn(packageInfo.latestBuildEndedOn)
 {
+    // A package of a search result comes from the monitor of its project
+    if (!m_isProjectResource) {
+        m_monitorPackages = {packageInfo};
+        m_projectPackages = m_monitorPackages;
+        m_monitorFetch = Loaded;
+    }
+
     // Check if the package is already installed (deferred to avoid blocking the UI during batch creation)
     QMetaObject::invokeMethod(this, &CoprResource::checkInstalledState, Qt::QueuedConnection);
 }
@@ -215,7 +229,7 @@ QString CoprResource::longDescription()
         appendTextDetail(desc, i18n("Package:"), packageName());
     } else if (m_projectPackages.isEmpty()) {
         appendTextDetail(desc, i18n("Install target:"), i18n("Unknown until package metadata is loaded"));
-        if (m_projectPackagesRequested) {
+        if (m_monitorFetch == Requested || m_packageListFetch == Requested) {
             appendTextDetail(desc, i18n("Project packages:"), i18n("Loading or unavailable"));
         }
     } else {
@@ -227,8 +241,14 @@ QString CoprResource::longDescription()
         desc += QStringLiteral("<br>");
         desc += htmlLabel(i18n("Packages in this project:"));
         desc += QStringLiteral("<ul>");
-        for (const CoprPackageInfo &package : m_projectPackages) {
+        // The package selector above lists them all
+        const qsizetype listed = qMin(m_projectPackages.size(), qsizetype(MaxPackagesInDescription));
+        for (const CoprPackageInfo &package : m_projectPackages.first(listed)) {
             desc += QStringLiteral("<li>") + packageSummaryLine(package) + QStringLiteral("</li>");
+        }
+        if (listed < m_projectPackages.size()) {
+            const int more = int(m_projectPackages.size() - listed);
+            desc += QStringLiteral("<li>") + i18np("and %1 more package", "and %1 more packages", more) + QStringLiteral("</li>");
         }
         desc += QStringLiteral("</ul>");
     }
@@ -240,16 +260,23 @@ QString CoprResource::longDescription()
     appendTextDetail(desc, i18n("Submitter:"), m_latestBuildSubmitter);
     appendLinkDetail(desc, i18n("Build repository:"), m_latestBuildRepoUrl);
 
-    const QStringList allChroots = mergedChroots(m_availableChroots, m_projectPackages);
+    // Until a package is selected and the monitor has spoken, what the project enables
+    const bool packageChrootsKnown = !m_installPackageName.isEmpty() && m_availability != CoprAvailability::Unknown;
+    const QStringList allChroots = mergedChroots(packageChrootsKnown ? m_availableChroots : m_projectChroots, m_projectPackages);
     const QString chrootsSummary = formattedChrootsSummary(allChroots);
     appendTextDetail(desc, i18n("Available for:"), chrootsSummary);
 
     desc += htmlParagraphBreak();
-    if (allChroots.isEmpty() || !isCurrentChrootKnown()) {
+    const QString installWarning = coprInstallWarning();
+    if (!isCurrentChrootKnown() || (m_projectChroots.isEmpty() && m_availability == CoprAvailability::Unknown)) {
         desc += QStringLiteral("<span style='font-weight: bold;'>");
         desc += i18n("Availability for your Fedora version is unknown.");
         desc += QStringLiteral("</span>");
-    } else if (m_isAvailableForCurrentFedora) {
+    } else if (!installWarning.isEmpty()) {
+        desc += QStringLiteral("<span style='color: #ff8800; font-weight: bold;'>");
+        desc += installWarning.toHtmlEscaped();
+        desc += QStringLiteral("</span>");
+    } else if (!isInstallBlocked()) {
         desc += QStringLiteral("<span style='color: green; font-weight: bold;'>");
         desc += i18n("Available for your Fedora version.");
         desc += QStringLiteral("</span>");
@@ -326,14 +353,89 @@ QString CoprResource::longDescription()
 
 void CoprResource::fetchProjectPackages()
 {
-    if (!m_isProjectResource || m_projectPackagesRequested) {
-        return;
+    auto pkBackend = qobject_cast<PackageKitBackend *>(backend());
+    CoprClient *client = pkBackend ? pkBackend->coprClient() : nullptr;
+    bool changed = false;
+
+    // Without a client nothing is sent, so nothing may look requested
+    if (m_packageListFetch == NotRequested || m_packageListFetch == Failed) {
+        m_packageListFetch = client ? Requested : Failed;
+        changed = true;
+        if (client) {
+            client->getProjectPackages(m_owner, m_project);
+        }
+    }
+    // A monitor request of a list item is cancelled with its list: ask again so that
+    // the client keeps it for this page
+    if (m_isProjectResource && m_monitorFetch != Loaded && !m_monitorForOpenPage) {
+        m_monitorFetch = client ? Requested : Failed;
+        m_monitorForOpenPage = client;
+        changed = true;
+        if (client) {
+            client->getProjectMonitor(m_owner, m_project, true);
+        }
     }
 
-    m_projectPackagesRequested = true;
+    if (changed) {
+        Q_EMIT projectPackagesChanged();
+    }
+    // The backend forgets the oldest checks when too many are waiting; answered from its cache otherwise
+    if (!m_installPackageName.isEmpty()) {
+        checkInstalledState();
+    }
+}
+
+bool CoprResource::fetchProjectMonitor()
+{
+    return requestProjectMonitor(false);
+}
+
+bool CoprResource::fetchProjectMonitorLazily()
+{
+    return requestProjectMonitor(true);
+}
+
+bool CoprResource::requestProjectMonitor(bool lazy)
+{
+    // Nothing can be installed from a project without the chroot of this system
+    if (!m_isProjectResource || isProjectChrootMissing() || m_monitorFetch == Loaded) {
+        return false;
+    }
+    if (m_monitorFetch == Requested) {
+        return true;
+    }
+    // Only the user repeats what failed
+    if (lazy && m_monitorFetch == Failed) {
+        return false;
+    }
+
+    auto pkBackend = qobject_cast<PackageKitBackend *>(backend());
+    CoprClient *client = pkBackend ? pkBackend->coprClient() : nullptr;
+    if (lazy) {
+        // A refusal leaves everything as it was: the list item may ask again later
+        if (!client || !client->getProjectMonitorLazily(m_owner, m_project)) {
+            return false;
+        }
+        m_monitorFetch = Requested;
+    } else {
+        m_monitorFetch = client ? Requested : Failed;
+        if (client) {
+            client->getProjectMonitor(m_owner, m_project);
+        }
+    }
+    Q_EMIT projectPackagesChanged();
+    return client;
+}
+
+void CoprResource::dropLazyProjectMonitor()
+{
+    if (m_monitorFetch != Requested || m_monitorForOpenPage) {
+        return;
+    }
     if (auto pkBackend = qobject_cast<PackageKitBackend *>(backend())) {
-        if (auto client = pkBackend->coprClient()) {
-            client->getProjectPackages(m_owner, m_project);
+        if (CoprClient *client = pkBackend->coprClient()) {
+            // Answers with a cancellation when the request was indeed still waiting
+            client->dropLazyProjectMonitor(m_owner, m_project);
         }
     }
 }
@@ -393,8 +495,11 @@ QVariantList CoprResource::coprProjectPackages() const
         item.insert(QStringLiteral("version"), package.version);
         item.insert(QStringLiteral("latestBuildState"), package.latestBuildState);
         item.insert(QStringLiteral("availableChroots"), package.availableChroots);
-        item.insert(QStringLiteral("isAvailableForCurrentFedora"), package.isAvailableForCurrentFedora);
-        item.insert(QStringLiteral("isAvailabilityKnown"), chrootKnown && !package.availableChroots.isEmpty());
+        item.insert(QStringLiteral("currentChrootState"), package.currentChrootState);
+        item.insert(QStringLiteral("isAvailableForCurrentFedora"), package.availability == CoprAvailability::Available);
+        // A last build that did not succeed is neither: an older build may still be published
+        item.insert(QStringLiteral("isAvailabilityKnown"),
+                    chrootKnown && (package.availability == CoprAvailability::Available || package.availability == CoprAvailability::NotAvailable));
         packages.append(item);
     }
 
@@ -436,30 +541,205 @@ void CoprResource::setInstalledStateFromSystem(bool installed)
     }
 }
 
-void CoprResource::setProjectPackages(const QList<CoprPackageInfo> &packages)
+bool CoprResource::isProjectChrootMissing() const
+{
+    return isCurrentChrootKnown() && !m_projectChroots.isEmpty() && !m_projectChroots.contains(currentChroot());
+}
+
+bool CoprResource::isInstallBlocked() const
+{
+    return isProjectChrootMissing() || (isCurrentChrootKnown() && m_availability == CoprAvailability::NotAvailable);
+}
+
+QString CoprResource::coprInstallWarning() const
+{
+    if (m_installPackageName.isEmpty() || isInstallBlocked() || m_availability != CoprAvailability::NotConfirmed) {
+        return {};
+    }
+    return i18n("The last build of %1 for your Fedora version has the state \"%2\". An older build may still be installable.",
+                m_installPackageName,
+                m_currentChrootState);
+}
+
+QString CoprResource::coprInstallError() const
+{
+    return m_monitorFetch == Failed || m_packageListFetch == Failed ? m_requestError : QString();
+}
+
+QString CoprResource::coprInstallStatus() const
+{
+    if (!m_installPackageName.isEmpty()) {
+        return isInstallBlocked() ? QStringLiteral("unavailable") : QStringLiteral("ready");
+    }
+    if (isProjectChrootMissing()) {
+        return QStringLiteral("unavailable");
+    }
+
+    const bool loading = m_monitorFetch == Requested || m_packageListFetch == Requested;
+    if (!coprProjectPackagesLoaded()) {
+        if (loading) {
+            return QStringLiteral("loading");
+        }
+        return m_monitorFetch == Failed || m_packageListFetch == Failed ? QStringLiteral("failed") : QStringLiteral("idle");
+    }
+    if (m_projectPackages.isEmpty()) {
+        // The other source may still know packages
+        return loading ? QStringLiteral("loading") : QStringLiteral("empty");
+    }
+
+    const bool anyInstallable = std::any_of(m_projectPackages.cbegin(), m_projectPackages.cend(), [](const CoprPackageInfo &package) {
+        return package.availability != CoprAvailability::NotAvailable;
+    });
+    // Nothing is said about the whole project from a monitor that was cut short: what is
+    // built for this system may be in the part that was dropped
+    const bool monitorCutShort = m_monitorFetch == Loaded && !m_monitorComplete;
+    return anyInstallable || !isCurrentChrootKnown() || monitorCutShort ? QStringLiteral("needs-selection") : QStringLiteral("unavailable");
+}
+
+bool CoprResource::isCoprPackageListLimited() const
+{
+    return (m_packageListFetch == Loaded && !m_packageListComplete) || (m_monitorFetch == Loaded && !m_monitorComplete);
+}
+
+CoprResource::FetchState &CoprResource::fetchStateFor(const QString &requestType)
+{
+    return requestType == CoprClient::projectMonitorRequestType() ? m_monitorFetch : m_packageListFetch;
+}
+
+// A resource of a single package only keeps what is said about that package
+static QList<CoprPackageInfo> packagesNamed(const QList<CoprPackageInfo> &packages, const QString &name)
+{
+    QList<CoprPackageInfo> named;
+    for (const CoprPackageInfo &package : packages) {
+        if (package.name == name) {
+            named.append(package);
+        }
+    }
+    return named;
+}
+
+void CoprResource::setProjectPackages(const QList<CoprPackageInfo> &packages, bool complete)
+{
+    m_listedPackages = m_isProjectResource ? packages : packagesNamed(packages, m_installPackageName);
+    m_packageListComplete = complete;
+    m_packageListFetch = Loaded;
+    projectPackagesUpdated();
+}
+
+void CoprResource::setProjectMonitor(const QList<CoprPackageInfo> &packages, bool complete)
+{
+    m_monitorPackages = m_isProjectResource ? packages : packagesNamed(packages, m_installPackageName);
+    m_monitorComplete = complete;
+    m_monitorFetch = Loaded;
+    m_monitorForOpenPage = false;
+    projectPackagesUpdated();
+}
+
+void CoprResource::projectRequestFailed(const QString &requestType, const QString &errorMessage)
+{
+    // What was loaded before stays; without it the request can be repeated
+    FetchState &fetchState = fetchStateFor(requestType);
+    if (fetchState != Requested) {
+        return;
+    }
+    fetchState = Failed;
+    m_requestError = errorMessage;
+    if (requestType == CoprClient::projectMonitorRequestType()) {
+        m_monitorForOpenPage = false;
+    }
+    Q_EMIT projectPackagesChanged();
+}
+
+void CoprResource::projectRequestCancelled(const QString &requestType)
+{
+    // What an open page asked for is not cancelled with the list: this is about
+    // an earlier request of the list item for the same data
+    FetchState &fetchState = fetchStateFor(requestType);
+    if (fetchState != Requested || (requestType == CoprClient::projectMonitorRequestType() && m_monitorForOpenPage)) {
+        return;
+    }
+    fetchState = NotRequested;
+    Q_EMIT projectPackagesChanged();
+}
+
+void CoprResource::mergeProjectPackages()
+{
+    // The package list has the details. The monitor has the availability and, for
+    // what it confirms, the version that is published in the chroot of this system.
+    QList<CoprPackageInfo> merged = m_listedPackages;
+    QHash<QString, int> indexByName;
+    for (int i = 0; i < merged.size(); ++i) {
+        indexByName.insert(merged.at(i).name, i);
+    }
+
+    QSet<QString> monitored;
+    for (const CoprPackageInfo &monitorPackage : std::as_const(m_monitorPackages)) {
+        monitored.insert(monitorPackage.name);
+        const auto it = indexByName.constFind(monitorPackage.name);
+        if (it == indexByName.constEnd()) {
+            indexByName.insert(monitorPackage.name, merged.size());
+            merged.append(monitorPackage);
+            continue;
+        }
+
+        CoprPackageInfo &package = merged[*it];
+        package.availableChroots = monitorPackage.availableChroots;
+        package.availability = monitorPackage.availability;
+        package.currentChrootState = monitorPackage.currentChrootState;
+        if (package.version.isEmpty() || (monitorPackage.availability == CoprAvailability::Available && !monitorPackage.version.isEmpty())) {
+            package.version = monitorPackage.version;
+        }
+    }
+
+    // The monitor leaves out the packages that were never built
+    if (m_monitorFetch == Loaded && m_monitorComplete && isCurrentChrootKnown()) {
+        for (CoprPackageInfo &package : merged) {
+            if (!monitored.contains(package.name)) {
+                package.availability = CoprAvailability::NotAvailable;
+            }
+        }
+    }
+
+    std::stable_sort(merged.begin(), merged.end(), [](const CoprPackageInfo &a, const CoprPackageInfo &b) {
+        return a.name.compare(b.name, Qt::CaseInsensitive) < 0;
+    });
+    m_projectPackages = merged;
+}
+
+void CoprResource::projectPackagesUpdated()
 {
     const AbstractResource::State previousState = state();
     const QString previousInstallPackageName = m_installPackageName;
 
-    m_projectPackages = packages;
-    m_projectPackagesLoaded = true;
+    mergeProjectPackages();
 
-    if (m_isProjectResource) {
+    // What the user selected stays selected for as long as that package is listed:
+    // the same list is delivered again by a cache hit, a search or the second source.
+    // An automatic selection is made again instead: the package list may have answered
+    // first, and only the monitor knows what is built for this system.
+    const auto selected = std::find_if(m_projectPackages.cbegin(), m_projectPackages.cend(), [this](const CoprPackageInfo &package) {
+        return !m_installPackageName.isEmpty() && package.name == m_installPackageName;
+    });
+    if (selected == m_projectPackages.cend()) {
+        m_packageSelectedByUser = false;
+    }
+    if (selected != m_projectPackages.cend() && (!m_isProjectResource || m_packageSelectedByUser || m_isInstalled)) {
+        applyPackageDetails(*selected);
+    } else if (m_isProjectResource) {
         if (const CoprPackageInfo *package = preferredProjectPackage()) {
             m_installPackageName = package->name;
             applyPackageDetails(*package);
         } else {
             m_installPackageName.clear();
+            m_availableChroots.clear();
+            m_availability = CoprAvailability::Unknown;
+            m_currentChrootState.clear();
         }
-    }
-
-    if (m_installPackageName.isEmpty()) {
-        m_availableChroots = mergedChroots(m_availableChroots, m_projectPackages);
-        m_isAvailableForCurrentFedora = isCurrentChrootKnown() && m_availableChroots.contains(currentChroot());
     }
 
     Q_EMIT longDescriptionChanged();
     Q_EMIT versionsChanged();
+    Q_EMIT projectPackageListChanged();
     Q_EMIT projectPackagesChanged();
     if (previousState != state() || previousInstallPackageName != m_installPackageName) {
         Q_EMIT stateChanged();
@@ -486,6 +766,7 @@ void CoprResource::selectCoprProjectPackage(const QString &packageName)
     const QString previousInstallPackageName = m_installPackageName;
 
     m_installPackageName = it->name;
+    m_packageSelectedByUser = true;
     applyPackageDetails(*it);
 
     Q_EMIT longDescriptionChanged();
@@ -501,17 +782,24 @@ void CoprResource::selectCoprProjectPackage(const QString &packageName)
 
 const CoprPackageInfo *CoprResource::preferredProjectPackage() const
 {
-    if (m_projectPackages.isEmpty()) {
-        return nullptr;
-    }
-    if (m_projectPackages.size() == 1) {
-        return &m_projectPackages.constFirst();
+    // Only what may be installable here: whichever source answers first, the choice is the same
+    QList<const CoprPackageInfo *> candidates;
+    for (const CoprPackageInfo &package : m_projectPackages) {
+        if (!isCurrentChrootKnown() || package.availability != CoprAvailability::NotAvailable) {
+            candidates.append(&package);
+        }
     }
 
-    const auto it = std::find_if(m_projectPackages.cbegin(), m_projectPackages.cend(), [this](const CoprPackageInfo &package) {
-        return package.name.compare(m_project, Qt::CaseInsensitive) == 0;
+    // The only package, unless the list was cut short
+    if (candidates.size() == 1 && !isCoprPackageListLimited()) {
+        return candidates.constFirst();
+    }
+
+    // The package named like the project
+    const auto it = std::find_if(candidates.cbegin(), candidates.cend(), [this](const CoprPackageInfo *package) {
+        return package->name.compare(m_project, Qt::CaseInsensitive) == 0;
     });
-    return it == m_projectPackages.cend() ? nullptr : &(*it);
+    return it == candidates.cend() ? nullptr : *it;
 }
 
 void CoprResource::applyPackageDetails(const CoprPackageInfo &package)
@@ -528,10 +816,10 @@ void CoprResource::applyPackageDetails(const CoprPackageInfo &package)
     m_sourceSpec = package.sourceSpec;
     m_sourceSubdirectory = package.sourceSubdirectory;
 
-    if (!package.availableChroots.isEmpty()) {
-        m_availableChroots = package.availableChroots;
-    }
-    m_isAvailableForCurrentFedora = package.isAvailableForCurrentFedora;
+    // Of this package only: what the project enables stays in m_projectChroots
+    m_availableChroots = package.availableChroots;
+    m_availability = package.availability;
+    m_currentChrootState = package.currentChrootState;
 }
 
 QVariant CoprResource::icon() const

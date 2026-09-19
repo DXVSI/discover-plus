@@ -165,6 +165,12 @@ Kirigami.Padding {
                     buttonActiveFocusOnTab: true
                     availableFromOnlySingleSource: fullComponent.availableFromOnlySingleSource
                     hideInvokeButton: false
+                    // A long name of a COPR package must not take the header for itself,
+                    // and in a narrow window it gets what is left beside the icon
+                    maximumPackageNameWidth: {
+                        const left = fullComponent.availableWidth - appIcon.width - Kirigami.Units.gridUnit - packageNameSurroundingsWidth;
+                        return Math.max(Kirigami.Units.gridUnit, Math.min(Kirigami.Units.gridUnit * 10, left));
+                    }
                 }
             }
         }
