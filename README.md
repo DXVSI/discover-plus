@@ -85,6 +85,64 @@ COPR API responses are cached, duplicate requests are deduplicated, and concurre
 
 ## Installation
 
+### Install from RPM
+
+Releases provide an x86_64 RPM for the current stable Fedora release: https://github.com/DXVSI/discover-plus/releases
+
+Download `discover-plus-<version>-1.fc<N>.x86_64.rpm`. The `debuginfo`, `debugsource` and `src` packages next to it are only needed for debugging and rebuilding.
+
+Update the system first. The package requires the KF6 and Qt versions it was built with, and a system installed from the release media and never updated has older ones.
+
+```bash
+sudo dnf upgrade --refresh
+sudo dnf install ./discover-plus-*.rpm
+```
+
+The package replaces the stock `plasma-discover` packages in the same transaction, including the update notifier and the offline updates setting. It conflicts with them, so both cannot be installed at once.
+
+Optional check of the download, with `SHA256SUMS` from the same release and the GitHub CLI:
+
+```bash
+sha256sum --check --ignore-missing SHA256SUMS
+gh attestation verify discover-plus-[0-9]*.x86_64.rpm -R DXVSI/discover-plus
+```
+
+#### Updating
+
+There is no package repository yet, so `dnf upgrade` does not see new versions of Discover Plus. Download the RPM of the new release and install it the same way:
+
+```bash
+sudo dnf upgrade --refresh
+sudo dnf install ./discover-plus-*.rpm
+```
+
+A COPR repository with automatic updates is planned. Regular system updates keep working and do not bring the stock Discover back.
+
+#### Going back to the stock Discover
+
+```bash
+sudo dnf swap discover-plus plasma-discover
+sudo dnf install plasma-discover-notifier
+```
+
+`dnf swap` prints `Problem: cannot install the best candidate for the job` and still offers the right transaction: it removes `discover-plus` and installs `plasma-discover` with its PackageKit, Flatpak and offline updates packages. The notifier is a separate Fedora package, hence the second command. A plain `dnf install plasma-discover` does nothing while Discover Plus is installed.
+
+Do this before upgrading to the next Fedora release as well: the RPM is built against the libraries of one Fedora release.
+
+#### Migrating from install.sh
+
+The RPM takes over the files of an earlier source install. Two files of the source install are not part of the package and stay behind, remove them after installing the RPM:
+
+```bash
+sudo rm -f /usr/lib64/libexec/DiscoverNotifier /usr/share/applications/org.kde.discover.snap.desktop
+```
+
+Unlike the source install, the RPM is built with `PACKAGEKIT_AUTOREMOVE`, like the stock Fedora Discover: removing an application also removes its unused dependencies.
+
+#### Supported Fedora releases
+
+Only the current stable Fedora release is supported. Each release is built and tested for the Fedora version named in the file name (`fc44` means Fedora 44). Snap and rpm-ostree backends are not included.
+
 ### Quick Install
 
 ```bash
