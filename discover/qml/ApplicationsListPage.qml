@@ -40,6 +40,9 @@ DiscoverPage {
     property bool newestFirstSorting: false
     // Such a list by name instead: the backend asks the server for that order
     property bool nameOrderFromServer: false
+    // A source that is not asked for shorter searches: say so instead of "was not found"
+    property int minimumSearchLength: 0
+    readonly property bool searchIsTooShort: appsModel.search.trim().length < page.minimumSearchLength
 
     property bool canNavigate: true
     readonly property alias subcategories: appsModel.subcategories
@@ -379,16 +382,17 @@ DiscoverPage {
                 visible: appsModel.search.length > 0 && stateFilter !== Discover.AbstractResource.Installed
 
                 icon.name: "edit-none"
-                text: page.categoryObject ? i18nc("@info:placeholder %1 is the name of an application; %2 is the name of a category of apps or add-ons",
+                text: page.searchIsTooShort ? i18n("Type at least %1 characters to search here", page.minimumSearchLength)
+                    : page.categoryObject ? i18nc("@info:placeholder %1 is the name of an application; %2 is the name of a category of apps or add-ons",
                                             "\"%1\" was not found in the \"%2\" category", appsModel.search, page.categoryObject.name)
                                     : i18nc("@info:placeholder %1 is the name of an application",
                                             "\"%1\" was not found in the available sources", appsModel.search)
-                explanation: page.categoryObject ? "" : i18nc("@info:placeholder %1 is the name of an application", "\"%1\" may be available on the web. Software acquired from the web has not been reviewed by your distributor for functionality or stability. Use with caution.", appsModel.search)
+                explanation: page.categoryObject || page.searchIsTooShort ? "" : i18nc("@info:placeholder %1 is the name of an application", "\"%1\" may be available on the web. Software acquired from the web has not been reviewed by your distributor for functionality or stability. Use with caution.", appsModel.search)
 
                 // If we're in a category, first direct the user to search globally,
                 // because they might not have realized they were in a category and
                 // therefore the results were limited to just what was in the category
-                helpfulAction: page.categoryObject ? searchAllCategoriesAction : searchTheWebAction
+                helpfulAction: page.searchIsTooShort ? null : page.categoryObject ? searchAllCategoriesAction : searchTheWebAction
             }
         }
 
