@@ -69,7 +69,8 @@ bool CoprTransaction::canInstallForCurrentChroot()
         return false;
     }
 
-    if (m_resource->availableChroots().isEmpty() || m_resource->isAvailableForCurrentFedora()) {
+    // An undetected chroot means unknown availability, which must never block an install
+    if (!m_resource->isCurrentChrootKnown() || m_resource->availableChroots().isEmpty() || m_resource->isAvailableForCurrentFedora()) {
         return true;
     }
 

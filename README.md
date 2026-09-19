@@ -75,7 +75,7 @@ COPR is intentionally handled from the COPR sidebar page, not from global search
 
 The COPR flow is:
 
-1. Browse recent projects or search COPR from the COPR page.
+1. Browse recently created COPR projects that have your Fedora release enabled (projects marked as hidden from the COPR homepage are excluded), or search COPR from the COPR page. The list shows the newest projects first by default and can be sorted by name instead. When the Fedora release cannot be detected, the list is not filtered by release.
 2. Open a project page and review warnings, availability, build information, source links, repository flags, and instructions.
 3. If the project exposes multiple packages, select the package to install.
 4. Install enables the COPR repository and installs the selected package.

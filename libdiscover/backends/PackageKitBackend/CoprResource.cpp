@@ -245,7 +245,7 @@ QString CoprResource::longDescription()
     appendTextDetail(desc, i18n("Available for:"), chrootsSummary);
 
     desc += htmlParagraphBreak();
-    if (allChroots.isEmpty()) {
+    if (allChroots.isEmpty() || !isCurrentChrootKnown()) {
         desc += QStringLiteral("<span style='font-weight: bold;'>");
         desc += i18n("Availability for your Fedora version is unknown.");
         desc += QStringLiteral("</span>");
@@ -354,7 +354,22 @@ QUrl CoprResource::homepage()
         return QUrl(m_homepage);
     }
 
-    return QUrl(QStringLiteral("https://copr.fedorainfracloud.org/coprs/%1/%2/").arg(m_owner, m_project));
+    return CoprClient::projectWebUrl(m_owner, m_project);
+}
+
+QString CoprResource::currentChroot() const
+{
+    if (auto pkBackend = qobject_cast<PackageKitBackend *>(backend())) {
+        if (auto client = pkBackend->coprClient()) {
+            return client->getCurrentChroot();
+        }
+    }
+    return {};
+}
+
+bool CoprResource::isCurrentChrootKnown() const
+{
+    return !currentChroot().isEmpty();
 }
 
 QStringList CoprResource::topObjects() const
@@ -370,6 +385,7 @@ QVariantList CoprResource::coprProjectPackages() const
 {
     QVariantList packages;
     packages.reserve(m_projectPackages.size());
+    const bool chrootKnown = isCurrentChrootKnown();
 
     for (const CoprPackageInfo &package : m_projectPackages) {
         QVariantMap item;
@@ -378,6 +394,7 @@ QVariantList CoprResource::coprProjectPackages() const
         item.insert(QStringLiteral("latestBuildState"), package.latestBuildState);
         item.insert(QStringLiteral("availableChroots"), package.availableChroots);
         item.insert(QStringLiteral("isAvailableForCurrentFedora"), package.isAvailableForCurrentFedora);
+        item.insert(QStringLiteral("isAvailabilityKnown"), chrootKnown && !package.availableChroots.isEmpty());
         packages.append(item);
     }
 
@@ -438,14 +455,7 @@ void CoprResource::setProjectPackages(const QList<CoprPackageInfo> &packages)
 
     if (m_installPackageName.isEmpty()) {
         m_availableChroots = mergedChroots(m_availableChroots, m_projectPackages);
-        m_isAvailableForCurrentFedora = std::any_of(m_availableChroots.cbegin(), m_availableChroots.cend(), [this](const QString &chroot) {
-            if (auto pkBackend = qobject_cast<PackageKitBackend *>(backend())) {
-                if (auto client = pkBackend->coprClient()) {
-                    return chroot == client->getCurrentChroot();
-                }
-            }
-            return false;
-        });
+        m_isAvailableForCurrentFedora = isCurrentChrootKnown() && m_availableChroots.contains(currentChroot());
     }
 
     Q_EMIT longDescriptionChanged();

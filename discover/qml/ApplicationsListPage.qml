@@ -35,6 +35,9 @@ DiscoverPage {
     property bool showRating: true
     property bool showSize: false
     property bool searchPage: false
+    // For a list that the backend delivers newest first: the default is that order, the
+    // choice is local to the page and sorting by data such a list lacks is not offered
+    property bool newestFirstSorting: false
 
     property bool canNavigate: true
     readonly property alias subcategories: appsModel.subcategories
@@ -63,6 +66,11 @@ DiscoverPage {
     }
 
     function applySavedSortRole(role) {
+        if (page.newestFirstSorting) {
+            // The saved role belongs to the regular lists
+            page.applyTemporarySortRole(role)
+            return
+        }
         page.resetAppsViewPosition()
         DiscoverApp.DiscoverSettings[page.sortProperty] = role
         appsModel.tempSortRole = -1
@@ -113,6 +121,15 @@ DiscoverPage {
         }
     }
 
+    // A top-level page comes back from the page pool as the same instance: start it over when
+    // it is put into the stack again, the search field is empty by then
+    Kirigami.ColumnView.onViewChanged: {
+        if (page.newestFirstSorting && Kirigami.ColumnView.view) {
+            page.search = ""
+            appsModel.tempSortRole = -1
+        }
+    }
+
     supportsRefreshing: true
     onRefreshingChanged: if (refreshing) {
         appsModel.invalidateFilter()
@@ -141,6 +158,7 @@ DiscoverPage {
                 checked: appsModel.sortRole === Discover.ResourcesProxyModel.SearchRelevanceRole
             }
             Kirigami.Action {
+                visible: !page.newestFirstSorting
                 QQC2.ActionGroup.group: sortGroup
                 text: i18nc("@item:inmenu sort with RPM Fusion applications first", "RPM Fusion first")
                 icon.name: "folder-download-symbolic"
@@ -149,6 +167,7 @@ DiscoverPage {
                 checked: appsModel.sortRole === Discover.ResourcesProxyModel.RpmFusionSourceRole
             }
             Kirigami.Action {
+                visible: !page.newestFirstSorting
                 QQC2.ActionGroup.group: sortGroup
                 text: i18nc("@item:inmenu sort with Fedora Linux applications first", "Fedora Linux first")
                 icon.name: "folder-download-symbolic"
@@ -157,6 +176,7 @@ DiscoverPage {
                 checked: appsModel.sortRole === Discover.ResourcesProxyModel.FedoraLinuxSourceRole
             }
             Kirigami.Action {
+                visible: !page.newestFirstSorting
                 QQC2.ActionGroup.group: sortGroup
                 text: i18nc("@item:inmenu sort with Fedora Flatpaks first", "Fedora Flatpaks first")
                 icon.name: "flatpak-discover"
@@ -165,6 +185,7 @@ DiscoverPage {
                 checked: appsModel.sortRole === Discover.ResourcesProxyModel.FedoraFlatpaksSourceRole
             }
             Kirigami.Action {
+                visible: !page.newestFirstSorting
                 QQC2.ActionGroup.group: sortGroup
                 text: i18nc("@item:inmenu sort with Flathub applications first", "Flathub first")
                 icon.name: "flatpak-discover"
@@ -174,6 +195,17 @@ DiscoverPage {
             }
             Kirigami.Action {
                 separator: true
+                visible: !page.newestFirstSorting
+            }
+            Kirigami.Action {
+                // A search result has no such order: its sort score is the relevance
+                visible: page.newestFirstSorting && appsModel.search.length === 0
+                QQC2.ActionGroup.group: sortGroup
+                text: i18nc("@item:inmenu sort with the most recently created entries first", "Newest first")
+                icon.name: "change-date-symbolic"
+                onTriggered: page.applyTemporarySortRole(-1)
+                checkable: true
+                checked: appsModel.sortRole === Discover.ResourcesProxyModel.SortScoreRole
             }
             Kirigami.Action {
                 QQC2.ActionGroup.group: sortGroup
@@ -184,6 +216,7 @@ DiscoverPage {
                 checked: appsModel.sortRole === Discover.ResourcesProxyModel.NameRole
             }
             Kirigami.Action {
+                visible: !page.newestFirstSorting
                 QQC2.ActionGroup.group: sortGroup
                 text: i18n("Number of reviews")
                 icon.name: "view-pages-overview-symbolic"
@@ -192,6 +225,7 @@ DiscoverPage {
                 checked: appsModel.sortRole === Discover.ResourcesProxyModel.RatingCountRole
             }
             Kirigami.Action {
+                visible: !page.newestFirstSorting
                 QQC2.ActionGroup.group: sortGroup
                 text: i18nc("@item:inmenu sort by highest-rated apps", "Rating")
                 icon.name: "rating"
@@ -200,6 +234,7 @@ DiscoverPage {
                 checked: appsModel.sortRole === Discover.ResourcesProxyModel.SortableRatingRole
             }
             Kirigami.Action {
+                visible: !page.newestFirstSorting
                 QQC2.ActionGroup.group: sortGroup
                 text: i18n("Size")
                 icon.name: "download"
@@ -208,6 +243,7 @@ DiscoverPage {
                 checked: appsModel.sortRole === Discover.ResourcesProxyModel.SizeRole
             }
             Kirigami.Action {
+                visible: !page.newestFirstSorting
                 QQC2.ActionGroup.group: sortGroup
                 text: i18n("Release date")
                 icon.name: "change-date-symbolic"
@@ -248,7 +284,8 @@ DiscoverPage {
         model: Discover.ResourcesProxyModel {
             id: appsModel
             property int tempSortRole: -1
-            sortRole: tempSortRole >= 0 ? tempSortRole : DiscoverApp.DiscoverSettings.appsListPageSorting
+            sortRole: tempSortRole >= 0 ? tempSortRole
+                : page.newestFirstSorting ? Discover.ResourcesProxyModel.SortScoreRole : DiscoverApp.DiscoverSettings.appsListPageSorting
             sortOrder: sortRole === Discover.ResourcesProxyModel.NameRole ? Qt.AscendingOrder : Qt.DescendingOrder
             categorize: page.categorize
 

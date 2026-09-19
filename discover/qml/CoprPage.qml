@@ -17,6 +17,7 @@ ApplicationsListPage {
     // Show COPR packages from already enabled repos
     originFilter: "COPR"
     allBackends: true
+    newestFirstSorting: true
 
     // Don't allow navigation to other categories within COPR page
     // This ensures proper transition when switching from COPR to other categories
