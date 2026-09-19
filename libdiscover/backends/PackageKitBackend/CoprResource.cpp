@@ -16,6 +16,7 @@
 #include <QFileInfo>
 #include <QHash>
 #include <QLocale>
+#include <QRegularExpression>
 #include <QSet>
 #include <QVariantMap>
 
@@ -385,7 +386,7 @@ void CoprResource::fetchProjectPackages()
     if (changed) {
         Q_EMIT projectPackagesChanged();
     }
-    // The backend forgets the oldest checks when too many are waiting; answered from its cache otherwise
+    // Answered from what the backend knows about the installed packages
     if (!m_installPackageName.isEmpty()) {
         checkInstalledState();
     }
@@ -453,7 +454,7 @@ QString CoprResource::availableVersion() const
 
 QString CoprResource::installedVersion() const
 {
-    return QString();
+    return m_installedVersion;
 }
 
 QUrl CoprResource::homepage()
@@ -524,20 +525,16 @@ AbstractResource::State CoprResource::state()
     return AbstractResource::None;
 }
 
-void CoprResource::setState(AbstractResource::State state)
-{
-    setInstalledStateFromSystem(state == AbstractResource::Installed);
-}
-
-void CoprResource::setInstalledStateFromSystem(bool installed)
+void CoprResource::setInstalledStateFromSystem(const QString &installedVersion)
 {
     const bool wasInstalled = m_isInstalled;
-    m_isInstalled = installed;
+    const QString previousVersion = m_installedVersion;
+    m_isInstalled = !installedVersion.isEmpty();
+    m_installedVersion = installedVersion;
 
-    if (auto pkBackend = qobject_cast<PackageKitBackend *>(backend())) {
-        pkBackend->setCoprInstalledStateCache(m_owner, m_installPackageName, installed);
+    if (previousVersion != m_installedVersion) {
+        Q_EMIT versionsChanged();
     }
-
     // Also emit the change through the backend so the UI updates
     if (wasInstalled != m_isInstalled) {
         Q_EMIT stateChanged();
@@ -605,6 +602,52 @@ QString CoprResource::coprInstallStatus() const
 bool CoprResource::isCoprPackageListLimited() const
 {
     return (m_packageListFetch == Loaded && !m_packageListComplete) || (m_monitorFetch == Loaded && !m_monitorComplete);
+}
+
+void CoprResource::setCoprSearchQuery(const QString &query, bool matchIsVisible)
+{
+    if (m_searchQuery == query && m_searchMatchIsVisible == matchIsVisible) {
+        return;
+    }
+    m_searchQuery = query;
+    m_searchMatchIsVisible = matchIsVisible;
+
+    // The package that is chosen automatically depends on the query
+    if (m_isProjectResource && coprProjectPackagesLoaded()) {
+        projectPackagesUpdated();
+    } else {
+        Q_EMIT projectPackagesChanged();
+    }
+}
+
+QString CoprResource::coprSearchReason() const
+{
+    if (m_searchQuery.isEmpty() || m_searchMatchIsVisible) {
+        return {};
+    }
+
+    // The server also searches the package names and the instructions, and does not say
+    // where it found the query. A package can only be named once the packages are known.
+    const QString fullName = m_projectFullName.isEmpty() ? QStringLiteral("%1/%2").arg(m_owner, m_project) : m_projectFullName;
+    const CoprPackageInfo *matching = nullptr;
+    for (const CoprPackageInfo &package : m_projectPackages) {
+        if (package.name.compare(m_searchQuery, Qt::CaseInsensitive) == 0) {
+            matching = &package;
+            break;
+        }
+        if (!matching && package.name.contains(m_searchQuery, Qt::CaseInsensitive)) {
+            matching = &package;
+        }
+    }
+    if (matching) {
+        return i18n("%1 - found by its package %2", fullName, matching->name);
+    }
+
+    static const QRegularExpression htmlTag(QStringLiteral("<[^>]*>"));
+    if (QString(m_instructions).remove(htmlTag).contains(m_searchQuery, Qt::CaseInsensitive)) {
+        return i18n("%1 - found in its installation instructions", fullName);
+    }
+    return i18n("%1 - found by COPR, but not in its name or description", fullName);
 }
 
 CoprResource::FetchState &CoprResource::fetchStateFor(const QString &requestType)
@@ -801,11 +844,16 @@ const CoprPackageInfo *CoprResource::preferredProjectPackage() const
         return candidates.constFirst();
     }
 
-    // The package named like the project
-    const auto it = std::find_if(candidates.cbegin(), candidates.cend(), [this](const CoprPackageInfo *package) {
-        return package->name.compare(m_project, Qt::CaseInsensitive) == 0;
-    });
-    return it == candidates.cend() ? nullptr : *it;
+    // The package named like the project, or else like what the user searched for
+    for (const QString &name : {m_project, m_searchQuery}) {
+        const auto it = std::find_if(candidates.cbegin(), candidates.cend(), [&name](const CoprPackageInfo *package) {
+            return package->name.compare(name, Qt::CaseInsensitive) == 0;
+        });
+        if (it != candidates.cend()) {
+            return *it;
+        }
+    }
+    return nullptr;
 }
 
 void CoprResource::applyPackageDetails(const CoprPackageInfo &package)
@@ -863,14 +911,14 @@ QDate CoprResource::releaseDate() const
 void CoprResource::checkInstalledState()
 {
     if (m_installPackageName.isEmpty()) {
-        setInstalledStateFromSystem(false);
+        setInstalledStateFromSystem({});
         return;
     }
 
     if (auto pkBackend = qobject_cast<PackageKitBackend *>(backend())) {
         pkBackend->requestCoprInstalledStateCheck(this);
     } else {
-        setInstalledStateFromSystem(false);
+        setInstalledStateFromSystem({});
     }
 }
 

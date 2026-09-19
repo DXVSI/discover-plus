@@ -75,11 +75,13 @@ COPR is intentionally handled from the COPR sidebar page, not from global search
 
 The COPR flow is:
 
-1. Browse recently created COPR projects that have your Fedora release enabled (projects marked as hidden from the COPR homepage are excluded), or search COPR from the COPR page. The list shows the newest projects first by default and can be sorted by name instead. When the Fedora release cannot be detected, the list is not filtered by release.
+1. Browse recently created COPR projects that have your Fedora release enabled (projects marked as hidden from the COPR homepage are excluded), or search COPR from the COPR page. The list shows the newest projects first by default and can be sorted by name instead. When the Fedora release cannot be detected, the list is not filtered by release. A COPR search needs at least three characters; `owner/project`, a link to a project page, or a pasted `dnf copr enable` command finds that project directly.
 2. Open a project page and review warnings, availability, build information, source links, repository flags, and instructions.
 3. If the project exposes multiple packages, select the package to install.
-4. Install enables the COPR repository and installs the selected package.
-5. Uninstall removes the installed package and then removes the matching COPR repository.
+4. Install enables the COPR repository and installs the selected package from that repository only, so a package of the same name in Fedora is never installed in its place. Dependencies still come from all enabled repositories.
+5. Uninstall removes the installed package. The matching COPR repository is removed afterwards only when no other installed package came from it; otherwise it stays enabled so those packages keep receiving updates. Removing the repository asks for the password a second time; when that prompt is dismissed, or the operation is cancelled midway, the repository stays enabled and can be removed with `dnf copr remove owner/project`. The same applies when an install stops after the repository was enabled.
+
+A package is shown as installed from COPR when DNF recorded that it was installed from the repository of that owner and project. Packages without such a record (installed with `rpm`, from a downloaded file, or before DNF kept the record) are matched by their `Fedora Copr` vendor tag instead, which names the owner but not the project; removing such a package never removes a repository.
 
 COPR API responses are cached, duplicate requests are deduplicated, and concurrent requests are limited to keep the UI responsive.
 

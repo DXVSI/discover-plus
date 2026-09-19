@@ -33,6 +33,9 @@ class CoprResource : public PackageKitResource
     Q_PROPERTY(QString coprInstallError READ coprInstallError NOTIFY projectPackagesChanged)
     // True when the project has more packages than were loaded: one that is not listed may still exist
     Q_PROPERTY(bool coprPackageListLimited READ isCoprPackageListLimited NOTIFY projectPackagesChanged)
+    // Why a search lists this project although its name, owner and description do not show
+    // the query. Empty otherwise. comment() is constant and cannot follow the monitor.
+    Q_PROPERTY(QString coprSearchReason READ coprSearchReason NOTIFY projectPackagesChanged)
 
 public:
     explicit CoprResource(const CoprPackageInfo &packageInfo, AbstractResourcesBackend *parent);
@@ -72,9 +75,13 @@ public:
     QString coprInstallWarning() const;
     QString coprInstallError() const;
     bool isCoprPackageListLimited() const;
+    QString coprSearchReason() const;
 
-    void setState(AbstractResource::State state);
-    void setInstalledStateFromSystem(bool installed);
+    // What the list was searched for (empty when browsing) and whether the name, the
+    // owner or the description of the project shows it
+    void setCoprSearchQuery(const QString &query, bool matchIsVisible);
+    // The version is empty when the package is not installed from the repository of this project
+    void setInstalledStateFromSystem(const QString &installedVersion);
     // What the client delivered; requestType is one of CoprClient::project*RequestType()
     void setProjectPackages(const QList<CoprPackageInfo> &packages, bool complete);
     void setProjectMonitor(const QList<CoprPackageInfo> &packages, bool complete);
@@ -184,6 +191,9 @@ private:
     bool m_packageListComplete = true;
     bool m_monitorComplete = true;
     bool m_isInstalled = false;
+    QString m_installedVersion;
+    QString m_searchQuery;
+    bool m_searchMatchIsVisible = true;
 };
 
 #endif // COPRRESOURCE_H

@@ -47,6 +47,8 @@ BasicAbstractCard {
     // Everything else lacks coprInstallStatus and never gets here.
     readonly property bool isCoprProject: application?.isCoprProjectResource === true
     readonly property string coprPackageName: isCoprProject ? application.selectedCoprPackageName : ""
+    // Why a search lists a project that does not show the query. Takes the line of the comment.
+    readonly property string coprSearchReason: isCoprProject ? application.coprSearchReason : ""
     // Only set by a view that reuses its items
     property bool pooled: false
     // The rows of every other list stop at the first condition and never follow the scrolling
@@ -184,7 +186,7 @@ BasicAbstractCard {
                 id: description
                 Layout.fillWidth: true
                 Layout.preferredHeight: descriptionMetrics.height
-                text: root.application.comment
+                text: root.coprSearchReason.length > 0 ? root.coprSearchReason : root.application.comment
                 elide: Text.ElideRight
                 maximumLineCount: 1
                 textFormat: Text.PlainText

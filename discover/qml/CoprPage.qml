@@ -18,6 +18,8 @@ ApplicationsListPage {
     originFilter: "COPR"
     allBackends: true
     newestFirstSorting: true
+    // CoprSearchMinimumLength of the backend
+    minimumSearchLength: 3
 
     // Don't allow navigation to other categories within COPR page
     // This ensures proper transition when switching from COPR to other categories
