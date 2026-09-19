@@ -106,7 +106,7 @@ static QString coprPackageKey(const QString &owner, const QString &project, cons
     return QStringLiteral("%1/%2:%3").arg(owner, project, package);
 }
 
-static CoprPackageInfo packageInfoFromProject(const CoprProjectInfo &project, const QString &currentChroot)
+static CoprPackageInfo packageInfoFromProject(const CoprProjectInfo &project)
 {
     CoprPackageInfo packageInfo;
     packageInfo.name = project.name;
@@ -114,7 +114,7 @@ static CoprPackageInfo packageInfoFromProject(const CoprProjectInfo &project, co
     packageInfo.projectName = project.name;
     packageInfo.projectFullName = project.fullName;
     packageInfo.description = project.description;
-    packageInfo.availableChroots = project.chroots;
+    packageInfo.projectChroots = project.chroots;
     packageInfo.homepage = project.homepage;
     packageInfo.instructions = project.instructions;
     packageInfo.contact = project.contact;
@@ -127,11 +127,10 @@ static CoprPackageInfo packageInfoFromProject(const CoprProjectInfo &project, co
     packageInfo.autoPrune = project.autoPrune;
     packageInfo.moduleHotfixes = project.moduleHotfixes;
     packageInfo.isProjectResource = true;
-    packageInfo.isAvailableForCurrentFedora = packageInfo.availableChroots.contains(currentChroot);
     return packageInfo;
 }
 
-static CoprPackageInfo enrichPackageInfo(CoprPackageInfo packageInfo, const CoprProjectInfo &project, const QString &currentChroot)
+static CoprPackageInfo enrichPackageInfo(CoprPackageInfo packageInfo, const CoprProjectInfo &project)
 {
     packageInfo.projectFullName = project.fullName;
     packageInfo.description = project.description;
@@ -148,10 +147,8 @@ static CoprPackageInfo enrichPackageInfo(CoprPackageInfo packageInfo, const Copr
     packageInfo.followFedoraBranching = project.followFedoraBranching;
     packageInfo.autoPrune = project.autoPrune;
     packageInfo.moduleHotfixes = project.moduleHotfixes;
-    if (packageInfo.availableChroots.isEmpty()) {
-        packageInfo.availableChroots = project.chroots;
-    }
-    packageInfo.isAvailableForCurrentFedora = packageInfo.availableChroots.contains(currentChroot);
+    // Kept apart from the chroots the package is built for
+    packageInfo.projectChroots = project.chroots;
     return packageInfo;
 }
 
@@ -313,6 +310,19 @@ PackageKitBackend::PackageKitBackend(QObject *parent)
     m_coprClient = new CoprClient(this);
     connect(m_coprClient, &CoprClient::projectsFound, this, &PackageKitBackend::onCoprProjectsFound);
     connect(m_coprClient, &CoprClient::projectPackagesFound, this, &PackageKitBackend::onCoprProjectPackagesFound);
+    connect(m_coprClient, &CoprClient::projectMonitorFound, this, &PackageKitBackend::onCoprProjectMonitorFound);
+    connect(m_coprClient, &CoprClient::projectRequestFailed, this, [this](const QString &requestType, const QString &owner, const QString &project) {
+        const QList<CoprResource *> resources = coprResourcesOfProject(owner, project);
+        for (CoprResource *resource : resources) {
+            resource->projectRequestFailed(requestType);
+        }
+    });
+    connect(m_coprClient, &CoprClient::projectRequestCancelled, this, [this](const QString &requestType, const QString &owner, const QString &project) {
+        const QList<CoprResource *> resources = coprResourcesOfProject(owner, project);
+        for (CoprResource *resource : resources) {
+            resource->projectRequestCancelled(requestType);
+        }
+    });
     connect(m_coprClient, &CoprClient::errorOccurred, this, [this](const QString &requestType, const QString &error) {
         qCWarning(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "COPR error:" << requestType << error;
         // Only the list itself is worth a message: a failed list request ends the
@@ -904,9 +914,11 @@ ResultsStream *PackageKitBackend::search(const AbstractResourcesBackend::Filters
         if (filter.origin == QStringLiteral("COPR") && m_lastCoprSearchQuery != filter.search) {
             qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "Cleaning up previous COPR stream and cancelling requests";
 
-            // Cancel all pending COPR requests first
+            // Cancel the pending requests of the list first. This branch also fires on the
+            // internal search that follows the opening of a detail page (see below):
+            // what that page has asked for is kept by the client.
             if (m_coprClient) {
-                m_coprClient->cancelAllRequests();
+                m_coprClient->cancelStreamRequests();
             }
 
             auto coprStream = qobject_cast<PKResultsStream *>(m_currentSearchStream.data());
@@ -942,11 +954,12 @@ ResultsStream *PackageKitBackend::search(const AbstractResourcesBackend::Filters
         // started on that 0.5 MB page and would be asked for it once more.
         const bool continueBrowse = m_lastCoprSearchQuery.isEmpty() && m_coprBrowsePagePending;
 
-        // Close any previous COPR stream and cancel pending requests
+        // Close any previous COPR stream and cancel pending requests. The items of a
+        // list may still be asking for their packages after its stream has finished.
+        if (m_coprClient && !continueBrowse) {
+            m_coprClient->cancelStreamRequests();
+        }
         if (m_currentSearchStream) {
-            if (m_coprClient && !continueBrowse) {
-                m_coprClient->cancelAllRequests();
-            }
             auto oldStream = qobject_cast<PKResultsStream *>(m_currentSearchStream.data());
             if (oldStream) {
                 oldStream->finishCoprStream();
@@ -998,10 +1011,10 @@ ResultsStream *PackageKitBackend::search(const AbstractResourcesBackend::Filters
         qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "COPR search with query:" << filter.search;
 
         // Close any previous COPR stream and cancel pending requests
+        if (m_coprClient) {
+            m_coprClient->cancelStreamRequests();
+        }
         if (m_currentSearchStream) {
-            if (m_coprClient) {
-                m_coprClient->cancelAllRequests();
-            }
             auto oldStream = qobject_cast<PKResultsStream *>(m_currentSearchStream.data());
             if (oldStream) {
                 oldStream->finishCoprStream();
@@ -2032,7 +2045,7 @@ void PackageKitBackend::onCoprProjectsFound(const QList<CoprProjectInfo> &projec
             if (m_coprResources.contains(key)) {
                 resource = m_coprResources[key];
             } else {
-                CoprPackageInfo packageInfo = packageInfoFromProject(project, currentChroot);
+                CoprPackageInfo packageInfo = packageInfoFromProject(project);
 
                 resource = new CoprResource(packageInfo, this);
                 m_coprResources[key] = resource;
@@ -2046,7 +2059,11 @@ void PackageKitBackend::onCoprProjectsFound(const QList<CoprProjectInfo> &projec
             m_coprProjectRelevance[key] = relevanceScore;
             if (!m_coprPackageRequests.contains(key) && m_coprClient) {
                 m_coprPackageRequests.insert(key);
-                m_coprClient->getProjectPackages(project.owner, project.name);
+                // The packages of a search result come from the monitor. A resource that
+                // has it already (or never asks, without the chroot) sends nothing itself.
+                if (!resource->fetchProjectMonitor()) {
+                    m_coprClient->getProjectMonitor(project.owner, project.name);
+                }
                 qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "Queued COPR package lookup for search result:" << key << "score:" << relevanceScore;
             }
             qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "COPR project search result:" << project.owner << "/" << project.name << "score:" << relevanceScore;
@@ -2076,7 +2093,7 @@ void PackageKitBackend::onCoprProjectsFound(const QList<CoprProjectInfo> &projec
         if (m_coprResources.contains(key)) {
             resource = m_coprResources[key];
         } else {
-            CoprPackageInfo packageInfo = packageInfoFromProject(project, currentChroot);
+            CoprPackageInfo packageInfo = packageInfoFromProject(project);
 
             resource = new CoprResource(packageInfo, this);
             m_coprResources[key] = resource;
@@ -2155,16 +2172,42 @@ void PackageKitBackend::onCoprProjectsFound(const QList<CoprProjectInfo> &projec
     }
 }
 
-void PackageKitBackend::onCoprProjectPackagesFound(const QString &owner, const QString &project, const QList<CoprPackageInfo> &packages)
+QList<CoprResource *> PackageKitBackend::coprResourcesOfProject(const QString &owner, const QString &project) const
 {
-    qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "Found" << packages.size() << "packages for COPR project" << owner << "/" << project;
+    // The project itself and the packages of it that a search has turned into resources
+    QList<CoprResource *> resources;
+    for (CoprResource *resource : m_coprResources) {
+        if (resource && resource->coprOwner() == owner && resource->coprProject() == project) {
+            resources.append(resource);
+        }
+    }
+    return resources;
+}
+
+void PackageKitBackend::onCoprProjectPackagesFound(const QString &owner, const QString &project, const QList<CoprPackageInfo> &packages, bool complete)
+{
+    qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "Found" << packages.size() << "packages for COPR project" << owner << "/" << project
+                                                << (complete ? "" : "(not all of them)");
+
+    const QList<CoprResource *> resources = coprResourcesOfProject(owner, project);
+    for (CoprResource *resource : resources) {
+        resource->setProjectPackages(packages, complete);
+        Q_EMIT resourcesChanged(resource, {"longDescription", "availableVersion", "sizeDescription", "state", "releaseDate"});
+    }
+}
+
+void PackageKitBackend::onCoprProjectMonitorFound(const QString &owner, const QString &project, const QList<CoprPackageInfo> &packages, bool complete)
+{
+    qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "Monitor of COPR project" << owner << "/" << project << "has" << packages.size() << "packages"
+                                                << (complete ? "" : "(not all of them)");
 
     const QString key = coprProjectKey(owner, project);
-    auto *projectResource = m_coprResources.value(key, nullptr);
-    if (projectResource) {
-        projectResource->setProjectPackages(packages);
-        Q_EMIT resourcesChanged(projectResource, {"longDescription", "availableVersion", "sizeDescription", "state"});
-    } else {
+    const QList<CoprResource *> resources = coprResourcesOfProject(owner, project);
+    for (CoprResource *resource : resources) {
+        resource->setProjectMonitor(packages, complete);
+        Q_EMIT resourcesChanged(resource, {"longDescription", "availableVersion", "sizeDescription", "state", "releaseDate"});
+    }
+    if (resources.isEmpty()) {
         qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "No COPR project resource to update for" << key;
     }
 
@@ -2174,16 +2217,23 @@ void PackageKitBackend::onCoprProjectPackagesFound(const QString &owner, const Q
 
     m_coprPackageRequests.remove(key);
 
-    const QString currentChroot = m_coprClient ? m_coprClient->getCurrentChroot() : QString();
     const CoprProjectInfo projectInfo = m_coprProjectMetadata.value(key);
     const int projectRelevance = m_coprProjectRelevance.value(key, 50);
     const QString lowerQuery = m_lastCoprSearchQuery.toLower();
 
-    QVector<StreamResult> results;
-    results.reserve(packages.isEmpty() ? 1 : packages.size());
+    // The monitor lists every package of the project, the search shows a few per
+    // project: those whose name matches the query first
+    QList<CoprPackageInfo> shownPackages = packages;
+    std::stable_partition(shownPackages.begin(), shownPackages.end(), [&lowerQuery](const CoprPackageInfo &package) {
+        return package.name.toLower().contains(lowerQuery);
+    });
+    shownPackages.resize(qMin(shownPackages.size(), CoprSearchPackagesPerProject));
 
-    for (const CoprPackageInfo &rawPackageInfo : packages) {
-        CoprPackageInfo packageInfo = m_coprProjectMetadata.contains(key) ? enrichPackageInfo(rawPackageInfo, projectInfo, currentChroot) : rawPackageInfo;
+    QVector<StreamResult> results;
+    results.reserve(shownPackages.isEmpty() ? 1 : shownPackages.size());
+
+    for (const CoprPackageInfo &rawPackageInfo : std::as_const(shownPackages)) {
+        CoprPackageInfo packageInfo = m_coprProjectMetadata.contains(key) ? enrichPackageInfo(rawPackageInfo, projectInfo) : rawPackageInfo;
         const QString packageKey = coprPackageKey(packageInfo.owner, packageInfo.projectName, packageInfo.name);
 
         CoprResource *resource = nullptr;
@@ -2218,7 +2268,7 @@ void PackageKitBackend::onCoprProjectPackagesFound(const QString &owner, const Q
         if (m_coprResources.contains(key)) {
             resource = m_coprResources[key];
         } else {
-            CoprPackageInfo packageInfo = packageInfoFromProject(projectInfo, currentChroot);
+            CoprPackageInfo packageInfo = packageInfoFromProject(projectInfo);
             resource = new CoprResource(packageInfo, this);
             m_coprResources[key] = resource;
 

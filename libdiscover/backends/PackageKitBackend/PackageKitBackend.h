@@ -173,7 +173,8 @@ private Q_SLOTS:
     void loadAllPackages();
     void loadAllPackagesHybrid();
     void onCoprProjectsFound(const QList<CoprProjectInfo> &projects);
-    void onCoprProjectPackagesFound(const QString &owner, const QString &project, const QList<CoprPackageInfo> &packages);
+    void onCoprProjectPackagesFound(const QString &owner, const QString &project, const QList<CoprPackageInfo> &packages, bool complete);
+    void onCoprProjectMonitorFound(const QString &owner, const QString &project, const QList<CoprPackageInfo> &packages, bool complete);
 
 Q_SIGNALS:
     void loadedAppStream();
@@ -203,6 +204,7 @@ private:
     void processNextCoprInstalledStateCheck();
     void requestNextCoprBrowsePage();
     void showCoprMessageOnce(const QString &kind, const QString &message);
+    QList<CoprResource *> coprResourcesOfProject(const QString &owner, const QString &project) const;
 
     QScopedPointer<AppStream::ConcurrentPool> m_appdata;
     bool m_appdataLoaded = false;
@@ -236,6 +238,8 @@ private:
     QHash<QString, CoprProjectInfo> m_coprProjectMetadata;
     QHash<QString, int> m_coprProjectRelevance;
     QSet<QString> m_coprPackageRequests;
+    // As many as the package list request of a search used to return
+    static constexpr int CoprSearchPackagesPerProject = 10;
     bool m_coprSearchPagePending = false;
     struct CoprInstalledStateRequest {
         QPointer<CoprResource> resource;

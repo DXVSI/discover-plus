@@ -38,6 +38,8 @@ private:
     PackageKitBackend *m_backend;
     QProcess *m_process;
     Transaction::Role m_role;
+    // Taken once in proceed(): the selection of the resource may change while pkexec runs
+    QString m_packageName;
     QString m_stdoutBuffer;
     QString m_stderrBuffer;
     enum State {

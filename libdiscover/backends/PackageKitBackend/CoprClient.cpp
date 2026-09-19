@@ -20,6 +20,8 @@
 #include <QUrl>
 #include <QUrlQuery>
 
+#include <functional>
+
 namespace DiscoverVersion
 {
 // contains the static QLatin1String version definition
@@ -185,7 +187,7 @@ void CoprClient::searchProjects(const QString &query, int limit, int offset)
     url.setQuery(urlQuery);
 
     qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "CoprClient: Searching projects, query:" << query << "limit:" << limit << "offset:" << offset;
-    queueRequest(url, QStringLiteral("searchProjects"));
+    queueRequest({url, QStringLiteral("searchProjects")});
 }
 
 void CoprClient::getLatestProjects(int limit, int offset)
@@ -203,22 +205,105 @@ void CoprClient::getLatestProjects(int limit, int offset)
     url.setQuery(urlQuery);
 
     qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "CoprClient: Getting latest projects:" << url.toString();
-    queueRequest(url, QStringLiteral("getLatestProjects"));
+    queueRequest({url, QStringLiteral("getLatestProjects")});
+}
+
+// Project and package names are taken from the query of the request and never from
+// a joined string: COPR allows characters in them that any separator would clash with
+static QString queryItem(const QUrl &url, const QString &key)
+{
+    return QUrlQuery(url).queryItemValue(key, QUrl::FullyDecoded);
+}
+
+static QString packagePagesKey(const QString &owner, const QString &project)
+{
+    return owner + QLatin1Char('/') + project;
 }
 
 void CoprClient::getProjectPackages(const QString &owner, const QString &project)
 {
+    requestProjectPackagesPage(owner, project, 0);
+}
+
+void CoprClient::requestProjectPackagesPage(const QString &owner, const QString &project, int offset)
+{
     QString endpoint = QStringLiteral("/package/list");
+    QUrl url(m_baseUrl + endpoint);
+
+    // The default order of the server is the package id, oldest first. There is no
+    // total in the answer: a page that comes back full is followed by the next one.
+    // with_latest_succeeded_build gives the version and the dates of what can really be
+    // installed, but costs the server a query per package: only this request has it.
+    QUrlQuery urlQuery;
+    urlQuery.addQueryItem(QStringLiteral("ownername"), owner);
+    urlQuery.addQueryItem(QStringLiteral("projectname"), project);
+    urlQuery.addQueryItem(QStringLiteral("with_latest_build"), QStringLiteral("True"));
+    urlQuery.addQueryItem(QStringLiteral("with_latest_succeeded_build"), QStringLiteral("True"));
+    urlQuery.addQueryItem(QStringLiteral("limit"), QString::number(PackagesPageSize));
+    urlQuery.addQueryItem(QStringLiteral("offset"), QString::number(offset));
+    urlQuery.addQueryItem(QStringLiteral("order"), QStringLiteral("name"));
+    urlQuery.addQueryItem(QStringLiteral("order_type"), QStringLiteral("ASC"));
+    url.setQuery(urlQuery);
+
+    queueRequest({url, projectPackagesRequestType(), true});
+}
+
+void CoprClient::getProjectMonitor(const QString &owner, const QString &project, bool forOpenPage)
+{
+    QString endpoint = QStringLiteral("/monitor");
     QUrl url(m_baseUrl + endpoint);
 
     QUrlQuery urlQuery;
     urlQuery.addQueryItem(QStringLiteral("ownername"), owner);
     urlQuery.addQueryItem(QStringLiteral("projectname"), project);
-    urlQuery.addQueryItem(QStringLiteral("with_latest_build"), QStringLiteral("True"));
-    urlQuery.addQueryItem(QStringLiteral("limit"), QStringLiteral("10"));
     url.setQuery(urlQuery);
 
-    queueRequest(url, QStringLiteral("getProjectPackages:") + owner + QStringLiteral(":") + project);
+    queueRequest({url, projectMonitorRequestType(), forOpenPage});
+}
+
+void CoprClient::cancelStreamRequests()
+{
+    QList<Request> cancelled;
+
+    for (auto it = m_activeReplies.begin(); it != m_activeReplies.end();) {
+        const QPointer<QNetworkReply> reply = *it;
+        if (reply && reply->property("forOpenPage").toBool()) {
+            ++it;
+            continue;
+        }
+        if (reply) {
+            cancelled.append({reply->request().url(), reply->property("requestType").toString()});
+            reply->disconnect(this);
+            reply->abort();
+            reply->deleteLater();
+        }
+        it = m_activeReplies.erase(it);
+        if (m_activeRequests > 0) {
+            --m_activeRequests;
+        }
+    }
+
+    for (auto it = m_requestQueue.begin(); it != m_requestQueue.end();) {
+        if (it->forOpenPage) {
+            ++it;
+            continue;
+        }
+        cancelled.append(*it);
+        it = m_requestQueue.erase(it);
+    }
+
+    // Answers that were deferred to the event loop (cache hits, refusals) are cancelled
+    // too, except those for an open application page
+    ++m_requestGeneration;
+
+    qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "Cancelled" << cancelled.size() << "COPR list requests, kept for open pages:" << m_activeReplies.size()
+                                                << "active and" << m_requestQueue.size() << "queued";
+
+    // Only now: whoever hears about a cancellation may ask again at once
+    for (const Request &request : std::as_const(cancelled)) {
+        cancelRequest(request);
+    }
+    processNextRequest();
 }
 
 void CoprClient::cancelAllRequests()
@@ -232,6 +317,7 @@ void CoprClient::cancelAllRequests()
     }
     m_activeReplies.clear();
     m_requestQueue.clear();
+    m_packagePages.clear();
     m_activeRequests = 0;
     // Answers that were deferred to the event loop (cache hits, refusals) are cancelled too
     ++m_requestGeneration;
@@ -239,9 +325,36 @@ void CoprClient::cancelAllRequests()
     qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "Cancelled all COPR pending requests";
 }
 
-void CoprClient::queueRequest(const QUrl &url, const QString &requestType)
+void CoprClient::cancelRequest(const Request &request)
 {
+    if (request.requestType != projectPackagesRequestType() && request.requestType != projectMonitorRequestType()) {
+        return;
+    }
+    const QString owner = queryItem(request.url, QStringLiteral("ownername"));
+    const QString project = queryItem(request.url, QStringLiteral("projectname"));
+    if (request.requestType == projectPackagesRequestType()) {
+        m_packagePages.remove(packagePagesKey(owner, project));
+    }
+    Q_EMIT projectRequestCancelled(request.requestType, owner, project);
+}
+
+void CoprClient::queueRequest(const Request &request)
+{
+    const QUrl url = request.url;
+    const QString requestType = request.requestType;
     QString urlString = url.toString();
+
+    // A request that was deferred to the event loop is dropped by a cancellation that
+    // happens in between, unless an open application page is waiting for it
+    const auto deferred = [this, request](const std::function<void()> &answer) {
+        QTimer::singleShot(0, this, [this, request, answer, generation = m_requestGeneration]() {
+            if (request.forOpenPage || generation == m_requestGeneration) {
+                answer();
+            } else {
+                cancelRequest(request);
+            }
+        });
+    };
 
     // Check cache first
     if (m_cache.contains(urlString)) {
@@ -249,10 +362,8 @@ void CoprClient::queueRequest(const QUrl &url, const QString &requestType)
         qint64 now = QDateTime::currentMSecsSinceEpoch();
         if (now - entry.timestamp < CacheTtlMs) {
             qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "COPR cache hit for:" << requestType;
-            QTimer::singleShot(0, this, [this, requestType, json = entry.data, generation = m_requestGeneration]() {
-                if (generation == m_requestGeneration) {
-                    emitResultForRequest(requestType, json);
-                }
+            deferred([this, request, json = entry.data]() {
+                emitResultForRequest(request, json);
             });
             return;
         }
@@ -262,23 +373,33 @@ void CoprClient::queueRequest(const QUrl &url, const QString &requestType)
     // The server asked us to back off (HTTP 429/503): do not send anything until then
     const QString backOff = backOffMessage();
     if (!backOff.isEmpty()) {
-        QTimer::singleShot(0, this, [this, requestType, backOff, generation = m_requestGeneration]() {
-            if (generation == m_requestGeneration) {
-                failRequest(requestType, backOff);
-            }
+        deferred([this, request, backOff]() {
+            failRequest(request, backOff);
         });
         return;
     }
 
-    // Deduplication - skip if same URL already queued
-    for (const auto &queued : m_requestQueue) {
-        if (queued.first == url) {
-            qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "COPR request deduped:" << requestType;
+    // Deduplication - skip if same URL already queued or in flight. The answer is a
+    // signal that everybody hears, so nobody is left waiting. The URL carries the
+    // variant and the offset of a request, so different pages never merge.
+    for (auto &queued : m_requestQueue) {
+        if (queued.url == url) {
+            qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "COPR request deduped, already queued:" << requestType << urlString;
+            queued.forOpenPage = queued.forOpenPage || request.forOpenPage;
+            return;
+        }
+    }
+    for (const auto &reply : std::as_const(m_activeReplies)) {
+        if (reply && reply->property("urlString").toString() == urlString) {
+            qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "COPR request deduped, already in flight:" << requestType << urlString;
+            if (request.forOpenPage) {
+                reply->setProperty("forOpenPage", true);
+            }
             return;
         }
     }
 
-    m_requestQueue.enqueue(qMakePair(url, requestType));
+    m_requestQueue.enqueue(request);
     qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "Queued COPR request:" << requestType << "queue size:" << m_requestQueue.size();
 
     if (m_activeRequests < MaxConcurrentRequests) {
@@ -286,36 +407,63 @@ void CoprClient::queueRequest(const QUrl &url, const QString &requestType)
     }
 }
 
-void CoprClient::emitResultForRequest(const QString &requestType, const QJsonObject &json)
+void CoprClient::emitResultForRequest(const Request &request, const QJsonObject &json)
 {
+    const QString &requestType = request.requestType;
     if (requestType == QStringLiteral("searchProjects") || requestType == QStringLiteral("getLatestProjects")) {
         Q_EMIT projectsFound(parseProjectsResponse(json));
-    } else if (requestType.startsWith(QStringLiteral("getProjectPackages:"))) {
-        QStringList parts = requestType.split(QLatin1Char(':'));
-        if (parts.size() >= 3) {
-            const QList<CoprPackageInfo> packages = parsePackagesResponse(json, parts[1], parts[2]);
-            Q_EMIT projectPackagesFound(parts[1], parts[2], packages);
+        return;
+    }
+
+    const QString owner = queryItem(request.url, QStringLiteral("ownername"));
+    const QString project = queryItem(request.url, QStringLiteral("projectname"));
+
+    if (requestType == projectMonitorRequestType()) {
+        bool complete = true;
+        const QList<CoprPackageInfo> packages = parseMonitorResponse(json, owner, project, &complete);
+        Q_EMIT projectMonitorFound(owner, project, packages, complete);
+    } else if (requestType == projectPackagesRequestType()) {
+        const int offset = queryItem(request.url, QStringLiteral("offset")).toInt();
+        const QString key = packagePagesKey(owner, project);
+        const QList<CoprPackageInfo> page = parsePackagesResponse(json, owner, project);
+
+        // The first page starts the list over, whatever an earlier attempt left behind
+        QList<CoprPackageInfo> packages = offset == 0 ? QList<CoprPackageInfo>() : m_packagePages.take(key);
+        packages.append(page);
+
+        const bool fullPage = page.size() >= PackagesPageSize;
+        if (fullPage && packages.size() < MaxPackagesPerProject) {
+            m_packagePages.insert(key, packages);
+            requestProjectPackagesPage(owner, project, offset + PackagesPageSize);
+            return;
         }
+        m_packagePages.remove(key);
+        if (fullPage) {
+            qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "COPR project" << key << "has more than" << packages.size() << "packages, keeping these";
+        }
+        Q_EMIT projectPackagesFound(owner, project, packages, !fullPage);
     }
 }
 
-void CoprClient::emitEmptyResultForRequest(const QString &requestType)
+void CoprClient::failRequest(const Request &request, const QString &errorMessage)
 {
-    if (requestType == QStringLiteral("searchProjects") || requestType == QStringLiteral("getLatestProjects")) {
-        Q_EMIT projectsFound(QList<CoprProjectInfo>());
-    } else if (requestType.startsWith(QStringLiteral("getProjectPackages:"))) {
-        const QStringList parts = requestType.split(QLatin1Char(':'));
-        if (parts.size() >= 3) {
-            Q_EMIT projectPackagesFound(parts[1], parts[2], QList<CoprPackageInfo>());
-        }
-    }
-}
-
-void CoprClient::failRequest(const QString &requestType, const QString &errorMessage)
-{
+    const QString &requestType = request.requestType;
     qCWarning(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "COPR request" << requestType << "failed:" << errorMessage;
     Q_EMIT errorOccurred(requestType, errorMessage);
-    emitEmptyResultForRequest(requestType);
+
+    if (requestType == QStringLiteral("searchProjects") || requestType == QStringLiteral("getLatestProjects")) {
+        // The list ends here; the message above tells the user why
+        Q_EMIT projectsFound(QList<CoprProjectInfo>());
+    } else if (requestType == projectPackagesRequestType() || requestType == projectMonitorRequestType()) {
+        // Never an empty result: a project without packages is something else than
+        // a request that can be repeated
+        const QString owner = queryItem(request.url, QStringLiteral("ownername"));
+        const QString project = queryItem(request.url, QStringLiteral("projectname"));
+        if (requestType == projectPackagesRequestType()) {
+            m_packagePages.remove(packagePagesKey(owner, project));
+        }
+        Q_EMIT projectRequestFailed(requestType, owner, project, errorMessage);
+    }
 }
 
 QString CoprClient::backOffMessage() const
@@ -404,15 +552,15 @@ void CoprClient::processNextRequest()
             if (generation != m_requestGeneration) {
                 break;
             }
-            failRequest(request.second, backOff);
+            failRequest(request, backOff);
         }
         return;
     }
 
     while (!m_requestQueue.isEmpty() && m_activeRequests < MaxConcurrentRequests) {
-        const auto requestData = m_requestQueue.dequeue();
-        const QUrl url = requestData.first;
-        const QString requestType = requestData.second;
+        const Request requestData = m_requestQueue.dequeue();
+        const QUrl url = requestData.url;
+        const QString requestType = requestData.requestType;
         const QString urlString = url.toString();
 
         QNetworkRequest request(url);
@@ -423,6 +571,7 @@ void CoprClient::processNextRequest()
         QNetworkReply *reply = m_networkAccessManager->get(request);
         reply->setProperty("requestType", requestType);
         reply->setProperty("urlString", urlString);
+        reply->setProperty("forOpenPage", requestData.forOpenPage);
 
         m_activeReplies.append(reply);
         ++m_activeRequests;
@@ -430,11 +579,12 @@ void CoprClient::processNextRequest()
         qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "Processing COPR request via Qt network:" << requestType << "active:" << m_activeRequests
                                                     << "queued:" << m_requestQueue.size();
 
-        // Search costs the server 6-8 s; a project list page is a few hundred KB (about 3 s on a good link)
+        // Search costs the server 6-8 s; a project list page is a few hundred KB (about 3 s on a good link);
+        // a full page of packages with their latest succeeded builds takes 2-3 s
         int timeoutMs = 10000;
         if (requestType == QStringLiteral("searchProjects")) {
             timeoutMs = 25000;
-        } else if (requestType == QStringLiteral("getLatestProjects")) {
+        } else if (requestType == QStringLiteral("getLatestProjects") || requestType == projectPackagesRequestType()) {
             timeoutMs = 20000;
         }
         QTimer::singleShot(timeoutMs, reply, [reply]() {
@@ -444,16 +594,31 @@ void CoprClient::processNextRequest()
             }
         });
 
+        // The monitor has no pagination. The server needs more than the timeout before the
+        // first byte for a project of thousands of packages; this stops what comes faster.
+        if (requestType == projectMonitorRequestType()) {
+            connect(reply, &QNetworkReply::downloadProgress, reply, [reply](qint64 received) {
+                if (received > MaxMonitorBytes) {
+                    reply->setProperty("tooLarge", true);
+                    reply->abort();
+                }
+            });
+        }
+
         connect(reply, &QNetworkReply::finished, this, [this, reply]() {
             m_activeReplies.removeAll(reply);
             reply->deleteLater();
 
             const QString requestType = reply->property("requestType").toString();
             const QString urlString = reply->property("urlString").toString();
+            // forOpenPage may have been raised while the request was in flight
+            const Request finishedRequest{reply->request().url(), requestType, reply->property("forOpenPage").toBool()};
             const bool timedOut = reply->property("timedOut").toBool();
             const int httpStatus = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
             const QString contentType = reply->header(QNetworkRequest::ContentTypeHeader).toString();
             const QByteArray data = reply->readAll();
+            // A fast link delivers everything before the limit gets a chance to abort
+            const bool tooLarge = reply->property("tooLarge").toBool() || (requestType == projectMonitorRequestType() && data.size() > MaxMonitorBytes);
 
             if (m_activeRequests > 0) {
                 --m_activeRequests;
@@ -465,8 +630,13 @@ void CoprClient::processNextRequest()
             const QString apiError = doc.object().value(QStringLiteral("error")).toString();
 
             QString errorMessage;
+            // A monitor answer is {"packages": [...]}, every other one {"items": [...], "meta": {...}}
+            const QString payloadKey = requestType == projectMonitorRequestType() ? QStringLiteral("packages") : QStringLiteral("items");
+
             if (timedOut) {
                 errorMessage = i18n("The COPR request timed out.");
+            } else if (tooLarge) {
+                errorMessage = i18n("This COPR project has too many packages to check them all.");
             } else if (httpStatus == 429 || httpStatus == 503) {
                 noteRetryAfter(reply);
                 errorMessage = i18n("COPR is temporarily not accepting requests (HTTP %1). Try again later.", QString::number(httpStatus));
@@ -488,15 +658,14 @@ void CoprClient::processNextRequest()
                 qCWarning(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "Invalid JSON from COPR for" << requestType << "- error:" << parseError.errorString()
                                                               << "- content type:" << contentType << "- data:" << data.left(200);
                 errorMessage = i18n("Invalid response from the COPR API.");
-            } else if (!doc.object().value(QStringLiteral("items")).isArray()) {
-                // Every list and search answer is {"items": [...], "meta": {...}}: without
-                // the array this is not a result, and it must not look like an empty one
+            } else if (!doc.object().value(payloadKey).isArray()) {
+                // Without the array this is not a result, and it must not look like an empty one
                 qCWarning(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "COPR answer without items for" << requestType << "- data:" << data.left(200);
                 errorMessage = apiError.isEmpty() ? i18n("Invalid response from the COPR API.") : i18n("COPR reported an error: %1", apiError);
             }
 
             if (!errorMessage.isEmpty()) {
-                failRequest(requestType, errorMessage);
+                failRequest(finishedRequest, errorMessage);
                 processNextRequest();
                 return;
             }
@@ -506,7 +675,7 @@ void CoprClient::processNextRequest()
             // Cache the successful response
             storeInCache(urlString, json, data.size());
 
-            emitResultForRequest(requestType, json);
+            emitResultForRequest(finishedRequest, json);
 
             processNextRequest();
         });
@@ -689,20 +858,20 @@ QList<CoprPackageInfo> CoprClient::parsePackagesResponse(const QJsonObject &json
         package.projectName = project;
         package.sourceType = obj.value(QStringLiteral("source_type")).toString();
 
-        // Extract info from latest build if available
-        QJsonObject builds = obj.value(QStringLiteral("builds")).toObject();
+        // The state shown is the one of the last build, while the version and the dates
+        // are those of the last build that succeeded: that is what can be installed.
+        // The chroots of a build are those it was submitted for, with no result per
+        // chroot, and the last build says nothing about older ones that are still
+        // published. Availability is therefore never derived here, the monitor has it.
+        const QJsonObject builds = obj.value(QStringLiteral("builds")).toObject();
+        const QJsonObject lastBuild = builds.value(QStringLiteral("latest")).toObject();
         QJsonObject latestBuild = builds.value(QStringLiteral("latest_succeeded")).toObject();
         if (latestBuild.isEmpty()) {
-            latestBuild = builds.value(QStringLiteral("latest")).toObject();
+            latestBuild = lastBuild;
         }
 
         if (!latestBuild.isEmpty()) {
-            // Get build chroots to determine availability
-            package.availableChroots = jsonStringArray(latestBuild.value(QStringLiteral("chroots")).toArray());
-
-            // Check if available for current Fedora
-            package.isAvailableForCurrentFedora = package.availableChroots.contains(m_currentChroot);
-            package.latestBuildState = latestBuild.value(QStringLiteral("state")).toString();
+            package.latestBuildState = (lastBuild.isEmpty() ? latestBuild : lastBuild).value(QStringLiteral("state")).toString();
             package.latestBuildRepoUrl = latestBuild.value(QStringLiteral("repo_url")).toString();
             package.latestBuildSubmitter = latestBuild.value(QStringLiteral("submitter")).toString();
             package.latestBuildSubmittedOn = unixTimestampToDateTime(latestBuild.value(QStringLiteral("submitted_on")));
@@ -722,6 +891,64 @@ QList<CoprPackageInfo> CoprClient::parsePackagesResponse(const QJsonObject &json
             if (package.homepage.isEmpty()) {
                 package.homepage = package.sourceUrl;
             }
+        }
+
+        packages.append(package);
+    }
+
+    return packages;
+}
+
+// {"packages": [{"name": ..., "chroots": {"<chroot>": {"state", "status", "build_id", "pkg_version"}}}]}
+// with the last build of every package in every chroot that is enabled in the project.
+// Packages that were never built are not listed.
+QList<CoprPackageInfo> CoprClient::parseMonitorResponse(const QJsonObject &json, const QString &owner, const QString &project, bool *complete)
+{
+    // "forked" is a build copied from another project together with its results.
+    // "skipped" is not in this list: besides "already built" the server also uses
+    // it for a chroot that ExclusiveArch or ExcludeArch left without any package.
+    static const QStringList installableStates = {QStringLiteral("succeeded"), QStringLiteral("forked")};
+
+    QList<CoprPackageInfo> packages;
+    const QJsonArray items = json.value(QStringLiteral("packages")).toArray();
+    *complete = items.size() <= MaxPackagesPerProject;
+
+    for (const QJsonValue &value : items) {
+        const QJsonObject obj = value.toObject();
+        const QString name = obj.value(QStringLiteral("name")).toString();
+
+        // Of a project that is too large keep the beginning and the package that would be
+        // chosen by default, the one named like the project
+        if (packages.size() >= MaxPackagesPerProject && name.compare(project, Qt::CaseInsensitive) != 0) {
+            continue;
+        }
+
+        CoprPackageInfo package;
+        package.name = name;
+        package.owner = owner;
+        package.projectName = project;
+
+        const QJsonObject chroots = obj.value(QStringLiteral("chroots")).toObject();
+        QString anyVersion;
+        for (auto it = chroots.constBegin(); it != chroots.constEnd(); ++it) {
+            const QJsonObject chroot = it.value().toObject();
+            if (installableStates.contains(chroot.value(QStringLiteral("state")).toString())) {
+                package.availableChroots.append(it.key());
+                if (anyVersion.isEmpty()) {
+                    anyVersion = chroot.value(QStringLiteral("pkg_version")).toString();
+                }
+            }
+        }
+
+        if (m_currentChroot.isEmpty()) {
+            package.version = anyVersion;
+        } else if (!chroots.contains(m_currentChroot)) {
+            package.availability = CoprAvailability::NotAvailable;
+        } else {
+            const QJsonObject chroot = chroots.value(m_currentChroot).toObject();
+            package.currentChrootState = chroot.value(QStringLiteral("state")).toString();
+            package.version = chroot.value(QStringLiteral("pkg_version")).toString();
+            package.availability = installableStates.contains(package.currentChrootState) ? CoprAvailability::Available : CoprAvailability::NotConfirmed;
         }
 
         packages.append(package);

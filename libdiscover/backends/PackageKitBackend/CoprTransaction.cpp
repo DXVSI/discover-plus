@@ -52,7 +52,15 @@ void CoprTransaction::proceed()
     qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "CoprTransaction::proceed() - role:" << m_role;
     setStatus(DownloadingStatus);
 
+    m_packageName = m_resource ? m_resource->packageName() : QString();
+
     if (m_role == InstallRole) {
+        // Before the repository is enabled, not after
+        if (m_packageName.isEmpty()) {
+            Q_EMIT passiveMessage(i18n("No installable package is known for this COPR project yet"));
+            setStatus(DoneWithErrorStatus);
+            return;
+        }
         if (!canInstallForCurrentChroot()) {
             setStatus(DoneWithErrorStatus);
             return;
@@ -69,15 +77,21 @@ bool CoprTransaction::canInstallForCurrentChroot()
         return false;
     }
 
-    // An undetected chroot means unknown availability, which must never block an install
-    if (!m_resource->isCurrentChrootKnown() || m_resource->availableChroots().isEmpty() || m_resource->isAvailableForCurrentFedora()) {
+    // Only a known negative blocks: the chroot of this system is known and either the
+    // project does not enable it or the monitor has no build of the package for it.
+    // A last build that failed is a warning, an older one may still be published.
+    if (!m_resource->isInstallBlocked()) {
+        const QString warning = m_resource->coprInstallWarning();
+        if (!warning.isEmpty()) {
+            Q_EMIT passiveMessage(warning);
+        }
         return true;
     }
 
     Q_EMIT passiveMessage(i18n("This COPR package is not available for your Fedora version."));
     qCWarning(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "Refusing to install unsupported COPR package:" << m_resource->coprOwner() << "/"
-                                                  << m_resource->coprProject() << "package:" << m_resource->packageName()
-                                                  << "available chroots:" << m_resource->availableChroots();
+                                                  << m_resource->coprProject() << "package:" << m_packageName
+                                                  << "project chroots:" << m_resource->projectChroots() << "package chroots:" << m_resource->availableChroots();
     return false;
 }
 
@@ -135,7 +149,7 @@ void CoprTransaction::installPackage()
         setStatus(DoneWithErrorStatus);
         return;
     }
-    QString packageName = m_resource->packageName();
+    const QString packageName = m_packageName;
     if (packageName.isEmpty()) {
         Q_EMIT passiveMessage(i18n("No installable package is known for this COPR project yet"));
         setStatus(DoneWithErrorStatus);
@@ -163,7 +177,7 @@ void CoprTransaction::removePackage()
         setStatus(DoneWithErrorStatus);
         return;
     }
-    QString packageName = m_resource->packageName();
+    const QString packageName = m_packageName;
     if (packageName.isEmpty()) {
         Q_EMIT passiveMessage(i18n("No installed package is known for this COPR resource"));
         setStatus(DoneWithErrorStatus);
@@ -244,9 +258,12 @@ void CoprTransaction::processFinished(int exitCode, QProcess::ExitStatus exitSta
         break;
     case InstallPackage:
         // Update resource state to installed
-        if (m_resource) {
+        if (m_resource && m_resource->packageName() == m_packageName) {
             m_resource->setState(AbstractResource::Installed);
             qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "Package installed successfully, state updated to Installed";
+        } else if (m_resource) {
+            // Another package was selected meanwhile: it is not the one that was installed
+            m_resource->checkInstalledState();
         }
         setProgress(100);
         setStatus(DoneStatus);
