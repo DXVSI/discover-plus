@@ -1,4 +1,6 @@
 /*
+ *   SPDX-FileCopyrightText: 2026 DXVSI <https://github.com/DXVSI>
+ *
  *   SPDX-License-Identifier: LGPL-2.0-or-later
  */
 
