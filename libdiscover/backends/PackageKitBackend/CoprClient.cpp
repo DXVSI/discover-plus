@@ -226,6 +226,8 @@ void CoprClient::cancelAllRequests()
     m_activeReplies.clear();
     m_requestQueue.clear();
     m_activeRequests = 0;
+    // Answers that were deferred to the event loop (cache hits, refusals) are cancelled too
+    ++m_requestGeneration;
 
     qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "Cancelled all COPR pending requests";
 }
@@ -240,8 +242,10 @@ void CoprClient::queueRequest(const QUrl &url, const QString &requestType)
         qint64 now = QDateTime::currentMSecsSinceEpoch();
         if (now - entry.timestamp < CacheTtlMs) {
             qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "COPR cache hit for:" << requestType;
-            QTimer::singleShot(0, this, [this, requestType, json = entry.data]() {
-                emitResultForRequest(requestType, json);
+            QTimer::singleShot(0, this, [this, requestType, json = entry.data, generation = m_requestGeneration]() {
+                if (generation == m_requestGeneration) {
+                    emitResultForRequest(requestType, json);
+                }
             });
             return;
         }
@@ -249,14 +253,12 @@ void CoprClient::queueRequest(const QUrl &url, const QString &requestType)
     }
 
     // The server asked us to back off (HTTP 429/503): do not send anything until then
-    const qint64 retryInMs = m_retryNotBeforeMs - QDateTime::currentMSecsSinceEpoch();
-    if (retryInMs > 0) {
-        const int retryInSecs = int((retryInMs + 999) / 1000);
-        QTimer::singleShot(0, this, [this, requestType, retryInSecs]() {
-            failRequest(requestType,
-                        i18np("COPR asked to wait before sending more requests. Try again in %1 second.",
-                              "COPR asked to wait before sending more requests. Try again in %1 seconds.",
-                              retryInSecs));
+    const QString backOff = backOffMessage();
+    if (!backOff.isEmpty()) {
+        QTimer::singleShot(0, this, [this, requestType, backOff, generation = m_requestGeneration]() {
+            if (generation == m_requestGeneration) {
+                failRequest(requestType, backOff);
+            }
         });
         return;
     }
@@ -309,6 +311,46 @@ void CoprClient::failRequest(const QString &requestType, const QString &errorMes
     emitEmptyResultForRequest(requestType);
 }
 
+QString CoprClient::backOffMessage() const
+{
+    const qint64 retryInMs = m_retryNotBeforeMs - QDateTime::currentMSecsSinceEpoch();
+    if (retryInMs <= 0) {
+        return {};
+    }
+    const int retryInSecs = int((retryInMs + 999) / 1000);
+    return i18np("COPR asked to wait before sending more requests. Try again in %1 second.",
+                 "COPR asked to wait before sending more requests. Try again in %1 seconds.",
+                 retryInSecs);
+}
+
+void CoprClient::storeInCache(const QString &urlString, const QJsonObject &json, qint64 size)
+{
+    const qint64 now = QDateTime::currentMSecsSinceEpoch();
+    m_cache.insert(urlString, CacheEntry{json, now, size});
+
+    // A project list page is about 0.5 MB and its URL is rarely asked for twice,
+    // so nothing else would ever remove it: drop what expired, then the oldest
+    // entries until the cache fits.
+    m_cache.removeIf([now](const std::pair<const QString &, CacheEntry &> &entry) {
+        return now - entry.second.timestamp >= CacheTtlMs;
+    });
+
+    qint64 totalSize = 0;
+    for (const CacheEntry &entry : std::as_const(m_cache)) {
+        totalSize += entry.size;
+    }
+    while (totalSize > MaxCacheBytes && m_cache.size() > 1) {
+        auto oldest = m_cache.begin();
+        for (auto it = m_cache.begin(); it != m_cache.end(); ++it) {
+            if (it->timestamp < oldest->timestamp) {
+                oldest = it;
+            }
+        }
+        totalSize -= oldest->size;
+        m_cache.erase(oldest);
+    }
+}
+
 void CoprClient::noteRetryAfter(const QNetworkReply *reply)
 {
     // Retry-After is either a number of seconds or an HTTP date
@@ -332,6 +374,21 @@ void CoprClient::noteRetryAfter(const QNetworkReply *reply)
 
 void CoprClient::processNextRequest()
 {
+    // While the server wants us to back off, what is already queued must not reach
+    // it either (a search queues a package lookup per result, three at a time)
+    const QString backOff = backOffMessage();
+    if (!backOff.isEmpty()) {
+        const auto dropped = std::exchange(m_requestQueue, {});
+        const quint64 generation = m_requestGeneration;
+        for (const auto &request : dropped) {
+            if (generation != m_requestGeneration) {
+                break;
+            }
+            failRequest(request.second, backOff);
+        }
+        return;
+    }
+
     while (!m_requestQueue.isEmpty() && m_activeRequests < MaxConcurrentRequests) {
         const auto requestData = m_requestQueue.dequeue();
         const QUrl url = requestData.first;
@@ -393,9 +450,13 @@ void CoprClient::processNextRequest()
             } else if (httpStatus == 429 || httpStatus == 503) {
                 noteRetryAfter(reply);
                 errorMessage = i18n("COPR is temporarily not accepting requests (HTTP %1). Try again later.", QString::number(httpStatus));
-            } else if (reply->error() != QNetworkReply::NoError || httpStatus >= 400) {
-                errorMessage = apiError.isEmpty() ? i18n("COPR request failed: %1", reply->errorString())
+            } else if (httpStatus >= 400) {
+                // Qt's error string for HTTP errors repeats the whole request URL: log only
+                qCWarning(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "COPR HTTP error for" << requestType << "-" << reply->errorString();
+                errorMessage = apiError.isEmpty() ? i18n("COPR returned HTTP %1.", QString::number(httpStatus))
                                                   : i18n("COPR reported an error (HTTP %1): %2", QString::number(httpStatus), apiError);
+            } else if (reply->error() != QNetworkReply::NoError) {
+                errorMessage = i18n("Network error: %1", reply->errorString());
             } else if (contentType.startsWith(QLatin1String("text/html"), Qt::CaseInsensitive) || data.trimmed().startsWith('<')) {
                 // The bot protection in front of COPR answers HTTP 200 with an HTML challenge page
                 errorMessage = i18n("COPR answered with a web page instead of API data, most likely its bot protection. Try again later.");
@@ -414,7 +475,7 @@ void CoprClient::processNextRequest()
             const QJsonObject json = doc.object();
 
             // Cache the successful response
-            m_cache[urlString] = CacheEntry{json, QDateTime::currentMSecsSinceEpoch()};
+            storeInCache(urlString, json, data.size());
 
             emitResultForRequest(requestType, json);
 

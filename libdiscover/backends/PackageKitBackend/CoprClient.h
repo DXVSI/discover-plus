@@ -113,6 +113,9 @@ private:
 
     void failRequest(const QString &requestType, const QString &errorMessage);
     void noteRetryAfter(const QNetworkReply *reply);
+    // Empty unless the server asked us to back off
+    QString backOffMessage() const;
+    void storeInCache(const QString &urlString, const QJsonObject &json, qint64 size);
 
     void processNextRequest();
     void queueRequest(const QUrl &url, const QString &requestType);
@@ -133,14 +136,18 @@ private:
 
     // Active network replies (for cancellation)
     QList<QPointer<QNetworkReply>> m_activeReplies;
+    // Bumped by cancelAllRequests() so that deferred answers of cancelled requests are dropped
+    quint64 m_requestGeneration = 0;
 
     // Response cache with TTL
     struct CacheEntry {
         QJsonObject data;
         qint64 timestamp;
+        qint64 size; // of the raw response
     };
     QHash<QString, CacheEntry> m_cache;
     static constexpr int CacheTtlMs = 300000; // 5 minutes
+    static constexpr qint64 MaxCacheBytes = 4 * 1024 * 1024; // about 8 project list pages
 };
 
 #endif // COPRCLIENT_H
