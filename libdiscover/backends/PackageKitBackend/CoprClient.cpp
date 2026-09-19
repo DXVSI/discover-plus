@@ -45,6 +45,13 @@ static QByteArray coprUserAgent()
         + QByteArrayLiteral(" (+https://github.com/DXVSI/discover-plus)");
 }
 
+// application/json or anything from the +json family, with or without parameters such as charset
+static bool isJsonMediaType(const QString &contentType)
+{
+    const QString mediaType = contentType.section(QLatin1Char(';'), 0, 0).trimmed().toLower();
+    return mediaType == QLatin1String("application/json") || mediaType.endsWith(QLatin1String("+json"));
+}
+
 // Maps QSysInfo::currentCpuArchitecture() to the RPM basearch used in chroot names
 static QString rpmBaseArch(const QString &cpuArchitecture)
 {
@@ -325,6 +332,12 @@ QString CoprClient::backOffMessage() const
 
 void CoprClient::storeInCache(const QString &urlString, const QJsonObject &json, qint64 size)
 {
+    // The eviction below keeps the newest entry, so it could never make this one fit
+    if (size > MaxCacheBytes) {
+        qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "COPR response of" << size << "bytes is larger than the cache, not caching it";
+        return;
+    }
+
     const qint64 now = QDateTime::currentMSecsSinceEpoch();
     m_cache.insert(urlString, CacheEntry{json, now, size});
 
@@ -357,19 +370,26 @@ void CoprClient::noteRetryAfter(const QNetworkReply *reply)
     const QByteArray retryAfter = reply->rawHeader("Retry-After").trimmed();
     const qint64 now = QDateTime::currentMSecsSinceEpoch();
 
+    // The deadline is kept in milliseconds: an HTTP date rounded down to whole
+    // seconds would let the next request out up to a second too early
     bool isNumber = false;
-    qint64 seconds = retryAfter.toLongLong(&isNumber);
-    if (!isNumber) {
+    const qint64 seconds = retryAfter.toLongLong(&isNumber);
+    qint64 waitMs = qint64(DefaultRetryAfterSecs) * 1000;
+    if (isNumber) {
+        waitMs = qBound(qint64(0), seconds, qint64(MaxRetryAfterSecs)) * 1000;
+    } else {
         QString httpDate = QString::fromLatin1(retryAfter);
         httpDate.chop(httpDate.endsWith(QLatin1String(" GMT")) ? 4 : 0);
         QDateTime date = QLocale::c().toDateTime(httpDate, QStringLiteral("ddd, dd MMM yyyy hh:mm:ss"));
         date.setTimeZone(QTimeZone::UTC);
-        seconds = date.isValid() ? (date.toMSecsSinceEpoch() - now) / 1000 : DefaultRetryAfterSecs;
+        if (date.isValid()) {
+            waitMs = date.toMSecsSinceEpoch() - now;
+        }
     }
 
-    seconds = qBound(qint64(1), seconds, qint64(MaxRetryAfterSecs));
-    m_retryNotBeforeMs = qMax(m_retryNotBeforeMs, now + seconds * 1000);
-    qCWarning(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "COPR asked to back off, Retry-After:" << retryAfter << "- no COPR requests for" << seconds << "s";
+    waitMs = qBound(qint64(1000), waitMs, qint64(MaxRetryAfterSecs) * 1000);
+    m_retryNotBeforeMs = qMax(m_retryNotBeforeMs, now + waitMs);
+    qCWarning(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "COPR asked to back off, Retry-After:" << retryAfter << "- no COPR requests for" << waitMs << "ms";
 }
 
 void CoprClient::processNextRequest()
@@ -460,10 +480,19 @@ void CoprClient::processNextRequest()
             } else if (contentType.startsWith(QLatin1String("text/html"), Qt::CaseInsensitive) || data.trimmed().startsWith('<')) {
                 // The bot protection in front of COPR answers HTTP 200 with an HTML challenge page
                 errorMessage = i18n("COPR answered with a web page instead of API data, most likely its bot protection. Try again later.");
+            } else if (!isJsonMediaType(contentType)) {
+                qCWarning(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG)
+                    << "Unexpected content type from COPR for" << requestType << "- content type:" << contentType << "- data:" << data.left(200);
+                errorMessage = i18n("Invalid response from the COPR API.");
             } else if (!doc.isObject()) {
                 qCWarning(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "Invalid JSON from COPR for" << requestType << "- error:" << parseError.errorString()
                                                               << "- content type:" << contentType << "- data:" << data.left(200);
                 errorMessage = i18n("Invalid response from the COPR API.");
+            } else if (!doc.object().value(QStringLiteral("items")).isArray()) {
+                // Every list and search answer is {"items": [...], "meta": {...}}: without
+                // the array this is not a result, and it must not look like an empty one
+                qCWarning(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "COPR answer without items for" << requestType << "- data:" << data.left(200);
+                errorMessage = apiError.isEmpty() ? i18n("Invalid response from the COPR API.") : i18n("COPR reported an error: %1", apiError);
             }
 
             if (!errorMessage.isEmpty()) {
