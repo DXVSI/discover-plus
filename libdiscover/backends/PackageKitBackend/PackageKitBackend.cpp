@@ -1994,7 +1994,7 @@ void PackageKitBackend::onCoprProjectsFound(const QList<CoprProjectInfo> &projec
         const QString key = coprProjectKey(project.owner, project.name);
 
         // Calculate relevance score FIRST - filter out irrelevant results when searching
-        int relevanceScore = 50; // Base score for browse mode
+        int relevanceScore = 50; // Search only: browse results are scored by project id below
         if (!searchQuery.isEmpty()) {
             const QString lowerQuery = searchQuery.toLower();
             const QString lowerName = project.name.toLower();
@@ -2086,16 +2086,18 @@ void PackageKitBackend::onCoprProjectsFound(const QList<CoprProjectInfo> &projec
             m_packages.packages[packageId] = resource;
         }
 
-        const StreamResult result(resource, relevanceScore);
+        // The server sends the newest project first, that is the highest id: as the sort
+        // score it keeps that order in the model across all pages
+        const StreamResult result(resource, uint(qMax(project.id, 0)));
         results.append(result);
         m_coprBrowseResults.append(result);
-        qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "COPR result:" << project.owner << "/" << project.name << "score:" << relevanceScore;
+        qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "COPR result:" << project.owner << "/" << project.name << "id:" << project.id;
     }
 
     // Sort and send results, or handle empty case
     if (m_currentSearchStream && !m_currentSearchStream.isNull()) {
         if (!results.isEmpty()) {
-            // Sort by relevance (highest first)
+            // Highest score first: the relevance of a search result, the project id when browsing
             std::sort(results.begin(), results.end(), [](const StreamResult &a, const StreamResult &b) {
                 return a.sortScore > b.sortScore;
             });

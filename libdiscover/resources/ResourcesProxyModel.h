@@ -95,6 +95,8 @@ public:
         FedoraLinuxSourceRole,
         FedoraFlatpaksSourceRole,
         FlathubSourceRole,
+        // The order given by the backend alone (StreamResult::sortScore). Never saved to disk either
+        SortScoreRole,
         // This is better that's always the last value as this one should be never saved to disk
         SearchRelevanceRole
     };
