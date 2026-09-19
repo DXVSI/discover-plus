@@ -261,6 +261,8 @@ private:
     // action (opening the page, a fetchMore) requests large pages one after
     // another until about a screenful passed the filters, up to a hard cap.
     bool m_coprBrowsePagePending = false;
+    // The order the list is browsed in: by name instead of newest first
+    bool m_coprBrowseByName = false;
     bool m_coprBrowseExhausted = false;
     int m_coprBrowseRequests = 0;
     int m_coprBrowseAccepted = 0;

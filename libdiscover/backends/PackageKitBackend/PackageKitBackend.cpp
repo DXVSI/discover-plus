@@ -952,7 +952,7 @@ ResultsStream *PackageKitBackend::search(const AbstractResourcesBackend::Filters
         // repeats the search on its own). A browse chain that waits for a page is handed
         // over to the new stream instead of being cancelled: the server has already
         // started on that 0.5 MB page and would be asked for it once more.
-        const bool continueBrowse = m_lastCoprSearchQuery.isEmpty() && m_coprBrowsePagePending;
+        const bool continueBrowse = m_lastCoprSearchQuery.isEmpty() && m_coprBrowsePagePending && m_coprBrowseByName == filter.orderedByName;
 
         // Close any previous COPR stream and cancel pending requests. The items of a
         // list may still be asking for their packages after its stream has finished.
@@ -986,6 +986,7 @@ ResultsStream *PackageKitBackend::search(const AbstractResourcesBackend::Filters
 
         // Reset state for new session
         m_coprOffset = 0;
+        m_coprBrowseByName = filter.orderedByName;
         m_lastCoprSearchQuery.clear();
         m_coprBrowsePagePending = false;
         m_coprBrowseExhausted = false;
@@ -1947,7 +1948,7 @@ void PackageKitBackend::requestNextCoprBrowsePage()
                                                 << CoprBrowseMaxRequestsPerAction << "for this action";
 
     // m_coprOffset moves on when the page arrives, by what the server really sent
-    m_coprClient->getLatestProjects(CoprBrowsePageSize, m_coprOffset);
+    m_coprClient->getLatestProjects(CoprBrowsePageSize, m_coprOffset, m_coprBrowseByName);
 }
 
 void PackageKitBackend::loadMoreCoprProjects()

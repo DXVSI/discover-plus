@@ -190,7 +190,7 @@ void CoprClient::searchProjects(const QString &query, int limit, int offset)
     queueRequest({url, QStringLiteral("searchProjects")});
 }
 
-void CoprClient::getLatestProjects(int limit, int offset)
+void CoprClient::getLatestProjects(int limit, int offset, bool byName)
 {
     QString endpoint = QStringLiteral("/project/list");
     QUrl url(m_baseUrl + endpoint);
@@ -200,8 +200,8 @@ void CoprClient::getLatestProjects(int limit, int offset)
     QUrlQuery urlQuery;
     urlQuery.addQueryItem(QStringLiteral("limit"), QString::number(limit));
     urlQuery.addQueryItem(QStringLiteral("offset"), QString::number(offset));
-    urlQuery.addQueryItem(QStringLiteral("order"), QStringLiteral("id"));
-    urlQuery.addQueryItem(QStringLiteral("order_type"), QStringLiteral("DESC"));
+    urlQuery.addQueryItem(QStringLiteral("order"), byName ? QStringLiteral("name") : QStringLiteral("id"));
+    urlQuery.addQueryItem(QStringLiteral("order_type"), byName ? QStringLiteral("ASC") : QStringLiteral("DESC"));
     url.setQuery(urlQuery);
 
     qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "CoprClient: Getting latest projects:" << url.toString();

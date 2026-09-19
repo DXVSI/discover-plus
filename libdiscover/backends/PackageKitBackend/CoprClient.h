@@ -106,7 +106,8 @@ public:
     static QUrl projectWebUrl(const QString &owner, const QString &project);
 
     void searchProjects(const QString &query, int limit = 50, int offset = 0);
-    void getLatestProjects(int limit, int offset);
+    // Newest first, or by name
+    void getLatestProjects(int limit, int offset, bool byName = false);
     // The package list of an application page: details, versions and dates. The server
     // walks the builds of every package for it, so it is never used for many projects.
     void getProjectPackages(const QString &owner, const QString &project);

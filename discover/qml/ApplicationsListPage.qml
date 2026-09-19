@@ -286,6 +286,10 @@ DiscoverPage {
             property int tempSortRole: -1
             sortRole: tempSortRole >= 0 ? tempSortRole
                 : page.newestFirstSorting ? Discover.ResourcesProxyModel.SortScoreRole : DiscoverApp.DiscoverSettings.appsListPageSorting
+            // Such a list is fetched page by page: the backend asks for the pages in the order
+            // they are shown in, so that what is appended lands at the end. Bound before
+            // sortOrder: re-sorting the old list first would make the view fetch more of it.
+            orderedByName: page.newestFirstSorting && appsModel.search.length === 0 && appsModel.sortRole === Discover.ResourcesProxyModel.NameRole
             sortOrder: sortRole === Discover.ResourcesProxyModel.NameRole ? Qt.AscendingOrder : Qt.DescendingOrder
             categorize: page.categorize
 
