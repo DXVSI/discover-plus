@@ -173,6 +173,8 @@ private Q_SLOTS:
     void loadAllPackages();
     void loadAllPackagesHybrid();
     void onCoprProjectsFound(const QList<CoprProjectInfo> &projects);
+    void onCoprProjectFound(const CoprProjectInfo &project);
+    void onCoprProjectNotFound(const QString &owner, const QString &project);
     void onCoprProjectPackagesFound(const QString &owner, const QString &project, const QList<CoprPackageInfo> &packages, bool complete);
     void onCoprProjectMonitorFound(const QString &owner, const QString &project, const QList<CoprPackageInfo> &packages, bool complete);
 
@@ -203,6 +205,9 @@ private:
     void setRefresher(PackageKit::Transaction *refresh);
     void processNextCoprInstalledStateCheck();
     void requestNextCoprBrowsePage();
+    void requestNextCoprSearchPage();
+    void resetCoprStreamState();
+    CoprResource *coprProjectResource(const CoprProjectInfo &project);
     void showCoprMessageOnce(const QString &kind, const QString &message);
     QList<CoprResource *> coprResourcesOfProject(const QString &owner, const QString &project) const;
 
@@ -235,12 +240,25 @@ private:
     QPointer<PKResultsStream> m_currentSearchStream;
     int m_coprOffset = 0;
     QString m_lastCoprSearchQuery;
-    QHash<QString, CoprProjectInfo> m_coprProjectMetadata;
-    QHash<QString, int> m_coprProjectRelevance;
-    QSet<QString> m_coprPackageRequests;
-    // As many as the package list request of a search used to return
-    static constexpr int CoprSearchPackagesPerProject = 10;
+    // Search mode. The server is asked for the query itself, or for "owner/project" when
+    // the query names one project: a full name, a link to its page or the command that
+    // enables it. That project is looked up first and m_coprSearchOwner is set then.
+    // m_coprSearchName is what the names of the results are compared with.
+    QString m_coprSearchServerQuery;
+    QString m_coprSearchOwner;
+    QString m_coprSearchName;
     bool m_coprSearchPagePending = false;
+    bool m_coprSearchExhausted = false;
+    int m_coprSearchRequests = 0;
+    QSet<QString> m_coprSearchSeenKeys;
+    // A shorter query costs the server a full search of about 8 s and returns junk
+    static constexpr int CoprSearchMinimumLength = 3;
+    // The cost of a search does not depend on the limit (about 7 s, 2 KB per result), and
+    // the server sorts by creation date: what a page cuts off are the oldest projects,
+    // often the established ones. A full page is therefore followed by one more at once,
+    // further ones wait for a fetchMore.
+    static constexpr int CoprSearchPageSize = 100;
+    static constexpr int CoprSearchAutomaticPages = 2;
     struct CoprInstalledStateRequest {
         QPointer<CoprResource> resource;
         CoprResource *resourceKey = nullptr;

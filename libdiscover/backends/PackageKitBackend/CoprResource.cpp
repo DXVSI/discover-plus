@@ -16,6 +16,7 @@
 #include <QFileInfo>
 #include <QHash>
 #include <QLocale>
+#include <QRegularExpression>
 #include <QSet>
 #include <QVariantMap>
 
@@ -607,6 +608,52 @@ bool CoprResource::isCoprPackageListLimited() const
     return (m_packageListFetch == Loaded && !m_packageListComplete) || (m_monitorFetch == Loaded && !m_monitorComplete);
 }
 
+void CoprResource::setCoprSearchQuery(const QString &query, bool matchIsVisible)
+{
+    if (m_searchQuery == query && m_searchMatchIsVisible == matchIsVisible) {
+        return;
+    }
+    m_searchQuery = query;
+    m_searchMatchIsVisible = matchIsVisible;
+
+    // The package that is chosen automatically depends on the query
+    if (m_isProjectResource && coprProjectPackagesLoaded()) {
+        projectPackagesUpdated();
+    } else {
+        Q_EMIT projectPackagesChanged();
+    }
+}
+
+QString CoprResource::coprSearchReason() const
+{
+    if (m_searchQuery.isEmpty() || m_searchMatchIsVisible) {
+        return {};
+    }
+
+    // The server also searches the package names and the instructions, and does not say
+    // where it found the query. A package can only be named once the packages are known.
+    const QString fullName = m_projectFullName.isEmpty() ? QStringLiteral("%1/%2").arg(m_owner, m_project) : m_projectFullName;
+    const CoprPackageInfo *matching = nullptr;
+    for (const CoprPackageInfo &package : m_projectPackages) {
+        if (package.name.compare(m_searchQuery, Qt::CaseInsensitive) == 0) {
+            matching = &package;
+            break;
+        }
+        if (!matching && package.name.contains(m_searchQuery, Qt::CaseInsensitive)) {
+            matching = &package;
+        }
+    }
+    if (matching) {
+        return i18n("%1 - found by its package %2", fullName, matching->name);
+    }
+
+    static const QRegularExpression htmlTag(QStringLiteral("<[^>]*>"));
+    if (QString(m_instructions).remove(htmlTag).contains(m_searchQuery, Qt::CaseInsensitive)) {
+        return i18n("%1 - found in its installation instructions", fullName);
+    }
+    return i18n("%1 - found by COPR, but not in its name or description", fullName);
+}
+
 CoprResource::FetchState &CoprResource::fetchStateFor(const QString &requestType)
 {
     return requestType == CoprClient::projectMonitorRequestType() ? m_monitorFetch : m_packageListFetch;
@@ -801,11 +848,16 @@ const CoprPackageInfo *CoprResource::preferredProjectPackage() const
         return candidates.constFirst();
     }
 
-    // The package named like the project
-    const auto it = std::find_if(candidates.cbegin(), candidates.cend(), [this](const CoprPackageInfo *package) {
-        return package->name.compare(m_project, Qt::CaseInsensitive) == 0;
-    });
-    return it == candidates.cend() ? nullptr : *it;
+    // The package named like the project, or else like what the user searched for
+    for (const QString &name : {m_project, m_searchQuery}) {
+        const auto it = std::find_if(candidates.cbegin(), candidates.cend(), [&name](const CoprPackageInfo *package) {
+            return package->name.compare(name, Qt::CaseInsensitive) == 0;
+        });
+        if (it != candidates.cend()) {
+            return *it;
+        }
+    }
+    return nullptr;
 }
 
 void CoprResource::applyPackageDetails(const CoprPackageInfo &package)

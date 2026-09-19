@@ -196,6 +196,20 @@ void CoprClient::searchProjects(const QString &query, int limit, int offset)
     queueRequest({url, QStringLiteral("searchProjects")});
 }
 
+void CoprClient::getProject(const QString &owner, const QString &project)
+{
+    QString endpoint = QStringLiteral("/project");
+    QUrl url(m_baseUrl + endpoint);
+
+    QUrlQuery urlQuery;
+    urlQuery.addQueryItem(QStringLiteral("ownername"), owner);
+    urlQuery.addQueryItem(QStringLiteral("projectname"), project);
+    url.setQuery(urlQuery);
+
+    qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "CoprClient: Looking up project" << owner << "/" << project;
+    queueRequest({url, QStringLiteral("getProject")});
+}
+
 void CoprClient::getLatestProjects(int limit, int offset, bool byName)
 {
     QString endpoint = QStringLiteral("/project/list");
@@ -285,7 +299,7 @@ bool CoprClient::getProjectMonitorLazily(const QString &owner, const QString &pr
 
     // What the cache still has costs the server nothing
     const auto cached = m_cache.constFind(url.toString());
-    const bool isCached = cached != m_cache.cend() && QDateTime::currentMSecsSinceEpoch() - cached->timestamp < CacheTtlMs;
+    const bool isCached = cached != m_cache.cend() && QDateTime::currentMSecsSinceEpoch() - cached->timestamp < cached->ttlMs;
     if (isLazyPaused() && !isCached) {
         return false;
     }
@@ -446,7 +460,7 @@ void CoprClient::queueRequest(const Request &request)
     if (m_cache.contains(urlString)) {
         const CacheEntry &entry = m_cache[urlString];
         qint64 now = QDateTime::currentMSecsSinceEpoch();
-        if (now - entry.timestamp < CacheTtlMs) {
+        if (now - entry.timestamp < entry.ttlMs) {
             qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "COPR cache hit for:" << requestType;
             deferred([this, request, json = entry.data]() {
                 emitResultForRequest(request, json);
@@ -531,6 +545,10 @@ void CoprClient::emitResultForRequest(const Request &request, const QJsonObject 
         Q_EMIT projectsFound(parseProjectsResponse(json));
         return;
     }
+    if (requestType == QStringLiteral("getProject")) {
+        Q_EMIT projectFound(parseProjectObject(json));
+        return;
+    }
 
     const QString owner = queryItem(request.url, QStringLiteral("ownername"));
     const QString project = queryItem(request.url, QStringLiteral("projectname"));
@@ -566,6 +584,10 @@ void CoprClient::failRequest(const Request &request, const QString &errorMessage
 {
     const QString &requestType = request.requestType;
     qCWarning(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "COPR request" << requestType << "failed:" << errorMessage;
+    if (requestType == QStringLiteral("getProject")) {
+        Q_EMIT projectNotFound(queryItem(request.url, QStringLiteral("ownername")), queryItem(request.url, QStringLiteral("projectname")));
+        return;
+    }
     Q_EMIT errorOccurred(requestType, errorMessage);
 
     if (requestType == QStringLiteral("searchProjects") || requestType == QStringLiteral("getLatestProjects")) {
@@ -595,7 +617,7 @@ QString CoprClient::backOffMessage() const
                  retryInSecs);
 }
 
-void CoprClient::storeInCache(const QString &urlString, const QJsonObject &json, qint64 size)
+void CoprClient::storeInCache(const Request &request, const QJsonObject &json, qint64 size)
 {
     // The eviction below keeps the newest entry, so it could never make this one fit
     if (size > MaxCacheBytes) {
@@ -603,14 +625,17 @@ void CoprClient::storeInCache(const QString &urlString, const QJsonObject &json,
         return;
     }
 
+    // Only what a search found lives longer: lists, packages and monitors say what is
+    // there and what can be installed right now
+    const bool isSearch = request.requestType == QStringLiteral("searchProjects") || request.requestType == QStringLiteral("getProject");
     const qint64 now = QDateTime::currentMSecsSinceEpoch();
-    m_cache.insert(urlString, CacheEntry{json, now, size});
+    m_cache.insert(request.url.toString(), CacheEntry{json, now, size, isSearch ? SearchCacheTtlMs : CacheTtlMs});
 
     // A project list page is about 0.5 MB and its URL is rarely asked for twice,
     // so nothing else would ever remove it: drop what expired, then the oldest
     // entries until the cache fits.
     m_cache.removeIf([now](const std::pair<const QString &, CacheEntry &> &entry) {
-        return now - entry.second.timestamp >= CacheTtlMs;
+        return now - entry.second.timestamp >= entry.second.ttlMs;
     });
 
     qint64 totalSize = 0;
@@ -660,7 +685,7 @@ void CoprClient::noteRetryAfter(const QNetworkReply *reply)
 void CoprClient::processNextRequest()
 {
     // While the server wants us to back off, what is already queued must not reach
-    // it either (a search queues a package lookup per result, three at a time)
+    // it either
     const QString backOff = backOffMessage();
     if (!backOff.isEmpty()) {
         const auto dropped = std::exchange(m_requestQueue, {});
@@ -740,7 +765,6 @@ void CoprClient::processNextRequest()
             reply->deleteLater();
 
             const QString requestType = reply->property("requestType").toString();
-            const QString urlString = reply->property("urlString").toString();
             // forOpenPage may have been raised while the request was in flight
             const Request finishedRequest{reply->request().url(), requestType, reply->property("forOpenPage").toBool()};
             const bool timedOut = reply->property("timedOut").toBool();
@@ -766,8 +790,19 @@ void CoprClient::processNextRequest()
             const QString apiError = doc.object().value(QStringLiteral("error")).toString();
 
             QString errorMessage;
-            // A monitor answer is {"packages": [...]}, every other one {"items": [...], "meta": {...}}
+            // A monitor answer is {"packages": [...]}, a single project is the object itself,
+            // every other one {"items": [...], "meta": {...}}
             const QString payloadKey = requestType == projectMonitorRequestType() ? QStringLiteral("packages") : QStringLiteral("items");
+            const bool isProjectLookup = requestType == QStringLiteral("getProject");
+
+            if (isProjectLookup && httpStatus == 404 && !apiError.isEmpty()) {
+                // An answer, not a failure: there is no project of that name
+                qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "COPR project lookup:" << apiError;
+                Q_EMIT projectNotFound(queryItem(finishedRequest.url, QStringLiteral("ownername")),
+                                       queryItem(finishedRequest.url, QStringLiteral("projectname")));
+                processNextRequest();
+                return;
+            }
 
             if (timedOut) {
                 errorMessage = i18n("The COPR request timed out.");
@@ -794,7 +829,7 @@ void CoprClient::processNextRequest()
                 qCWarning(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "Invalid JSON from COPR for" << requestType << "- error:" << parseError.errorString()
                                                               << "- content type:" << contentType << "- data:" << data.left(200);
                 errorMessage = i18n("Invalid response from the COPR API.");
-            } else if (!doc.object().value(payloadKey).isArray()) {
+            } else if (isProjectLookup ? !doc.object().value(QStringLiteral("name")).isString() : !doc.object().value(payloadKey).isArray()) {
                 // Without the array this is not a result, and it must not look like an empty one
                 qCWarning(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "COPR answer without items for" << requestType << "- data:" << data.left(200);
                 errorMessage = apiError.isEmpty() ? i18n("Invalid response from the COPR API.") : i18n("COPR reported an error: %1", apiError);
@@ -812,7 +847,7 @@ void CoprClient::processNextRequest()
             const QJsonObject json = doc.object();
 
             // Cache the successful response
-            storeInCache(urlString, json, data.size());
+            storeInCache(finishedRequest, json, data.size());
 
             emitResultForRequest(finishedRequest, json);
 

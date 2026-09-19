@@ -112,6 +112,9 @@ public:
     static QUrl projectWebUrl(const QString &owner, const QString &project);
 
     void searchProjects(const QString &query, int limit = 50, int offset = 0);
+    // One project by its exact name; group owners are written "@group". Answers with
+    // projectFound() or projectNotFound(), never with errorOccurred()
+    void getProject(const QString &owner, const QString &project);
     // Newest first, or by name
     void getLatestProjects(int limit, int offset, bool byName = false);
     // The package list of an application page: details, versions and dates. The server
@@ -142,6 +145,9 @@ public:
 
 Q_SIGNALS:
     void projectsFound(const QList<CoprProjectInfo> &projects);
+    void projectFound(const CoprProjectInfo &project);
+    // Also when the request failed: the search that follows reports what is wrong
+    void projectNotFound(const QString &owner, const QString &project);
     // complete is false when the project has more packages than the client keeps
     void projectPackagesFound(const QString &owner, const QString &project, const QList<CoprPackageInfo> &packages, bool complete);
     void projectMonitorFound(const QString &owner, const QString &project, const QList<CoprPackageInfo> &packages, bool complete);
@@ -177,7 +183,7 @@ private:
     void noteRetryAfter(const QNetworkReply *reply);
     // Empty unless the server asked us to back off
     QString backOffMessage() const;
-    void storeInCache(const QString &urlString, const QJsonObject &json, qint64 size);
+    void storeInCache(const Request &request, const QJsonObject &json, qint64 size);
 
     void processNextRequest();
     void queueRequest(const Request &request);
@@ -227,9 +233,13 @@ private:
         QJsonObject data;
         qint64 timestamp;
         qint64 size; // of the raw response
+        int ttlMs;
     };
     QHash<QString, CacheEntry> m_cache;
     static constexpr int CacheTtlMs = 300000; // 5 minutes
+    // A search costs the server 6-8 s and its result changes only when projects are
+    // created or deleted. What can be installed is never taken from it.
+    static constexpr int SearchCacheTtlMs = 1800000; // 30 minutes
     static constexpr qint64 MaxCacheBytes = 4 * 1024 * 1024; // about 8 project list pages
 };
 
