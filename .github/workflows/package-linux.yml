@@ -323,8 +323,9 @@ jobs:
           echo "file=$rpm_file" >> "$GITHUB_OUTPUT"
           echo "kde-base-version=$kde_base_version" >> "$GITHUB_OUTPUT"
 
-      # Installed package: no search path overrides, and the programs are
-      # really started so that Qt loads every plugin.
+      # Installed package: no search path overrides. Discover, the notifier
+      # and the settings module (through kcmshell6) are really started: every
+      # plugin must be loaded and accepted by the program that asked for it.
       - name: Install RPM and load every plugin
         env:
           RPM_FILE: ${{ steps.package.outputs.file }}

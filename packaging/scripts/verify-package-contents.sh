@@ -6,7 +6,8 @@ usage() {
     echo "  <root>         staged package root, or / together with --installed" >&2
     echo "  <libdir>       library directory inside the root, for example /usr/lib64" >&2
     echo "  --installed    check the installed package without any library path override" >&2
-    echo "  --load-plugins also start the programs headless and watch Qt load every plugin" >&2
+    echo "  --load-plugins also start the programs and the settings module headless and" >&2
+    echo "                 watch them load every plugin" >&2
     exit 2
 }
 
@@ -51,6 +52,7 @@ private_libdir=$libdir/plasma-discover
 qt_plugindir=$libdir/qt6/plugins
 discover_bin=/usr/bin/plasma-discover
 notifier_bin=/usr/libexec/DiscoverNotifier
+kcm_plugin=$qt_plugindir/plasma/kcms/systemsettings/kcm_updates.so
 
 backend_plugins="
 appstream-preview-backend
@@ -106,7 +108,7 @@ done
 for plugin in $notifier_plugins; do
     require_file "$qt_plugindir/discover-notifier/$plugin.so"
 done
-require_file "$qt_plugindir/plasma/kcms/systemsettings/kcm_updates.so"
+require_file "$kcm_plugin"
 require_file /usr/share/applications/org.kde.discover.desktop
 require_file /usr/share/applications/org.kde.discover.urlhandler.desktop
 require_file /usr/share/applications/org.kde.discover.flatpak.desktop
@@ -225,8 +227,7 @@ check_symbols run_in_root ldd -r "$root$discover_bin"
 check_symbols run_in_root ldd -r "$root$notifier_bin"
 check_symbols run_in_root ldd -r "$root$private_libdir/libDiscoverCommon.so"
 check_symbols run_in_root ldd -r "$root$private_libdir/libDiscoverNotifiers.so"
-check_symbols run_in_root ldd -r \
-    "$root$qt_plugindir/plasma/kcms/systemsettings/kcm_updates.so"
+check_symbols run_in_root ldd -r "$root$kcm_plugin"
 for plugin in $notifier_plugins; do
     check_symbols run_in_root ldd -r \
         "$root$qt_plugindir/discover-notifier/$plugin.so"
@@ -267,7 +268,8 @@ fi
 # headless for a fixed time inside a private D-Bus session: they must still be
 # alive when the timeout fires (exit status 124), Qt must report every plugin
 # as loaded and the program that asked for the plugin must not reject it
-# afterwards. This needs the runtime dependencies (QML modules) of the
+# afterwards. The settings module is a plugin of System Settings, it is opened
+# with kcmshell6. This needs the runtime dependencies (QML modules) of the
 # package, so it is meant for a system where the package is installed.
 if [ "$(id -u)" -eq 0 ]; then
     echo "--load-plugins must run as a regular user" >&2
@@ -275,14 +277,24 @@ if [ "$(id -u)" -eq 0 ]; then
 fi
 load_seconds=30
 
+# kcmshell6 comes from kf6-kcmutils, the package of the libraries the settings
+# module links to, so it is there wherever the package is installed.
+if ! command -v kcmshell6 > /dev/null; then
+    echo "--load-plugins needs kcmshell6 to open the settings module" >&2
+    exit 2
+fi
+
 # Fedora switches every debug category off in qtlogging.ini. The rules bring
-# back what the checks read: the library and plugin loader of Qt and the
-# default category (the notifier reports a wrong interface id with a plain
-# qDebug). The warnings are named as well so that no local logging
-# configuration hides the error messages the checks look for.
+# back what the checks read: the library and plugin loader of Qt, the default
+# category (the notifier reports a wrong interface id with a plain qDebug) and
+# KCMUtils, which confirms a settings module only in a debug message. The
+# warnings are named as well so that no local logging configuration hides the
+# error messages the checks look for.
 logging_rules='qt.core.plugin.*.debug=true;qt.core.library.debug=true'
 logging_rules="$logging_rules;default.debug=true;default.warning=true"
 logging_rules="$logging_rules;org.kde.plasma.libdiscover.warning=true"
+logging_rules="$logging_rules;kf.kcmutils.debug=true;kf.kcmutils.warning=true"
+logging_rules="$logging_rules;kf.coreaddons.warning=true"
 
 run_headless() {
     log_file=$1
@@ -351,6 +363,29 @@ forbid_notifier_errors "$work_dir/notifier.log"
 for plugin in $notifier_plugins; do
     require_loaded "$work_dir/notifier.log" \
         "$qt_plugindir/discover-notifier/$plugin.so"
+done
+
+# KCMUtils reports "loaded QML KCM" once the module object exists and
+# "loaded KCM" only after the QML user interface of the module was created
+# too. A module that cannot be shown does not stop kcmshell6: it displays the
+# error inside its window instead.
+forbid_kcm_errors() {
+    if grep -E "Could not find KCM|Could not find plugin|Error loading|module \"[^\"]*\" is not installed" "$1" >&2; then
+        echo "kcmshell6 reported a settings module loading error" >&2
+        exit 1
+    fi
+}
+
+run_headless "$work_dir/kcm.log" kcmshell6 kcm_updates
+forbid_kcm_errors "$work_dir/kcm.log"
+require_loaded "$work_dir/kcm.log" "$kcm_plugin"
+for kcm_message in 'loaded QML KCM' 'loaded KCM'; do
+    if ! grep -F "$kcm_plugin" "$work_dir/kcm.log" |
+        grep -Fq "kf.kcmutils: $kcm_message "; then
+        grep -F 'kf.kcmutils' "$work_dir/kcm.log" >&2 || true
+        echo "KCMUtils did not report: $kcm_message $kcm_plugin" >&2
+        exit 1
+    fi
 done
 
 echo "package contents and plugin loading verified: KDE Discover $kde_base_version"
