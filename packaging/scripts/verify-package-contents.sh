@@ -300,7 +300,7 @@ run_headless() {
     log_file=$1
     shift
     status=0
-    run_in_root dbus-run-session -- env \
+    run_in_root dbus-run-session -- env -u QT_MESSAGE_PATTERN \
         QT_QPA_PLATFORM=offscreen \
         QT_FORCE_STDERR_LOGGING=1 \
         QT_DEBUG_PLUGINS=1 \
@@ -350,9 +350,12 @@ require_loaded "$work_dir/preview.log" \
 
 # The notifier loads the library first and only then looks at the interface
 # id and at the type of the plugin object. A plugin it rejects is therefore
-# reported by Qt as a loaded library all the same.
+# reported by Qt as a loaded library all the same. The log also holds the
+# output of whatever the private D-Bus session activates, so the two messages
+# about a single plugin only count together with the notifier plugin directory
+# the factory prints in them.
 forbid_notifier_errors() {
-    if grep -E "doesn't have the right IID|couldn't load|couldn't find any notifier backend" "$1" >&2; then
+    if grep -E "Plugin \"[^\"]*/discover-notifier/[^\"]*\" doesn't have the right IID|couldn't load \"[^\"]*/discover-notifier/|couldn't find any notifier backend" "$1" >&2; then
         echo "DiscoverNotifier rejected a notifier plugin" >&2
         exit 1
     fi
@@ -368,9 +371,11 @@ done
 # KCMUtils reports "loaded QML KCM" once the module object exists and
 # "loaded KCM" only after the QML user interface of the module was created
 # too. A module that cannot be shown does not stop kcmshell6: it displays the
-# error inside its window instead.
+# error inside its window instead. The messages are tied to their logging
+# category, because services activated on the private D-Bus session write to
+# the same log and "Error loading" is not a rare thing to say.
 forbid_kcm_errors() {
-    if grep -E "Could not find KCM|Could not find plugin|Error loading|module \"[^\"]*\" is not installed" "$1" >&2; then
+    if grep -E "kf\.kcmutils: (Could not find KCM|Error loading)|kf\.coreaddons: .*Could not find plugin|module \"[^\"]*\" is not installed" "$1" >&2; then
         echo "kcmshell6 reported a settings module loading error" >&2
         exit 1
     fi
