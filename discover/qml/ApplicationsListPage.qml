@@ -121,6 +121,15 @@ DiscoverPage {
         }
     }
 
+    // A top-level page comes back from the page pool as the same instance: start it over when
+    // it is put into the stack again, the search field is empty by then
+    Kirigami.ColumnView.onViewChanged: {
+        if (page.newestFirstSorting && Kirigami.ColumnView.view) {
+            page.search = ""
+            appsModel.tempSortRole = -1
+        }
+    }
+
     supportsRefreshing: true
     onRefreshingChanged: if (refreshing) {
         appsModel.invalidateFilter()
