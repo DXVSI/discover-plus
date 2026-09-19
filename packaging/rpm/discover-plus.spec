@@ -12,10 +12,15 @@
 
 Name:           discover-plus
 Version:        1.0.0
+# A packaging-only rebuild of the same VERSION raises this number together
+# with a new %%changelog entry; the scripts and workflows read it from here.
 Release:        1%{?dist}
 Summary:        Fedora-focused fork of the KDE Discover software center
 
-License:        BSD-3-Clause AND CC0-1.0 AND GPL-2.0-only AND GPL-2.0-or-later AND GPL-3.0-only AND LGPL-2.0-or-later AND LGPL-2.1-only AND LGPL-3.0-only AND (GPL-2.0-only OR GPL-3.0-only) AND (LGPL-2.1-only OR LGPL-3.0-only)
+# The list of Fedora's plasma-discover plus two identifiers that Fedora misses:
+# LGPL-3.0-or-later (discover/PowerManagementInterface.*) and LGPL-2.1-or-later
+# (notifier/org.freedesktop.login1.Manager.xml) are compiled into the binaries.
+License:        BSD-3-Clause AND CC0-1.0 AND GPL-2.0-only AND GPL-2.0-or-later AND GPL-3.0-only AND LGPL-2.0-or-later AND LGPL-2.1-only AND LGPL-2.1-or-later AND LGPL-3.0-only AND LGPL-3.0-or-later AND (GPL-2.0-only OR GPL-3.0-only) AND (LGPL-2.1-only OR LGPL-3.0-only)
 URL:            https://github.com/DXVSI/discover-plus
 Source0:        %{url}/releases/download/plus-v%{version}/%{name}-%{version}.tar.xz
 
@@ -71,11 +76,11 @@ BuildRequires:  pkgconfig(Qt6Widgets)
 # Discover Plus installs the same paths under /usr, the same private libraries
 # (libDiscoverCommon.so, libDiscoverNotifiers.so) and plugins with an
 # incompatible interface id, so it cannot coexist with any Fedora Discover
-# subpackage. The Obsoletes let "dnf install ./discover-plus-*.rpm" replace the
-# stock packages in one transaction. They are unversioned on purpose: the fork
-# has its own version line that is never comparable with Fedora's EVR, and a
-# versioned Obsoletes would stop working as soon as Fedora ships a newer
-# Discover. There is deliberately no "Provides: plasma-discover".
+# subpackage. The Obsoletes let a plain "dnf install" of the package file
+# replace the stock packages in one transaction. They are unversioned on
+# purpose: the fork has its own version line that is never comparable with
+# Fedora's EVR, and a versioned Obsoletes would stop working as soon as Fedora
+# ships a newer Discover. There is deliberately no "Provides: plasma-discover".
 Obsoletes:      plasma-discover
 Obsoletes:      plasma-discover-libs
 Obsoletes:      plasma-discover-flatpak
@@ -114,6 +119,9 @@ Requires:       grep
 Requires:       sed
 Requires:       PackageKit
 Requires:       hicolor-icon-theme
+# Owner of config.kcfg, qlogging-categories6 and the other shared KDE
+# directories the package installs into.
+Requires:       kf6-filesystem
 
 # The KF6 and Qt versions of the build become runtime minimums. KF6 libraries
 # do not version their symbols, so the generated libKF6*.so.6 dependencies
@@ -130,6 +138,9 @@ Requires:       kf6-kconfig%{?_isa} >= %{_kf6_version}
 Requires:       kf6-kio-core%{?_isa} >= %{_kf6_version}
 Requires:       kf6-kcmutils%{?_isa} >= %{_kf6_version}
 Requires:       kf6-knewstuff%{?_isa} >= %{_kf6_version}
+# QML import of Feedback.qml. The build enables WITH_FEEDBACK, but nothing
+# links the library, so no dependency is generated for it.
+Requires:       kf6-kuserfeedback%{?_isa} >= %{_kf6_version}
 %endif
 Requires:       kf6-kirigami-addons%{?_isa} >= 1.10.0
 %if "%{?_qt6_version}" != ""
@@ -236,6 +247,10 @@ done
 %dir %{_kf6_qtplugindir}/discover-notifier
 %{_kf6_qtplugindir}/discover-notifier/DiscoverPackageKitNotifier.so
 %{_kf6_qtplugindir}/discover-notifier/FlatpakNotifier.so
+# No Fedora package owns the System Settings module directories.
+%dir %{_kf6_qtplugindir}/plasma
+%dir %{_kf6_qtplugindir}/plasma/kcms
+%dir %{_kf6_qtplugindir}/plasma/kcms/systemsettings
 %{_kf6_qtplugindir}/plasma/kcms/systemsettings/kcm_updates.so
 %{_kf6_datadir}/applications/org.kde.discover.desktop
 %{_kf6_datadir}/applications/org.kde.discover.urlhandler.desktop
@@ -251,6 +266,8 @@ done
 %{_kf6_datadir}/config.kcfg/discover*.kcfg
 %{_kf6_datadir}/icons/hicolor/*/apps/plasmadiscover.*
 %{_kf6_datadir}/icons/hicolor/*/apps/flatpak-discover.*
+# Owned by kf6-kxmlgui, which the package does not link against.
+%dir %{_kf6_datadir}/kxmlgui5
 %{_kf6_datadir}/kxmlgui5/plasmadiscover/
 %{_kf6_datadir}/knotifications6/discoverabstractnotifier.notifyrc
 %{_kf6_datadir}/qlogging-categories6/discover.categories

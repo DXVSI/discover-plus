@@ -304,8 +304,10 @@ require_loaded() {
 
 # "Couldn't find the backend" is not in the list: a loaded backend may have
 # nothing to offer, like KNewStuff on a system without any .knsrc file.
+# A missing QML module does not stop the program either: the part of the
+# window that imports it is silently left out.
 forbid_load_errors() {
-    if grep -E "doesn't have the right IID|error loading|Didn't find any Discover backend|Failed to create main window" "$1" >&2; then
+    if grep -E "doesn't have the right IID|error loading|Didn't find any Discover backend|Failed to create main window|module \"[^\"]*\" is not installed" "$1" >&2; then
         echo "Discover reported a plugin loading error" >&2
         exit 1
     fi
