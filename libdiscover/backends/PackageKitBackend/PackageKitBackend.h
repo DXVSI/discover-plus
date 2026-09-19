@@ -201,6 +201,7 @@ private:
     void foundNewMajorVersion(const AppStream::Release &release);
     void setRefresher(PackageKit::Transaction *refresh);
     void processNextCoprInstalledStateCheck();
+    void requestNextCoprBrowsePage();
 
     QScopedPointer<AppStream::ConcurrentPool> m_appdata;
     bool m_appdataLoaded = false;
@@ -248,9 +249,18 @@ private:
     int m_activeCoprInstalledStateChecks = 0;
     static constexpr int MaxConcurrentCoprInstalledStateChecks = 2;
 
-    // Batch loading: accumulate results from parallel initial requests
-    QList<CoprProjectInfo> m_coprBatchBuffer;
-    int m_coprBatchPending = 0;
+    // Browse mode. About 90% of the newest projects are hidden from the COPR
+    // homepage (CI scratch projects) or lack the current chroot, so one user
+    // action (opening the page, a fetchMore) requests large pages one after
+    // another until about a screenful passed the filters, up to a hard cap.
+    bool m_coprBrowsePagePending = false;
+    bool m_coprBrowseExhausted = false;
+    int m_coprBrowseRequests = 0;
+    int m_coprBrowseAccepted = 0;
+    QSet<QString> m_coprBrowseSeenKeys;
+    static constexpr int CoprBrowsePageSize = 300;
+    static constexpr int CoprBrowseTargetCount = 30;
+    static constexpr int CoprBrowseMaxRequestsPerAction = 4;
 
     QString m_lastCoprErrorMessage;
     QElapsedTimer m_lastCoprErrorTimer;

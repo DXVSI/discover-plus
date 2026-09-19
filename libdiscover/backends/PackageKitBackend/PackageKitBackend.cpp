@@ -914,8 +914,9 @@ ResultsStream *PackageKitBackend::search(const AbstractResourcesBackend::Filters
             m_currentSearchStream = nullptr;
             m_lastCoprSearchQuery.clear();
             m_coprOffset = 0;
-            m_coprBatchPending = 0;
-            m_coprBatchBuffer.clear();
+            m_coprBrowsePagePending = false;
+            m_coprBrowseExhausted = false;
+            m_coprBrowseSeenKeys.clear();
             m_coprProjectMetadata.clear();
             m_coprProjectRelevance.clear();
             m_coprPackageRequests.clear();
@@ -951,8 +952,9 @@ ResultsStream *PackageKitBackend::search(const AbstractResourcesBackend::Filters
         // Reset state for new session
         m_coprOffset = 0;
         m_lastCoprSearchQuery.clear();
-        m_coprBatchPending = 0;
-        m_coprBatchBuffer.clear();
+        m_coprBrowsePagePending = false;
+        m_coprBrowseExhausted = false;
+        m_coprBrowseSeenKeys.clear();
         m_coprProjectMetadata.clear();
         m_coprProjectRelevance.clear();
         m_coprPackageRequests.clear();
@@ -985,8 +987,9 @@ ResultsStream *PackageKitBackend::search(const AbstractResourcesBackend::Filters
 
         // Reset state for new search
         m_coprOffset = 0;
-        m_coprBatchPending = 0;
-        m_coprBatchBuffer.clear();
+        m_coprBrowsePagePending = false;
+        m_coprBrowseExhausted = false;
+        m_coprBrowseSeenKeys.clear();
         m_coprProjectMetadata.clear();
         m_coprProjectRelevance.clear();
         m_coprPackageRequests.clear();
@@ -1856,8 +1859,6 @@ void PackageKitBackend::searchCoprPackages(const QString &query)
     qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "Searching COPR packages for query:" << query;
     m_lastCoprSearchQuery = query;
 
-    m_coprBatchBuffer.clear();
-    m_coprBatchPending = 0;
     m_coprOffset = 20;
     m_coprSearchPagePending = true;
 
@@ -1871,22 +1872,22 @@ void PackageKitBackend::loadPopularCoprProjects()
         return;
     }
 
-    qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "Loading COPR projects, offset:" << m_coprOffset;
+    // A new user action: opening the page or a fetchMore
+    m_coprBrowseRequests = 0;
+    m_coprBrowseAccepted = 0;
+    requestNextCoprBrowsePage();
+}
 
-    // Start from offset 100 to skip test projects
-    if (m_coprOffset == 0) {
-        // First call: batch load 3 pages in parallel
-        m_coprBatchBuffer.clear();
-        m_coprBatchPending = 3;
-        m_coprClient->getLatestProjects(30, 100);
-        m_coprClient->getLatestProjects(30, 130);
-        m_coprClient->getLatestProjects(30, 160);
-        m_coprOffset = 90; // 3 pages of 30
-    } else {
-        // Subsequent calls: single page, append at bottom
-        m_coprClient->getLatestProjects(30, 100 + m_coprOffset);
-        m_coprOffset += 30;
-    }
+void PackageKitBackend::requestNextCoprBrowsePage()
+{
+    ++m_coprBrowseRequests;
+    m_coprBrowsePagePending = true;
+
+    qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "Loading COPR projects, offset:" << m_coprOffset << "request" << m_coprBrowseRequests << "of at most"
+                                                << CoprBrowseMaxRequestsPerAction << "for this action";
+
+    m_coprClient->getLatestProjects(CoprBrowsePageSize, m_coprOffset);
+    m_coprOffset += CoprBrowsePageSize;
 }
 
 void PackageKitBackend::loadMoreCoprProjects()
@@ -1911,7 +1912,16 @@ void PackageKitBackend::loadMoreCoprProjects()
         m_coprClient->searchProjects(m_lastCoprSearchQuery, 20, m_coprOffset);
         m_coprOffset += 20;
     } else {
-        // We're in browse mode - load more popular projects
+        // We're in browse mode - load more projects, one page in flight at a time.
+        // The view asks again once the pending rows are in, so nothing is lost by skipping.
+        if (m_coprBrowsePagePending) {
+            qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "COPR browse page already pending, skipping fetchMore";
+            return;
+        }
+        if (m_coprBrowseExhausted) {
+            qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "No more COPR projects to browse, skipping fetchMore";
+            return;
+        }
         loadPopularCoprProjects();
     }
 }
@@ -1921,31 +1931,23 @@ void PackageKitBackend::onCoprProjectsFound(const QList<CoprProjectInfo> &projec
     qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "Found" << projects.size() << "COPR projects";
     if (!m_lastCoprSearchQuery.isEmpty()) {
         m_coprSearchPagePending = false;
+    } else {
+        m_coprBrowsePagePending = false;
     }
-
-    // Batch loading: accumulate results from parallel initial requests
-    if (m_coprBatchPending > 0) {
-        m_coprBatchBuffer.append(projects);
-        m_coprBatchPending--;
-        qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "COPR batch: accumulated" << projects.size() << "projects, pending:" << m_coprBatchPending;
-
-        if (m_coprBatchPending > 0) {
-            return; // Still waiting for more batch responses
-        }
-
-        qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "COPR batch complete:" << m_coprBatchBuffer.size() << "total projects";
-    }
-
-    // Use batch buffer if we just completed a batch, otherwise use incoming projects
-    const QList<CoprProjectInfo> &projectsToProcess = !m_coprBatchBuffer.isEmpty() ? m_coprBatchBuffer : projects;
 
     // Get the current search query if we're in search mode
     QString searchQuery = m_lastCoprSearchQuery;
 
-    QVector<StreamResult> results;
-    results.reserve(projectsToProcess.size());
+    // Empty when the chroot could not be detected: nothing is filtered by chroot then
+    const QString currentChroot = m_coprClient ? m_coprClient->getCurrentChroot() : QString();
+    int unlistedCount = 0;
+    int otherChrootCount = 0;
+    int duplicateCount = 0;
 
-    for (const CoprProjectInfo &project : projectsToProcess) {
+    QVector<StreamResult> results;
+    results.reserve(projects.size());
+
+    for (const CoprProjectInfo &project : projects) {
         const QString key = coprProjectKey(project.owner, project.name);
 
         // Calculate relevance score FIRST - filter out irrelevant results when searching
@@ -1987,7 +1989,6 @@ void PackageKitBackend::onCoprProjectsFound(const QList<CoprProjectInfo> &projec
             if (m_coprResources.contains(key)) {
                 resource = m_coprResources[key];
             } else {
-                const QString currentChroot = m_coprClient ? m_coprClient->getCurrentChroot() : QString();
                 CoprPackageInfo packageInfo = packageInfoFromProject(project, currentChroot);
 
                 resource = new CoprResource(packageInfo, this);
@@ -2009,12 +2010,29 @@ void PackageKitBackend::onCoprProjectsFound(const QList<CoprProjectInfo> &projec
             continue;
         }
 
+        // Browse mode shows what the COPR homepage shows (no projects hidden from it)
+        // minus projects without the current chroot. The chroot check is negative
+        // only: an enabled chroot does not guarantee that builds exist.
+        if (project.unlistedOnHomepage) {
+            ++unlistedCount;
+            continue;
+        }
+        if (!currentChroot.isEmpty() && !project.chroots.contains(currentChroot)) {
+            ++otherChrootCount;
+            continue;
+        }
+        // Offset pagination shifts while new projects are created, so pages overlap
+        if (m_coprBrowseSeenKeys.contains(key)) {
+            ++duplicateCount;
+            continue;
+        }
+        m_coprBrowseSeenKeys.insert(key);
+
         // Create or reuse resource
         CoprResource *resource = nullptr;
         if (m_coprResources.contains(key)) {
             resource = m_coprResources[key];
         } else {
-            const QString currentChroot = m_coprClient ? m_coprClient->getCurrentChroot() : QString();
             CoprPackageInfo packageInfo = packageInfoFromProject(project, currentChroot);
 
             resource = new CoprResource(packageInfo, this);
@@ -2039,7 +2057,7 @@ void PackageKitBackend::onCoprProjectsFound(const QList<CoprProjectInfo> &projec
 
             qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "Sending" << results.size() << "COPR results";
             Q_EMIT m_currentSearchStream->resourcesFound(results);
-        } else if (projectsToProcess.isEmpty()) {
+        } else if (projects.isEmpty()) {
             // No more projects from API - finish the stream to stop loading indicator
             qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "No more COPR projects, finishing stream";
             auto coprStream = qobject_cast<PKResultsStream *>(m_currentSearchStream.data());
@@ -2050,8 +2068,33 @@ void PackageKitBackend::onCoprProjectsFound(const QList<CoprProjectInfo> &projec
         // If projects were received but all filtered out, don't finish - try loading more
     }
 
-    qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "COPR: processed" << results.size() << "relevant results from" << projectsToProcess.size() << "projects";
-    m_coprBatchBuffer.clear();
+    qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "COPR: processed" << results.size() << "relevant results from" << projects.size() << "projects";
+
+    if (!searchQuery.isEmpty() || !m_currentSearchStream) {
+        return;
+    }
+
+    m_coprBrowseAccepted += results.size();
+    qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "COPR browse page:" << results.size() << "passed," << unlistedCount << "unlisted," << otherChrootCount
+                                                << "without chroot" << currentChroot << "," << duplicateCount
+                                                << "duplicates; accepted for this action:" << m_coprBrowseAccepted << "after" << m_coprBrowseRequests
+                                                << "requests";
+
+    if (projects.size() < CoprBrowsePageSize) {
+        // A short page is the end of the list (an empty one also follows a failed request)
+        m_coprBrowseExhausted = true;
+        if (!projects.isEmpty()) {
+            auto coprStream = qobject_cast<PKResultsStream *>(m_currentSearchStream.data());
+            if (coprStream) {
+                coprStream->finishCoprStream();
+            }
+        }
+    } else if (m_coprBrowseAccepted < CoprBrowseTargetCount && m_coprBrowseRequests < CoprBrowseMaxRequestsPerAction) {
+        requestNextCoprBrowsePage();
+    } else if (m_coprBrowseAccepted < CoprBrowseTargetCount) {
+        qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "COPR browse: request cap reached with" << m_coprBrowseAccepted
+                                                    << "projects, waiting for the next fetchMore";
+    }
 }
 
 void PackageKitBackend::onCoprProjectPackagesFound(const QString &owner, const QString &project, const QList<CoprPackageInfo> &packages)
