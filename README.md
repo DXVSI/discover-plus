@@ -91,12 +91,14 @@ Releases provide an x86_64 RPM for the current stable Fedora release: https://gi
 
 Download `discover-plus-<version>-1.fc<N>.x86_64.rpm`. The `debuginfo`, `debugsource` and `src` packages next to it are only needed for debugging and rebuilding.
 
-Update the system first. The package requires the KF6 and Qt versions it was built with, and a system installed from the release media and never updated has older ones.
+Update the system first. The package requires the KF6 and Qt versions it was built with, and a system installed from the release media and never updated has older ones. Use the exact name of the downloaded file, here the one of version 1.0.0 for Fedora 44:
 
 ```bash
 sudo dnf upgrade --refresh
-sudo dnf install ./discover-plus-*.rpm
+sudo dnf install ./discover-plus-1.0.0-1.fc44.x86_64.rpm
 ```
+
+Do not shorten the name to `./discover-plus-*.rpm`: the pattern also matches the `debuginfo`, `debugsource` and `src` packages and the file of an older release in the same directory, and `dnf` refuses to install two versions at once.
 
 The package replaces the stock `plasma-discover` packages in the same transaction, including the update notifier and the offline updates setting. It conflicts with them, so both cannot be installed at once.
 
@@ -104,16 +106,16 @@ Optional check of the download, with `SHA256SUMS` from the same release and the 
 
 ```bash
 sha256sum --check --ignore-missing SHA256SUMS
-gh attestation verify discover-plus-[0-9]*.x86_64.rpm -R DXVSI/discover-plus
+gh attestation verify discover-plus-1.0.0-1.fc44.x86_64.rpm -R DXVSI/discover-plus
 ```
 
 #### Updating
 
-There is no package repository yet, so `dnf upgrade` does not see new versions of Discover Plus. Download the RPM of the new release and install it the same way:
+There is no package repository yet, so `dnf upgrade` does not see new versions of Discover Plus. Download the RPM of the new release and install it the same way, again with the exact file name (`1.1.0` stands for the new version):
 
 ```bash
 sudo dnf upgrade --refresh
-sudo dnf install ./discover-plus-*.rpm
+sudo dnf install ./discover-plus-1.1.0-1.fc44.x86_64.rpm
 ```
 
 A COPR repository with automatic updates is planned. Regular system updates keep working and do not bring the stock Discover back.
@@ -142,6 +144,8 @@ Unlike the source install, the RPM is built with `PACKAGEKIT_AUTOREMOVE`, like t
 #### Supported Fedora releases
 
 Only the current stable Fedora release is supported. Each release is built and tested for the Fedora version named in the file name (`fc44` means Fedora 44). Snap and rpm-ostree backends are not included.
+
+The package is made for the regular, `dnf`-managed Fedora KDE. Fedora Kinoite and the other Atomic desktops are not supported: the commands above do not apply there, and the package conflicts with the `plasma-discover` of the base image.
 
 ### Quick Install
 
