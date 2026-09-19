@@ -218,7 +218,9 @@ void FlatpakResource::resolveIcon()
                             QIcon::fromTheme(QStringLiteral("package-x-generic")).pixmap(32, 32).toImage().save(fileName);
                         }
                         file.close();
-                        Q_EMIT iconChanged();
+                        // m_icon already holds the placeholder picked before the download finished,
+                        // resolve again so the cached file is used; this also emits iconChanged()
+                        resolveIcon();
                         reply->deleteLater();
                     }
                 });
