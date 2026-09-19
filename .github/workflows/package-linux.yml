@@ -527,7 +527,10 @@ jobs:
             sleep $((attempt * 20))
           done
           test "$swapped" = true
-          rpm -q plasma-discover plasma-discover-libs
+          # The swap only names plasma-discover; the notifier is a separate
+          # Fedora package that nothing pulls in.
+          dnf install -y plasma-discover-notifier
+          rpm -q plasma-discover plasma-discover-libs plasma-discover-notifier
           if rpm -q discover-plus; then
             echo "discover-plus is still installed after the rollback" >&2
             exit 1
