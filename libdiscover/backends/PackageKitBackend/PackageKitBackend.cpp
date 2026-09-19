@@ -919,6 +919,7 @@ ResultsStream *PackageKitBackend::search(const AbstractResourcesBackend::Filters
             m_coprBrowsePagePending = false;
             m_coprBrowseExhausted = false;
             m_coprBrowseSeenKeys.clear();
+            m_coprBrowseResults.clear();
             m_coprProjectMetadata.clear();
             m_coprProjectRelevance.clear();
             m_coprPackageRequests.clear();
@@ -935,15 +936,15 @@ ResultsStream *PackageKitBackend::search(const AbstractResourcesBackend::Filters
     if (filter.origin == QStringLiteral("COPR") && filter.search.isEmpty()) {
         qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "Loading popular COPR projects for COPR category";
 
-        // The COPR page starts its stream twice while opening. While the first page of
-        // the previous browse stream is still in flight, hand it over to the new stream
-        // instead of cancelling it and asking the server for the same 0.5 MB again.
-        const bool reuseFirstPage = m_currentSearchStream && m_lastCoprSearchQuery.isEmpty() && m_coprBrowsePagePending && m_coprBrowseRequests == 1
-            && m_coprOffset == 0 && m_coprBrowseSeenKeys.isEmpty();
+        // The COPR page starts its stream again while it opens (and whenever Discover
+        // repeats the search on its own). A browse chain that waits for a page is handed
+        // over to the new stream instead of being cancelled: the server has already
+        // started on that 0.5 MB page and would be asked for it once more.
+        const bool continueBrowse = m_lastCoprSearchQuery.isEmpty() && m_coprBrowsePagePending;
 
         // Close any previous COPR stream and cancel pending requests
         if (m_currentSearchStream) {
-            if (m_coprClient && !reuseFirstPage) {
+            if (m_coprClient && !continueBrowse) {
                 m_coprClient->cancelAllRequests();
             }
             auto oldStream = qobject_cast<PKResultsStream *>(m_currentSearchStream.data());
@@ -957,8 +958,16 @@ ResultsStream *PackageKitBackend::search(const AbstractResourcesBackend::Filters
         m_currentSearchStream = stream;
         qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "Created and saved stream for COPR popular projects";
 
-        if (reuseFirstPage) {
-            qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "COPR browse: the first page is already on its way, reusing it for the new stream";
+        if (continueBrowse) {
+            qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "COPR browse: a page is already on its way, continuing at offset" << m_coprOffset << "and handing"
+                                                        << m_coprBrowseResults.size() << "projects over to the new stream";
+            // The model behind the new stream starts empty and connects after this
+            // method returns. Offset, request budget and seen keys stay as they are.
+            if (!m_coprBrowseResults.isEmpty()) {
+                QTimer::singleShot(0, stream.data(), [stream, results = m_coprBrowseResults]() {
+                    Q_EMIT stream->resourcesFound(results);
+                });
+            }
             return stream;
         }
 
@@ -968,6 +977,7 @@ ResultsStream *PackageKitBackend::search(const AbstractResourcesBackend::Filters
         m_coprBrowsePagePending = false;
         m_coprBrowseExhausted = false;
         m_coprBrowseSeenKeys.clear();
+        m_coprBrowseResults.clear();
         m_coprProjectMetadata.clear();
         m_coprProjectRelevance.clear();
         m_coprPackageRequests.clear();
@@ -1003,6 +1013,7 @@ ResultsStream *PackageKitBackend::search(const AbstractResourcesBackend::Filters
         m_coprBrowsePagePending = false;
         m_coprBrowseExhausted = false;
         m_coprBrowseSeenKeys.clear();
+        m_coprBrowseResults.clear();
         m_coprProjectMetadata.clear();
         m_coprProjectRelevance.clear();
         m_coprPackageRequests.clear();
@@ -2075,7 +2086,9 @@ void PackageKitBackend::onCoprProjectsFound(const QList<CoprProjectInfo> &projec
             m_packages.packages[packageId] = resource;
         }
 
-        results.append(StreamResult(resource, relevanceScore));
+        const StreamResult result(resource, relevanceScore);
+        results.append(result);
+        m_coprBrowseResults.append(result);
         qCDebug(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "COPR result:" << project.owner << "/" << project.name << "score:" << relevanceScore;
     }
 

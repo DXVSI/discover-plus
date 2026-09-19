@@ -259,6 +259,8 @@ private:
     int m_coprBrowseRequests = 0;
     int m_coprBrowseAccepted = 0;
     QSet<QString> m_coprBrowseSeenKeys;
+    // What the browse stream was given so far, to hand over to a stream that replaces it
+    QVector<StreamResult> m_coprBrowseResults;
     static constexpr int CoprBrowsePageSize = 300;
     static constexpr int CoprBrowseTargetCount = 30;
     static constexpr int CoprBrowseMaxRequestsPerAction = 4;
