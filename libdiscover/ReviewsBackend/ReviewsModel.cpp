@@ -30,6 +30,15 @@ ReviewsModel::ReviewsModel(QObject *parent)
     } else {
         m_preferredSortRole = QStringLiteral("wilsonScore");
     }
+
+    const auto stateConfig = KSharedConfig::openStateConfig();
+    KConfigGroup votesGroup(stateConfig, u"ReviewVotes"_s);
+    const auto reviewIds = votesGroup.keyList();
+    m_persistedVotes.reserve(reviewIds.size());
+    for (const auto &reviewId : reviewIds) {
+        auto vote = static_cast<UserChoice>(votesGroup.readEntry(reviewId, static_cast<int>(None)));
+        m_persistedVotes.insert(reviewId.toULongLong(), vote);
+    }
 }
 
 ReviewsModel::~ReviewsModel() = default;
@@ -187,6 +196,13 @@ void ReviewsModel::addReviews(const QVector<ReviewPtr> &reviews, bool canFetchMo
     qCDebug(LIBDISCOVER_LOG) << "reviews arrived..." << m_lastPage << reviews.size();
 
     if (!reviews.isEmpty()) {
+        for (const auto &review : reviews) {
+            const auto it = m_persistedVotes.constFind(review->id());
+            if (it != m_persistedVotes.constEnd()) {
+                review->setUsefulChoice(it.value());
+            }
+        }
+
         beginInsertRows(QModelIndex(), rowCount(), rowCount() + reviews.size() - 1);
         m_reviews += reviews;
         endInsertRows();
@@ -202,11 +218,26 @@ bool ReviewsModel::canFetchMore(const QModelIndex & /*parent*/) const
 void ReviewsModel::markUseful(int row, bool useful)
 {
     Review *r = m_reviews[row].data();
-    r->setUsefulChoice(useful ? Yes : No);
+    if (r->usefulChoice() != None) {
+        return;
+    }
+
+    const auto vote = useful ? Yes : No;
+    r->setUsefulChoice(vote);
+    persistVote(r->id(), vote);
     // qCDebug(LIBDISCOVER_LOG) << "submitting usefulness" << r->applicationName() << r->id() << useful;
     m_backend->submitUsefulness(r, useful);
     const QModelIndex ind = index(row, 0, QModelIndex());
     Q_EMIT dataChanged(ind, ind, {UsefulnessTotal, UsefulnessFavorable, UsefulChoice});
+}
+
+void ReviewsModel::persistVote(quint64 reviewId, UserChoice choice)
+{
+    m_persistedVotes.insert(reviewId, choice);
+
+    const auto config = KSharedConfig::openStateConfig();
+    KConfigGroup votesGroup(config, u"ReviewVotes"_s);
+    votesGroup.writeEntry(QString::number(reviewId), static_cast<int>(choice));
 }
 
 void ReviewsModel::deleteReview(int row)

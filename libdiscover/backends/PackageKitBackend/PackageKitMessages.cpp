@@ -166,18 +166,18 @@ QString restartMessage(PackageKit::Transaction::Restart restart, const QString &
 {
     switch (restart) {
     case PackageKit::Transaction::RestartApplication:
-        return i18n("'%1' was changed and suggests to be restarted.", PackageKit::Daemon::packageName(pkgid));
+        return i18n("“%1” was changed and suggests to be restarted.", PackageKit::Daemon::packageName(pkgid));
     case PackageKit::Transaction::RestartSession:
-        return i18n("A change by '%1' suggests your session to be restarted.", PackageKit::Daemon::packageName(pkgid));
+        return i18n("A change by “%1” suggests your session to be restarted.", PackageKit::Daemon::packageName(pkgid));
     case PackageKit::Transaction::RestartSecuritySession:
-        return i18n("'%1' was updated for security reasons, a restart of the session is recommended.", PackageKit::Daemon::packageName(pkgid));
+        return i18n("“%1” was updated for security reasons, a restart of the session is recommended.", PackageKit::Daemon::packageName(pkgid));
     case PackageKit::Transaction::RestartSecuritySystem:
-        return i18n("'%1' was updated for security reasons, a restart of the system is recommended.", PackageKit::Daemon::packageName(pkgid));
+        return i18n("“%1” was updated for security reasons, a restart of the system is recommended.", PackageKit::Daemon::packageName(pkgid));
     case PackageKit::Transaction::RestartSystem:
     case PackageKit::Transaction::RestartUnknown:
     case PackageKit::Transaction::RestartNone:
     default:
-        return i18n("A change by '%1' suggests your system to be restarted.", PackageKit::Daemon::packageName(pkgid));
+        return i18n("A change by “%1” suggests your system to be restarted.", PackageKit::Daemon::packageName(pkgid));
     }
 }
 

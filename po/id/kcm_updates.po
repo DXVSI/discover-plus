@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: discover\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-04-02 00:45+0000\n"
+"POT-Creation-Date: 2026-08-05 00:48+0000\n"
 "PO-Revision-Date: 2024-11-10 07:47+0700\n"
 "Last-Translator: Wantoyèk <wantoyek@gmail.com>\n"
 "Language-Team: https://t.me/Localizations_KDE_Indonesia\n"
@@ -28,12 +28,12 @@ msgstr "Pembaruan perangkat lunak:"
 msgid "Manually"
 msgstr "Secara Manual"
 
-#: kcm/ui/main.qml:51
+#: kcm/ui/main.qml:56
 #, kde-format
 msgid "Automatically"
 msgstr "Secara otomatis"
 
-#: kcm/ui/main.qml:58
+#: kcm/ui/main.qml:68
 #, fuzzy, kde-kuit-format
 #| msgctxt "@info"
 #| msgid ""
@@ -50,48 +50,48 @@ msgstr ""
 "Pembaruan untuk aplikasi akan segera diinstal, sedangkan pembaruan sistem "
 "akan diinstal saat komputer dinyalakan ulang di lain waktu."
 
-#: kcm/ui/main.qml:69
+#: kcm/ui/main.qml:74
 #, kde-format
 msgctxt "@title:group"
 msgid "Update frequency:"
 msgstr "Kekerapan pembaruan:"
 
-#: kcm/ui/main.qml:69
+#: kcm/ui/main.qml:74
 #, kde-format
 msgctxt "@title:group"
 msgid "Notification frequency:"
 msgstr "Kekerapan notifikasi:"
 
-#: kcm/ui/main.qml:72
+#: kcm/ui/main.qml:79
 #, kde-format
 msgctxt "@item:inlistbox"
 msgid "Daily"
 msgstr "Harian"
 
-#: kcm/ui/main.qml:73
+#: kcm/ui/main.qml:80
 #, kde-format
 msgctxt "@item:inlistbox"
 msgid "Weekly"
 msgstr "Pekanan"
 
-#: kcm/ui/main.qml:74
+#: kcm/ui/main.qml:81
 #, kde-format
 msgctxt "@item:inlistbox"
 msgid "Monthly"
 msgstr "Bulanan"
 
-#: kcm/ui/main.qml:75
+#: kcm/ui/main.qml:82
 #, kde-format
 msgctxt "@item:inlistbox"
 msgid "Never"
 msgstr "Tidak Pernah"
 
-#: kcm/ui/main.qml:119
+#: kcm/ui/main.qml:120
 #, kde-format
 msgid "Apply system updates:"
 msgstr "Terapkan pembaruan sistem:"
 
-#: kcm/ui/main.qml:126
+#: kcm/ui/main.qml:127
 #, kde-format
 msgctxt ""
 "@option:radio part of the logical sentence 'Apply system updates after "
@@ -99,7 +99,7 @@ msgctxt ""
 msgid "After rebooting"
 msgstr "Sesudah menyalakan ulang"
 
-#: kcm/ui/main.qml:133
+#: kcm/ui/main.qml:139
 #, kde-format
 msgctxt ""
 "@label The thing being recommended is to use the 'apply updates when "
@@ -107,7 +107,7 @@ msgctxt ""
 msgid "Recommended to maximize system stability"
 msgstr "Dianjurkan untuk memaksimalkan stabilitas sistem"
 
-#: kcm/ui/main.qml:139
+#: kcm/ui/main.qml:145
 #, kde-format
 msgctxt ""
 "@option:radio part of the logical sentence 'Apply system updates immediately'"

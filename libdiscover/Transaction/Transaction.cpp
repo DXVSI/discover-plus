@@ -12,7 +12,7 @@
 #include <KLocalizedString>
 #include <resources/AbstractResource.h>
 
-Transaction::Transaction(QObject *parent, AbstractResource *resource, Role role, const AddonList &addons)
+Transaction::Transaction(QObject *parent, AbstractResource *resource, Role role, const AddonList &addons, bool visible)
     : QObject(parent)
     , m_resource(resource)
     , m_role(role)
@@ -20,6 +20,7 @@ Transaction::Transaction(QObject *parent, AbstractResource *resource, Role role,
     , m_addons(addons)
     , m_isCancellable(true)
     , m_progress(0)
+    , m_visible(visible)
 {
 }
 
@@ -110,14 +111,6 @@ QVariant Transaction::icon() const
 bool Transaction::isVisible() const
 {
     return m_visible;
-}
-
-void Transaction::setVisible(bool visible)
-{
-    if (m_visible != visible) {
-        m_visible = visible;
-        Q_EMIT visibleChanged(visible);
-    }
 }
 
 void Transaction::setDownloadSpeed(quint64 downloadSpeed)

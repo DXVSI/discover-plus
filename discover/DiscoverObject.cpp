@@ -59,7 +59,6 @@
 #include <QMimeDatabase>
 #include <cmath>
 #include <functional>
-#include <resources/StoredResultsStream.h>
 #include <unistd.h>
 #include <utils.h>
 
@@ -126,7 +125,7 @@ DiscoverObject::DiscoverObject(const QVariantMap &initialProperties)
     qmlRegisterType<PowerManagementInterface>(uriApp, 1, 0, "PowerManagementInterface");
 #ifdef WITH_FEEDBACK
     qmlRegisterSingletonType<PlasmaUserFeedback>(uriApp, 1, 0, "UserFeedbackSettings", [](QQmlEngine *engine, QJSEngine *) -> QObject * {
-        auto r = new PlasmaUserFeedback(KSharedConfig::openConfig(QStringLiteral("PlasmaUserFeedback"), KConfig::NoGlobals));
+        auto r = new PlasmaUserFeedback;
         r->setParent(engine);
         return r;
     });
@@ -336,8 +335,8 @@ void DiscoverObject::openLocalPackage(const QUrl &localfile)
         [this, localfile]() {
             AbstractResourcesBackend::Filters f;
             f.resourceUrl = localfile;
-            auto stream = new StoredResultsStream({ResourcesModel::global()->search(f)});
-            connect(stream, &StoredResultsStream::finishedResources, this, [this, localfile](const QVector<StreamResult> &res) {
+            auto stream = new AggregatedResultsStream({ResourcesModel::global()->search(f)});
+            connect(stream, &AggregatedResultsStream::finished, this, [this, localfile](const QVector<StreamResult> &res) {
                 if (res.count() == 1) {
                     Q_EMIT openApplicationInternal(res.first().resource);
                 } else {
@@ -375,8 +374,8 @@ void DiscoverObject::openApplication(const QUrl &url)
         [this, url]() {
             AbstractResourcesBackend::Filters f;
             f.resourceUrl = url;
-            auto stream = new StoredResultsStream({ResourcesModel::global()->search(f)});
-            connect(stream, &StoredResultsStream::finishedResources, this, [this, url](const QVector<StreamResult> &res) {
+            auto stream = new AggregatedResultsStream({ResourcesModel::global()->search(f)});
+            connect(stream, &AggregatedResultsStream::finished, this, [this, url](const QVector<StreamResult> &res) {
                 if (res.count() >= 1) {
                     QPointer<QTimer> timeout = new QTimer(this);
                     timeout->setSingleShot(true);
@@ -460,8 +459,11 @@ public:
         updateDescription();
     }
 
-    void onTransactionAdded()
+    void onTransactionAdded(Transaction *newTransaction)
     {
+        if (!newTransaction->isVisible()) {
+            return;
+        }
         const auto oldAmount = totalAmount(Items);
         // Very unlikely to happen but let's be safe. We don't want to overflow.
         Q_ASSERT(oldAmount < std::numeric_limits<qulonglong>::max());
@@ -469,8 +471,11 @@ public:
         setTotalAmount(Items, newAmount);
     }
 
-    void onTransactionRemoved()
+    void onTransactionRemoved(Transaction *transaction)
     {
+        if (!transaction->isVisible()) {
+            return;
+        }
         const auto oldAmount = totalAmount(Items);
         // In an ideal world we'd not do subtractions on unsigned values as they could underflow. Unfortunately we deal
         // with 64bit unsigned here, so doing a safe subtraction is difficult. Be assertive instead.
@@ -560,6 +565,7 @@ void DiscoverObject::reconsiderQuit()
     }
 
     m_sni.reset();
+    QCoreApplication::setQuitLockEnabled(true);
     // Let the job UI to finalise properly
     QTimer::singleShot(20, qGuiApp, &QCoreApplication::quit);
 }
@@ -598,6 +604,7 @@ bool DiscoverObject::eventFilter(QObject *object, QEvent *event)
         if (!quitWhenIdle()) {
             return true;
         }
+        QCoreApplication::setQuitLockEnabled(true);
     }
     // } else if (event->type() == QEvent::ShortcutOverride) {
     //     qCWarning(DISCOVER_LOG) << "Action conflict" << event;

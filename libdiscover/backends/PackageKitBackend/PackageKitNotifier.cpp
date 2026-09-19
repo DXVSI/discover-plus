@@ -29,6 +29,10 @@
 
 #include "libdiscover_backend_packagekit_debug.h"
 
+#ifdef HAVE_MALLOC_TRIM
+#include <malloc.h>
+#endif
+
 #if !QPK_CHECK_VERSION(1, 1, 4)
 #include "pk-offline-private.h"
 #endif
@@ -40,19 +44,12 @@ PackageKitNotifier::PackageKitNotifier(QObject *parent)
     , m_securityUpdates(0)
     , m_normalUpdates(0)
     , m_hasDistUpgrade(false)
-    , m_appdata(new AppStream::Pool)
 {
-    m_appdata->setFlags(AppStream::Pool::Flags(AppStream::Pool::Flag::FlagLoadOsCatalog
-                                               | AppStream::Pool::Flag::FlagLoadOsDesktopFiles
-                                               | AppStream::Pool::Flag::FlagLoadOsMetainfo));
-
     connect(PackageKit::Daemon::global(), &PackageKit::Daemon::updatesChanged, this, &PackageKitNotifier::recheckSystemUpdateNeeded);
     connect(PackageKit::Daemon::global(), &PackageKit::Daemon::transactionListChanged, this, &PackageKitNotifier::transactionListChanged);
     connect(PackageKit::Daemon::global(), &PackageKit::Daemon::restartScheduled, this, &PackageKitNotifier::nowNeedsReboot);
     connect(PackageKit::Daemon::global()->offline(), &PackageKit::Offline::changed, this, &PackageKitNotifier::checkNeedsReboot);
     QTimer::singleShot(100, this, &PackageKitNotifier::checkNeedsReboot);
-
-    m_appdata->load();
 
     // Check if there's packages after 5'
     QTimer::singleShot(5min, this, &PackageKitNotifier::refreshDatabase);
@@ -278,11 +275,34 @@ bool PackageKitNotifier::hasSecurityUpdates()
 
 void PackageKitNotifier::checkDistroUpgrade()
 {
-    auto nextRelease = AppStreamIntegration::global()->getDistroUpgrade(m_appdata.get());
-    if (nextRelease) {
+    QString nextVersion;
+    {
+        // The only thing asked of AppStream here is the component that describes this
+        // distribution, which comes from the catalog. The pool is built for the question and let
+        // go of after it: a pool held from the start of the session costs tens of megabytes while
+        // its cache is cold, and it would answer out of the metadata as it stood back then.
+        AppStream::Pool pool;
+        pool.setFlags(AppStream::Pool::FlagLoadOsCatalog);
+        if (!pool.load()) {
+            qCWarning(LIBDISCOVER_BACKEND_PACKAGEKIT_LOG) << "Could not load the AppStream pool:" << pool.lastError();
+            return;
+        }
+
+        if (const auto nextRelease = AppStreamIntegration::global()->getDistroUpgrade(&pool)) {
+            nextVersion = nextRelease->version();
+        }
+    }
+
+#ifdef HAVE_MALLOC_TRIM
+    // Reading the metadata leaves a heap the allocator keeps hold of, and this process runs for
+    // the whole session, so what was needed for the reading goes back to the system now.
+    malloc_trim(0);
+#endif
+
+    if (!nextVersion.isEmpty()) {
         m_hasDistUpgrade = true;
-        const QString &fullName = QStringLiteral("%1 %2").arg(AppStreamIntegration::global()->osRelease()->name(), nextRelease->version());
-        auto a = new UpgradeAction(nextRelease->version(), fullName, this);
+        const QString fullName = QStringLiteral("%1 %2").arg(AppStreamIntegration::global()->osRelease()->name(), nextVersion);
+        auto a = new UpgradeAction(nextVersion, fullName, this);
         connect(a, &UpgradeAction::triggered, this, [a](const QString &) {
             Q_EMIT a->showDiscoverUpdates();
         });

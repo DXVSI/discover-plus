@@ -78,6 +78,12 @@ target_link_libraries(DiscoverPackageKitNotifier
         libdiscover-backend-packagekit-logging-category
 )
 
+include(CheckFunctionExists)
+check_function_exists(malloc_trim HAVE_MALLOC_TRIM)
+if(HAVE_MALLOC_TRIM)
+    target_compile_definitions(DiscoverPackageKitNotifier PRIVATE HAVE_MALLOC_TRIM)
+endif()
+
 set_target_properties(DiscoverPackageKitNotifier PROPERTIES INSTALL_RPATH ${CMAKE_INSTALL_FULL_LIBDIR}/plasma-discover)
 
 install(FILES packagekit-backend-categories.xml DESTINATION ${KDE_INSTALL_DATADIR}/libdiscover/categories)

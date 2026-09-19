@@ -8,7 +8,6 @@
 #include "utils.h"
 #include <AppStreamQt/component.h>
 #include <AppStreamQt/developer.h>
-#include <AppStreamQt/icon.h>
 #include <AppStreamQt/image.h>
 #include <AppStreamQt/provided.h>
 #include <AppStreamQt/release.h>
@@ -20,10 +19,7 @@
 #include <LazyIconResolver.h>
 #include <PackageKit/Daemon>
 #include <QDebug>
-#include <QFile>
 #include <QIcon>
-#include <QProcess>
-#include <QStandardPaths>
 #include <QUrlQuery>
 #include <appstream/AppStreamUtils.h>
 
@@ -64,34 +60,6 @@ QString AppPackageKitResource::longDescription()
     }
 
     return PackageKitResource::longDescription();
-}
-
-static QIcon componentIcon(const AppStream::Component &comp)
-{
-    QIcon ret;
-    const auto icons = comp.icons();
-    for (const AppStream::Icon &icon : icons) {
-        switch (icon.kind()) {
-        case AppStream::Icon::KindLocal:
-            ret.addFile(icon.url().toLocalFile(), icon.size());
-            break;
-        case AppStream::Icon::KindCached:
-            ret.addFile(icon.url().toLocalFile(), icon.size());
-            break;
-        case AppStream::Icon::KindStock: {
-            if (AppStreamUtils::kIconLoaderHasIcon(icon.name())) {
-                return QIcon::fromTheme(icon.name());
-            }
-            break;
-        }
-        default:
-            break;
-        }
-    }
-    if (ret.isNull()) {
-        ret = QIcon::fromTheme(QStringLiteral("package-x-generic"));
-    }
-    return ret;
 }
 
 QVariant AppPackageKitResource::icon() const
@@ -201,6 +169,26 @@ QUrl AppPackageKitResource::donationURL()
 QUrl AppPackageKitResource::contributeURL()
 {
     return m_appdata.url(AppStream::Component::UrlKindContribute);
+}
+
+QUrl AppPackageKitResource::faqURL()
+{
+    return m_appdata.url(AppStream::Component::UrlKindFaq);
+}
+
+QUrl AppPackageKitResource::translateURL()
+{
+    return m_appdata.url(AppStream::Component::UrlKindTranslate);
+}
+
+QUrl AppPackageKitResource::contactURL()
+{
+    return m_appdata.url(AppStream::Component::UrlKindContact);
+}
+
+QUrl AppPackageKitResource::vcsBrowserURL()
+{
+    return m_appdata.url(AppStream::Component::UrlKindVcsBrowser);
 }
 
 AbstractResource::Type AppPackageKitResource::type() const
@@ -324,7 +312,10 @@ bool AppPackageKitResource::hasResolvedIcon() const
 
 void AppPackageKitResource::resolveIcon()
 {
-    m_icon = componentIcon(m_appdata);
+    m_icon = AppStreamUtils::iconForComponent(m_appdata);
+    if (m_icon->isNull()) {
+        m_icon = QIcon::fromTheme(QStringLiteral("package-x-generic"));
+    }
     Q_EMIT iconChanged();
 }
 

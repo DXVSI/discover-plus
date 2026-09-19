@@ -26,10 +26,9 @@ class UpdateTransaction : public Transaction
     Q_OBJECT
 public:
     UpdateTransaction(ResourcesUpdatesModel * /*parent*/, const QVector<AbstractBackendUpdater *> &updaters)
-        : Transaction(nullptr, nullptr, Transaction::InstallRole)
+        : Transaction(nullptr, nullptr, Transaction::InstallRole, {}, false /*not visible*/)
         , m_allUpdaters(updaters)
     {
-        setVisible(false);
         bool cancelable = false;
         for (auto updater : std::as_const(m_allUpdaters)) {
             connect(updater, &AbstractBackendUpdater::progressingChanged, this, &UpdateTransaction::slotProgressingChanged);

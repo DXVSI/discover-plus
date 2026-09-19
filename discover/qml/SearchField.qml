@@ -25,7 +25,7 @@ Kirigami.SearchField {
     property QtObject page
     property string currentSearchText
 
-    placeholderText: (!enabled || !page || page.hasOwnProperty("isHome") || window.leftPage.name.length === 0) ? i18n("Search…") : i18n("Search in '%1'…", window.leftPage.name)
+    placeholderText: (!enabled || !page || page.hasOwnProperty("isHome") || window.leftPage.name.length === 0) ? i18n("Search…") : i18n("Search in “%1”…", window.leftPage.name)
 
     SearchHistory {
         id: searchHistory

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: discover\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-05-30 00:47+0000\n"
+"POT-Creation-Date: 2026-09-17 00:45+0000\n"
 "PO-Revision-Date: 2021-09-27 23:44+0630\n"
 "Last-Translator: ဇေယျာလွင် <lw1nzayar@yandex.com>\n"
 "Language-Team: Burmese <kde-i18n-doc@kde.org>\n"
@@ -28,23 +28,23 @@ msgctxt "EMAIL OF TRANSLATORS"
 msgid "Your emails"
 msgstr "lw1nzayar@yandex.com"
 
-#: libdiscover/appstream/AppStreamUtils.cpp:112
+#: libdiscover/appstream/AppStreamUtils.cpp:115
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:326
 #: libdiscover/backends/RpmOstreeBackend/RpmOstreeResource.cpp:304
 #: libdiscover/backends/RpmOstreeBackend/RpmOstreeResource.cpp:367
 #: libdiscover/backends/RpmOstreeBackend/RpmOstreeResource.cpp:393
 #: libdiscover/UpdateModel/UpdateModel.cpp:123
-#: libdiscover/UpdateModel/UpdateModel.cpp:362
+#: libdiscover/UpdateModel/UpdateModel.cpp:370
 #, kde-format
 msgid "Unknown"
 msgstr "မသိ"
 
-#: libdiscover/appstream/AppStreamUtils.cpp:114
+#: libdiscover/appstream/AppStreamUtils.cpp:117
 #, kde-format
 msgid "Proprietary"
 msgstr ""
 
-#: libdiscover/appstream/AppStreamUtils.cpp:118
+#: libdiscover/appstream/AppStreamUtils.cpp:121
 #, fuzzy, kde-format
 #| msgctxt "Category"
 #| msgid "Publishing"
@@ -129,6 +129,12 @@ msgstr ""
 #: libdiscover/backends/AlpineApkBackend/AlpineApkUpdater.cpp:44
 #, kde-format
 msgid "Failed to get a list of packages to upgrade!"
+msgstr ""
+
+#: libdiscover/backends/AppStreamPreviewBackend/qml/AppStreamPreviewMessage.qml:16
+#, kde-format
+msgctxt "@info"
+msgid "This is a preview of an AppStream file"
 msgstr ""
 
 #: libdiscover/backends/DummyBackend/dummy-backend-categories.xml:4
@@ -558,8 +564,8 @@ msgstr "ဗီဒီယိုကြည့်ရန် ကိရိယာမျ�
 #: libdiscover/backends/PackageKitBackend/packagekit-backend-categories.xml:542
 #, kde-format
 msgctxt "Category"
-msgid "CD and DVD"
-msgstr "စီဒီနှင့်ဒီဗီဒီ"
+msgid "Disc Burning"
+msgstr ""
 
 #: libdiscover/backends/FlatpakBackend/flatpak-backend-categories.xml:554
 #: libdiscover/backends/PackageKitBackend/packagekit-backend-categories.xml:554
@@ -591,28 +597,34 @@ msgstr "စက်တွင်းအထုပ်"
 
 #: libdiscover/backends/FlatpakBackend/FlatpakBackend.cpp:1963
 #: libdiscover/backends/PackageKitBackend/PackageKitBackend.cpp:852
-#, kde-format
-msgid "Malformed appstream url '%1'"
+#, fuzzy, kde-format
+#| msgid "Malformed appstream url '%1'"
+msgid "Malformed appstream url “%1”"
 msgstr "ပုံပျက်-အပ်စထရင်း-ယူအာအယ်လ် '%1'"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakBackend.cpp:2093
+#: libdiscover/backends/FlatpakBackend/FlatpakBackend.cpp:2077
+#, kde-format
+msgid "Source “%1” already exists"
+msgstr ""
+
+#: libdiscover/backends/FlatpakBackend/FlatpakBackend.cpp:2094
 #, fuzzy, kde-format
 #| msgid "Failed to start '%1'"
-msgid "Failed to add source '%1': %2"
+msgid "Failed to add source “%1”: %2"
 msgstr "'%1' ကို မစတင်နိုင်ခဲ့ပါ"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakBackend.cpp:2220
+#: libdiscover/backends/FlatpakBackend/FlatpakBackend.cpp:2221
 #, kde-format
 msgid "There are no Flatpak sources."
 msgstr ""
 
-#: libdiscover/backends/FlatpakBackend/FlatpakBackend.cpp:2224
+#: libdiscover/backends/FlatpakBackend/FlatpakBackend.cpp:2225
 #, fuzzy, kde-format
 #| msgid "Failed to start '%1'"
 msgid "Failed to load \"%1\" source"
 msgstr "'%1' ကို မစတင်နိုင်ခဲ့ပါ"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:383
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:371
 #, kde-kuit-format
 msgctxt "@info"
 msgid ""
@@ -621,7 +633,7 @@ msgid ""
 "the application is installed.</para>"
 msgstr ""
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:481
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:469
 #: libdiscover/backends/RpmOstreeBackend/RpmOstreeResource.cpp:419
 #, fuzzy, kde-format
 #| msgid "Unknown"
@@ -629,268 +641,268 @@ msgctxt "@label app size"
 msgid "Unknown"
 msgstr "မသိ"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:537
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:525
 #: libdiscover/backends/PackageKitBackend/PackageKitResource.cpp:467
 #: libdiscover/backends/PackageKitBackend/PackageKitSourcesBackend.cpp:70
 #, fuzzy, kde-format
 #| msgid "Failed to start '%1'"
-msgid "Failed to start '%1': %2"
+msgid "Failed to start “%1”: %2"
 msgstr "'%1' ကို မစတင်နိုင်ခဲ့ပါ"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:778
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:766
 #, kde-format
 msgid "All Files"
 msgstr ""
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:780
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:768
 #, kde-format
 msgid "Home"
 msgstr ""
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:782
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:770
 #, fuzzy, kde-format
 #| msgid "Downloading"
 msgid "Downloads"
 msgstr "ဒေါင်းလုတ်ဆွဲနေသည်"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:784
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:772
 #, kde-format
 msgid "Music"
 msgstr ""
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:862
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:850
 #: libdiscover/backends/KNSBackend/KNSBackend.cpp:451
 #, kde-format
 msgid "%1: %2"
 msgstr "%1: %2"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:880
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:868
 #, kde-format
 msgid "Network Access"
 msgstr ""
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:881
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:869
 #, kde-format
 msgid "Can access the internet"
 msgstr ""
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:890
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:878
 #, fuzzy, kde-format
 #| msgctxt "@item:inlistbox"
 #| msgid "System Updates"
 msgid "Sound system access"
 msgstr "စစ်စတမ် အပ်ဒိတ်များ"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:891
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:879
 #, kde-format
 msgid "Can play and record audio"
 msgstr ""
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:895
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:1039
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:883
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:1027
 #, kde-format
 msgid "Session Bus Access"
 msgstr ""
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:896
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:884
 #, kde-format
 msgid ""
 "Can communicate with all other applications and processes run in this user "
 "account"
 msgstr ""
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:901
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:1051
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:889
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:1039
 #, kde-format
 msgid "System Bus Access"
 msgstr ""
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:902
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:890
 #, kde-format
 msgid "Can communicate with all other applications and processes on the system"
 msgstr ""
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:907
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:895
 #, kde-format
 msgid "Remote Login Access"
 msgstr ""
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:908
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:896
 #, kde-format
 msgid "Can initiate remote login requests using the SSH protocol"
 msgstr ""
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:912
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:900
 #, kde-format
 msgid "Smart Card Access"
 msgstr ""
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:913
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:901
 #, kde-format
 msgid "Can integrate and communicate with smart cards"
 msgstr ""
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:917
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:905
 #, kde-format
 msgid "Printer Access"
 msgstr ""
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:918
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:906
 #, kde-format
 msgid "Can integrate and communicate with printers"
 msgstr ""
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:922
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:910
 #, kde-format
 msgid "GPG Agent"
 msgstr ""
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:923
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:911
 #, kde-format
 msgid ""
 "Allows access to the GPG cryptography service, generally used for signing "
 "and reading signed documents"
 msgstr ""
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:929
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:917
 #, kde-format
 msgid "Bluetooth Access"
 msgstr ""
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:930
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:918
 #, kde-format
 msgid "Can integrate and communicate with Bluetooth devices"
 msgstr ""
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:934
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:922
 #, kde-format
 msgid "Low-Level System Access"
 msgstr ""
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:935
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:923
 #, kde-format
 msgid "Can make low-level system calls (e.g. ptrace)"
 msgstr ""
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:941
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:929
 #, kde-format
 msgid "Device Access"
 msgstr ""
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:942
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:930
 #, kde-format
 msgid "Can communicate with and control built-in or connected hardware devices"
 msgstr ""
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:946
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:934
 #, kde-format
 msgid "Kernel-based Virtual Machine Access"
 msgstr ""
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:947
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:935
 #, kde-format
 msgid "Allows running other operating systems as guests in virtual machines"
 msgstr ""
 
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:962
 #: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:974
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:986
 #, kde-format
 msgid "%1 (read-only)"
 msgstr ""
 
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:965
 #: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:977
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:989
 #, kde-format
 msgid "%1 (can create files)"
 msgstr ""
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:980
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:998
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:968
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:986
 #, kde-format
 msgid "%1 (read & write) "
 msgstr ""
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:1007
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:995
 #, kde-format
 msgid "Home Folder Access"
 msgstr ""
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:1010
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:998
 #, kde-format
 msgid ""
 "Can read, write, and create files in the following locations in your home "
 "folder without asking permission first: %1"
 msgstr ""
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:1012
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:1000
 #, kde-format
 msgid ""
 "Can read and write files in the following locations in your home folder "
 "without asking permission first: %1"
 msgstr ""
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:1014
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:1002
 #, kde-format
 msgid ""
 "Can read files in the following locations in your home folder without asking "
 "permission first: %1"
 msgstr ""
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:1016
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:1004
 #, kde-format
 msgid ""
 "Can access files in the following locations in your home folder without "
 "asking permission first: %1"
 msgstr ""
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:1022
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:1010
 #, kde-format
 msgid "System Folder Access"
 msgstr ""
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:1024
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:1012
 #, kde-format
 msgid ""
 "Can read, write, and create system files in the following locations without "
 "asking permission first: %1"
 msgstr ""
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:1026
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:1014
 #, kde-format
 msgid ""
 "Can read and write system files in the following locations without asking "
 "permission first: %1"
 msgstr ""
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:1028
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:1016
 #, kde-format
 msgid ""
 "Can read system files in the following locations without asking permission "
 "first: %1"
 msgstr ""
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:1030
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:1018
 #, kde-format
 msgid ""
 "Can access system files in the following locations without asking permission "
 "first: %1"
 msgstr ""
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:1041
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:1029
 #, kde-format
 msgid ""
 "Can communicate with other applications and processes in the same desktop "
 "session using the following communication protocols: %1"
 msgstr ""
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:1053
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:1041
 #, kde-format
 msgid ""
 "Can communicate with all applications and system services using the "
 "following communication protocols: %1"
 msgstr ""
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:1151
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:1139
 #, kde-format
 msgid "App Verified on %1 as shipped by its author %2"
 msgstr ""
@@ -924,48 +936,50 @@ msgstr "ယင်းသည် https://flathub.org တွင် ပြထား�
 msgid "Could not add the source %1"
 msgstr "ပရိုဂရမ်ဇစ်မြစ် %1 ကို မထည့်သွင်းနိုင်ပါ"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakSourcesBackend.cpp:297
-#, kde-format
-msgid "Removing '%1'"
+#: libdiscover/backends/FlatpakBackend/FlatpakSourcesBackend.cpp:296
+#, fuzzy, kde-format
+#| msgid "Removing '%1'"
+msgid "Removing “%1”"
 msgstr "'%1' ကိုဖယ်ရှားနေသည်"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakSourcesBackend.cpp:298
+#: libdiscover/backends/FlatpakBackend/FlatpakSourcesBackend.cpp:297
 #, kde-format
 msgid ""
 "To remove this repository, the following applications must be uninstalled:"
 "<ul><li>%1</li></ul>"
 msgstr "ဤရီပိုစစ်တိုရီကို ဖယ်ရှာရန် အောက်ပါအပ္ပလီကေးရှင်းများကို ဖယ်ရှားပစ်ရမည်-<ul><li>%1</li></ul>"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakSourcesBackend.cpp:316
+#: libdiscover/backends/FlatpakBackend/FlatpakSourcesBackend.cpp:315
 #, kde-format
 msgid "Failed to remove %1 remote repository: %2"
 msgstr "%1 အဝေးရီပိုစစ်တိုရီ ကိုမဖယ်ရှားနိုင်ခဲ့ပါ - %2"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakSourcesBackend.cpp:320
+#: libdiscover/backends/FlatpakBackend/FlatpakSourcesBackend.cpp:319
 #, kde-format
 msgid "Could not find %1"
 msgstr "%1ကိုရှာမတွေ့ခဲ့ပါ"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakSourcesBackend.cpp:354
+#: libdiscover/backends/FlatpakBackend/FlatpakSourcesBackend.cpp:353
 #, kde-format
 msgid "%1 (user)"
 msgstr "%1 (အသုံးပြုသူ)"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakSourcesBackend.cpp:417
+#: libdiscover/backends/FlatpakBackend/FlatpakSourcesBackend.cpp:416
 #, kde-format
 msgid "Enter a Flatpak repository URI (*.flatpakrepo):"
 msgstr "ဖလက်ပတ်ခ် ရီပိုစစ်တိုရီ ယူအာအိုင် (*.flatpakrepo) ရေးသွင်းပါ-"
 
 #: libdiscover/backends/FlatpakBackend/FlatpakTransactionThread.cpp:35
-#, kde-format
-msgid "Adding remote '%1' in %2 from %3"
+#, fuzzy, kde-format
+#| msgid "Adding remote '%1' in %2 from %3"
+msgid "Adding remote “%1” in %2 from %3"
 msgstr "%3 မှ %2 တွင် အဝေး '%1' ထည့်သွင်းနေသည်"
 
 #: libdiscover/backends/FlatpakBackend/FlatpakTransactionThread.cpp:338
 #, kde-format
 msgctxt "@info:status"
 msgid ""
-"Cannot create transaction for '%1':<nl/>%2<nl/><nl/>Please report this to <a "
+"Cannot create transaction for “%1”:<nl/>%2<nl/><nl/>Please report this to <a "
 "href='%3'>%3</a>"
 msgstr ""
 
@@ -1188,7 +1202,7 @@ msgstr ""
 msgid "Log in information for %1"
 msgstr "%1အတွက် အချက်အလက်"
 
-#: libdiscover/backends/PackageKitBackend/AppPackageKitResource.cpp:268
+#: libdiscover/backends/PackageKitBackend/AppPackageKitResource.cpp:256
 #, kde-format
 msgid "Cannot launch %1"
 msgstr "%1 ကိုမလွှင့်တင်နိုင်ပါ"
@@ -1232,8 +1246,9 @@ msgid ""
 msgstr ""
 
 #: libdiscover/backends/PackageKitBackend/PackageKitBackend.cpp:958
-#, kde-format
-msgid "Cannot remove '%1'"
+#, fuzzy, kde-format
+#| msgid "Cannot remove '%1'"
+msgid "Cannot remove “%1”"
 msgstr "'%1' ကိုမဖယ်ရှားနိုင်ပါ"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitBackend.cpp:1042
@@ -1618,32 +1633,41 @@ msgid "Unknown error %1."
 msgstr "မသိသောအမှား %1။"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:169
-#, kde-format
-msgid "'%1' was changed and suggests to be restarted."
+#, fuzzy, kde-format
+#| msgid "'%1' was changed and suggests to be restarted."
+msgid "“%1” was changed and suggests to be restarted."
 msgstr "'%1' ပြောင်းလဲသွားသောကြောင့် စစ်စတမ်ကို ပြန်လည်စတင်စေလိုသည်။"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:171
-#, kde-format
-msgid "A change by '%1' suggests your session to be restarted."
+#, fuzzy, kde-format
+#| msgid "A change by '%1' suggests your session to be restarted."
+msgid "A change by “%1” suggests your session to be restarted."
 msgstr "'%1' ပြောင်းလဲသွားသောကြောင့် လုပ်ငန်းဆောင်ရွက်မှုခန်းကို ပြန်လည်စတင်စေလိုသည်။"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:173
-#, kde-format
+#, fuzzy, kde-format
+#| msgid ""
+#| "'%1' was updated for security reasons, a restart of the session is "
+#| "recommended."
 msgid ""
-"'%1' was updated for security reasons, a restart of the session is "
+"“%1” was updated for security reasons, a restart of the session is "
 "recommended."
 msgstr "လုံခြုံရေးအရ '%1'ကို အပ်ဒိတ်တင်ခဲ့သည်။ လုပ်ငန်းဆောင်ရွက်မှုခန်း ပြန်စတင်ရန်လိုသည်။"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:175
-#, kde-format
+#, fuzzy, kde-format
+#| msgid ""
+#| "'%1' was updated for security reasons, a restart of the system is "
+#| "recommended."
 msgid ""
-"'%1' was updated for security reasons, a restart of the system is "
+"“%1” was updated for security reasons, a restart of the system is "
 "recommended."
 msgstr "လုံခြုံရေးအရ '%1'ကို အပ်ဒိတ်တင်ခဲ့သည်။ စစ်စတမ်ကို ပြန်စတင်ပါ။"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:180
-#, kde-format
-msgid "A change by '%1' suggests your system to be restarted."
+#, fuzzy, kde-format
+#| msgid "A change by '%1' suggests your system to be restarted."
+msgid "A change by “%1” suggests your system to be restarted."
 msgstr "'%1' ပြောင်းလဲသွားသောကြောင့် စစ်စတမ်ကို ပြန်လည်စတင်စေလိုသည်။"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:188
@@ -1884,7 +1908,7 @@ msgid "Testing"
 msgstr "စမ်းသပ်ဆဲ"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:328
-#: libdiscover/resources/AbstractResource.cpp:97
+#: libdiscover/resources/AbstractResource.cpp:117
 #, kde-format
 msgid "Installed"
 msgstr "တပ်ဆင်ပြီး"
@@ -2033,13 +2057,13 @@ msgstr "အသုံးမလို -"
 msgid "Downgrade"
 msgstr "ဗားရှင်းချနေသည်"
 
-#: libdiscover/backends/PackageKitBackend/PackageKitNotifier.cpp:132
+#: libdiscover/backends/PackageKitBackend/PackageKitNotifier.cpp:133
 #, fuzzy, kde-format
 #| msgid "Offline Updates"
 msgid "Failed Offline Update"
 msgstr "အော့ဖ်လိုင်း အပ်ဒိတ်များ"
 
-#: libdiscover/backends/PackageKitBackend/PackageKitNotifier.cpp:133
+#: libdiscover/backends/PackageKitBackend/PackageKitNotifier.cpp:134
 #, kde-format
 msgid ""
 "Failed to update %1 package\n"
@@ -2051,31 +2075,31 @@ msgstr[0] ""
 "ပတ်ကေ့ချ် %1ခု ကိုအပ်ဒိတ်မတင်နိုင်ခဲ့ပါ\n"
 "%2"
 
-#: libdiscover/backends/PackageKitBackend/PackageKitNotifier.cpp:136
-#: libdiscover/backends/PackageKitBackend/PackageKitNotifier.cpp:187
+#: libdiscover/backends/PackageKitBackend/PackageKitNotifier.cpp:137
+#: libdiscover/backends/PackageKitBackend/PackageKitNotifier.cpp:188
 #, kde-format
 msgctxt "@action:button"
 msgid "Open Discover"
 msgstr "ဒစ်(စ)ကာဗာ ဖွင့်မည်"
 
-#: libdiscover/backends/PackageKitBackend/PackageKitNotifier.cpp:141
+#: libdiscover/backends/PackageKitBackend/PackageKitNotifier.cpp:142
 #, kde-format
 msgctxt "@action:button"
 msgid "Repair System"
 msgstr "စစ်စတမ်ကို ပြန်ပြင်မည်"
 
-#: libdiscover/backends/PackageKitBackend/PackageKitNotifier.cpp:146
+#: libdiscover/backends/PackageKitBackend/PackageKitNotifier.cpp:147
 #, fuzzy, kde-format
 #| msgid "Offline Updates"
 msgid "Repairing failed offline update"
 msgstr "အော့ဖ်လိုင်း အပ်ဒိတ်များ"
 
-#: libdiscover/backends/PackageKitBackend/PackageKitNotifier.cpp:153
+#: libdiscover/backends/PackageKitBackend/PackageKitNotifier.cpp:154
 #, kde-format
 msgid "Repair Failed"
 msgstr "ပြန်ပြင်မှုမအောင်မြင်ပါ"
 
-#: libdiscover/backends/PackageKitBackend/PackageKitNotifier.cpp:155
+#: libdiscover/backends/PackageKitBackend/PackageKitNotifier.cpp:156
 #, fuzzy, kde-kuit-format
 #| msgctxt "@info"
 #| msgid "%1<nl/>Please report this error to your distribution."
@@ -2084,17 +2108,17 @@ msgctxt ""
 msgid "%1<nl/>Please <link url='%2'>report this error to %3</link>."
 msgstr "%1<nl/>ကျေးဇူးပြု၍ ဤအမှားကို သင်၏ဒစ်စထရီဗျူးရှင်းထံ တင်ပြပါ။"
 
-#: libdiscover/backends/PackageKitBackend/PackageKitNotifier.cpp:168
+#: libdiscover/backends/PackageKitBackend/PackageKitNotifier.cpp:169
 #, kde-format
 msgid "Repaired Successfully"
 msgstr ""
 
-#: libdiscover/backends/PackageKitBackend/PackageKitNotifier.cpp:183
+#: libdiscover/backends/PackageKitBackend/PackageKitNotifier.cpp:184
 #, kde-format
 msgid "Offline Updates"
 msgstr "အော့ဖ်လိုင်း အပ်ဒိတ်များ"
 
-#: libdiscover/backends/PackageKitBackend/PackageKitNotifier.cpp:184
+#: libdiscover/backends/PackageKitBackend/PackageKitNotifier.cpp:185
 #, kde-format
 msgid "Successfully updated %1 package"
 msgid_plural "Successfully updated %1 packages"
@@ -2204,7 +2228,7 @@ msgstr ""
 #, kde-format
 msgid ""
 "This update cannot be completed as it would remove the following software "
-"which is critical to the system's operation:<nl/><ul><li>%1</li></ul><nl/>If "
+"which is critical to the system’s operation:<nl/><ul><li>%1</li></ul><nl/>If "
 "you believe this is an error, please report it as a bug to the packagers of "
 "your distribution."
 msgstr ""
@@ -2231,9 +2255,12 @@ msgstr ""
 
 #: libdiscover/backends/PackageKitBackend/PackageKitUpdater.cpp:744
 #: libdiscover/backends/PackageKitBackend/PKTransaction.cpp:327
-#, kde-format
+#, fuzzy, kde-format
+#| msgid ""
+#| "Media Change of type '%1' is requested.\n"
+#| "%2"
 msgid ""
-"Media Change of type '%1' is requested.\n"
+"Media Change of type “%1” is requested.\n"
 "%2"
 msgstr ""
 "မီဒီယာပြောင်းလဲမှုအမျိုးအစား '%1' ကိုတောင်းဆိုထားသည်။\n"
@@ -2285,7 +2312,7 @@ msgstr ""
 #, kde-format
 msgid ""
 "This action cannot be completed as it would remove the following software "
-"which is critical to the system's operation:<nl/><ul><li>%1</li></ul><nl/>If "
+"which is critical to the system’s operation:<nl/><ul><li>%1</li></ul><nl/>If "
 "you believe this is an error, please report it as a bug to the packagers of "
 "your distribution."
 msgstr ""
@@ -2409,7 +2436,7 @@ msgstr ""
 #, kde-format
 msgctxt "@label OS updater message"
 msgid ""
-"<br/>This version is pinned and won't be automatically removed on updates."
+"<br/>This version is pinned and won’t be automatically removed on updates."
 msgstr ""
 
 #: libdiscover/backends/RpmOstreeBackend/RpmOstreeResource.cpp:360
@@ -2485,8 +2512,7 @@ msgstr ""
 
 #: libdiscover/backends/RpmOstreeBackend/RpmOstreeTransaction.cpp:366
 #, kde-format
-msgid ""
-"Cancelling rpm-ostree transaction. This may take some time. Please wait."
+msgid "Canceling rpm-ostree transaction. This may take some time. Please wait."
 msgstr ""
 
 #: libdiscover/backends/RpmOstreeBackend/RpmOstreeTransaction.cpp:395
@@ -2551,17 +2577,17 @@ msgstr ""
 msgid "Permissions for %1"
 msgstr ""
 
-#: libdiscover/backends/SnapBackend/SnapBackend.cpp:43
+#: libdiscover/backends/SnapBackend/SnapBackend.cpp:42
 #, kde-format
 msgid "Snap"
 msgstr "စနပ်"
 
-#: libdiscover/backends/SnapBackend/SnapResource.cpp:585
+#: libdiscover/backends/SnapBackend/SnapResource.cpp:579
 #, kde-format
 msgid "Verified Publisher on snapcraft.io"
 msgstr ""
 
-#: libdiscover/backends/SnapBackend/SnapResource.cpp:587
+#: libdiscover/backends/SnapBackend/SnapResource.cpp:581
 #, kde-format
 msgid "Starred Publisher on snapcraft.io"
 msgstr ""
@@ -2610,41 +2636,44 @@ msgctxt "@info:status"
 msgid "No components found in appstream metadata for target “%1”"
 msgstr ""
 
-#: libdiscover/DiscoverBackendsFactory.cpp:127
-#, kde-format
+#: libdiscover/DiscoverBackendsFactory.cpp:128
+#, fuzzy, kde-format
+#| msgid ""
+#| "List all the backends we'll want to have loaded, separated by comma ','."
 msgid ""
-"List all the backends we'll want to have loaded, separated by comma ','."
+"List all the backends we’ll want to have loaded, separated by comma “,”."
 msgstr "အသုံးပြုလိုသော အုတ်မြစ်ပရိုဂရမ်များအားလုံးကို '၊' ခြားပြီး ရိုက်သွင်းပါ"
 
-#: libdiscover/resources/AbstractResource.cpp:93
+#: libdiscover/resources/AbstractResource.cpp:113
 #, kde-format
 msgid "Broken"
 msgstr "ပျက်နေသည်"
 
-#: libdiscover/resources/AbstractResource.cpp:95
+#: libdiscover/resources/AbstractResource.cpp:115
 #, kde-format
 msgid "Available"
 msgstr "ရရှိနိုင်သော"
 
-#: libdiscover/resources/AbstractResource.cpp:99
+#: libdiscover/resources/AbstractResource.cpp:119
 #, kde-format
 msgid "Upgradeable"
 msgstr "အပ်ဒိတ်တင်၍ရသော"
 
-#: libdiscover/resources/AbstractResource.cpp:239
+#: libdiscover/resources/AbstractResource.cpp:259
 #, kde-format
 msgid "Launch"
 msgstr "လွှင့်တင်မည်"
 
-#: libdiscover/resources/AbstractResource.cpp:250
+#: libdiscover/resources/AbstractResource.cpp:270
 #, fuzzy, kde-format
 #| msgid "Update to version %1"
 msgctxt ""
-"@info 'Refresh' is used as a noun here, and %1 is an app's version number"
+"@info 'Refresh' is used as a noun here. An app or runtime got updated "
+"without changing the user-facing version number %1"
 msgid "Refresh of version %1"
 msgstr "ဗားရှင်း%1 သို့အပ်ဒိတ်တင်မည်"
 
-#: libdiscover/resources/AbstractResource.cpp:260
+#: libdiscover/resources/AbstractResource.cpp:280
 #, kde-format
 msgctxt "Do not translate or alter \\u009C"
 msgid "%1 → %2%1 → %2%2"
@@ -2660,7 +2689,7 @@ msgstr ""
 msgid "Refresh"
 msgstr ""
 
-#: libdiscover/resources/ResourcesModel.cpp:401
+#: libdiscover/resources/ResourcesModel.cpp:392
 #, fuzzy, kde-format
 #| msgid "Update to version %1"
 msgctxt "@info:status %1 is the name of a source of updates"
@@ -2704,12 +2733,12 @@ msgctxt "an approximation number, like 3000+"
 msgid "%1+"
 msgstr ""
 
-#: libdiscover/resources/ResourcesUpdatesModel.cpp:112
+#: libdiscover/resources/ResourcesUpdatesModel.cpp:111
 #, kde-format
 msgid "Updates"
 msgstr "အပ်ဒိတ်များ"
 
-#: libdiscover/Transaction/Transaction.cpp:133
+#: libdiscover/Transaction/Transaction.cpp:126
 #, kde-format
 msgctxt "@label Download rate"
 msgid "%1/s"
@@ -2758,9 +2787,10 @@ msgid "Failed"
 msgstr "ကျရှုံးခဲ့သည်"
 
 #: libdiscover/Transaction/TransactionModel.cpp:97
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Canceled"
 msgctxt "@info:status"
-msgid "Cancelled"
+msgid "Canceled"
 msgstr "ပယ်ဖျက်ခဲ့သည်"
 
 #: libdiscover/UpdateModel/UpdateModel.cpp:137
@@ -2790,6 +2820,14 @@ msgstr "စစ်စတမ် အပ်ဂရိတ်"
 msgctxt "@item:inlistbox"
 msgid "Addons"
 msgstr "အက်အွန်များ"
+
+#~ msgctxt "@info:status"
+#~ msgid "Cancelled"
+#~ msgstr "ပယ်ဖျက်ခဲ့သည်"
+
+#~ msgctxt "Category"
+#~ msgid "CD and DVD"
+#~ msgstr "စီဒီနှင့်ဒီဗီဒီ"
 
 #~ msgctxt "@info:status"
 #~ msgid "Starting"

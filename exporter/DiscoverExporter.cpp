@@ -15,7 +15,6 @@
 #include <resources/AbstractResource.h>
 #include <resources/AbstractResourcesBackend.h>
 #include <resources/ResourcesModel.h>
-#include <resources/StoredResultsStream.h>
 
 using namespace std::chrono_literals;
 
@@ -59,9 +58,8 @@ void DiscoverExporter::fetchResources()
     for (auto backend : backends) {
         streams << backend->search({});
     }
-    auto stream = new StoredResultsStream(streams);
-    connect(stream, &StoredResultsStream::finishedResources, this, &DiscoverExporter::exportResources);
-    QTimer::singleShot(15s, stream, &AggregatedResultsStream::finished);
+    auto stream = new AggregatedResultsStream(streams);
+    connect(stream, &AggregatedResultsStream::finished, this, &DiscoverExporter::exportResources);
 }
 
 void DiscoverExporter::exportResources(const QVector<StreamResult> &resources)

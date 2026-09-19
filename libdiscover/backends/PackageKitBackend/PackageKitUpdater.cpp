@@ -640,7 +640,7 @@ void PackageKitUpdater::finished(PackageKit::Transaction::Exit exit, uint /*time
 
             if (!criticals.isEmpty()) {
                 const QString msg = i18n(
-                    "This update cannot be completed as it would remove the following software which is critical to the system's operation:<nl/>"
+                    "This update cannot be completed as it would remove the following software which is critical to the system’s operation:<nl/>"
                     "<ul><li>%1</li></ul><nl/>"
                     "If you believe this is an error, please report it as a bug to the packagers of your distribution.",
                     criticals.constFirst());
@@ -782,7 +782,7 @@ void PackageKitUpdater::errorFound(PackageKit::Transaction::Error err, const QSt
 void PackageKitUpdater::mediaChange(PackageKit::Transaction::MediaType media, const QString &type, const QString &text)
 {
     Q_UNUSED(media)
-    Q_EMIT passiveMessage(i18n("Media Change of type '%1' is requested.\n%2", type, text));
+    Q_EMIT passiveMessage(i18n("Media Change of type “%1” is requested.\n%2", type, text));
 }
 
 EulaHandling handleEula(const QString &eulaID, const QString &licenseAgreement)

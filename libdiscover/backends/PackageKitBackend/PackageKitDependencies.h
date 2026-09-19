@@ -88,7 +88,7 @@ private:
 };
 
 // Wrapper which hides some complexity of PackageKit::Transaction management.
-// Self-destructs and emitting finished() signal or being cancelled.
+// Self-destructs and emitting finished() signal or being canceled.
 class PackageKitFetchDependenciesJob : public QObject
 {
     Q_OBJECT

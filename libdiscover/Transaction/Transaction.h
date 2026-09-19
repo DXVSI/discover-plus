@@ -35,7 +35,7 @@ class DISCOVERCOMMON_EXPORT Transaction : public QObject
     Q_PROPERTY(Status status READ status NOTIFY statusChanged)
     Q_PROPERTY(bool isCancellable READ isCancellable NOTIFY cancellableChanged)
     Q_PROPERTY(int progress READ progress NOTIFY progressChanged)
-    Q_PROPERTY(bool visible READ isVisible WRITE setVisible NOTIFY visibleChanged)
+    Q_PROPERTY(bool visible READ isVisible CONSTANT)
     Q_PROPERTY(quint64 downloadSpeed READ downloadSpeed WRITE setDownloadSpeed NOTIFY downloadSpeedChanged)
     Q_PROPERTY(QString downloadSpeedString READ downloadSpeedString NOTIFY downloadSpeedChanged)
     Q_PROPERTY(QString remainingTimeString READ remainingTimeString NOTIFY remainingTimeChanged)
@@ -55,7 +55,7 @@ public:
         DoneStatus,
         /// Transaction is done, but there was an error during transaction
         DoneWithErrorStatus,
-        /// Transaction was cancelled
+        /// Transaction was canceled
         CancelledStatus,
     };
     Q_ENUM(Status)
@@ -70,7 +70,7 @@ public:
     };
     Q_ENUM(Role)
 
-    Transaction(QObject *parent, AbstractResource *resource, Transaction::Role role, const AddonList &addons = {});
+    Transaction(QObject *parent, AbstractResource *resource, Transaction::Role role, const AddonList &addons = {}, bool visible = true);
 
     ~Transaction() override;
 
@@ -136,7 +136,6 @@ public:
     virtual QVariant icon() const;
 
     bool isVisible() const;
-    void setVisible(bool v);
 
     quint64 downloadSpeed() const
     {
@@ -194,8 +193,6 @@ Q_SIGNALS:
      * in a modal dialog that should lead the user towards reporting the problem..
      */
     void distroErrorMessage(const QString &message);
-
-    void visibleChanged(bool visible);
 
     void downloadSpeedChanged(quint64 downloadSpeed);
 

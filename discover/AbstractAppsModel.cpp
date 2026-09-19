@@ -19,7 +19,6 @@
 
 #include <libdiscover_debug.h>
 #include <resources/ResourcesModel.h>
-#include <resources/StoredResultsStream.h>
 #include <utils.h>
 
 class BestInResultsStream : public QObject

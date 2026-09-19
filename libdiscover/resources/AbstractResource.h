@@ -8,16 +8,13 @@
 
 #include <QCollatorSortKey>
 #include <QColor>
-#include <QDate>
 #include <QJsonArray>
 #include <QJsonObject>
 #include <QObject>
-#include <QScopedPointer>
 #include <QSet>
 #include <QSize>
 #include <QStringList>
 #include <QUrl>
-#include <QVector>
 
 #include <ReviewsBackend/Rating.h>
 
@@ -74,6 +71,10 @@ class DISCOVERCOMMON_EXPORT AbstractResource : public QObject
     Q_PROPERTY(QUrl bugURL READ bugURL CONSTANT)
     Q_PROPERTY(QUrl donationURL READ donationURL CONSTANT)
     Q_PROPERTY(QUrl contributeURL READ contributeURL CONSTANT)
+    Q_PROPERTY(QUrl faqURL READ faqURL CONSTANT)
+    Q_PROPERTY(QUrl translateURL READ translateURL CONSTANT)
+    Q_PROPERTY(QUrl contactURL READ contactURL CONSTANT)
+    Q_PROPERTY(QUrl vcsBrowserURL READ vcsBrowserURL CONSTANT)
     Q_PROPERTY(bool canUpgrade READ canUpgrade NOTIFY stateChanged)
     Q_PROPERTY(bool isInstalled READ isInstalled NOTIFY stateChanged)
     Q_PROPERTY(QJsonArray licenses READ licenses NOTIFY licensesChanged)
@@ -170,6 +171,14 @@ public:
     virtual QUrl donationURL();
     ///@returns a URL that points to the place where you can contribute to develop the app
     virtual QUrl contributeURL();
+    ///@returns a URL that points to the place where you read answers to some of the most-asked questions in detail
+    virtual QUrl faqURL();
+    ///@returns a URL that points to the place where you can submit or modify translations for the app
+    virtual QUrl translateURL();
+    ///@returns a URL that points to the place where you can contact the developer
+    virtual QUrl contactURL();
+    ///@returns a URL that points to the place where you can browse the source code
+    virtual QUrl vcsBrowserURL();
 
     enum Type {
         Application,

@@ -451,8 +451,8 @@ ResultsStream *RpmOstreeBackend::search(const AbstractResourcesBackend::Filters 
     }
 
     // Skip the search if we're looking at the page for a specific application
-    if (filter.resourceUrl.scheme() == QLatin1String("appstream")) {
-        qCDebug(RPMOSTREE_LOG) << "search: skipping, appstream";
+    if (!filter.resourceUrl.isEmpty()) {
+        qCDebug(RPMOSTREE_LOG) << "search: skipping, url" << filter.resourceUrl;
         return new ResultsStream(QStringLiteral("rpm-ostree-empty"), {});
     }
 

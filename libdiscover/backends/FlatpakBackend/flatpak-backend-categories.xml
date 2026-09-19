@@ -539,8 +539,8 @@
         </Include>
       </Menu>
       <Menu>
-        <Name>CD and DVD</Name>
-        <Icon>media-optical</Icon>
+        <Name>Disc Burning</Name>
+        <Icon>tools-media-optical-burn-symbolic</Icon>
         <Include>
           <And>
             <Category>DiscBurning</Category>

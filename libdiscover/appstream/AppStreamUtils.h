@@ -7,9 +7,11 @@
 #pragma once
 
 #include <AppStreamQt/component.h>
+#include <AppStreamQt/icon.h>
 #include <AppStreamQt/image.h>
 #include <AppStreamQt/pool.h>
 #include <QColor>
+#include <QIcon>
 #include <QList>
 #include <QUrl>
 #include <resources/AbstractResource.h>
@@ -40,4 +42,6 @@ DISCOVERCOMMON_EXPORT QFuture<AppStream::ComponentBox>
 componentsByCategoriesTask(AppStream::ConcurrentPool *pool, const std::shared_ptr<Category> &cat, AppStream::Bundle::Kind kind);
 
 DISCOVERCOMMON_EXPORT bool kIconLoaderHasIcon(const QString &name);
+
+DISCOVERCOMMON_EXPORT QIcon iconForComponent(const AppStream::Component &component, const QString &iconPath = {});
 }

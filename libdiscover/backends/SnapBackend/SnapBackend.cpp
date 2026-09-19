@@ -13,7 +13,6 @@
 #include <appstream/OdrsReviewsBackend.h>
 #include <resources/SourcesModel.h>
 #include <resources/StandardBackendUpdater.h>
-#include <resources/StoredResultsStream.h>
 
 #include <KAboutData>
 #include <KConfigGroup>
@@ -253,8 +252,8 @@ void SnapBackend::checkForUpdates()
         return;
     }
 
-    m_updatesFetcher = new StoredResultsStream({populate(m_client.findRefreshable())});
-    connect(m_updatesFetcher, &StoredResultsStream::finishedResources, this, [this](const QVector<StreamResult> &resources) {
+    m_updatesFetcher = new AggregatedResultsStream({populate(m_client.findRefreshable())});
+    connect(m_updatesFetcher, &AggregatedResultsStream::finished, this, [this](const QVector<StreamResult> &resources) {
         for (SnapResource *res : std::as_const(m_resources)) {
             bool contained = kContains(resources, [res](const StreamResult &in) {
                 return in.resource == res;
@@ -264,6 +263,7 @@ void SnapBackend::checkForUpdates()
                 res->updateSizes();
             }
         }
+        Q_EMIT contentsChanged();
     });
 }
 
@@ -274,8 +274,8 @@ QString SnapBackend::displayName() const
 
 void SnapBackend::refreshStates()
 {
-    auto ret = new StoredResultsStream({populate(m_client.getSnaps())});
-    connect(ret, &StoredResultsStream::finishedResources, this, [this](const QVector<StreamResult> &resources) {
+    auto ret = new AggregatedResultsStream({populate(m_client.getSnaps())});
+    connect(ret, &AggregatedResultsStream::finished, this, [this](const QVector<StreamResult> &resources) {
         for (auto res : std::as_const(m_resources)) {
             bool contained = kContains(resources, [res](const StreamResult &in) {
                 return in.resource == res;

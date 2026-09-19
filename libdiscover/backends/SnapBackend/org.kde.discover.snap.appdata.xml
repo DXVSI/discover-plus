@@ -30,6 +30,7 @@
   <name xml:lang="ie">Infrastructura Snap</name>
   <name xml:lang="is">Snap bakendi</name>
   <name xml:lang="it">Motore Snap</name>
+  <name xml:lang="ja">Snap バックエンド</name>
   <name xml:lang="ka">Snap-ის უკანაბოლო</name>
   <name xml:lang="ko">Snap 백엔드</name>
   <name xml:lang="lt">Snap vidinė pusė</name>
@@ -82,6 +83,7 @@
   <summary xml:lang="ie">Integra applicationes Snap con Discover</summary>
   <summary xml:lang="is">Gerir Discover kleift að hafa umsjón með Snap-forritum</summary>
   <summary xml:lang="it">Integra le applicazioni Snap in Discover</summary>
+  <summary xml:lang="ja">Snap アプリを Discover へ統合</summary>
   <summary xml:lang="ka">Snap-ის ინტეგრაცია Discover-ში</summary>
   <summary xml:lang="ko">Snap 앱을 Discover에 통합</summary>
   <summary xml:lang="lt">Integruoja Snap programas į Discover</summary>
@@ -100,7 +102,7 @@
   <summary xml:lang="sa">डिस्कवर् इत्यस्मिन् स्नैप् अनुप्रयोगानाम् एकीकरणं करोति</summary>
   <summary xml:lang="sk">Integruje aplikácie Snap do aplikácie Discover</summary>
   <summary xml:lang="sl">V Discover vgradi programe Snap</summary>
-  <summary xml:lang="sv">Integrerar Snap-program i Discover</summary>
+  <summary xml:lang="sv">Integrerar Snap-program i Upptäck</summary>
   <summary xml:lang="tg">Барномаҳои Часпишро ба барномаи Кашфиёт дарунсохт мекунад</summary>
   <summary xml:lang="tr">Snap uygulamalarını Keşfet ile bütünleştirir</summary>
   <summary xml:lang="uk">Інтегрує програми Snap до Discover</summary>
@@ -138,6 +140,7 @@
   <developer_name xml:lang="ie">Aleix Pol Gonzalez</developer_name>
   <developer_name xml:lang="is">Aleix Pol Gonzalez</developer_name>
   <developer_name xml:lang="it">Aleix Pol Gonzalez</developer_name>
+  <developer_name xml:lang="ja">Aleix Pol Gonzalez</developer_name>
   <developer_name xml:lang="ka">Aleix Pol Gonzalez</developer_name>
   <developer_name xml:lang="ko">Aleix Pol Gonzalez</developer_name>
   <developer_name xml:lang="lt">Aleix Pol Gonzalez</developer_name>
@@ -166,9 +169,9 @@
   <developer_name xml:lang="zh-TW">Aleix Pol Gonzalez</developer_name>
   <icon type="stock">system-software-install</icon>
   <releases>
-    <release version="6.6.5" date="2026-05-12"/>
-    <release version="6.6.4" date="2026-04-06"/>
-    <release version="6.6.3" date="2026-03-17"/>
-    <release version="6.6.2" date="2026-03-03"/>
+    <release version="6.7.5" date="2026-09-08"/>
+    <release version="6.7.4" date="2026-08-04"/>
+    <release version="6.7.3" date="2026-07-14"/>
+    <release version="6.7.2" date="2026-06-30"/>
   </releases>
 </component>

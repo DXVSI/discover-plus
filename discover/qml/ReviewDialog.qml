@@ -45,7 +45,7 @@ Kirigami.Dialog {
         QQC2.Label {
             Layout.fillWidth: true
 
-            text: i18n("If you love %1, tell people what's great about it! Focus on functionality, usability, and appearance. If the app didn't meet your needs, explain why.", reviewDialog.application.name)
+            text: i18n("If you love %1, tell people what’s great about it! Focus on functionality, usability, and appearance. If the app didn’t meet your needs, explain why.", reviewDialog.application.name)
             wrapMode: Text.Wrap
             textFormat: Text.PlainText
 
@@ -69,20 +69,20 @@ Kirigami.Dialog {
             text: {
                 if (reviewInput.hasDoesntRunKeywords) {
                     if (packagedByDistro) {
-                        return xi18nc("@info", "If %1 isn't launching, consider reporting this to its packagers in %2 at <link url='%3'>%3</link> instead, as it may be an easily fixable packaging issue rather than a flaw in the app itself.",
+                        return xi18nc("@info", "If %1 isn’t launching, consider reporting this to its packagers in %2 at <link url='%3'>%3</link> instead, as it may be an easily fixable packaging issue rather than a flaw in the app itself.",
                                     reviewDialog.application.name,
                                     Discover.ResourcesModel.distroName,
                                     Discover.ResourcesModel.distroBugReportUrl());
                     } else {
-                        return xi18nc("@info", "If %1 isn't launching, consider reporting this its developers at <link url='%2'>%2</link> instead, as it may be an easily fixable packaging issue rather than a flaw in the app itself.",
+                        return xi18nc("@info", "If %1 isn’t launching, consider reporting this to its developers at <link url='%2'>%2</link> instead, as it may be an easily fixable packaging issue rather than a flaw in the app itself.",
                                     reviewDialog.application.name,
                                     appBugReportUrl);
                     }
                 } else if (reviewInput.hasCrashKeywords && appBugReportUrl.length > 0){
-                    return xi18nc("@info", "If the app is crashing a lot, consider reporting this to the developers at <link url='%1'>%1</link> instead.",
+                    return xi18nc("@info", "If the app is crashing a lot, consider reporting this to its developers at <link url='%1'>%1</link> instead.",
                                 appBugReportUrl);
                 } else if (reviewInput.hasSubjectiveKeywords && appBugReportUrl.length > 0) {
-                    return xi18nc("@info", "If you're having a problem with the app, consider reporting it to the developers at <link url='%1'>%1</link> instead, or else describe the problem here in greater detail.",
+                    return xi18nc("@info", "If you’re having a problem with the app, consider reporting this to its developers at <link url='%1'>%1</link> instead, or else describe the problem here in greater detail.",
                                 appBugReportUrl);
                 } else {
                     return ""
@@ -167,7 +167,7 @@ Kirigami.Dialog {
 
 
                 readonly property string subjectiveKeywordsEn: "doesn't work,dumb,stupid,crap,junk,suck,terrible,hate"
-                readonly property string subjectiveKeywordsI18n: i18nc("Word the user might use in an unhelpful sentence saying an app isn't very good. Preserve the commas. If necessary, add more words used for this in your language and/or shorten to common stems contained by multiple forms of the words,",
+                readonly property string subjectiveKeywordsI18n: i18nc("Words the user might use in an unhelpful sentence saying an app isn't very good. Preserve the commas. If necessary, add more words used for this in your language and/or shorten to common stems contained by multiple forms of the words,",
                                                                        "doesn't work,dumb,stupid,crap,junk,suck,terrible,hate")
                 readonly property list<string> subjectiveKeywords: subjectiveKeywordsEn.concat(",", subjectiveKeywordsI18n).split(",")
                 readonly property bool hasSubjectiveKeywords: subjectiveKeywords.some(suspiciousWord => lowercaseText.includes(suspiciousWord))

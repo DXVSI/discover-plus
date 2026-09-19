@@ -161,7 +161,7 @@ msgstr "Démarrer la mise à jour"
 #: notifier/NotifierItem.cpp:50
 #, kde-format
 msgid "Refresh…"
-msgstr "Rafraîchir..."
+msgstr "Rafraichir..."
 
 #: notifier/NotifierItem.cpp:56
 #, kde-format

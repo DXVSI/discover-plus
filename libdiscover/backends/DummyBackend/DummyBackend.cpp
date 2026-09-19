@@ -15,6 +15,7 @@
 
 #include <KAboutData>
 #include <KConfigGroup>
+#include <KJob>
 #include <KLocalizedString>
 #include <KPluginFactory>
 #include <KSharedConfig>
@@ -26,6 +27,24 @@ DISCOVER_BACKEND_PLUGIN(DummyBackend)
 
 using namespace Qt::StringLiterals;
 
+// Use KJob to track initialization to match how KNS would
+// It helps to identify issues when Discover closes
+class DummyBackendInitializationJob : public KJob
+{
+public:
+    explicit DummyBackendInitializationJob(QObject *parent)
+        : KJob(parent)
+    {
+    }
+
+    void start() override
+    {
+        QTimer::singleShot(3000, this, [this]() {
+            emitResult();
+        });
+    }
+};
+
 DummyBackend::DummyBackend(QObject *parent)
     : AbstractResourcesBackend(parent)
     , m_updater(new StandardBackendUpdater(this))
@@ -33,6 +52,9 @@ DummyBackend::DummyBackend(QObject *parent)
     , m_fetching(true)
     , m_startElements(120)
 {
+    auto initializationJob = new DummyBackendInitializationJob(this);
+    initializationJob->start();
+
     QTimer::singleShot(500, this, &DummyBackend::toggleFetching);
     connect(m_reviews, &DummyReviewsBackend::ratingsReady, this, &AbstractResourcesBackend::emitRatingsReady);
     connect(m_updater, &StandardBackendUpdater::updatesCountChanged, this, &DummyBackend::updatesCountChanged);
