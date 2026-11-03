@@ -259,7 +259,9 @@ jobs:
             packaging/rpm/discover-plus.spec \
             "dist/discover-plus-$nvr.src.rpm" \
             "$rpm_file" \
+            "$snap_rpm_file" \
             "dist/discover-plus-debuginfo-$nvr.x86_64.rpm" \
+            "dist/discover-plus-snap-debuginfo-$nvr.x86_64.rpm" \
             "dist/discover-plus-debugsource-$nvr.x86_64.rpm"
 
           rpm -qpl "$rpm_file"
