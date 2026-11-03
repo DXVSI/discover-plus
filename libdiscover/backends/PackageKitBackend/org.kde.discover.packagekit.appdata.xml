@@ -11,8 +11,8 @@
   <name xml:lang="ca-valencia">Dorsal de PackageKit</name>
   <name xml:lang="cs">Podpůrná vrstva PackageKit</name>
   <name xml:lang="da">PackageKit-motor</name>
-  <name xml:lang="de">PackageKit-Backend</name>
-  <name xml:lang="el">Σύστημα υποστήριξης PackageKit </name>
+  <name xml:lang="de">PackageKit-Modul</name>
+  <name xml:lang="el">PackageKit backend</name>
   <name xml:lang="en-GB">PackageKit backend</name>
   <name xml:lang="eo">PackageKit-backend</name>
   <name xml:lang="es">Motor PackageKit</name>
@@ -49,6 +49,10 @@
   <name xml:lang="sa">पैकेजकिट् पृष्ठान्त्</name>
   <name xml:lang="sk">Podporný program pre PackageKit</name>
   <name xml:lang="sl">Zaledje PackageKit</name>
+  <name xml:lang="sr">Позадина Пакиџ‑кита</name>
+  <name xml:lang="sr-Latn">Pozadina PackageKita</name>
+  <name xml:lang="sr-ijekavian">Позадина Пакиџ‑кита</name>
+  <name xml:lang="sr-ijekavianlatin">Pozadina PackageKita</name>
   <name xml:lang="sv">Gränssnitt för PackageKit</name>
   <name xml:lang="ta">PackageKit பின்நிலை</name>
   <name xml:lang="tg">Коркардкунандаи PackageKit</name>
@@ -66,8 +70,8 @@
   <summary xml:lang="ca-valencia">Integra les aplicacions de la distribució a dins de Discover</summary>
   <summary xml:lang="cs">Integruje aplikace distribuce do Discover</summary>
   <summary xml:lang="da">Integrerer distributionsprogrammer i Discover</summary>
-  <summary xml:lang="de">Integriert Distributions-Anwendungen in Discover</summary>
-  <summary xml:lang="el">Ενσωματώνει εφαρμογές διανομής στο Discover</summary>
+  <summary xml:lang="de">Integriert Anwendungen der Distribution in Discover</summary>
+  <summary xml:lang="el">Ενσωματώνει εφαρμογές διανομής στην Ανακάλυψη</summary>
   <summary xml:lang="en-GB">Integrates distribution applications into Discover</summary>
   <summary xml:lang="eo">Integras distribu-aplikaĵojn en Discover</summary>
   <summary xml:lang="es">Integra aplicaciones de la distribución en Discover</summary>
@@ -100,14 +104,19 @@
   <summary xml:lang="pt">Integra as aplicações da sua distribuição no Discover</summary>
   <summary xml:lang="pt-BR">Integra aplicativos da distribuição no Discover</summary>
   <summary xml:lang="ro">Integrează aplicațiile distribuției în Descoperă</summary>
-  <summary xml:lang="ru">Добавление поддержки приложений из дистрибутива ОС в центр программ Discover</summary>
+  <summary xml:lang="ru">Добавление поддержки приложений из дистрибутива ОС в центр приложений Discover</summary>
   <summary xml:lang="sa">डिस्कवर् इत्यस्मिन् वितरण-अनुप्रयोगानाम् एकीकरणं करोति</summary>
   <summary xml:lang="sk">Integruje aplikácie z distribúcie do aplikácie Discover</summary>
   <summary xml:lang="sl">V Discover vgradi programe distribucije</summary>
+  <summary xml:lang="sr">Уклапа програме дистрибуције у Oткривач</summary>
+  <summary xml:lang="sr-Latn">Uklapa programe distribucije u Otkrivač</summary>
+  <summary xml:lang="sr-ijekavian">Уклапа програме дистрибуције у Oткривач</summary>
+  <summary xml:lang="sr-ijekavianlatin">Uklapa programe distribucije u Otkrivač</summary>
   <summary xml:lang="sv">Integrerar distributionsprogram i Upptäck</summary>
   <summary xml:lang="ta">இயக்குதள செயலிகளை டிஸ்கவருக்குள் ஒருங்கிணைக்கும்</summary>
   <summary xml:lang="tg">Барномаҳои низоми амалкунандаро ба барномаи Кашфиёт дарунсохт мекунад.</summary>
   <summary xml:lang="tr">Dağıtım uygulamalarını Keşfet ile bütünleştirir</summary>
+  <summary xml:lang="ug">تارقىتىش نەشرىدىكى پىروگراممىنى Discover غا توپلاشتۇرىدۇ</summary>
   <summary xml:lang="uk">Інтегрує програми зі сховищ дистрибутива до Discover</summary>
   <summary xml:lang="zh-CN">为 Discover 提供发行版应用程序的集成功能</summary>
   <summary xml:lang="zh-TW">將發行版的應用程式整合進 Discover 商店</summary>
@@ -162,6 +171,10 @@
   <developer_name xml:lang="sa">अलेक्स पोल गोन्जालेज</developer_name>
   <developer_name xml:lang="sk">Aleix Pol Gonzalez</developer_name>
   <developer_name xml:lang="sl">Aleix Pol Gonzalez</developer_name>
+  <developer_name xml:lang="sr">Алекс Пол Гонзалез</developer_name>
+  <developer_name xml:lang="sr-Latn">Aleks Pol Gonzalez</developer_name>
+  <developer_name xml:lang="sr-ijekavian">Алекс Пол Гонзалез</developer_name>
+  <developer_name xml:lang="sr-ijekavianlatin">Aleks Pol Gonzalez</developer_name>
   <developer_name xml:lang="sv">Aleix Pol Gonzalez</developer_name>
   <developer_name xml:lang="ta">அலெயிக்சு போல் கொன்ஸாலெசு</developer_name>
   <developer_name xml:lang="tg">Алейкс Пол Гонзалес (Aleix Pol Gonzalez)</developer_name>
@@ -172,9 +185,9 @@
   <developer_name xml:lang="zh-TW">Aleix Pol Gonzalez</developer_name>
   <icon type="stock">system-software-install</icon>
   <releases>
+    <release version="6.8.2" date="2026-10-27"/>
+    <release version="6.8.1" date="2026-10-20"/>
+    <release version="6.8.0" date="2026-10-14"/>
     <release version="6.7.5" date="2026-09-08"/>
-    <release version="6.7.4" date="2026-08-04"/>
-    <release version="6.7.3" date="2026-07-14"/>
-    <release version="6.7.2" date="2026-06-30"/>
   </releases>
 </component>

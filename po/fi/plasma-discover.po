@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: muon-discover\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-09-17 00:45+0000\n"
-"PO-Revision-Date: 2026-02-26 10:40+0200\n"
+"POT-Creation-Date: 2026-10-09 00:48+0000\n"
+"PO-Revision-Date: 2026-08-26 12:12+0300\n"
 "Last-Translator: Tommi Nieminen <translator@legisign.org>\n"
 "Language-Team: Finnish <kde-i18n-doc@kde.org>\n"
 "Language: fi\n"
@@ -217,8 +217,7 @@ msgid "Nate Graham"
 msgstr "Nate Graham"
 
 #: discover/main.cpp:127
-#, fuzzy, kde-format
-#| msgid "Quality Assurance, Design and Usability"
+#, kde-format
 msgid "Quality Assurance, Design, and Usability"
 msgstr "Laadunvalvonta, suunnittelu ja käytettävyys"
 
@@ -288,34 +287,19 @@ msgstr "Lisää"
 #: discover/qml/AddSourceDialog.qml:50 discover/qml/DiscoverWindow.qml:289
 #: discover/qml/InstallApplicationButton.qml:51
 #: discover/qml/ProgressView.qml:163 discover/qml/SourcesPage.qml:207
-#: discover/qml/UpdatesPage.qml:316 discover/qml/WebflowDialog.qml:41
+#: discover/qml/UpdatesPage.qml:317 discover/qml/WebflowDialog.qml:41
 #, kde-format
 msgid "Cancel"
 msgstr "Peru"
 
 #: discover/qml/ApplicationDelegate.qml:162
-#, fuzzy, kde-format
-#| msgid "No ratings yet"
+#, kde-format
 msgid "No ratings"
-msgstr "Ei vielä arvosteluja"
+msgstr "Ei arvosteluja"
 
 # proprietary → ei vapaa, koska sopivaa sanavastinetta ei taida olla?
 #: discover/qml/ApplicationPage.qml:67
-#, fuzzy, kde-kuit-format
-#| msgctxt "@info"
-#| msgid ""
-#| "Only install %1 if you fully trust its authors because it is <emphasis "
-#| "strong='true'>proprietary</emphasis>: Your freedom to use, modify, and "
-#| "redistribute this application is restricted, and its source code is "
-#| "partially or entirely closed to public inspection and improvement. This "
-#| "means third parties and users like you cannot verify its operation, "
-#| "security, and trustworthiness.<nl/><nl/>The application may be perfectly "
-#| "safe to use, or it may be acting against you in various ways — such as "
-#| "harvesting your personal information, tracking your location, or "
-#| "transmitting the contents of your data to someone else. Only use it if "
-#| "you fully trust its authors. More information may be available on <link "
-#| "url='%2'>the application's website</link>.<nl/><nl/>Learn more at <link "
-#| "url='%3'>%3</link>."
+#, kde-kuit-format
 msgctxt "@info"
 msgid ""
 "Only install %1 if you fully trust its authors because it is <emphasis "
@@ -340,8 +324,8 @@ msgstr ""
 "voi toimia sinua vastaan eri tavoin kuten keräämällä henkilökohtaisia "
 "tietojasi, jäljittämällä sijaintisi tai välittämällä datasi sisällön "
 "toisaalle. Käytä sitä vain, jos täysin luotat tekijöihin. Lisätietoa saa "
-"<link url='%2'>sovelluksen verkkosivuilta</link>.<nl/><nl/>Lue lisää "
-"osoitteessa <link url='%3'>%3</link>."
+"<link url='%2'>sovelluksen sivustolta</link>.<nl/><nl/>Lue lisää osoitteessa "
+"<link url='%3'>%3</link>."
 
 #: discover/qml/ApplicationPage.qml:72
 #, kde-kuit-format
@@ -370,20 +354,7 @@ msgstr ""
 "osoitteessa <link url='%2'>%2</link>."
 
 #: discover/qml/ApplicationPage.qml:79
-#, fuzzy, kde-kuit-format
-#| msgctxt "@info"
-#| msgid ""
-#| "%1 uses one or more licenses not certified as “Free Software” by either "
-#| "the <link url='%2'>Free Software Foundation</link> or the <link "
-#| "url='%3'>Open Source Initiative</link>. This means your freedom to use, "
-#| "study, modify, and share it may be restricted in some ways.<nl/><nl/>Make "
-#| "sure to read the license text and understand any restrictions before "
-#| "using the software.<nl/><nl/>If the license does not even grant access to "
-#| "read the source code, make sure you fully trust the authors, as no one "
-#| "else can verify the trustworthiness and security of its code to ensure "
-#| "that it is not acting against you in hidden ways. More information may be "
-#| "available on <link url='%4'>the application's website</link>.<nl/><nl/"
-#| ">Learn more at <link url='%5'>%5</link>."
+#, kde-kuit-format
 msgctxt "@info"
 msgid ""
 "%1 uses one or more licenses not certified as “Free Software” by either the "
@@ -434,13 +405,7 @@ msgstr ""
 "tavoin.<nl/><nl/>Lisätietoa: <link url='%4'>%4</link>."
 
 #: discover/qml/ApplicationPage.qml:95
-#, fuzzy, kde-kuit-format
-#| msgctxt "@info"
-#| msgid ""
-#| "%1 does not indicate under which license it is distributed. You may be "
-#| "able to determine this on <link url='%2'>the application's website</"
-#| "link>. Find it there or contact the author if you want to use this "
-#| "application for anything other than private personal use."
+#, kde-kuit-format
 msgctxt "@info"
 msgid ""
 "%1 does not indicate under which license it is distributed. You may be able "
@@ -449,17 +414,12 @@ msgid ""
 "anything other than private personal use."
 msgstr ""
 "%1 ei osoita, millä lisenssillä sitä jaetaan. Tämä selviää ehkä <link "
-"url='%2'>sovelluksen verkkosivuilta</link>. Etsi tietoa sieltä tai ota "
-"yhteyttä tekijään, jos haluat käyttää sovellusta muuhun kuin yksityiseen "
+"url='%2'>sovelluksen sivustolta</link>. Etsi tietoa sieltä tai ota yhteyttä "
+"tekijään, jos haluat käyttää sovellusta muuhun kuin yksityiseen "
 "henkilökohtaiseen käyttöön."
 
 #: discover/qml/ApplicationPage.qml:99
-#, fuzzy, kde-format
-#| msgctxt "@info"
-#| msgid ""
-#| "%1 does not indicate under which license it is distributed. Contact the "
-#| "application's author if you want to use it for anything other than "
-#| "private personal use."
+#, kde-format
 msgctxt "@info"
 msgid ""
 "%1 does not indicate under which license it is distributed. Contact the "
@@ -514,10 +474,9 @@ msgid "Screenshots not available for %1"
 msgstr "%1: ruutukaappauksia ei ole saatavilla"
 
 #: discover/qml/ApplicationPage.qml:436
-#, fuzzy, kde-format
-#| msgid "What's New"
+#, kde-format
 msgid "What’s New"
-msgstr "Mikä on uutta"
+msgstr "Mitä uutta"
 
 #: discover/qml/ApplicationPage.qml:469
 #, kde-format
@@ -573,23 +532,19 @@ msgstr "Ulkoiset linkit"
 #, kde-format
 msgctxt "@info text of a web URL"
 msgid "Read the FAQ"
-msgstr ""
+msgstr "Lue UKK"
 
 #: discover/qml/ApplicationPage.qml:600
-#, fuzzy, kde-format
-#| msgctxt "@info text of a web URL"
-#| msgid "Read the documentation"
+#, kde-format
 msgctxt "@info text of a web URL"
 msgid "Read the full documentation"
-msgstr "Lue ohjeistus"
+msgstr "Lue koko ohjeistus"
 
 #: discover/qml/ApplicationPage.qml:611
-#, fuzzy, kde-format
-#| msgctxt "@info text of a web URL"
-#| msgid "Visit the project's website"
+#, kde-format
 msgctxt "@info text of a web URL"
 msgid "Visit the project’s website"
-msgstr "Käy projektin verkkosivulla"
+msgstr "Käy projektin sivustolla"
 
 #: discover/qml/ApplicationPage.qml:621
 #, kde-format
@@ -613,20 +568,19 @@ msgstr "Ryhdy avustajaksi"
 #, kde-format
 msgctxt "@info text of a web URL"
 msgid "Help with translations"
-msgstr ""
+msgstr "Ohje ja käännökset"
 
 #: discover/qml/ApplicationPage.qml:661
 #, kde-format
 msgctxt "@info text of a web URL"
 msgid "Contact the developers"
-msgstr ""
+msgstr "Ota yhteyttä kehittäjiin"
 
 #: discover/qml/ApplicationPage.qml:671
-#, fuzzy, kde-format
-#| msgid "Browse the origin's resources"
+#, kde-format
 msgctxt "@info text of a web URL"
 msgid "Browse the source code"
-msgstr "Selaa lähteen resursseja"
+msgstr "Selaa lähdekoodia"
 
 #: discover/qml/ApplicationPage.qml:700
 #, kde-format
@@ -646,16 +600,13 @@ msgstr "Lisenssitiedot"
 
 #: discover/qml/ApplicationPageFullComponent.qml:114
 #: discover/qml/ApplicationPageStickyComponent.qml:46
-#, fuzzy, kde-format
-#| msgid "Unknown author"
+#, kde-format
 msgctxt "As in 'this app is made by an unknown author'"
 msgid "Unknown author"
 msgstr "Tuntematon tekijä"
 
 #: discover/qml/ApplicationPageFullComponent.qml:148
-#, fuzzy, kde-format
-#| msgid "%1 rating"
-#| msgid_plural "%1 ratings"
+#, kde-format
 msgctxt "@info as in the number of ratings an application has"
 msgid "%1 rating"
 msgid_plural "%1 ratings"
@@ -663,15 +614,13 @@ msgstr[0] "%1 arvostelu"
 msgstr[1] "%1 arvostelua"
 
 #: discover/qml/ApplicationPageFullComponent.qml:148
-#, fuzzy, kde-format
-#| msgid "No ratings yet"
+#, kde-format
 msgctxt "@info"
 msgid "No ratings yet"
 msgstr "Ei vielä arvosteluja"
 
 #: discover/qml/ApplicationPageFullComponent.qml:196
-#, fuzzy, kde-format
-#| msgid "Version:"
+#, kde-format
 msgctxt "@info"
 msgid "Version:"
 msgstr "Versio:"
@@ -682,9 +631,7 @@ msgid "Size:"
 msgstr "Koko:"
 
 #: discover/qml/ApplicationPageFullComponent.qml:242
-#, fuzzy, kde-format
-#| msgid "License:"
-#| msgid_plural "Licenses:"
+#, kde-format
 msgctxt "@info"
 msgid "License:"
 msgid_plural "Licenses:"
@@ -705,20 +652,16 @@ msgid "What does this mean?"
 msgstr "Mitä tämä tarkoittaa?"
 
 #: discover/qml/ApplicationPageFullComponent.qml:348
-#, fuzzy, kde-format
-#| msgid "All Licenses"
+#, kde-format
 msgctxt "Show all licenses of the package"
 msgid "All licenses…"
-msgstr "Kaikki lisenssit"
+msgstr "Kaikki lisenssit…"
 
 #: discover/qml/ApplicationPageFullComponent.qml:361
-#, fuzzy, kde-format
-#| msgctxt ""
-#| "@label The app is suitable for people of the following ages or older"
-#| msgid "Ages:"
+#, kde-format
 msgctxt "@info The app is suitable for people of the following ages or older"
 msgid "Ages:"
-msgstr "Kohderyhmät:"
+msgstr "Kohdeiät:"
 
 #: discover/qml/ApplicationPageFullComponent.qml:380
 #, kde-format
@@ -733,8 +676,7 @@ msgid "%1+"
 msgstr "%1+"
 
 #: discover/qml/ApplicationPageFullComponent.qml:391
-#, fuzzy, kde-format
-#| msgid "See details"
+#, kde-format
 msgctxt "@action:button See content rating details"
 msgid "See details"
 msgstr "Näytä tiedot"
@@ -743,7 +685,7 @@ msgstr "Näytä tiedot"
 #, kde-format
 msgctxt "@action:button"
 msgid "Scroll to top"
-msgstr ""
+msgstr "Vieritä ylös"
 
 #: discover/qml/ApplicationsListPage.qml:57
 #, kde-format
@@ -794,14 +736,12 @@ msgid "Name"
 msgstr "Nimi"
 
 #: discover/qml/ApplicationsListPage.qml:129
-#, fuzzy, kde-format
-#| msgid "Submit review"
+#, kde-format
 msgid "Number of reviews"
-msgstr "Lähetä arvostelu"
+msgstr "Arvostelujen määrä"
 
 #: discover/qml/ApplicationsListPage.qml:140
-#, fuzzy, kde-format
-#| msgid "Rating"
+#, kde-format
 msgctxt "@item:inmenu sort by highest-rated apps"
 msgid "Rating"
 msgstr "Arvostelu"
@@ -820,7 +760,7 @@ msgstr "Julkaisupäivä"
 #, kde-format
 msgctxt "@info"
 msgid "Group by Type"
-msgstr ""
+msgstr "Ryhmittele tyypeittäin"
 
 #: discover/qml/ApplicationsListPage.qml:248
 #, kde-format
@@ -894,9 +834,7 @@ msgid "See More"
 msgstr "Näytä enemmän"
 
 #: discover/qml/BrowsingPage.qml:141
-#, fuzzy, kde-format
-#| msgctxt "@title:group"
-#| msgid "Editor's Choice"
+#, kde-format
 msgctxt "@title:group"
 msgid "Editor’s Choice"
 msgstr "Toimittajan valinta"
@@ -1015,8 +953,8 @@ msgstr "&Tietoa"
 msgid "S&ettings"
 msgstr "A&setukset"
 
-#: discover/qml/DiscoverWindow.qml:174 discover/qml/DiscoverWindow.qml:368
-#: discover/qml/DiscoverWindow.qml:480
+#: discover/qml/DiscoverWindow.qml:174 discover/qml/DiscoverWindow.qml:369
+#: discover/qml/DiscoverWindow.qml:481
 #, kde-format
 msgid "Error"
 msgstr "Virhe"
@@ -1031,36 +969,37 @@ msgstr "Resurssia ei löydy: %1"
 msgid "Proceed"
 msgstr "Jatka"
 
-#: discover/qml/DiscoverWindow.qml:334
+#: discover/qml/DiscoverWindow.qml:335
 #, kde-format
 msgctxt "@info %1 is the name of the operating system"
 msgid "Report this issue to %1"
 msgstr "Ilmoita ongelmasta: %1"
 
-#: discover/qml/DiscoverWindow.qml:350
+#: discover/qml/DiscoverWindow.qml:351
 #, kde-format
 msgctxt "@title:dialog"
 msgid "Discover is Offline"
-msgstr ""
+msgstr "Discover ei ole verkossa"
 
-#: discover/qml/DiscoverWindow.qml:351
+#: discover/qml/DiscoverWindow.qml:352
 #, kde-format
 msgctxt "@info"
 msgid ""
 "Please connect to a network to install applications and update the system."
 msgstr ""
+"Sovellusten asentamiseksi ja järjestelmän päivittämiseksi ota verkkoyhteys."
 
-#: discover/qml/DiscoverWindow.qml:368
+#: discover/qml/DiscoverWindow.qml:369
 #, kde-format
 msgid "Error %1 of %2"
 msgstr "Virhe %1 / %2"
 
-#: discover/qml/DiscoverWindow.qml:368 discover/qml/UpdatesPage.qml:47
+#: discover/qml/DiscoverWindow.qml:369 discover/qml/UpdatesPage.qml:47
 #, kde-format
 msgid "Update Issue"
 msgstr "Päivitysongelma"
 
-#: discover/qml/DiscoverWindow.qml:379
+#: discover/qml/DiscoverWindow.qml:380
 #, kde-format
 msgid ""
 "There was an issue during the update or installation process. Please try "
@@ -1068,24 +1007,24 @@ msgid ""
 msgstr ""
 "Päivityksessä tai asennuksessa esiintyi ongelma. Yritä myöhemmin uudelleen."
 
-#: discover/qml/DiscoverWindow.qml:415
+#: discover/qml/DiscoverWindow.qml:416
 #, kde-format
 msgctxt "@action:button"
 msgid "Show Previous"
 msgstr "Näytä edellinen"
 
-#: discover/qml/DiscoverWindow.qml:426
+#: discover/qml/DiscoverWindow.qml:427
 #, kde-format
 msgctxt "@action:button"
 msgid "Show Next"
 msgstr "Näytä seuraava"
 
-#: discover/qml/DiscoverWindow.qml:438 discover/qml/UpdatesPage.qml:69
+#: discover/qml/DiscoverWindow.qml:439 discover/qml/UpdatesPage.qml:69
 #, kde-format
 msgid "See Technical Details"
 msgstr "Näytä tekniset tiedot"
 
-#: discover/qml/DiscoverWindow.qml:446
+#: discover/qml/DiscoverWindow.qml:447
 #, kde-format
 msgid "Copy to Clipboard"
 msgstr "Kopioi leikepöydälle"
@@ -1132,6 +1071,8 @@ msgid ""
 "You can help KDE improve Discover by sharing anonymous information on how "
 "you use it."
 msgstr ""
+"Voit auttaa KDE:ta parantamaan Discoveria jakamalla nimetöntä tietoa siitä, "
+"miten käytät sitä."
 
 #: discover/qml/Feedback.qml:60
 #, kde-format
@@ -1178,10 +1119,9 @@ msgid "Installed"
 msgstr "Asennetut"
 
 #: discover/qml/Navigation.qml:36
-#, fuzzy, kde-format
-#| msgid "Resources for '%1'"
+#, kde-format
 msgid "Resources for “%1”"
-msgstr "Resurssit: %1"
+msgstr "Resurssit kohteelle ”%1”"
 
 #: discover/qml/ProgressView.qml:29
 #, kde-format
@@ -1194,18 +1134,16 @@ msgid "Tasks"
 msgstr "Tehtävät"
 
 #: discover/qml/ProgressView.qml:145
-#, fuzzy, kde-format
-#| msgctxt "TransactioName - TransactionStatus: speed, remaining time"
-#| msgid "%1 - %2: %3, %4 remaining"
+#, kde-format
 msgctxt "TransactioName - TransactionStatus: speed, remaining time"
 msgid "%1: %2, %3 remaining"
-msgstr "%1 – %2: %3, %4 jäljellä"
+msgstr "%1: %2, %3 jäljellä"
 
 #: discover/qml/ProgressView.qml:152
 #, kde-format
 msgctxt "TransactioName - TransactionStatus: speed"
 msgid "%1: %2"
-msgstr ""
+msgstr "%1: %2"
 
 #: discover/qml/Rating.qml:119
 #, kde-format
@@ -1271,83 +1209,59 @@ msgid "Submit review"
 msgstr "Lähetä arvostelu"
 
 #: discover/qml/ReviewDialog.qml:48
-#, fuzzy, kde-format
-#| msgid ""
-#| "If you love %1, tell people what's great about it! Focus on "
-#| "functionality, usability, and appearance. If the app didn't meet your "
-#| "needs, explain why."
+#, kde-format
 msgid ""
 "If you love %1, tell people what’s great about it! Focus on functionality, "
 "usability, and appearance. If the app didn’t meet your needs, explain why."
 msgstr ""
-"Jos %1 on mieleesi, kerro ihmisille, mikä siinä on hienoa! Keskity "
-"toiminnallisuuteen, käytettävyyteen ja ulkoasuun. Ellei sovellus sovi "
-"tarpeisiisi, selitä, miksi."
+"Jos %1 on mieleesi, kerro, mikä siinä on hienoa! Keskity toiminnallisuuteen, "
+"käytettävyyteen ja ulkoasuun. Ellei sovellus sovi tarpeisiisi, selitä, miksi."
 
 #: discover/qml/ReviewDialog.qml:72
-#, fuzzy, kde-kuit-format
-#| msgctxt "@info"
-#| msgid ""
-#| "If %1 isn't launching, consider reporting this to its packagers in %2 at "
-#| "<link url='%3'>%3</link> instead, as it may be an easily fixable "
-#| "packaging issue rather than a flaw in the app itself."
+#, kde-kuit-format
 msgctxt "@info"
 msgid ""
 "If %1 isn’t launching, consider reporting this to its packagers in %2 at "
 "<link url='%3'>%3</link> instead, as it may be an easily fixable packaging "
 "issue rather than a flaw in the app itself."
 msgstr ""
-"Ellei %1 käynnisty, harkitse ilmoittavasi asiasta sen paketoijille "
-"osoitteessa <link url='%3'>%3</link> (%2), koska ratkaisu voi olla "
-"korjattavissa oleva paketointivirhe sovellusvirheen sijaan."
+"Ellei %1 käynnisty, harkitse ilmoitusta sen paketoijille osoitteessa <link "
+"url='%3'>%3</link> (%2), koska ratkaisu voi sovellusvirheen sijaan olla "
+"korjattavissa oleva paketointivirhe."
 
 #: discover/qml/ReviewDialog.qml:77
-#, fuzzy, kde-kuit-format
-#| msgctxt "@info"
-#| msgid ""
-#| "If %1 isn't launching, consider reporting this its developers at <link "
-#| "url='%2'>%2</link> instead, as it may be an easily fixable packaging "
-#| "issue rather than a flaw in the app itself."
+#, kde-kuit-format
 msgctxt "@info"
 msgid ""
 "If %1 isn’t launching, consider reporting this to its developers at <link "
 "url='%2'>%2</link> instead, as it may be an easily fixable packaging issue "
 "rather than a flaw in the app itself."
 msgstr ""
-"Ellei %1 käynnisty, harkitse ilmoittavasi asiasta sen paketoijille "
-"osoitteessa <link url='%2'>%2</link>, koska ratkaisu voi olla korjattavissa "
-"oleva paketointivirhe sovellusvirheen sijaan."
+"Ellei %1 käynnisty, harkitse ilmoitusta sen paketoijille osoitteessa <link "
+"url='%2'>%2</link>, koska ratkaisu voi sovellusvirheen sijaan olla "
+"korjattavissa oleva paketointivirhe."
 
 #: discover/qml/ReviewDialog.qml:82
-#, fuzzy, kde-kuit-format
-#| msgctxt "@info"
-#| msgid ""
-#| "If the app is crashing a lot, consider reporting this to the developers "
-#| "at <link url='%1'>%1</link> instead."
+#, kde-kuit-format
 msgctxt "@info"
 msgid ""
 "If the app is crashing a lot, consider reporting this to its developers at "
 "<link url='%1'>%1</link> instead."
 msgstr ""
-"Jos ohjelma kaatuu usein, harkitse ilmoittavasi asiasta sen kehittäjille "
-"osoitteessa <link url='%1'>%1</link>."
+"Jos ohjelma kaatuu usein, harkitse ilmoitusta kehittäjille osoitteessa <link "
+"url='%1'>%1</link>."
 
 #: discover/qml/ReviewDialog.qml:85
-#, fuzzy, kde-kuit-format
-#| msgctxt "@info"
-#| msgid ""
-#| "If you're having a problem with the app, consider reporting it to the "
-#| "developers at <link url='%1'>%1</link> instead, or else describe the "
-#| "problem here in greater detail."
+#, kde-kuit-format
 msgctxt "@info"
 msgid ""
 "If you’re having a problem with the app, consider reporting this to its "
 "developers at <link url='%1'>%1</link> instead, or else describe the problem "
 "here in greater detail."
 msgstr ""
-"Jos kohtaat sovelluksessa ongelmia, harkitse ilmoittavasi niistä "
-"kehittäjille osoitteessa <link url='%1'>%1</link> tai kuvaa ongelmaa "
-"yksityiskohtaisemmin tähän."
+"Jos kohtaat sovelluksessa ongelmia, harkitse ilmoitusta kehittäjille "
+"osoitteessa <link url='%1'>%1</link> tai kuvaa ongelmaa yksityiskohtaisemmin "
+"tähän."
 
 #: discover/qml/ReviewDialog.qml:120
 #, kde-format
@@ -1385,13 +1299,7 @@ msgid "crash,segfault"
 msgstr "kaatuminen,segfault"
 
 #: discover/qml/ReviewDialog.qml:171
-#, fuzzy, kde-format
-#| msgctxt ""
-#| "Word the user might use in an unhelpful sentence saying an app isn't very "
-#| "good. Preserve the commas. If necessary, add more words used for this in "
-#| "your language and/or shorten to common stems contained by multiple forms "
-#| "of the words,"
-#| msgid "doesn't work,dumb,stupid,crap,junk,suck,terrible,hate"
+#, kde-format
 msgctxt ""
 "Words the user might use in an unhelpful sentence saying an app isn't very "
 "good. Preserve the commas. If necessary, add more words used for this in "
@@ -1499,10 +1407,9 @@ msgid "Search…"
 msgstr "Etsi…"
 
 #: discover/qml/SearchField.qml:26
-#, fuzzy, kde-format
-#| msgid "Search in '%1'…"
+#, kde-format
 msgid "Search in “%1”…"
-msgstr "Etsi luokasta ”%1”…"
+msgstr "Etsi kohteesta ”%1”…"
 
 #: discover/qml/SourcesPage.qml:19
 #, kde-format
@@ -1530,10 +1437,9 @@ msgid "Increase priority"
 msgstr "Nosta etusijaisuutta"
 
 #: discover/qml/SourcesPage.qml:258
-#, fuzzy, kde-format
-#| msgid "Failed to increase '%1' preference"
+#, kde-format
 msgid "Failed to increase “%1” preference"
-msgstr "Ei voitu lisätä suositummuutta: %1"
+msgstr "Ei voitu lisätä etusijaisuutta: ”%1”"
 
 #: discover/qml/SourcesPage.qml:264
 #, kde-format
@@ -1541,10 +1447,9 @@ msgid "Decrease priority"
 msgstr "Laske etusijaisuutta"
 
 #: discover/qml/SourcesPage.qml:270
-#, fuzzy, kde-format
-#| msgid "Failed to decrease '%1' preference"
+#, kde-format
 msgid "Failed to decrease “%1” preference"
-msgstr "Ei voitu vähentää suositummuutta: %1"
+msgstr "Ei voitu laskea etusijaisuutta: ”%1”"
 
 #: discover/qml/SourcesPage.qml:276
 #, kde-format
@@ -1557,11 +1462,10 @@ msgid "Show contents"
 msgstr "Näytä sisältö"
 
 #: discover/qml/SourcesPage.qml:309
-#, fuzzy, kde-format
-#| msgid "Unable to find resource: %1"
+#, kde-format
 msgctxt "@info:tooltip"
 msgid "Enable this source"
-msgstr "Resurssia ei löydy: %1"
+msgstr "Ota tämä lähde käyttöön"
 
 #: discover/qml/SourcesPage.qml:330
 #, kde-format
@@ -1611,102 +1515,93 @@ msgctxt "@action:button %1 is the name of the user's distro/OS"
 msgid "Report Issue to %1"
 msgstr "Ilmoita ongelmasta: %1"
 
-#: discover/qml/UpdatesPage.qml:162
+#: discover/qml/UpdatesPage.qml:163
 #, kde-format
 msgctxt "@action:button as in, 'update the selected items' "
 msgid "Update Selected"
 msgstr "Päivitä valitut"
 
-#: discover/qml/UpdatesPage.qml:162
+#: discover/qml/UpdatesPage.qml:163
 #, kde-format
 msgctxt "@action:button as in, 'update all items'"
 msgid "Update All"
 msgstr "Päivitä kaikki"
 
-#: discover/qml/UpdatesPage.qml:189
-#, fuzzy, kde-format
-#| msgctxt "@info"
-#| msgid "Updates will be installed after the system is restarted"
+#: discover/qml/UpdatesPage.qml:190
+#, kde-format
 msgctxt "@info"
 msgid "A pending update will be installed when restarting the system."
-msgstr "Päivitykset asennetaan, kun järjestelmä käynnistyy uudelleen."
+msgstr "Odottava päivitys asennetaan, kun järjestelmä käynnistetään uudelleen."
 
-#: discover/qml/UpdatesPage.qml:210
+#: discover/qml/UpdatesPage.qml:211
 #, kde-format
 msgid "Ignore"
 msgstr "Sivuuta"
 
-#: discover/qml/UpdatesPage.qml:260
+#: discover/qml/UpdatesPage.qml:261
 #, kde-format
 msgid "Select All"
 msgstr "Valitse kaikki"
 
-#: discover/qml/UpdatesPage.qml:268
+#: discover/qml/UpdatesPage.qml:269
 #, kde-format
 msgid "Select None"
 msgstr "Poista valinnat"
 
-#: discover/qml/UpdatesPage.qml:287
-#, fuzzy, kde-format
-#| msgid "updates not selected"
+#: discover/qml/UpdatesPage.qml:288
+#, kde-format
 msgctxt "@info After updates complete, shut down/restart/quit"
 msgid "After updates complete:"
-msgstr "päivitystä ei valittu"
+msgstr "Päivitysten asentamisen jälkeen:"
 
-#: discover/qml/UpdatesPage.qml:293
+#: discover/qml/UpdatesPage.qml:294
 #, kde-format
 msgctxt "@item:inlistbox after updates complete, do nothing"
 msgid "Do nothing"
-msgstr ""
-
-#: discover/qml/UpdatesPage.qml:294
-#, fuzzy, kde-format
-#| msgctxt "@item:inlistbox"
-#| msgid "Restart"
-msgctxt "@item:inlistbox after updates complete, restart"
-msgid "Restart"
-msgstr "Käynnistä uudelleen"
+msgstr "älä tee mitään"
 
 #: discover/qml/UpdatesPage.qml:295
-#, fuzzy, kde-format
-#| msgctxt "@item:inlistbox"
-#| msgid "Shut down"
+#, kde-format
+msgctxt "@item:inlistbox after updates complete, restart"
+msgid "Restart"
+msgstr "käynnistä uudelleen"
+
+#: discover/qml/UpdatesPage.qml:296
+#, kde-format
 msgctxt "@item:inlistbox after updates complete, shut down"
 msgid "Shut down"
-msgstr "sammuta automaattisesti"
+msgstr "sammuta"
 
-# pmap: =:gen=Muon Discoverin:
-# pmap: =:elat=Muon Discoverista:
-#: discover/qml/UpdatesPage.qml:296
-#, fuzzy, kde-format
-#| msgid "Muon Discover"
+# HUOM! Tämä on ohjelman nimi!
+#: discover/qml/UpdatesPage.qml:297
+#, kde-format
 msgctxt "@item:inlistbox after updates complete, quit Discover"
 msgid "Quit Discover"
-msgstr "Muon Discover"
+msgstr "lopeta Discover"
 
-#: discover/qml/UpdatesPage.qml:306
+#: discover/qml/UpdatesPage.qml:307
 #, kde-format
 msgid "Total size: %1"
 msgstr "Koko kaikkiaan: %1"
 
-#: discover/qml/UpdatesPage.qml:336
+#: discover/qml/UpdatesPage.qml:337
 #, kde-format
 msgctxt "@action:button"
 msgid "Restart and Install Updates"
 msgstr "Käynnistä uudelleen ja asenna päivitykset"
 
-#: discover/qml/UpdatesPage.qml:527
+#: discover/qml/UpdatesPage.qml:529
 #, kde-format
 msgid "Installing"
 msgstr "Asennetaan"
 
-#: discover/qml/UpdatesPage.qml:543
+#: discover/qml/UpdatesPage.qml:545
 #, kde-format
 msgctxt "@info This update is from the following source"
 msgid "From:"
 msgstr "Lähteestä:"
 
-#: discover/qml/UpdatesPage.qml:560
+#: discover/qml/UpdatesPage.qml:562
 #, kde-format
 msgctxt ""
 "%1 is the backend that provides this app, %2 is the specific repository or "
@@ -1714,54 +1609,52 @@ msgctxt ""
 msgid "%1 (%2)"
 msgstr "%1 (%2)"
 
-#: discover/qml/UpdatesPage.qml:572
+#: discover/qml/UpdatesPage.qml:574
 #, kde-format
 msgctxt "@action:button minimize the length of this label"
 msgid "More Info…"
 msgstr "Lisätietoa…"
 
-#: discover/qml/UpdatesPage.qml:645
+#: discover/qml/UpdatesPage.qml:646
 #, kde-format
 msgctxt "@info"
 msgid "Fetching updates…"
 msgstr "Noudetaan päivityksiä…"
 
-#: discover/qml/UpdatesPage.qml:660
+#: discover/qml/UpdatesPage.qml:661
 #, kde-format
 msgctxt "@info"
 msgid "Updates"
 msgstr "Päivitykset"
 
-#: discover/qml/UpdatesPage.qml:670
+#: discover/qml/UpdatesPage.qml:671
 #, kde-format
 msgctxt "@info"
 msgid "Updates will be installed after the system is restarted"
 msgstr "Päivitykset asennetaan, kun järjestelmä käynnistyy uudelleen."
 
-#: discover/qml/UpdatesPage.qml:672
-#, fuzzy, kde-format
-#| msgctxt "@info"
-#| msgid "You can keep using the system if you're not ready to restart yet."
+#: discover/qml/UpdatesPage.qml:673
+#, kde-format
 msgctxt "@info"
 msgid "You can keep using the system if you’re not ready to restart yet."
 msgstr ""
 "Voit jatkaa järjestelmän käyttöä, ellet ole valmis käynnistämään uudelleen."
 
 # ”Päivitetty, valmiina käyttöön” näyttää paremmalta ja tilaa on hyvin pidemmälle tekstille. Ajan tasalla oli aikaisempi.
-#: discover/qml/UpdatesPage.qml:677 discover/qml/UpdatesPage.qml:684
-#: discover/qml/UpdatesPage.qml:691
+#: discover/qml/UpdatesPage.qml:678 discover/qml/UpdatesPage.qml:685
+#: discover/qml/UpdatesPage.qml:692
 #, kde-format
 msgctxt "@info"
 msgid "Up to date"
 msgstr "Päivitetty, valmiina käyttöön"
 
-#: discover/qml/UpdatesPage.qml:698
+#: discover/qml/UpdatesPage.qml:699
 #, kde-format
 msgctxt "@info"
 msgid "Should check for updates"
 msgstr "Päivitykset tulisi tarkistaa"
 
-#: discover/qml/UpdatesPage.qml:705
+#: discover/qml/UpdatesPage.qml:706
 #, kde-format
 msgctxt "@info"
 msgid "Time of last update unknown"

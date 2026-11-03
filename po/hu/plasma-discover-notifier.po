@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-04-23 00:45+0000\n"
+"POT-Creation-Date: 2026-09-22 00:46+0000\n"
 "PO-Revision-Date: 2026-06-02 23:01+0200\n"
 "Last-Translator: Kristof Kiszel <ulysses@fsf.hu>\n"
 "Language-Team: Hungarian <kde-l10n-hu@kde.org>\n"
@@ -77,7 +77,9 @@ msgid "Update and Shut Down"
 msgstr "Frissítés és leállítás"
 
 #: notifier/DiscoverNotifier.cpp:449
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Upgrade available"
+msgctxt "A new distro release is available for upgrade"
 msgid "Upgrade available"
 msgstr "Frissítés érhetők el"
 
@@ -88,8 +90,10 @@ msgid "%1 is now available."
 msgstr "A(z) %1 most már elérhető."
 
 #: notifier/DiscoverNotifier.cpp:453
-#, kde-format
-msgctxt "@action:button"
+#, fuzzy, kde-format
+#| msgctxt "@action:button"
+#| msgid "Upgrade"
+msgctxt "@action:button Upgrade to new distro release"
 msgid "Upgrade"
 msgstr "Frissítés"
 

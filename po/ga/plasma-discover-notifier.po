@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: discover\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-04-23 00:45+0000\n"
+"POT-Creation-Date: 2026-09-22 00:46+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Irish Gaelic <kde-i18n-doc@kde.org>\n"
@@ -77,6 +77,7 @@ msgstr ""
 
 #: notifier/DiscoverNotifier.cpp:449
 #, kde-format
+msgctxt "A new distro release is available for upgrade"
 msgid "Upgrade available"
 msgstr ""
 
@@ -88,7 +89,7 @@ msgstr ""
 
 #: notifier/DiscoverNotifier.cpp:453
 #, kde-format
-msgctxt "@action:button"
+msgctxt "@action:button Upgrade to new distro release"
 msgid "Upgrade"
 msgstr ""
 

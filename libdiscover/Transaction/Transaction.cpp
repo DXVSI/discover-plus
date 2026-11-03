@@ -12,8 +12,8 @@
 #include <KLocalizedString>
 #include <resources/AbstractResource.h>
 
-Transaction::Transaction(QObject *parent, AbstractResource *resource, Role role, const AddonList &addons, bool visible)
-    : QObject(parent)
+Transaction::Transaction(AbstractResource *resource, Role role, const AddonList &addons, bool visible)
+    : QObject(resource)
     , m_resource(resource)
     , m_role(role)
     , m_status(CommittingStatus)

@@ -545,9 +545,9 @@ void FlatpakResource::fetchChangelog()
     if (m_permissions.isEmpty()) {
         loadPermissions();
     }
-    QString changelog = AppStreamUtils::changelogToHtml(m_appdata);
+    QString changelog = AppStreamUtils::changelogToMarkdown(m_appdata);
     if (!m_newPermissions.isEmpty()) {
-        changelog += "<h3>New Permissions</h3>\n<ul>"_L1 + m_newPermissions + "</ul>"_L1;
+        changelog += u"\n### %1\n\n"_s.arg(i18n("New Permissions")) + m_newPermissions;
     }
     Q_EMIT changelogFetched(changelog);
 }
@@ -680,7 +680,7 @@ QString FlatpakResource::installationPath(FlatpakInstallation *flatpakInstallati
 
 QUrl FlatpakResource::url() const
 {
-    if (!m_resourceFile.isEmpty()) {
+    if (appstreamId().isEmpty() && !m_resourceFile.isEmpty()) {
         return m_resourceFile;
     }
 
@@ -785,7 +785,7 @@ QString translateSymbolicName(const QStringView &name)
     if (name == QLatin1String("host")) {
         return i18n("All Files");
     } else if (name == QLatin1String("home")) {
-        return i18n("Home");
+        return i18nc("the user's home directory", "Home");
     } else if (name == QLatin1String("xdg-download")) {
         return i18n("Downloads");
     } else if (name == QLatin1String("xdg-music")) {
@@ -833,14 +833,13 @@ void FlatpakResource::setEolReason(const QString &reason)
     }
 }
 
-QString createHtmlList(const QStringList &itemList)
+QString createMarkdownList(const QStringList &itemList)
 {
-    QString str = QStringLiteral("<ul>");
-    for (const QString &itemText : std::as_const(itemList)) {
-        str += QStringLiteral("<li>%1</li>").arg(itemText.toHtmlEscaped());
+    QString str;
+    for (const QString &itemText : itemList) {
+        str += "\n    - %1"_L1.arg(itemText);
     }
-    str += QStringLiteral("</ul>");
-    return str;
+    return str + u'\n';
 }
 
 bool FlatpakResource::updateNeedsAttention()
@@ -867,7 +866,7 @@ void FlatpakResource::loadPermissions()
     auto currentPermissions = readPermissions(installPath() + "/metadata"_L1);
     for (const auto &permission : std::as_const(m_permissions)) {
         if (!currentPermissions.contains(permission)) {
-            m_newPermissions += "<li>"_L1 + i18n("%1: %2", permission.brief(), permission.description()) + "</li>\n"_L1;
+            m_newPermissions += "\n  * "_L1 + i18n("%1: %2", permission.brief(), permission.description());
         }
     }
 }
@@ -1010,7 +1009,7 @@ QVector<FlatpakPermission> FlatpakResource::readPermissions(const QString &file)
         }
     }
 
-    QString appendText = createHtmlList(homeList);
+    QString appendText = createMarkdownList(homeList);
     if (homeAccess) {
         brief = i18n("Home Folder Access");
         if (home_rw && home_ro && home_cr) {
@@ -1025,7 +1024,7 @@ QVector<FlatpakPermission> FlatpakResource::readPermissions(const QString &file)
         }
         permissions.append(FlatpakPermission(brief, description, u"user-home-symbolic"_s));
     }
-    appendText = createHtmlList(systemList);
+    appendText = createMarkdownList(systemList);
     if (systemAccess) {
         brief = i18n("System Folder Access");
         if (system_rw && system_ro && system_cr) {
@@ -1047,7 +1046,7 @@ QVector<FlatpakPermission> FlatpakResource::readPermissions(const QString &file)
             brief = i18n("Session Bus Access");
             description =
                 i18n("Can communicate with other applications and processes in the same desktop session using the following communication protocols: %1",
-                     createHtmlList(busList));
+                     createMarkdownList(busList));
             permissions.append(FlatpakPermission(brief, description, "plugins-symbolic"_L1));
         }
     }
@@ -1058,7 +1057,7 @@ QVector<FlatpakPermission> FlatpakResource::readPermissions(const QString &file)
             const QStringList busList = systemBusGroup.keyList();
             brief = i18n("System Bus Access");
             description =
-                i18n("Can communicate with all applications and system services using the following communication protocols: %1", createHtmlList(busList));
+                i18n("Can communicate with all applications and system services using the following communication protocols: %1", createMarkdownList(busList));
             permissions.append(FlatpakPermission(brief, description, "plugins-symbolic"_L1));
         }
     }

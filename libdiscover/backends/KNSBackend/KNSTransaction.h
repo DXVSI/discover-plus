@@ -15,7 +15,7 @@ class KNSTransaction;
 class KNSTransaction : public Transaction
 {
 public:
-    KNSTransaction(QObject *parent, KNSResource *res, Transaction::Role role);
+    KNSTransaction(KNSResource *res, Transaction::Role role);
 
     void anEntryChanged(const KNSCore::Entry &entry);
 

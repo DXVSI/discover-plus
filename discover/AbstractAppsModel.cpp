@@ -21,49 +21,6 @@
 #include <resources/ResourcesModel.h>
 #include <utils.h>
 
-class BestInResultsStream : public QObject
-{
-    Q_OBJECT
-public:
-    BestInResultsStream(const QSet<ResultsStream *> &streams)
-        : QObject()
-    {
-        connect(this, &BestInResultsStream::finished, this, &QObject::deleteLater);
-        Q_ASSERT(!streams.contains(nullptr));
-        if (streams.isEmpty()) {
-            QTimer::singleShot(0, this, &BestInResultsStream::clear);
-        }
-
-        for (auto stream : streams) {
-            m_streams.insert(stream);
-            connect(stream, &ResultsStream::resourcesFound, this, [this](const QVector<StreamResult> &resources) {
-                m_resources.append(resources.constFirst());
-            });
-            connect(stream, &QObject::destroyed, this, &BestInResultsStream::streamDestruction);
-        }
-    }
-
-    void streamDestruction(QObject *obj)
-    {
-        m_streams.remove(obj);
-        clear();
-    }
-
-    void clear()
-    {
-        if (m_streams.isEmpty()) {
-            Q_EMIT finished(m_resources);
-        }
-    }
-
-Q_SIGNALS:
-    void finished(QVector<StreamResult> resources);
-
-private:
-    QVector<StreamResult> m_resources;
-    QSet<QObject *> m_streams;
-};
-
 AbstractAppsModel::AbstractAppsModel()
 {
     connect(ResourcesModel::global(), &ResourcesModel::currentApplicationBackendChanged, this, &AbstractAppsModel::refreshCurrentApplicationBackend);
@@ -108,9 +65,9 @@ void AbstractAppsModel::setUris(const QVector<QUrl> &uris)
         streams << m_backend->search(filter);
     }
     if (!streams.isEmpty()) {
-        auto stream = new BestInResultsStream(streams);
+        auto stream = new AggregatedResultsStream(streams);
         acquireFetching(true);
-        connect(stream, &BestInResultsStream::finished, this, &AbstractAppsModel::setResources);
+        connect(stream, &AggregatedResultsStream::finished, this, &AbstractAppsModel::setResources);
     }
 }
 

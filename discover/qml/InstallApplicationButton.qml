@@ -244,6 +244,7 @@ ConditionalLoader {
         // Install/Remove button
         QQC2.Button {
             id: installOrRemoveButton
+            objectName: root.application.isInstalled ? "removeButton" : "installButton" // for appium tests
 
             visible: !root.application.isInstalled || root.application.isRemovable
             enabled: root.buttonEnabled

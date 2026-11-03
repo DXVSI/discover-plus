@@ -14,7 +14,7 @@
 #include <QProcess>
 
 SnapTransaction::SnapTransaction(QSnapdClient *client, SnapResource *app, Role role, AbstractResource::State newState)
-    : Transaction(app, app, role)
+    : Transaction(app, role)
     , m_client(client)
     , m_app(app)
     , m_newState(newState)

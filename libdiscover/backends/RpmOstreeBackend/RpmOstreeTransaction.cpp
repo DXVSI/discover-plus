@@ -19,12 +19,8 @@
 static const QString TransactionConnection = QStringLiteral("discover_transaction");
 static const QString DBusServiceName = QStringLiteral("org.projectatomic.rpmostree1");
 
-RpmOstreeTransaction::RpmOstreeTransaction(QObject *parent,
-                                           AbstractResource *resource,
-                                           OrgProjectatomicRpmostree1SysrootInterface *interface,
-                                           Operation operation,
-                                           QString arg)
-    : Transaction(parent, resource, Transaction::Role::InstallRole, {})
+RpmOstreeTransaction::RpmOstreeTransaction(AbstractResource *resource, OrgProjectatomicRpmostree1SysrootInterface *interface, Operation operation, QString arg)
+    : Transaction(resource, Transaction::Role::InstallRole, {})
     , m_timer(nullptr)
     , m_operation(operation)
     , m_resource((RpmOstreeResource *)resource)

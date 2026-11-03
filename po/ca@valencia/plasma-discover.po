@@ -9,15 +9,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: discover\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-09-17 00:45+0000\n"
-"PO-Revision-Date: 2026-08-23 08:59+0200\n"
+"POT-Creation-Date: 2026-10-09 00:48+0000\n"
+"PO-Revision-Date: 2026-10-14 17:54+0200\n"
 "Last-Translator: Josep M. Ferrer <txemaq@gmail.com>\n"
 "Language-Team: Catalan <kde-i18n-ca@kde.org>\n"
 "Language: ca@valencia\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Lokalize 26.08.0\n"
+"X-Generator: Lokalize 25.04.0\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Accelerator-Marker: &\n"
 
@@ -292,7 +292,7 @@ msgstr "Afig"
 #: discover/qml/AddSourceDialog.qml:50 discover/qml/DiscoverWindow.qml:289
 #: discover/qml/InstallApplicationButton.qml:51
 #: discover/qml/ProgressView.qml:163 discover/qml/SourcesPage.qml:207
-#: discover/qml/UpdatesPage.qml:316 discover/qml/WebflowDialog.qml:41
+#: discover/qml/UpdatesPage.qml:317 discover/qml/WebflowDialog.qml:41
 #, kde-format
 msgid "Cancel"
 msgstr "Cancel·la"
@@ -326,7 +326,7 @@ msgstr ""
 "pública. Açò significa que terceres parts i els usuaris com vós no poden "
 "verificar la seua operació, seguretat i fiabilitat.<nl/><nl/>L'aplicació pot "
 "ser perfectament segura d'utilitzar, o pot estar actuant en contra vostra de "
-"diverses maneres, com ara recolectar la vostra informació personal, seguir "
+"diverses maneres, com ara recol·lectar la vostra informació personal, seguir "
 "la vostra ubicació, o transmetre el contingut dels vostres fitxers a algú "
 "altre. No hi ha cap manera fàcil d'estar segur, així que només hauríeu "
 "d'instal·lar esta aplicació si confieu plenament en els seus autors. Pot "
@@ -355,7 +355,7 @@ msgstr ""
 "pública. Açò significa que terceres parts i els usuaris com vós no poden "
 "verificar la seua operació, seguretat i fiabilitat.<nl/><nl/>L'aplicació pot "
 "ser perfectament segura d'utilitzar, o pot estar actuant en contra vostra de "
-"diverses maneres, com ara recolectar la vostra informació personal, seguir "
+"diverses maneres, com ara recol·lectar la vostra informació personal, seguir "
 "la vostra ubicació, o transmetre el contingut dels vostres fitxers a algú "
 "altre. Utilitzeu-la només si confieu plenament en els seus autors. Apreneu-"
 "ne més a <link url='%2'>%2</link>."
@@ -377,17 +377,17 @@ msgid ""
 "url='%5'>%5</link>."
 msgstr ""
 "%1 utilitza una o més llicències no certificades com a «programari lliure» "
-"per la <link url='%2'>Free Software Foundation</link> o la <link "
-"url='%3'>Open Source Initiative</link>. Açò significa que la vostra "
-"llibertat d'utilitzar, estudiar, modificar i compartir pot estar restringida "
-"d'alguna manera.<nl/><nl/>Assegureu-vos de llegir el text de la llicència i "
-"entendre qualsevol restricció abans d'utilitzar el programari.<nl/><nl/>Si "
-"la llicència ni tan sols permet l'accés a llegir el codi font, assegureu-vos "
-"que confieu plenament en els autors, ja que ningú més pot verificar la "
-"fiabilitat i la seguretat del seu codi per a assegurar-se que no està "
-"actuant contra vós de manera oculta. Pot haver-hi més informació disponible "
-"en el <link url='%4'>lloc web de l'aplicació</link>.<nl/><nl/>Apreneu-ne més "
-"a <link url='%5'>%5</link>."
+"per la <link url='%2'>Free Software Foundation</link> o <link url='%3'>Open "
+"Source Initiative</link>. Açò significa que la vostra llibertat d'utilitzar, "
+"estudiar, modificar i compartir pot estar restringida d'alguna manera.<nl/"
+"><nl/>Assegureu-vos de llegir el text de la llicència i entendre qualsevol "
+"restricció abans d'utilitzar el programari.<nl/><nl/>Si la llicència ni tan "
+"sols permet l'accés a llegir el codi font, assegureu-vos que confieu "
+"plenament en els autors, ja que ningú més pot verificar la fiabilitat i la "
+"seguretat del seu codi per a assegurar-se que no està actuant contra vós de "
+"manera oculta. Pot haver-hi més informació disponible en el <link "
+"url='%4'>lloc web de l'aplicació</link>.<nl/><nl/>Apreneu-ne més a <link "
+"url='%5'>%5</link>."
 
 #: discover/qml/ApplicationPage.qml:86
 #, kde-kuit-format
@@ -404,16 +404,15 @@ msgid ""
 "against you in hidden ways.<nl/><nl/>Learn more at <link url='%4'>%4</link>."
 msgstr ""
 "%1 utilitza una o més llicències no certificades com a «programari lliure» "
-"per la <link url='%2'>Free Software Foundation</link> o la <link "
-"url='%3'>Open Source Initiative</link>. Açò significa que la vostra "
-"llibertat d'utilitzar, estudiar, modificar i compartir pot estar restringida "
-"d'alguna manera.<nl/><nl/>Assegureu-vos de llegir el text de la llicència i "
-"entendre qualsevol restricció abans d'utilitzar el programari.<nl/><nl/>Si "
-"la llicència ni tan sols permet l'accés a llegir el codi font, assegureu-vos "
-"que confieu plenament en els autors, ja que ningú més pot verificar la "
-"fiabilitat i la seguretat del seu codi per a assegurar-se que no està "
-"actuant contra vós de manera oculta.<nl/><nl/>Apreneu-ne més a <link "
-"url='%4'>%4</link>."
+"per la <link url='%2'>Free Software Foundation</link> o <link url='%3'>Open "
+"Source Initiative</link>. Açò significa que la vostra llibertat d'utilitzar, "
+"estudiar, modificar i compartir pot estar restringida d'alguna manera.<nl/"
+"><nl/>Assegureu-vos de llegir el text de la llicència i entendre qualsevol "
+"restricció abans d'utilitzar el programari.<nl/><nl/>Si la llicència ni tan "
+"sols permet l'accés a llegir el codi font, assegureu-vos que confieu "
+"plenament en els autors, ja que ningú més pot verificar la fiabilitat i la "
+"seguretat del seu codi per a assegurar-se que no està actuant contra vós de "
+"manera oculta.<nl/><nl/>Apreneu-ne més a <link url='%4'>%4</link>."
 
 #: discover/qml/ApplicationPage.qml:95
 #, kde-kuit-format
@@ -963,8 +962,8 @@ msgstr "Qu&ant a"
 msgid "S&ettings"
 msgstr "Con&figuració"
 
-#: discover/qml/DiscoverWindow.qml:174 discover/qml/DiscoverWindow.qml:368
-#: discover/qml/DiscoverWindow.qml:480
+#: discover/qml/DiscoverWindow.qml:174 discover/qml/DiscoverWindow.qml:369
+#: discover/qml/DiscoverWindow.qml:481
 #, kde-format
 msgid "Error"
 msgstr "S'ha produït un error"
@@ -979,19 +978,19 @@ msgstr "No s'ha pogut trobar el recurs: %1"
 msgid "Proceed"
 msgstr "Continua"
 
-#: discover/qml/DiscoverWindow.qml:334
+#: discover/qml/DiscoverWindow.qml:335
 #, kde-format
 msgctxt "@info %1 is the name of the operating system"
 msgid "Report this issue to %1"
 msgstr "Informa d'este problema a %1"
 
-#: discover/qml/DiscoverWindow.qml:350
+#: discover/qml/DiscoverWindow.qml:351
 #, kde-format
 msgctxt "@title:dialog"
 msgid "Discover is Offline"
 msgstr "Discover està fora de línia"
 
-#: discover/qml/DiscoverWindow.qml:351
+#: discover/qml/DiscoverWindow.qml:352
 #, kde-format
 msgctxt "@info"
 msgid ""
@@ -1000,17 +999,17 @@ msgstr ""
 "Connecteu-vos a una xarxa per a instal·lar aplicacions i actualitzar el "
 "sistema."
 
-#: discover/qml/DiscoverWindow.qml:368
+#: discover/qml/DiscoverWindow.qml:369
 #, kde-format
 msgid "Error %1 of %2"
 msgstr "Error %1 de %2"
 
-#: discover/qml/DiscoverWindow.qml:368 discover/qml/UpdatesPage.qml:47
+#: discover/qml/DiscoverWindow.qml:369 discover/qml/UpdatesPage.qml:47
 #, kde-format
 msgid "Update Issue"
 msgstr "Problema d'actualització"
 
-#: discover/qml/DiscoverWindow.qml:379
+#: discover/qml/DiscoverWindow.qml:380
 #, kde-format
 msgid ""
 "There was an issue during the update or installation process. Please try "
@@ -1019,24 +1018,24 @@ msgstr ""
 "Hi ha hagut un problema durant el procés d'actualització o instal·lació. "
 "Torneu-ho a provar més tard."
 
-#: discover/qml/DiscoverWindow.qml:415
+#: discover/qml/DiscoverWindow.qml:416
 #, kde-format
 msgctxt "@action:button"
 msgid "Show Previous"
 msgstr "Mostra l'anterior"
 
-#: discover/qml/DiscoverWindow.qml:426
+#: discover/qml/DiscoverWindow.qml:427
 #, kde-format
 msgctxt "@action:button"
 msgid "Show Next"
 msgstr "Mostra el següent"
 
-#: discover/qml/DiscoverWindow.qml:438 discover/qml/UpdatesPage.qml:69
+#: discover/qml/DiscoverWindow.qml:439 discover/qml/UpdatesPage.qml:69
 #, kde-format
 msgid "See Technical Details"
 msgstr "Veure els detalls tècnics"
 
-#: discover/qml/DiscoverWindow.qml:446
+#: discover/qml/DiscoverWindow.qml:447
 #, kde-format
 msgid "Copy to Clipboard"
 msgstr "Copia a dins del porta-retalls"
@@ -1081,8 +1080,8 @@ msgid ""
 "You can help KDE improve Discover by sharing anonymous information on how "
 "you use it."
 msgstr ""
-"Podeu ajudar a KDE a millorar Discover compartint informació anònima sobre "
-"com l'utilitzeu."
+"Podeu ajudar KDE a millorar Discover compartint informació anònima sobre com "
+"l'utilitzeu."
 
 #: discover/qml/Feedback.qml:60
 #, kde-format
@@ -1526,93 +1525,93 @@ msgctxt "@action:button %1 is the name of the user's distro/OS"
 msgid "Report Issue to %1"
 msgstr "Informeu del problema a %1"
 
-#: discover/qml/UpdatesPage.qml:162
+#: discover/qml/UpdatesPage.qml:163
 #, kde-format
 msgctxt "@action:button as in, 'update the selected items' "
 msgid "Update Selected"
 msgstr "Actualitza els seleccionats"
 
-#: discover/qml/UpdatesPage.qml:162
+#: discover/qml/UpdatesPage.qml:163
 #, kde-format
 msgctxt "@action:button as in, 'update all items'"
 msgid "Update All"
 msgstr "Actualitza-ho tot"
 
-#: discover/qml/UpdatesPage.qml:189
+#: discover/qml/UpdatesPage.qml:190
 #, kde-format
 msgctxt "@info"
 msgid "A pending update will be installed when restarting the system."
 msgstr ""
 "S'instal·larà una actualització pendent després de reiniciar el sistema."
 
-#: discover/qml/UpdatesPage.qml:210
+#: discover/qml/UpdatesPage.qml:211
 #, kde-format
 msgid "Ignore"
 msgstr "Ignora"
 
-#: discover/qml/UpdatesPage.qml:260
+#: discover/qml/UpdatesPage.qml:261
 #, kde-format
 msgid "Select All"
 msgstr "Selecciona-ho tot"
 
-#: discover/qml/UpdatesPage.qml:268
+#: discover/qml/UpdatesPage.qml:269
 #, kde-format
 msgid "Select None"
 msgstr "No selecciones res"
 
-#: discover/qml/UpdatesPage.qml:287
+#: discover/qml/UpdatesPage.qml:288
 #, kde-format
 msgctxt "@info After updates complete, shut down/restart/quit"
 msgid "After updates complete:"
 msgstr "Després de completar les actualitzacions:"
 
-#: discover/qml/UpdatesPage.qml:293
+#: discover/qml/UpdatesPage.qml:294
 #, kde-format
 msgctxt "@item:inlistbox after updates complete, do nothing"
 msgid "Do nothing"
 msgstr "No faces res"
 
-#: discover/qml/UpdatesPage.qml:294
+#: discover/qml/UpdatesPage.qml:295
 #, kde-format
 msgctxt "@item:inlistbox after updates complete, restart"
 msgid "Restart"
 msgstr "Reinicia"
 
-#: discover/qml/UpdatesPage.qml:295
+#: discover/qml/UpdatesPage.qml:296
 #, kde-format
 msgctxt "@item:inlistbox after updates complete, shut down"
 msgid "Shut down"
 msgstr "Para"
 
-#: discover/qml/UpdatesPage.qml:296
+#: discover/qml/UpdatesPage.qml:297
 #, kde-format
 msgctxt "@item:inlistbox after updates complete, quit Discover"
 msgid "Quit Discover"
 msgstr "Ix de Discover"
 
-#: discover/qml/UpdatesPage.qml:306
+#: discover/qml/UpdatesPage.qml:307
 #, kde-format
 msgid "Total size: %1"
 msgstr "Mida total: %1"
 
-#: discover/qml/UpdatesPage.qml:336
+#: discover/qml/UpdatesPage.qml:337
 #, kde-format
 msgctxt "@action:button"
 msgid "Restart and Install Updates"
 msgstr "Reinicia i instal·la les actualitzacions"
 
-#: discover/qml/UpdatesPage.qml:527
+#: discover/qml/UpdatesPage.qml:529
 #, kde-format
 msgid "Installing"
 msgstr "S'està instal·lant"
 
-#: discover/qml/UpdatesPage.qml:543
+#: discover/qml/UpdatesPage.qml:545
 #, kde-format
 msgctxt "@info This update is from the following source"
 msgid "From:"
 msgstr "Des de:"
 
-#: discover/qml/UpdatesPage.qml:560
+#: discover/qml/UpdatesPage.qml:562
 #, kde-format
 msgctxt ""
 "%1 is the backend that provides this app, %2 is the specific repository or "
@@ -1620,31 +1619,31 @@ msgctxt ""
 msgid "%1 (%2)"
 msgstr "%1 (%2)"
 
-#: discover/qml/UpdatesPage.qml:572
+#: discover/qml/UpdatesPage.qml:574
 #, kde-format
 msgctxt "@action:button minimize the length of this label"
 msgid "More Info…"
 msgstr "Més informació…"
 
-#: discover/qml/UpdatesPage.qml:645
+#: discover/qml/UpdatesPage.qml:646
 #, kde-format
 msgctxt "@info"
 msgid "Fetching updates…"
 msgstr "S'estan recuperant les actualitzacions…"
 
-#: discover/qml/UpdatesPage.qml:660
+#: discover/qml/UpdatesPage.qml:661
 #, kde-format
 msgctxt "@info"
 msgid "Updates"
 msgstr "Actualitzacions"
 
-#: discover/qml/UpdatesPage.qml:670
+#: discover/qml/UpdatesPage.qml:671
 #, kde-format
 msgctxt "@info"
 msgid "Updates will be installed after the system is restarted"
 msgstr "Les actualitzacions s'instal·laran després de reiniciar el sistema"
 
-#: discover/qml/UpdatesPage.qml:672
+#: discover/qml/UpdatesPage.qml:673
 #, kde-format
 msgctxt "@info"
 msgid "You can keep using the system if you’re not ready to restart yet."
@@ -1652,20 +1651,20 @@ msgstr ""
 "Podeu continuar utilitzant el sistema si encara no esteu preparat/da per a "
 "reiniciar."
 
-#: discover/qml/UpdatesPage.qml:677 discover/qml/UpdatesPage.qml:684
-#: discover/qml/UpdatesPage.qml:691
+#: discover/qml/UpdatesPage.qml:678 discover/qml/UpdatesPage.qml:685
+#: discover/qml/UpdatesPage.qml:692
 #, kde-format
 msgctxt "@info"
 msgid "Up to date"
 msgstr "Última versió"
 
-#: discover/qml/UpdatesPage.qml:698
+#: discover/qml/UpdatesPage.qml:699
 #, kde-format
 msgctxt "@info"
 msgid "Should check for updates"
 msgstr "Cal comprovar si hi ha actualitzacions"
 
-#: discover/qml/UpdatesPage.qml:705
+#: discover/qml/UpdatesPage.qml:706
 #, kde-format
 msgctxt "@info"
 msgid "Time of last update unknown"

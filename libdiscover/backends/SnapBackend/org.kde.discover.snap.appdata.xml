@@ -11,8 +11,8 @@
   <name xml:lang="ca-valencia">Dorsal de Snap</name>
   <name xml:lang="cs">Podpůrná vrstva Snap</name>
   <name xml:lang="da">Snap-motor</name>
-  <name xml:lang="de">Snap-Backend</name>
-  <name xml:lang="el">Σύστημα υποστήριξης Snap </name>
+  <name xml:lang="de">Snap-Modul</name>
+  <name xml:lang="el">Snap backend</name>
   <name xml:lang="en-GB">Snap backend</name>
   <name xml:lang="eo">Snap-backend</name>
   <name xml:lang="es">Motor Snap</name>
@@ -49,9 +49,14 @@
   <name xml:lang="sa">स्नैप् पृष्ठान्त्</name>
   <name xml:lang="sk">Podporný program pre Snap</name>
   <name xml:lang="sl">Zaledje Snap</name>
+  <name xml:lang="sr">Позадина снапа</name>
+  <name xml:lang="sr-Latn">Pozadina snapa</name>
+  <name xml:lang="sr-ijekavian">Позадина снапа</name>
+  <name xml:lang="sr-ijekavianlatin">Pozadina snapa</name>
   <name xml:lang="sv">Gränssnitt för Snap</name>
   <name xml:lang="tg">Коркардкунандаи Часпиш</name>
   <name xml:lang="tr">Snap arka ucu</name>
+  <name xml:lang="ug">Snap ئارقا ئۇچى</name>
   <name xml:lang="uk">Модуль Snap</name>
   <name xml:lang="zh-CN">Snap 后端程序</name>
   <name xml:lang="zh-TW">Snap 後端</name>
@@ -65,7 +70,7 @@
   <summary xml:lang="cs">Integruje aplikace Snap do Discover</summary>
   <summary xml:lang="da">Integrerer Snap-programmer i Discover</summary>
   <summary xml:lang="de">Integriert Snap-Anwendungen in Discover</summary>
-  <summary xml:lang="el">Ενσωματώνει εφαρμογές Snap στο Discover</summary>
+  <summary xml:lang="el">Ενσωματώνει εφαρμογές Snap στην Ανακάλυψη</summary>
   <summary xml:lang="en-GB">Integrates Snap applications into Discover</summary>
   <summary xml:lang="eo">Integras Snap-aplikaĵojn en Discover</summary>
   <summary xml:lang="es">Integra aplicaciones Snap en Discover</summary>
@@ -98,13 +103,18 @@
   <summary xml:lang="pt">Integra as aplicações do Snap no Discover</summary>
   <summary xml:lang="pt-BR">Integra aplicativos Snap no Discover</summary>
   <summary xml:lang="ro">Integrează aplicații Snap în Discover</summary>
-  <summary xml:lang="ru">Добавление поддержки формата Snap в центр программ Discover</summary>
+  <summary xml:lang="ru">Добавление поддержки формата Snap в центр приложений Discover</summary>
   <summary xml:lang="sa">डिस्कवर् इत्यस्मिन् स्नैप् अनुप्रयोगानाम् एकीकरणं करोति</summary>
   <summary xml:lang="sk">Integruje aplikácie Snap do aplikácie Discover</summary>
   <summary xml:lang="sl">V Discover vgradi programe Snap</summary>
+  <summary xml:lang="sr">Уклапа снап програме у Oткривач</summary>
+  <summary xml:lang="sr-Latn">Uklapa snap programe u Otkrivač</summary>
+  <summary xml:lang="sr-ijekavian">Уклапа снап програме у Oткривач</summary>
+  <summary xml:lang="sr-ijekavianlatin">Uklapa snap programe u Otkrivač</summary>
   <summary xml:lang="sv">Integrerar Snap-program i Upptäck</summary>
   <summary xml:lang="tg">Барномаҳои Часпишро ба барномаи Кашфиёт дарунсохт мекунад</summary>
   <summary xml:lang="tr">Snap uygulamalarını Keşfet ile bütünleştirir</summary>
+  <summary xml:lang="ug">Snap پىروگراممىسىنى Discover غا توپلاشتۇرىدۇ</summary>
   <summary xml:lang="uk">Інтегрує програми Snap до Discover</summary>
   <summary xml:lang="zh-CN">为 Discover 提供 Snap 应用程序的集成功能</summary>
   <summary xml:lang="zh-TW">將 Snap 應用程式整合進 Discover 商店</summary>
@@ -159,6 +169,10 @@
   <developer_name xml:lang="sa">अलेक्स् पोल् गोन्जालेज्</developer_name>
   <developer_name xml:lang="sk">Aleix Pol Gonzalez</developer_name>
   <developer_name xml:lang="sl">Aleix Pol Gonzalez</developer_name>
+  <developer_name xml:lang="sr">Алекс Пол Гонзалез</developer_name>
+  <developer_name xml:lang="sr-Latn">Aleks Pol Gonzalez</developer_name>
+  <developer_name xml:lang="sr-ijekavian">Алекс Пол Гонзалез</developer_name>
+  <developer_name xml:lang="sr-ijekavianlatin">Aleks Pol Gonzalez</developer_name>
   <developer_name xml:lang="sv">Aleix Pol Gonzalez</developer_name>
   <developer_name xml:lang="ta">அலெயிக்சு போல் கொன்ஸாலெசு</developer_name>
   <developer_name xml:lang="tg">Алейкс Пол Гонзалес (Aleix Pol Gonzalez)</developer_name>
@@ -169,9 +183,9 @@
   <developer_name xml:lang="zh-TW">Aleix Pol Gonzalez</developer_name>
   <icon type="stock">system-software-install</icon>
   <releases>
+    <release version="6.8.2" date="2026-10-27"/>
+    <release version="6.8.1" date="2026-10-20"/>
+    <release version="6.8.0" date="2026-10-14"/>
     <release version="6.7.5" date="2026-09-08"/>
-    <release version="6.7.4" date="2026-08-04"/>
-    <release version="6.7.3" date="2026-07-14"/>
-    <release version="6.7.2" date="2026-06-30"/>
   </releases>
 </component>

@@ -99,7 +99,7 @@ in the middle of comments):
         </method>
         <method name="Describe">
             <arg type="s" name="version" direction="in"/>
-            <arg type="b" name="offline" direction="in"/>
+            <arg type="t" name="flags" direction="in"/>
             <arg type="s" name="json" direction="out"/>
         </method>
         <method name="CheckNew">
@@ -120,7 +120,8 @@ in the middle of comments):
             <arg type="o" name="job_path" direction="out"/>
         </method>
         <method name="Vacuum">
-            <arg type="u" name="count" direction="out"/>
+            <arg type="u" name="instances" direction="out"/>
+            <arg type="u" name="disabled_transfers" direction="out"/>
         </method>
         <method name="GetAppStream">
             <arg type="as" name="appstream" direction="out"/>

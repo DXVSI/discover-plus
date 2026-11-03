@@ -1,22 +1,22 @@
 # Copyright (C) 2024 This file is copyright:
 # This file is distributed under the same license as the discover package.
 #
-# SPDX-FileCopyrightText: 2024 Petros Vidalis <pvidalis@gmail.com>
+# SPDX-FileCopyrightText: 2024, 2026 Petros Vidalis <pvidalis@gmail.com>
 # SPDX-FileCopyrightText: 2024 Antonis Geralis <capoiosct@gmail.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: discover\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-08-05 00:48+0000\n"
-"PO-Revision-Date: 2024-09-19 14:30+0300\n"
-"Last-Translator: Antonis Geralis <capoiosct@gmail.com>\n"
+"PO-Revision-Date: 2026-10-15 13:21+0300\n"
+"Last-Translator: Petros Vidalis <pvidalis@gmail.com>\n"
 "Language-Team: Greek <kde-i18n-el@kde.org>\n"
 "Language: el\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 24.08.1\n"
+"X-Generator: Lokalize 25.12.3\n"
 
 #: kcm/ui/main.qml:40
 #, kde-format
@@ -34,12 +34,7 @@ msgid "Automatically"
 msgstr "Αυτόματα"
 
 #: kcm/ui/main.qml:68
-#, fuzzy, kde-kuit-format
-#| msgctxt "@info"
-#| msgid ""
-#| "Software updates will be downloaded automatically when they become "
-#| "available. Updates for applications will be installed immediately, while "
-#| "system updates will be installed the next time the computer is restarted."
+#, kde-kuit-format
 msgctxt "@info"
 msgid ""
 "Software updates will be downloaded automatically when they become "
@@ -48,8 +43,7 @@ msgid ""
 msgstr ""
 "Οι ενημερώσεις λογισμικού θα ληφθούν αυτόματα όταν γίνουν διαθέσιμες. Οι "
 "ενημερώσεις για τις εφαρμογές θα εγκατασταθούν άμεσα, ενώ οι ενημερώσεις "
-"συστήματος θα εγκατασταθούν την επόμενη φορά που θα γίνει επανεκκίνηση του "
-"υπολογιστή."
+"συστήματος θα εγκατασταθούν την επόμενη φορά που θα γίνει επανεκκίνηση."
 
 #: kcm/ui/main.qml:74
 #, kde-format
@@ -106,7 +100,7 @@ msgctxt ""
 "@label The thing being recommended is to use the 'apply updates when "
 "rebooting' setting"
 msgid "Recommended to maximize system stability"
-msgstr "Συνιστάται για τη μεγιστοποίηση της σταθερότητας του συστήματος"
+msgstr "Συνιστάται για τη μεγιστοποίηση σταθερότητας του συστήματος"
 
 #: kcm/ui/main.qml:145
 #, kde-format

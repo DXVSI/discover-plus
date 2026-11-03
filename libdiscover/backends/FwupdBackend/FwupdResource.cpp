@@ -123,10 +123,7 @@ AbstractResource::State FwupdResource::state()
 
 void FwupdResource::fetchChangelog()
 {
-    QString log = longDescription();
-    log.replace(QLatin1Char('\n'), QLatin1String("<br />"));
-
-    Q_EMIT changelogFetched(log);
+    Q_EMIT changelogFetched(longDescription());
 }
 
 void FwupdResource::setState(AbstractResource::State state)

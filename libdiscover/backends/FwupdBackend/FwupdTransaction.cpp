@@ -11,7 +11,7 @@
 #include <resources/AbstractBackendUpdater.h>
 
 FwupdTransaction::FwupdTransaction(FwupdResource *app, FwupdBackend *backend)
-    : Transaction(backend, app, Transaction::InstallRole, {})
+    : Transaction(app, Transaction::InstallRole, {})
     , m_app(app)
     , m_backend(backend)
     , m_cancellable(g_cancellable_new())
@@ -25,7 +25,7 @@ FwupdTransaction::FwupdTransaction(FwupdResource *app, FwupdBackend *backend)
 
 FwupdTransaction::~FwupdTransaction()
 {
-    g_object_unref(m_cancellable);
+    g_object_unref(m_cancellable.get());
 }
 
 void FwupdTransaction::install()
@@ -36,7 +36,7 @@ void FwupdTransaction::install()
         QString device_id = m_app->deviceId();
         if (device_id.isEmpty()) {
             qWarning() << "Fwupd Error: No Device ID set, cannot unlock device " << this << m_app->name();
-        } else if (!fwupd_client_unlock(m_backend->client, device_id.toUtf8().constData(), m_cancellable, &error)) {
+        } else if (!fwupd_client_unlock(m_backend->m_client.get(), device_id.toUtf8().constData(), m_cancellable.get(), &error)) {
             m_backend->handleError(error);
         }
         setStatus(DoneWithErrorStatus);
@@ -50,7 +50,7 @@ void FwupdTransaction::install()
         QNetworkAccessManager *manager = new QNetworkAccessManager(this);
         auto req = QNetworkRequest(uri);
 
-        const QString userAgent = QString::fromUtf8(fwupd_client_get_user_agent(m_backend->client));
+        const QString userAgent = QString::fromUtf8(fwupd_client_get_user_agent(m_backend->m_client.get()));
         req.setHeader(QNetworkRequest::UserAgentHeader, userAgent);
         req.setAttribute(QNetworkRequest::RedirectPolicyAttribute, QNetworkRequest::NoLessSafeRedirectPolicy);
         auto reply = manager->get(req);
@@ -87,7 +87,12 @@ void FwupdTransaction::fwupdInstall(const QString &file)
     FwupdInstallFlags install_flags = FWUPD_INSTALL_FLAG_NONE;
     g_autoptr(GError) error = nullptr;
 
-    if (!fwupd_client_install(m_backend->client, m_app->deviceId().toUtf8().constData(), file.toUtf8().constData(), install_flags, m_cancellable, &error)) {
+    if (!fwupd_client_install(m_backend->m_client.get(),
+                              m_app->deviceId().toUtf8().constData(),
+                              file.toUtf8().constData(),
+                              install_flags,
+                              m_cancellable.get(),
+                              &error)) {
         m_backend->handleError(error);
         setStatus(DoneWithErrorStatus);
     } else
@@ -96,7 +101,7 @@ void FwupdTransaction::fwupdInstall(const QString &file)
 
 void FwupdTransaction::updateProgress()
 {
-    setProgress(fwupd_client_get_percentage(m_backend->client));
+    setProgress(fwupd_client_get_percentage(m_backend->m_client.get()));
 }
 
 void FwupdTransaction::proceed()
@@ -106,13 +111,13 @@ void FwupdTransaction::proceed()
 
 void FwupdTransaction::cancel()
 {
-    g_cancellable_cancel(m_cancellable);
+    g_cancellable_cancel(m_cancellable.get());
     setStatus(CancelledStatus);
 }
 
 void FwupdTransaction::finishTransaction()
 {
-    if (g_cancellable_is_cancelled(m_cancellable)) {
+    if (g_cancellable_is_cancelled(m_cancellable.get())) {
         return;
     }
 

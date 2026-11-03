@@ -1,0 +1,109 @@
+# Nemanja Hiršl <nemhirsl@gmail.com>, 2026.
+msgid ""
+msgstr ""
+"Project-Id-Version: discover\n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2026-08-05 00:48+0000\n"
+"PO-Revision-Date: 2026-10-06 10:30+0200\n"
+"Last-Translator: Nemanja Hiršl <nemhirsl@gmail.com>\n"
+"Language-Team: Serbian <kde-i18n-sr@kde.org>\n"
+"Language: sr@ijekavian\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=n==1 ? 3 : n%10==1 && n%100!=11 ? 0 : n"
+"%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"X-Accelerator-Marker: &\n"
+"X-Text-Markup: kde4\n"
+"X-Environment: kde\n"
+
+#: kcm/ui/main.qml:40
+#, kde-format
+msgid "Update software:"
+msgstr "Ажурирај софтвер:"
+
+#: kcm/ui/main.qml:41
+#, kde-format
+msgid "Manually"
+msgstr "Ручно"
+
+#: kcm/ui/main.qml:56
+#, kde-format
+msgid "Automatically"
+msgstr "Аутоматски"
+
+#: kcm/ui/main.qml:68
+#, kde-kuit-format
+msgctxt "@info"
+msgid ""
+"Software updates will be downloaded automatically when they become "
+"available. Updates for applications will be installed immediately, while "
+"updates for the system will be installed the next time it’s restarted."
+msgstr ""
+"Допуне софтвера биће аутоматски преузете чим постану доступне. Допуне "
+"програма биће одмах инсталиране, а допуне система при сљедећем поновном "
+"покретању."
+
+#: kcm/ui/main.qml:74
+#, kde-format
+msgctxt "@title:group"
+msgid "Update frequency:"
+msgstr "Учестаност ажурирања:"
+
+#: kcm/ui/main.qml:74
+#, kde-format
+msgctxt "@title:group"
+msgid "Notification frequency:"
+msgstr "Учестаност обавјештавања:"
+
+#: kcm/ui/main.qml:79
+#, kde-format
+msgctxt "@item:inlistbox"
+msgid "Daily"
+msgstr "дневно"
+
+#: kcm/ui/main.qml:80
+#, kde-format
+msgctxt "@item:inlistbox"
+msgid "Weekly"
+msgstr "седмично"
+
+#: kcm/ui/main.qml:81
+#, kde-format
+msgctxt "@item:inlistbox"
+msgid "Monthly"
+msgstr "мјесечно"
+
+#: kcm/ui/main.qml:82
+#, kde-format
+msgctxt "@item:inlistbox"
+msgid "Never"
+msgstr "никад"
+
+#: kcm/ui/main.qml:120
+#, kde-format
+msgid "Apply system updates:"
+msgstr "Примијени допуне система:"
+
+#: kcm/ui/main.qml:127
+#, kde-format
+msgctxt ""
+"@option:radio part of the logical sentence 'Apply system updates after "
+"rebooting'"
+msgid "After rebooting"
+msgstr "Послије поновног подизања"
+
+#: kcm/ui/main.qml:139
+#, kde-format
+msgctxt ""
+"@label The thing being recommended is to use the 'apply updates when "
+"rebooting' setting"
+msgid "Recommended to maximize system stability"
+msgstr "Препоручено ради највеће стабилности система"
+
+#: kcm/ui/main.qml:145
+#, kde-format
+msgctxt ""
+"@option:radio part of the logical sentence 'Apply system updates immediately'"
+msgid "Immediately"
+msgstr "Одмах"

@@ -40,6 +40,7 @@ public:
     QString installedVersion() const override;
     QString availableVersion() const override;
     QString longDescription() override;
+    QString upgradeText() const override;
     QString origin() const override;
     QString section() override;
     QString author() const override;
@@ -52,7 +53,7 @@ public:
 
 private:
     AppStream::Component m_component;
-    Sysupdate::TargetInfo m_targetInfo;
+    Sysupdate::TargetInfo m_targetInfo{};
     org::freedesktop::sysupdate1::Target *m_target;
     bool m_fetchedSize = false;
     quint64 m_size = 0;

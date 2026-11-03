@@ -255,7 +255,7 @@ void SnapBackend::checkForUpdates()
     m_updatesFetcher = new AggregatedResultsStream({populate(m_client.findRefreshable())});
     connect(m_updatesFetcher, &AggregatedResultsStream::finished, this, [this](const QVector<StreamResult> &resources) {
         for (SnapResource *res : std::as_const(m_resources)) {
-            bool contained = kContains(resources, [res](const StreamResult &in) {
+            bool contained = std::ranges::any_of(resources, [res](const StreamResult &in) {
                 return in.resource == res;
             });
             if (contained) {
@@ -277,7 +277,7 @@ void SnapBackend::refreshStates()
     auto ret = new AggregatedResultsStream({populate(m_client.getSnaps())});
     connect(ret, &AggregatedResultsStream::finished, this, [this](const QVector<StreamResult> &resources) {
         for (auto res : std::as_const(m_resources)) {
-            bool contained = kContains(resources, [res](const StreamResult &in) {
+            bool contained = std::ranges::any_of(resources, [res](const StreamResult &in) {
                 return in.resource == res;
             });
             res->updateSizes();

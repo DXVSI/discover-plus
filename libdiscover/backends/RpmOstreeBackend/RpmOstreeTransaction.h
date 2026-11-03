@@ -40,11 +40,7 @@ public:
 
     /* Note: arg is only used to pass a reference for the rebase operation. it
      * is ignored in all other cases. */
-    RpmOstreeTransaction(QObject *parent,
-                         AbstractResource *resource,
-                         OrgProjectatomicRpmostree1SysrootInterface *interface,
-                         Operation operation,
-                         QString arg = {});
+    RpmOstreeTransaction(AbstractResource *resource, OrgProjectatomicRpmostree1SysrootInterface *interface, Operation operation, QString arg = {});
     ~RpmOstreeTransaction();
 
     Q_SCRIPTABLE void cancel() override;

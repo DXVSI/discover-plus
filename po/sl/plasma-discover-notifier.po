@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-04-23 00:45+0000\n"
-"PO-Revision-Date: 2026-04-02 06:25+0200\n"
+"POT-Creation-Date: 2026-09-22 00:46+0000\n"
+"PO-Revision-Date: 2026-09-22 07:13+0200\n"
 "Last-Translator: Matjaž Jeran <matjaz.jeran@amis.net>\n"
 "Language-Team: Slovenian <lugos-slo@lugos.si>\n"
 "Language: sl\n"
@@ -79,8 +79,9 @@ msgstr "Posodobi in ustavi"
 
 #: notifier/DiscoverNotifier.cpp:449
 #, kde-format
+msgctxt "A new distro release is available for upgrade"
 msgid "Upgrade available"
-msgstr "Na voljo so posodobitve"
+msgstr "Posodobitev na voljo"
 
 #: notifier/DiscoverNotifier.cpp:450
 #, kde-format
@@ -90,7 +91,7 @@ msgstr "%1 je zdaj na voljo."
 
 #: notifier/DiscoverNotifier.cpp:453
 #, kde-format
-msgctxt "@action:button"
+msgctxt "@action:button Upgrade to new distro release"
 msgid "Upgrade"
 msgstr "Posodobi"
 

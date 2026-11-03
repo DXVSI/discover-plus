@@ -195,7 +195,7 @@ AbstractResource::Type AppPackageKitResource::type() const
 {
     static QString desktop = QString::fromUtf8(qgetenv("XDG_CURRENT_DESKTOP"));
     const auto desktops = m_appdata.compulsoryForDesktops();
-    if (kContainsValue(s_addonKinds, m_appdata.kind())) {
+    if (std::ranges::find(s_addonKinds, m_appdata.kind()) != s_addonKinds.end()) {
         return Addon;
     } else if (desktops.isEmpty() || !desktops.contains(desktop)) {
         return Application;
@@ -238,7 +238,14 @@ QStringList AppPackageKitResource::extends() const
 
 QString AppPackageKitResource::changelog() const
 {
-    return PackageKitResource::changelog() + QLatin1String("<br />") + AppStreamUtils::changelogToHtml(m_appdata);
+    const auto packageChangelog = PackageKitResource::changelog();
+    const auto appstreamChangelog = AppStreamUtils::changelogToMarkdown(m_appdata);
+    if (packageChangelog.isEmpty()) {
+        return appstreamChangelog;
+    } else if (appstreamChangelog.isEmpty()) {
+        return packageChangelog;
+    }
+    return packageChangelog + u"\n\n"_s + appstreamChangelog;
 }
 
 bool AppPackageKitResource::canExecute() const

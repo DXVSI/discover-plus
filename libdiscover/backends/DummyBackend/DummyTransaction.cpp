@@ -22,7 +22,7 @@ DummyTransaction::DummyTransaction(DummyResource *app, Role role)
 }
 
 DummyTransaction::DummyTransaction(DummyResource *app, const AddonList &addons, Transaction::Role role)
-    : Transaction(app->backend(), app, role, addons)
+    : Transaction(app, role, addons)
     , m_app(app)
 {
     setCancellable(true);

@@ -100,8 +100,13 @@ if(Flatpak_FOUND)
   set(DesktopMimeType "${DesktopMimeType}application/vnd.flatpak;application/vnd.flatpak.repo;application/vnd.flatpak.ref;")
 endif()
 set(DesktopExec "plasma-discover %F")
+# Make sure the main entry doesn't have alias
+set(DesktopAliasFor "")
 configure_file(org.kde.discover.desktop.cmake ${CMAKE_CURRENT_BINARY_DIR}/org.kde.discover.desktop)
 install(PROGRAMS ${CMAKE_CURRENT_BINARY_DIR}/org.kde.discover.desktop DESTINATION ${KDE_INSTALL_APPDIR} )
+
+# All hidden helper entries below launch Discover, map them to the main entry
+set(DesktopAliasFor "X-KDE-AliasFor=org.kde.discover")
 
 # Support appstream:// URI
 set(DesktopNoDisplay "true")

@@ -357,9 +357,8 @@ void PackageKitResource::fetchUpdateDetails()
 
 static void addIfNotEmpty(const QString &title, const QString &content, QString &where)
 {
-    if (!content.isEmpty()) {
-        where += QLatin1String("<p><b>") + title + QLatin1String("</b>&nbsp;") + QString(content).replace(QLatin1Char('\n'), QLatin1String("<br />"))
-            + QLatin1String("</p>");
+    if (!content.trimmed().isEmpty()) {
+        where += u"\n**%1** %2"_s.arg(title).arg(content);
     }
 }
 
@@ -394,7 +393,7 @@ QString PackageKitResource::verifiedMessage() const
 
 bool PackageKitResource::containsPackageId(const QString &pkgid) const
 {
-    return kContains(m_packages, [pkgid](const auto &x) {
+    return std::ranges::any_of(m_packages, [pkgid](const auto &x) {
         return x.archPkgIds.contains(pkgid) || x.nonarchPkgIds.contains(pkgid);
     });
 }
@@ -412,40 +411,13 @@ void PackageKitResource::updateDetail(const QString &packageID,
                                       const QDateTime & /*issued*/,
                                       const QDateTime & /*updated*/)
 {
-#if defined(WITH_MARKDOWN)
-    const QByteArray xx = _updateText.toUtf8();
-    MMIOT *markdownHandle = mkd_string(xx.constData(), _updateText.size(), {});
-
-#ifdef MARKDOWN3
-    mkd_flag_t *flags = mkd_flags();
-    mkd_set_flag_num(flags, MKD_FENCEDCODE);
-    mkd_set_flag_num(flags, MKD_GITHUBTAGS);
-    mkd_set_flag_num(flags, MKD_AUTOLINK);
-    if (!mkd_compile(markdownHandle, flags)) {
-#else
-    if (!mkd_compile(markdownHandle, MKD_FENCEDCODE | MKD_GITHUBTAGS | MKD_AUTOLINK)) {
-#endif
-        m_changelog = _updateText;
-    } else {
-        char *htmlDocument;
-        const int size = mkd_document(markdownHandle, &htmlDocument);
-
-        m_changelog = QString::fromUtf8(htmlDocument, size);
-    }
-    mkd_cleanup(markdownHandle);
-#ifdef MARKDOWN3
-    mkd_free_flags(flags);
-#endif
-
-#else
     m_changelog = _updateText;
-#endif
 
     const auto name = PackageKit::Daemon::packageName(packageID);
 
     QString info;
     addIfNotEmpty(i18n("Obsoletes:"), joinPackages(obsoletes, {}, name), info);
-    addIfNotEmpty(i18n("Release Notes:"), changelog(), info);
+    addIfNotEmpty(i18n("Release Notes:"), u"\n\n"_s + changelog(), info);
     addIfNotEmpty(i18n("Update State:"), PackageKitMessages::updateStateMessage(state), info);
     addIfNotEmpty(i18n("Restart:"), PackageKitMessages::restartMessage(restart), info);
 

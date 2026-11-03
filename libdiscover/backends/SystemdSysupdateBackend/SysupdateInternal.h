@@ -38,6 +38,7 @@ struct Target {
 struct TargetInfo {
     QString installedVersion;
     QString availableVersion;
+    bool partial;
 };
 
 typedef QList<Job> JobList;
