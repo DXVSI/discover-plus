@@ -11,7 +11,7 @@
 %global __requires_exclude ^libDiscover(Common|Notifiers)\\.so.*$
 
 Name:           discover-plus
-Version:        1.0.0
+Version:        1.1.0
 # A packaging-only rebuild of the same VERSION raises this number together
 # with a new %%changelog entry; the scripts and workflows read it from here.
 Release:        1%{?dist}
@@ -305,6 +305,11 @@ done
 
 
 %changelog
+* Tue Nov 03 2026 DXVSI <DXVSI@users.noreply.github.com> - 1.1.0-1
+- Sync with upstream KDE Discover (November 2026)
+- Add the discover-plus-snap subpackage with the Snap backend
+- Drop the libmarkdown build dependency that upstream no longer uses
+
 * Sat Sep 19 2026 DXVSI <DXVSI@users.noreply.github.com> - 1.0.0-1
 - First RPM release of Discover Plus, based on KDE Discover 6.8.80
 - Removing an application now also removes its unused dependencies
