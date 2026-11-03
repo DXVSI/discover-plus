@@ -139,10 +139,29 @@ if [ "$installed" -eq 0 ]; then
     done
 fi
 
+# The Snap backend is a subpackage: present in the staged root, optional on an
+# installed system. Where it is present it is checked like the other plugins.
+snap_files="
+$qt_plugindir/discover/snap-backend.so
+/usr/libexec/discover/SnapMacaroonDialog
+/usr/libexec/kf6/kauth/libsnap_helper
+/usr/share/applications/org.kde.discover.snap.desktop
+/usr/share/metainfo/org.kde.discover.snap.appdata.xml
+/usr/share/dbus-1/system.d/org.kde.discover.libsnapclient.conf
+/usr/share/dbus-1/system-services/org.kde.discover.libsnapclient.service
+/usr/share/polkit-1/actions/org.kde.discover.libsnapclient.policy
+"
+if [ "$installed" -eq 0 ] || [ -e "$root$qt_plugindir/discover/snap-backend.so" ]; then
+    for snap_file in $snap_files; do
+        require_file "$snap_file"
+    done
+    backend_plugins="$backend_plugins
+snap-backend
+"
+fi
+
 # Backends that are switched off in the spec, and the libexec location used by
 # a plain "cmake --install" (install.sh) instead of the Fedora one.
-forbid_path /usr/share/applications/org.kde.discover.snap.desktop
-forbid_path "$qt_plugindir/discover/snap-backend.so"
 forbid_path "$qt_plugindir/discover/rpm-ostree-backend.so"
 forbid_path "$qt_plugindir/discover/alpineapk-backend.so"
 forbid_path "$qt_plugindir/discover/dummy-backend.so"
