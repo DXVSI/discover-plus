@@ -58,7 +58,6 @@ BuildRequires:  cmake(QCoro6)
 BuildRequires:  appstream-qt-devel >= 1.0.4
 BuildRequires:  flatpak-devel >= 0.11.8
 BuildRequires:  pkgconfig(fwupd) >= 2.1.1
-BuildRequires:  pkgconfig(libmarkdown)
 BuildRequires:  pkgconfig(packagekitqt6)
 
 BuildRequires:  pkgconfig(Qt6Concurrent)
