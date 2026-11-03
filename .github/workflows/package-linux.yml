@@ -242,6 +242,7 @@ jobs:
             "$rpm_topdir/RPMS/x86_64/discover-plus-$nvr.x86_64.rpm" \
             "$rpm_topdir/RPMS/x86_64/discover-plus-snap-$nvr.x86_64.rpm" \
             "$rpm_topdir/RPMS/x86_64/discover-plus-debuginfo-$nvr.x86_64.rpm" \
+            "$rpm_topdir/RPMS/x86_64/discover-plus-snap-debuginfo-$nvr.x86_64.rpm" \
             "$rpm_topdir/RPMS/x86_64/discover-plus-debugsource-$nvr.x86_64.rpm" \
             "$rpm_topdir/SRPMS/discover-plus-$nvr.src.rpm" \
             "$rpm_topdir/SOURCES/discover-plus-$version.tar.xz"
@@ -249,7 +250,7 @@ jobs:
             test -f "$package_file"
             install -m 0644 "$package_file" "dist/$(basename "$package_file")"
           done
-          test "$(find "$rpm_topdir/RPMS" "$rpm_topdir/SRPMS" -type f -name '*.rpm' | wc -l)" -eq 5
+          test "$(find "$rpm_topdir/RPMS" "$rpm_topdir/SRPMS" -type f -name '*.rpm' | wc -l)" -eq 6
           rpm_file="dist/discover-plus-$nvr.x86_64.rpm"
           snap_rpm_file="dist/discover-plus-snap-$nvr.x86_64.rpm"
 

@@ -167,6 +167,7 @@ jobs:
             "discover-plus-$nvr.x86_64.rpm" \
             "discover-plus-snap-$nvr.x86_64.rpm" \
             "discover-plus-debuginfo-$nvr.x86_64.rpm" \
+            "discover-plus-snap-debuginfo-$nvr.x86_64.rpm" \
             "discover-plus-debugsource-$nvr.x86_64.rpm" \
             "discover-plus-$nvr.src.rpm" \
             "discover-plus-$nvr.build-environment.txt" \
@@ -174,7 +175,7 @@ jobs:
           do
             test -f "release-assets/$asset"
           done
-          test "$(find release-assets -mindepth 1 | wc -l)" -eq 7
+          test "$(find release-assets -mindepth 1 | wc -l)" -eq 8
           # The record of the build must describe this very source.
           grep -Fxq "# source: $EXPECTED_SHA" \
             "release-assets/discover-plus-$nvr.build-environment.txt"
@@ -186,7 +187,7 @@ jobs:
               LC_ALL=C sort -z |
               xargs -0 sha256sum > "$checksum_file"
           )
-          test "$(wc -l < "$checksum_file")" -eq 7
+          test "$(wc -l < "$checksum_file")" -eq 8
           mv "$checksum_file" release-assets/SHA256SUMS
           (
             cd release-assets
