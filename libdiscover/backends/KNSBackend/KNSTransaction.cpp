@@ -14,9 +14,8 @@
 #include <QTimer>
 #include <Transaction/TransactionModel.h>
 
-KNSTransaction::KNSTransaction(QObject *parent, KNSResource *res, Role role)
-
-    : Transaction(parent, res, role)
+KNSTransaction::KNSTransaction(KNSResource *res, Role role)
+    : Transaction(res, role)
     , m_id(res->entry().uniqueId())
 {
     setCancellable(false);

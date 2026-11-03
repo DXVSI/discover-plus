@@ -176,10 +176,7 @@ AbstractResource::State DummyResource::state()
 
 void DummyResource::fetchChangelog()
 {
-    QString log = longDescription();
-    log.replace(QLatin1Char('\n'), QLatin1String("<br />"));
-
-    Q_EMIT changelogFetched(log);
+    Q_EMIT changelogFetched(longDescription());
 }
 
 void DummyResource::fetchScreenshots()

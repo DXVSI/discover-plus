@@ -2,14 +2,14 @@
 # SPDX-FileCopyrightText: 2015, 2022-2023 Frederik Schwarzer <schwarzer@kde.org>
 # SPDX-FileCopyrightText: 2021 Frank Steinmetzger <dev@felsenfleischer.de>
 # SPDX-FileCopyrightText: 2024 Johannes Obermayr <johannesobermayr@gmx.de>
-# SPDX-FileCopyrightText: 2025 Philipp Kiemle <l10n.daphipz@fastmail.de>
+# SPDX-FileCopyrightText: 2025-2026 Philipp Kiemle <l10n.daphipz@fastmail.de>
 # SPDX-FileCopyrightText: 2026 Alexander Becker <alex-at-kde-l10n-de@freenet.de>
 msgid ""
 msgstr ""
 "Project-Id-Version: plasma-discover-notifier\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-04-23 00:45+0000\n"
-"PO-Revision-Date: 2026-04-11 16:32+0200\n"
+"POT-Creation-Date: 2026-09-22 00:46+0000\n"
+"PO-Revision-Date: 2026-10-04 18:55+0200\n"
 "Last-Translator: Alexander Becker <alex-at-kde-l10n-de@freenet.de>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
 "Language: de\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 25.12.3\n"
+"X-Generator: Lokalize 26.04.3\n"
 
 #: notifier/DiscoverNotifier.cpp:218
 #, kde-format
@@ -32,7 +32,7 @@ msgstr "Sicherheitskritische Aktualisierungen sind verfügbar"
 #: notifier/DiscoverNotifier.cpp:365
 #, kde-format
 msgid "Updates available"
-msgstr "Verfügbare Aktualisierungen"
+msgstr "Aktualisierungen verfügbar"
 
 #: notifier/DiscoverNotifier.cpp:367
 #, kde-format
@@ -76,12 +76,13 @@ msgstr "Aktualisieren und neu starten"
 #, kde-format
 msgctxt "@action:button"
 msgid "Update and Shut Down"
-msgstr "Aktualisieren und neu starten"
+msgstr "Aktualisieren und herunterfahren"
 
 #: notifier/DiscoverNotifier.cpp:449
 #, kde-format
+msgctxt "A new distro release is available for upgrade"
 msgid "Upgrade available"
-msgstr "Paketaktualisierung verfügbar"
+msgstr "Systemaktualisierung verfügbar"
 
 #: notifier/DiscoverNotifier.cpp:450
 #, kde-format
@@ -92,7 +93,7 @@ msgstr "%1 ist jetzt verfügbar."
 # Hier gibt es drei verschiedene englische Vokabeln, die wir alle mit Aktualisieren/-ung übersetzen. Irgendwie bin ich nicht so glücklich damit.
 #: notifier/DiscoverNotifier.cpp:453
 #, kde-format
-msgctxt "@action:button"
+msgctxt "@action:button Upgrade to new distro release"
 msgid "Upgrade"
 msgstr "Aktualisieren"
 
@@ -158,7 +159,7 @@ msgstr "Aktualisierung starten"
 #: notifier/NotifierItem.cpp:50
 #, kde-format
 msgid "Refresh…"
-msgstr "Aktualisieren …"
+msgstr "Neu laden …"
 
 #: notifier/NotifierItem.cpp:56
 #, kde-format

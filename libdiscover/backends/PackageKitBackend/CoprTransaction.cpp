@@ -19,7 +19,7 @@
 #include <QTimer>
 
 CoprTransaction::CoprTransaction(CoprResource *resource, Transaction::Role role, PackageKitBackend *backend)
-    : Transaction(backend, resource, role, {})
+    : Transaction(resource, role, {})
     , m_resource(resource)
     , m_backend(backend)
     , m_process(new QProcess(this))

@@ -26,7 +26,7 @@ public:
         if (!item)
             return false;
 
-        FwupdRemote *remote = fwupd_client_get_remote_by_id(m_backend->backend->client,
+        FwupdRemote *remote = fwupd_client_get_remote_by_id(m_backend->backend->m_client.get(),
                                                             item->data(AbstractSourcesBackend::IdRole).toString().toUtf8().constData(),
                                                             nullptr,
                                                             nullptr);
@@ -44,7 +44,7 @@ public:
                 }
             } else if (value.toInt() == Qt::Unchecked) {
                 g_autoptr(GError) error = nullptr;
-                if (fwupd_client_modify_remote(m_backend->backend->client, fwupd_remote_get_id(remote), "Enabled", "false", nullptr, &error))
+                if (fwupd_client_modify_remote(m_backend->backend->m_client.get(), fwupd_remote_get_id(remote), "Enabled", "false", nullptr, &error))
                     item->setCheckState(Qt::Unchecked);
                 else
                     qWarning() << "could not disable remote" << remote << error->message;
@@ -70,7 +70,7 @@ FwupdSourcesBackend::FwupdSourcesBackend(AbstractResourcesBackend *parent)
 void FwupdSourcesBackend::populateSources()
 {
     g_autoptr(GError) error = nullptr;
-    g_autoptr(GPtrArray) remotes = fwupd_client_get_remotes(backend->client, nullptr, &error);
+    g_autoptr(GPtrArray) remotes = fwupd_client_get_remotes(backend->m_client.get(), nullptr, &error);
     if (!remotes) {
         qWarning() << "could not list fwupd remotes" << error->message;
         return;
@@ -119,8 +119,10 @@ QVariantList FwupdSourcesBackend::actions() const
 
 void FwupdSourcesBackend::cancel()
 {
-    FwupdRemote *remote =
-        fwupd_client_get_remote_by_id(backend->client, m_currentItem->data(AbstractSourcesBackend::IdRole).toString().toUtf8().constData(), nullptr, nullptr);
+    FwupdRemote *remote = fwupd_client_get_remote_by_id(backend->m_client.get(),
+                                                        m_currentItem->data(AbstractSourcesBackend::IdRole).toString().toUtf8().constData(),
+                                                        nullptr,
+                                                        nullptr);
     m_currentItem->setCheckState(fwupd_remote_has_flag(remote, FWUPD_REMOTE_FLAG_ENABLED) ? Qt::Checked : Qt::Unchecked);
 
     m_currentItem = nullptr;
@@ -129,9 +131,9 @@ void FwupdSourcesBackend::cancel()
 void FwupdSourcesBackend::proceed()
 {
     const QString id = m_currentItem->data(AbstractSourcesBackend::IdRole).toString();
-    FwupdRemote *remote = fwupd_client_get_remote_by_id(backend->client, id.toUtf8().constData(), nullptr, nullptr);
+    FwupdRemote *remote = fwupd_client_get_remote_by_id(backend->m_client.get(), id.toUtf8().constData(), nullptr, nullptr);
     g_autoptr(GError) error = nullptr;
-    if (fwupd_client_modify_remote(backend->client, fwupd_remote_get_id(remote), "Enabled", "true", nullptr, &error))
+    if (fwupd_client_modify_remote(backend->m_client.get(), fwupd_remote_get_id(remote), "Enabled", "true", nullptr, &error))
         m_currentItem->setData(Qt::Checked, Qt::CheckStateRole);
     else
         Q_EMIT passiveMessage(i18n("Could not enable remote %1: %2", id, QString::fromUtf8(error ? error->message : "")));

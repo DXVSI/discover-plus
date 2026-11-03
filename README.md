@@ -93,6 +93,8 @@ Releases provide an x86_64 RPM for the current stable Fedora release: https://gi
 
 Download `discover-plus-<version>-1.fc<N>.x86_64.rpm`. The `debuginfo`, `debugsource` and `src` packages next to it are only needed for debugging and rebuilding.
 
+Snap support is a separate package, `discover-plus-snap-<version>-1.fc<N>.x86_64.rpm`, because it pulls `snapd` in. Install it next to the main package if you use snaps; Discover also offers to install it when a Snap link is opened.
+
 Update the system first. The package requires the KF6 and Qt versions it was built with, and a system installed from the release media and never updated has older ones. Use the exact name of the downloaded file, here the one of version 1.0.0 for Fedora 44:
 
 ```bash
@@ -145,7 +147,7 @@ Unlike the source install, the RPM is built with `PACKAGEKIT_AUTOREMOVE`, like t
 
 #### Supported Fedora releases
 
-Only the current stable Fedora release is supported. Each release is built and tested for the Fedora version named in the file name (`fc44` means Fedora 44). Snap and rpm-ostree backends are not included.
+Only the current stable Fedora release is supported. Each release is built and tested for the Fedora version named in the file name (`fc44` means Fedora 44). The rpm-ostree backend is not included.
 
 The package is made for the regular, `dnf`-managed Fedora KDE. Fedora Kinoite and the other Atomic desktops are not supported: the commands above do not apply there, and the package conflicts with the `plasma-discover` of the base image.
 
@@ -169,7 +171,7 @@ Do not run `install.sh` as root. It asks for `sudo` only when needed.
 ### Manual Build
 
 ```bash
-sudo dnf install -y cmake extra-cmake-modules gcc-c++ kf6-kconfig-devel kf6-kcoreaddons-devel kf6-kcrash-devel kf6-kdbusaddons-devel kf6-ki18n-devel kf6-karchive-devel kf6-kxmlgui-devel kf6-kio-devel kf6-kcmutils-devel kf6-kidletime-devel kf6-purpose-devel kf6-kiconthemes-devel kf6-kstatusnotifieritem-devel kf6-kauth-devel kf6-knotifications-devel kf6-kirigami-devel kf6-kirigami-addons-devel PackageKit-Qt6-devel appstream-qt-devel qcoro-qt6-devel qt6-qtbase-devel qt6-qtdeclarative-devel qt6-qtwebview-devel flatpak-devel fwupd-devel libmarkdown-devel
+sudo dnf install -y cmake extra-cmake-modules gcc-c++ kf6-kconfig-devel kf6-kcoreaddons-devel kf6-kcrash-devel kf6-kdbusaddons-devel kf6-ki18n-devel kf6-karchive-devel kf6-kxmlgui-devel kf6-kio-devel kf6-kcmutils-devel kf6-kidletime-devel kf6-purpose-devel kf6-kiconthemes-devel kf6-kstatusnotifieritem-devel kf6-kauth-devel kf6-knotifications-devel kf6-kirigami-devel kf6-kirigami-addons-devel PackageKit-Qt6-devel appstream-qt-devel qcoro-qt6-devel qt6-qtbase-devel qt6-qtdeclarative-devel qt6-qtwebview-devel flatpak-devel fwupd-devel
 
 sudo dnf remove -y plasma-discover plasma-discover-flatpak plasma-discover-snap plasma-discover-packagekit plasma-discover-libs
 

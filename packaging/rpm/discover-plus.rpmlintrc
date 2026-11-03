@@ -13,8 +13,9 @@ addFilter(r"specfile-warning warning: line \d+: It's not recommended to have unv
 # by the fork.
 addFilter(r"obsolete-not-provided plasma-discover")
 
-# "fwupd" is the name of the firmware update daemon.
+# "fwupd" and "snapd" are the names of the firmware update and snap daemons.
 addFilter(r"spelling-error \('fwupd',")
+addFilter(r"spelling-error \('snapd',")
 
 # The XDG autostart entry is not a configuration file. Users override it in
 # ~/.config/autostart; Fedora's plasma-discover-notifier ships it the same way.
@@ -29,3 +30,11 @@ addFilter(r"incorrect-fsf-address /usr/share/licenses/discover-plus/")
 # systemsettings belongs to plasma-systemsettings, which is only recommended:
 # the Updates module is useless without System Settings but Discover is not.
 addFilter(r"desktopfile-without-binary /usr/share/applications/kcm_updates\.desktop systemsettings")
+
+# The Snap subpackage holds a plugin, a helper and its policy files: the
+# documentation is the main package's README.
+addFilter(r"discover-plus-snap\.x86_64: W: no-documentation")
+
+# The Snap launcher entry runs plasma-discover from the main package, which the
+# subpackage requires; the entry only belongs here because the backend does.
+addFilter(r"desktopfile-without-binary /usr/share/applications/org\.kde\.discover\.snap\.desktop plasma-discover")

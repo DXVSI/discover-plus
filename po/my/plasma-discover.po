@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: discover\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-09-17 00:45+0000\n"
+"POT-Creation-Date: 2026-10-09 00:48+0000\n"
 "PO-Revision-Date: 2021-09-19 20:01+0630\n"
 "Last-Translator: ဇေယျာလွင် <lw1nzayar@yandex.com>\n"
 "Language-Team: Burmese <kde-i18n-doc@kde.org>\n"
@@ -264,7 +264,7 @@ msgstr "ထည့်သွင်းမည်"
 #: discover/qml/AddSourceDialog.qml:50 discover/qml/DiscoverWindow.qml:289
 #: discover/qml/InstallApplicationButton.qml:51
 #: discover/qml/ProgressView.qml:163 discover/qml/SourcesPage.qml:207
-#: discover/qml/UpdatesPage.qml:316 discover/qml/WebflowDialog.qml:41
+#: discover/qml/UpdatesPage.qml:317 discover/qml/WebflowDialog.qml:41
 #, kde-format
 msgid "Cancel"
 msgstr "ပယ်ဖျက်မည်"
@@ -906,8 +906,8 @@ msgstr "&Aအကြောင်း"
 msgid "S&ettings"
 msgstr "&eဆက်တင်များ"
 
-#: discover/qml/DiscoverWindow.qml:174 discover/qml/DiscoverWindow.qml:368
-#: discover/qml/DiscoverWindow.qml:480
+#: discover/qml/DiscoverWindow.qml:174 discover/qml/DiscoverWindow.qml:369
+#: discover/qml/DiscoverWindow.qml:481
 #, kde-format
 msgid "Error"
 msgstr "အမှား"
@@ -922,62 +922,62 @@ msgstr "ရင်းမြစ်ကိုမရှာနိုင်ခဲ့ပ
 msgid "Proceed"
 msgstr "ဆက်လုပ်မည်"
 
-#: discover/qml/DiscoverWindow.qml:334
+#: discover/qml/DiscoverWindow.qml:335
 #, kde-format
 msgctxt "@info %1 is the name of the operating system"
 msgid "Report this issue to %1"
 msgstr ""
 
-#: discover/qml/DiscoverWindow.qml:350
+#: discover/qml/DiscoverWindow.qml:351
 #, kde-format
 msgctxt "@title:dialog"
 msgid "Discover is Offline"
 msgstr ""
 
-#: discover/qml/DiscoverWindow.qml:351
+#: discover/qml/DiscoverWindow.qml:352
 #, kde-format
 msgctxt "@info"
 msgid ""
 "Please connect to a network to install applications and update the system."
 msgstr ""
 
-#: discover/qml/DiscoverWindow.qml:368
+#: discover/qml/DiscoverWindow.qml:369
 #, fuzzy, kde-format
 #| msgid "Votes: %1 out of %2"
 msgid "Error %1 of %2"
 msgstr "မဲများ- %2 ထဲက %1"
 
-#: discover/qml/DiscoverWindow.qml:368 discover/qml/UpdatesPage.qml:47
+#: discover/qml/DiscoverWindow.qml:369 discover/qml/UpdatesPage.qml:47
 #, kde-format
 msgid "Update Issue"
 msgstr "အပ်ဒိတ်ပြဿနာ"
 
-#: discover/qml/DiscoverWindow.qml:379
+#: discover/qml/DiscoverWindow.qml:380
 #, kde-format
 msgid ""
 "There was an issue during the update or installation process. Please try "
 "again later."
 msgstr ""
 
-#: discover/qml/DiscoverWindow.qml:415
+#: discover/qml/DiscoverWindow.qml:416
 #, kde-format
 msgctxt "@action:button"
 msgid "Show Previous"
 msgstr ""
 
-#: discover/qml/DiscoverWindow.qml:426
+#: discover/qml/DiscoverWindow.qml:427
 #, fuzzy, kde-format
 #| msgid "Show contents"
 msgctxt "@action:button"
 msgid "Show Next"
 msgstr "ပါဝင်အကြောင်းအရာများ ပြမည်"
 
-#: discover/qml/DiscoverWindow.qml:438 discover/qml/UpdatesPage.qml:69
+#: discover/qml/DiscoverWindow.qml:439 discover/qml/UpdatesPage.qml:69
 #, kde-format
 msgid "See Technical Details"
 msgstr ""
 
-#: discover/qml/DiscoverWindow.qml:446
+#: discover/qml/DiscoverWindow.qml:447
 #, kde-format
 msgid "Copy to Clipboard"
 msgstr ""
@@ -1463,21 +1463,21 @@ msgctxt "@action:button %1 is the name of the user's distro/OS"
 msgid "Report Issue to %1"
 msgstr ""
 
-#: discover/qml/UpdatesPage.qml:162
+#: discover/qml/UpdatesPage.qml:163
 #, fuzzy, kde-format
 #| msgid "Update Selected"
 msgctxt "@action:button as in, 'update the selected items' "
 msgid "Update Selected"
 msgstr "ရွေးထားသည်များသာ အပ်ဒိတ်တင်မည်"
 
-#: discover/qml/UpdatesPage.qml:162
+#: discover/qml/UpdatesPage.qml:163
 #, fuzzy, kde-format
 #| msgid "Update All"
 msgctxt "@action:button as in, 'update all items'"
 msgid "Update All"
 msgstr "အကုန်အပ်ဒိတ်တင်မည်"
 
-#: discover/qml/UpdatesPage.qml:189
+#: discover/qml/UpdatesPage.qml:190
 #, fuzzy, kde-format
 #| msgctxt "@info"
 #| msgid "The updates will be installed the next time the system is restarted"
@@ -1485,76 +1485,76 @@ msgctxt "@info"
 msgid "A pending update will be installed when restarting the system."
 msgstr "စစ်စတမ်နောက်အခါပြန်စတင်သည့်အခါ အပ်ဒိတ်များကို တပ်ဆင်သွားမည်"
 
-#: discover/qml/UpdatesPage.qml:210
+#: discover/qml/UpdatesPage.qml:211
 #, kde-format
 msgid "Ignore"
 msgstr ""
 
-#: discover/qml/UpdatesPage.qml:260
+#: discover/qml/UpdatesPage.qml:261
 #, kde-format
 msgid "Select All"
 msgstr ""
 
-#: discover/qml/UpdatesPage.qml:268
+#: discover/qml/UpdatesPage.qml:269
 #, kde-format
 msgid "Select None"
 msgstr ""
 
-#: discover/qml/UpdatesPage.qml:287
+#: discover/qml/UpdatesPage.qml:288
 #, kde-format
 msgctxt "@info After updates complete, shut down/restart/quit"
 msgid "After updates complete:"
 msgstr ""
 
-#: discover/qml/UpdatesPage.qml:293
+#: discover/qml/UpdatesPage.qml:294
 #, kde-format
 msgctxt "@item:inlistbox after updates complete, do nothing"
 msgid "Do nothing"
 msgstr ""
 
-#: discover/qml/UpdatesPage.qml:294
+#: discover/qml/UpdatesPage.qml:295
 #, fuzzy, kde-format
 #| msgid "Restart Now"
 msgctxt "@item:inlistbox after updates complete, restart"
 msgid "Restart"
 msgstr "ယခုချက်ချင်းပြန်စတင်မည်"
 
-#: discover/qml/UpdatesPage.qml:295
+#: discover/qml/UpdatesPage.qml:296
 #, kde-format
 msgctxt "@item:inlistbox after updates complete, shut down"
 msgid "Shut down"
 msgstr ""
 
-#: discover/qml/UpdatesPage.qml:296
+#: discover/qml/UpdatesPage.qml:297
 #, fuzzy, kde-format
 #| msgid "Discover"
 msgctxt "@item:inlistbox after updates complete, quit Discover"
 msgid "Quit Discover"
 msgstr "ဒစ်(စ)ကာဗာ"
 
-#: discover/qml/UpdatesPage.qml:306
+#: discover/qml/UpdatesPage.qml:307
 #, kde-format
 msgid "Total size: %1"
 msgstr ""
 
-#: discover/qml/UpdatesPage.qml:336
+#: discover/qml/UpdatesPage.qml:337
 #, kde-format
 msgctxt "@action:button"
 msgid "Restart and Install Updates"
 msgstr ""
 
-#: discover/qml/UpdatesPage.qml:527
+#: discover/qml/UpdatesPage.qml:529
 #, kde-format
 msgid "Installing"
 msgstr "တပ်ဆင်နေသည်"
 
-#: discover/qml/UpdatesPage.qml:543
+#: discover/qml/UpdatesPage.qml:545
 #, kde-format
 msgctxt "@info This update is from the following source"
 msgid "From:"
 msgstr ""
 
-#: discover/qml/UpdatesPage.qml:560
+#: discover/qml/UpdatesPage.qml:562
 #, kde-format
 msgctxt ""
 "%1 is the backend that provides this app, %2 is the specific repository or "
@@ -1562,26 +1562,26 @@ msgctxt ""
 msgid "%1 (%2)"
 msgstr ""
 
-#: discover/qml/UpdatesPage.qml:572
+#: discover/qml/UpdatesPage.qml:574
 #, fuzzy, kde-format
 #| msgid "More Information…"
 msgctxt "@action:button minimize the length of this label"
 msgid "More Info…"
 msgstr "နောက်ထပ်အချက်အလက်များ…"
 
-#: discover/qml/UpdatesPage.qml:645
+#: discover/qml/UpdatesPage.qml:646
 #, kde-format
 msgctxt "@info"
 msgid "Fetching updates…"
 msgstr "အပ်ဒိတ်များရယူနေသည်…"
 
-#: discover/qml/UpdatesPage.qml:660
+#: discover/qml/UpdatesPage.qml:661
 #, kde-format
 msgctxt "@info"
 msgid "Updates"
 msgstr "အပ်ဒိတ်များ"
 
-#: discover/qml/UpdatesPage.qml:670
+#: discover/qml/UpdatesPage.qml:671
 #, fuzzy, kde-format
 #| msgctxt "@info"
 #| msgid "The updates will be installed the next time the system is restarted"
@@ -1589,26 +1589,26 @@ msgctxt "@info"
 msgid "Updates will be installed after the system is restarted"
 msgstr "စစ်စတမ်နောက်အခါပြန်စတင်သည့်အခါ အပ်ဒိတ်များကို တပ်ဆင်သွားမည်"
 
-#: discover/qml/UpdatesPage.qml:672
+#: discover/qml/UpdatesPage.qml:673
 #, kde-format
 msgctxt "@info"
 msgid "You can keep using the system if you’re not ready to restart yet."
 msgstr ""
 
-#: discover/qml/UpdatesPage.qml:677 discover/qml/UpdatesPage.qml:684
-#: discover/qml/UpdatesPage.qml:691
+#: discover/qml/UpdatesPage.qml:678 discover/qml/UpdatesPage.qml:685
+#: discover/qml/UpdatesPage.qml:692
 #, kde-format
 msgctxt "@info"
 msgid "Up to date"
 msgstr "နောက်ဆုံးပေါ်"
 
-#: discover/qml/UpdatesPage.qml:698
+#: discover/qml/UpdatesPage.qml:699
 #, kde-format
 msgctxt "@info"
 msgid "Should check for updates"
 msgstr "အပ်ဒိတ်ရှိ၊မရှိ စစ်ဆေးသင့်"
 
-#: discover/qml/UpdatesPage.qml:705
+#: discover/qml/UpdatesPage.qml:706
 #, kde-format
 msgctxt "@info"
 msgid "Time of last update unknown"

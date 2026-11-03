@@ -15,6 +15,8 @@
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
 
+#include <KLocalizedString>
+
 #define SYSTEMDSYSUPDATE_LOG LIBDISCOVER_BACKEND_SYSTEMDSYSUPDATE_LOG
 
 SystemdSysupdateResource::SystemdSysupdateResource(AbstractResourcesBackend *parent,
@@ -72,7 +74,11 @@ void SystemdSysupdateResource::invokeApplication() const
 
 AbstractResource::State SystemdSysupdateResource::state()
 {
-    return availableVersion() != installedVersion() ? Upgradeable : Installed;
+    if (m_targetInfo.partial || availableVersion() != installedVersion()) {
+        return Upgradeable;
+    } else {
+        return Installed;
+    }
 }
 
 bool SystemdSysupdateResource::hasCategory(const QString &category) const
@@ -97,6 +103,7 @@ quint64 SystemdSysupdateResource::size()
     const auto networkAccess = static_cast<SystemdSysupdateBackend *>(backend())->networkAccess();
     auto updateSizeReply = networkAccess->get(QNetworkRequest{QUrl(QStringLiteral("http://localhost:3129/v1/updatesize?version=%1").arg(availableVersion()))});
     connect(updateSizeReply, &QNetworkReply::finished, this, [this, updateSizeReply]() {
+        updateSizeReply->deleteLater();
         if (updateSizeReply->error() != QNetworkReply::NoError) {
             qWarning() << "Update size retrieval error!" << updateSizeReply->error();
             return;
@@ -133,6 +140,14 @@ QString SystemdSysupdateResource::availableVersion() const
 QString SystemdSysupdateResource::longDescription()
 {
     return m_component.description();
+}
+
+QString SystemdSysupdateResource::upgradeText() const
+{
+    if (m_targetInfo.partial) {
+        return i18nc("Upgrade status: A system update that has to be downloaded again", "Previous installation was incomplete, trying again");
+    }
+    return AbstractResource::upgradeText();
 }
 
 QString SystemdSysupdateResource::origin() const

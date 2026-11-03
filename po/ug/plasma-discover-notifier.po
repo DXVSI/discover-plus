@@ -1,27 +1,27 @@
 # Uyghur translation for plasma-discover-notifier.
 # Copyright (C) YEAR This file is copyright:
 # This file is distributed under the same license as the discover package.
-# Abduqadir Abliz <sahranbay@gmail.com>, 2026., YEAR.
+# Abduqadir Abliz <sahranbay@gmail.com>, 2026.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: discover\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-04-23 00:45+0000\n"
-"PO-Revision-Date: 2026-05-29 17:23-0400\n"
+"POT-Creation-Date: 2026-09-22 00:46+0000\n"
+"PO-Revision-Date: 2026-09-24 19:29-0400\n"
 "Last-Translator: Abduqadir Abliz <sahranbay@gmail.com>\n"
 "Language-Team: Uyghur <kde-i18n-doc@kde.org>\n"
 "Language: ug\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.9\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Poedit 3.9\n"
 
 #: notifier/DiscoverNotifier.cpp:218
 #, kde-format
 msgid "View Updates"
-msgstr ""
+msgstr "يېڭىلانمىنى كۆرسەت"
 
 #: notifier/DiscoverNotifier.cpp:363
 #, kde-format
@@ -36,12 +36,12 @@ msgstr "يېڭىلانما بار"
 #: notifier/DiscoverNotifier.cpp:367
 #, kde-format
 msgid "System up to date"
-msgstr ""
+msgstr "سىستېما ئەڭ يېڭى ھالەتتە"
 
 #: notifier/DiscoverNotifier.cpp:369
 #, kde-format
 msgid "System will install updates when restarted"
-msgstr ""
+msgstr "سىستېما قايتا قوزغىتىلغاندا يېڭىلانمىنى ئورنىتىدۇ"
 
 #: notifier/DiscoverNotifier.cpp:371
 #, kde-format
@@ -51,32 +51,34 @@ msgstr "تورسىز"
 #: notifier/DiscoverNotifier.cpp:373
 #, kde-format
 msgid "Applying unattended updates…"
-msgstr ""
+msgstr "قاراقسىز يېڭىلاشنى قوللىنىدۇ…"
 
 #: notifier/DiscoverNotifier.cpp:398
 #, kde-format
 msgid "Restart is required"
-msgstr ""
+msgstr "قايتا قوزغىتىش زۆرۈر"
 
 #: notifier/DiscoverNotifier.cpp:399
 #, kde-format
 msgid "The system needs to be restarted for the updates to take effect."
-msgstr ""
+msgstr "يېڭىلانمىنىڭ ئۈنۈمى بولۇشى ئۈچۈن سىستېما قايتا قوزغىتىلىشى كېرەك."
 
 #: notifier/DiscoverNotifier.cpp:404
 #, kde-format
 msgctxt "@action:button"
 msgid "Update and Restart"
-msgstr ""
+msgstr "يېڭىلا ۋە قايتا قوزغات"
 
 #: notifier/DiscoverNotifier.cpp:405
 #, kde-format
 msgctxt "@action:button"
 msgid "Update and Shut Down"
-msgstr ""
+msgstr "يېڭىلا ۋە تاقا"
 
 #: notifier/DiscoverNotifier.cpp:449
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Upgrade available"
+msgctxt "A new distro release is available for upgrade"
 msgid "Upgrade available"
 msgstr "يۈكسەلدۈرۈش بار"
 
@@ -87,25 +89,27 @@ msgid "%1 is now available."
 msgstr "ھازىر %1 بار."
 
 #: notifier/DiscoverNotifier.cpp:453
-#, kde-format
-msgctxt "@action:button"
+#, fuzzy, kde-format
+#| msgctxt "@action:button"
+#| msgid "Upgrade"
+msgctxt "@action:button Upgrade to new distro release"
 msgid "Upgrade"
 msgstr "يۈكسەلدۈر"
 
 #: notifier/main.cpp:39
 #, kde-format
 msgid "Discover Notifier"
-msgstr ""
+msgstr "Discover ئۇقتۇرغۇچ"
 
 #: notifier/main.cpp:41
 #, kde-format
 msgid "System update status notifier"
-msgstr ""
+msgstr "سىستېما يېڭىلاش ھالىتىنى ئۇقتۇرغۇچ"
 
 #: notifier/main.cpp:43
 #, kde-format
 msgid "© 2010-2025 Plasma Development Team"
-msgstr ""
+msgstr "© 2010-2025 Plasma ئىجادىيەت قوشۇنى"
 
 #: notifier/main.cpp:47
 #, kde-format
@@ -127,7 +131,7 @@ msgstr "مەۋجۇت ئۈلگىنى ئالماشتۇر"
 #: notifier/main.cpp:58
 #, kde-format
 msgid "Do not show the notifier"
-msgstr ""
+msgstr "ئۇقتۇرغۇچنى كۆرسەتمە"
 
 #: notifier/main.cpp:58
 #, kde-format
@@ -143,35 +147,35 @@ msgstr "يېڭىلانما"
 #, kde-format
 msgctxt "@action:button Opens Discover's main UI to analyze the updates"
 msgid "Open Discover…"
-msgstr ""
+msgstr "Discover نى ئاچ…"
 
 #: notifier/NotifierItem.cpp:47
 #, kde-format
 msgctxt "@action:button Starts an update in the background"
 msgid "Start Update"
-msgstr ""
+msgstr "يېڭىلاشنى باشلا"
 
 #: notifier/NotifierItem.cpp:50
 #, kde-format
 msgid "Refresh…"
-msgstr ""
+msgstr "يېڭىلا…"
 
 #: notifier/NotifierItem.cpp:56
 #, kde-format
 msgid "Install Updates and Restart…"
-msgstr ""
+msgstr "يېڭىلانمىنى ئورنىتىپ قايتا قوزغات…"
 
 #: notifier/NotifierItem.cpp:59
 #, kde-format
 msgid "Install Updates and Shut Down…"
-msgstr ""
+msgstr "يېڭىلانمىنى ئورنىتىپ تاقا…"
 
 #: notifier/NotifierItem.cpp:64
 #, kde-format
 msgid "Restart to apply installed updates"
-msgstr ""
+msgstr "ئورنىتىلغان يېڭىلانمىنى قوللىنىش ئۈچۈن قايتا قوزغات"
 
 #: notifier/NotifierItem.cpp:65
 #, kde-format
 msgid "Click to restart the system"
-msgstr ""
+msgstr "چېكىلسە سىستېمىنى قايتا قوزغىتىدۇ"

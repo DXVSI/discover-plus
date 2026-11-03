@@ -335,7 +335,7 @@ void DiscoverObject::openLocalPackage(const QUrl &localfile)
         [this, localfile]() {
             AbstractResourcesBackend::Filters f;
             f.resourceUrl = localfile;
-            auto stream = new AggregatedResultsStream({ResourcesModel::global()->search(f)});
+            auto stream = ResourcesModel::global()->search(f);
             connect(stream, &AggregatedResultsStream::finished, this, [this, localfile](const QVector<StreamResult> &res) {
                 if (res.count() == 1) {
                     Q_EMIT openApplicationInternal(res.first().resource);
@@ -346,7 +346,7 @@ void DiscoverObject::openLocalPackage(const QUrl &localfile)
                         return backend->metaObject()->className() == QByteArray("FlatpakBackend");
                     };
                     if (mime.name().startsWith(QLatin1String("application/vnd.flatpak"))
-                        && !kContains(ResourcesModel::global()->backends(), fIsFlatpakBackend)) {
+                        && !std::ranges::any_of(ResourcesModel::global()->backends(), fIsFlatpakBackend)) {
                         openApplication(QUrl(QStringLiteral("appstream://org.kde.discover.flatpak")));
                         showError(i18n("Cannot interact with flatpak resources without the flatpak backend %1. Please install it first.",
                                        localfile.toDisplayString()));
@@ -374,7 +374,7 @@ void DiscoverObject::openApplication(const QUrl &url)
         [this, url]() {
             AbstractResourcesBackend::Filters f;
             f.resourceUrl = url;
-            auto stream = new AggregatedResultsStream({ResourcesModel::global()->search(f)});
+            auto stream = ResourcesModel::global()->search(f);
             connect(stream, &AggregatedResultsStream::finished, this, [this, url](const QVector<StreamResult> &res) {
                 if (res.count() >= 1) {
                     QPointer<QTimer> timeout = new QTimer(this);
@@ -390,7 +390,7 @@ void DiscoverObject::openApplication(const QUrl &url)
                             return res.resource->isInstalled();
                         });
                         if (idx < 0) {
-                            bool oneBroken = kContains(res, [](auto res) {
+                            bool oneBroken = std::ranges::any_of(res, [](auto res) {
                                 return res.resource->state() == AbstractResource::Broken;
                             });
                             if (oneBroken && timeout) {
@@ -805,5 +805,4 @@ void DiscoverObject::setSidebarWidth(int width)
     Q_EMIT sidebarWidthChanged(width);
 }
 
-#include "DiscoverObject.moc"
 #include "moc_DiscoverObject.cpp"

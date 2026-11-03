@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: kdeorg\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-09-17 00:45+0000\n"
+"POT-Creation-Date: 2026-11-02 00:56+0000\n"
 "PO-Revision-Date: 2024-04-23 19:24\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Simplified\n"
@@ -32,23 +32,23 @@ msgstr ""
 "fusionfuture@kde.org, i@guoyunhe.me, honghao.li@kde.org, LiYulin@kde.org, "
 "tang142857@kde.org, tds00@qq.com"
 
-#: libdiscover/appstream/AppStreamUtils.cpp:115
+#: libdiscover/appstream/AppStreamUtils.cpp:135
 #: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:326
 #: libdiscover/backends/RpmOstreeBackend/RpmOstreeResource.cpp:304
 #: libdiscover/backends/RpmOstreeBackend/RpmOstreeResource.cpp:367
 #: libdiscover/backends/RpmOstreeBackend/RpmOstreeResource.cpp:393
-#: libdiscover/UpdateModel/UpdateModel.cpp:123
-#: libdiscover/UpdateModel/UpdateModel.cpp:370
+#: libdiscover/UpdateModel/UpdateModel.cpp:124
+#: libdiscover/UpdateModel/UpdateModel.cpp:393
 #, kde-format
 msgid "Unknown"
 msgstr "未知"
 
-#: libdiscover/appstream/AppStreamUtils.cpp:117
+#: libdiscover/appstream/AppStreamUtils.cpp:137
 #, kde-format
 msgid "Proprietary"
 msgstr "专有软件"
 
-#: libdiscover/appstream/AppStreamUtils.cpp:121
+#: libdiscover/appstream/AppStreamUtils.cpp:141
 #, kde-format
 msgid "Public Domain"
 msgstr "公共领域"
@@ -584,33 +584,33 @@ msgctxt "user denotes this as user-scoped flatpak repo"
 msgid "%1 (user)"
 msgstr "%1 (用户)"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakBackend.cpp:811
+#: libdiscover/backends/FlatpakBackend/FlatpakBackend.cpp:815
 #, kde-format
 msgid "Local bundle"
 msgstr "本地包"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakBackend.cpp:1963
+#: libdiscover/backends/FlatpakBackend/FlatpakBackend.cpp:1967
 #: libdiscover/backends/PackageKitBackend/PackageKitBackend.cpp:852
 #, kde-format
 msgid "Malformed appstream url “%1”"
 msgstr "错误的 AppStream URL“%1”"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakBackend.cpp:2077
+#: libdiscover/backends/FlatpakBackend/FlatpakBackend.cpp:2081
 #, kde-format
 msgid "Source “%1” already exists"
 msgstr "来源“%1”已存在"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakBackend.cpp:2094
+#: libdiscover/backends/FlatpakBackend/FlatpakBackend.cpp:2098
 #, kde-format
 msgid "Failed to add source “%1”: %2"
 msgstr "无法添加来源“%1”：%2"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakBackend.cpp:2221
+#: libdiscover/backends/FlatpakBackend/FlatpakBackend.cpp:2225
 #, kde-format
 msgid "There are no Flatpak sources."
 msgstr "没有 Flatpak 来源。"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakBackend.cpp:2225
+#: libdiscover/backends/FlatpakBackend/FlatpakBackend.cpp:2229
 #, kde-format
 msgid "Failed to load \"%1\" source"
 msgstr "加载“%1”来源失败"
@@ -634,11 +634,18 @@ msgid "Unknown"
 msgstr "未知"
 
 #: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:525
-#: libdiscover/backends/PackageKitBackend/PackageKitResource.cpp:467
+#: libdiscover/backends/PackageKitBackend/PackageKitResource.cpp:439
 #: libdiscover/backends/PackageKitBackend/PackageKitSourcesBackend.cpp:70
 #, kde-format
 msgid "Failed to start “%1”: %2"
 msgstr "启动“%1”失败：%2"
+
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:539
+#, fuzzy, kde-format
+#| msgctxt "Permission to access system resources and hardware devices"
+#| msgid "Permissions"
+msgid "New Permissions"
+msgstr "权限"
 
 #: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:766
 #, kde-format
@@ -646,7 +653,9 @@ msgid "All Files"
 msgstr "所有文件"
 
 #: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:768
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Home"
+msgctxt "the user's home directory"
 msgid "Home"
 msgstr "主文件夹"
 
@@ -660,237 +669,237 @@ msgstr "下载"
 msgid "Music"
 msgstr "音乐"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:850
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:849
 #: libdiscover/backends/KNSBackend/KNSBackend.cpp:451
 #, kde-format
 msgid "%1: %2"
 msgstr "%1：%2"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:868
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:867
 #, kde-format
 msgid "Network Access"
 msgstr "网络访问"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:869
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:868
 #, kde-format
 msgid "Can access the internet"
 msgstr "允许访问网络"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:878
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:877
 #, kde-format
 msgid "Sound system access"
 msgstr "声音系统访问"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:879
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:878
 #, kde-format
 msgid "Can play and record audio"
 msgstr "能够播放和录制音频"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:883
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:1027
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:882
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:1026
 #, kde-format
 msgid "Session Bus Access"
 msgstr "会话总线访问"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:884
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:883
 #, kde-format
 msgid ""
 "Can communicate with all other applications and processes run in this user "
 "account"
 msgstr "能够与此用户账户中运行的所有其他应用程序和进程进行通信"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:889
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:1039
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:888
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:1038
 #, kde-format
 msgid "System Bus Access"
 msgstr "系统总线访问"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:890
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:889
 #, kde-format
 msgid "Can communicate with all other applications and processes on the system"
 msgstr "能够与系统上的所有其他应用程序和进程进行通信"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:895
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:894
 #, kde-format
 msgid "Remote Login Access"
 msgstr "远程登录访问"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:896
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:895
 #, kde-format
 msgid "Can initiate remote login requests using the SSH protocol"
 msgstr "允许使用 SSH 协议启动远程登录请求"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:900
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:899
 #, kde-format
 msgid "Smart Card Access"
 msgstr "智能卡访问"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:901
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:900
 #, kde-format
 msgid "Can integrate and communicate with smart cards"
 msgstr "允许集成智能卡功能并与智能卡通信"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:905
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:904
 #, kde-format
 msgid "Printer Access"
 msgstr "打印机访问"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:906
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:905
 #, kde-format
 msgid "Can integrate and communicate with printers"
 msgstr "允许与打印机集成和通信"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:910
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:909
 #, kde-format
 msgid "GPG Agent"
 msgstr "GPG 代理"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:911
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:910
 #, kde-format
 msgid ""
 "Allows access to the GPG cryptography service, generally used for signing "
 "and reading signed documents"
 msgstr "允许访问 GPG 加密服务，通常用于签名和读取已签名文档"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:917
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:916
 #, kde-format
 msgid "Bluetooth Access"
 msgstr "蓝牙访问"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:918
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:917
 #, kde-format
 msgid "Can integrate and communicate with Bluetooth devices"
 msgstr "允许与蓝牙设备集成和通信"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:922
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:921
 #, kde-format
 msgid "Low-Level System Access"
 msgstr "底层系统访问"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:923
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:922
 #, kde-format
 msgid "Can make low-level system calls (e.g. ptrace)"
 msgstr "允许进行底层系统调用 (例如 ptrace)"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:929
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:928
 #, kde-format
 msgid "Device Access"
 msgstr "设备访问"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:930
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:929
 #, kde-format
 msgid "Can communicate with and control built-in or connected hardware devices"
 msgstr "允许与内置或外接的硬件设备通信并控制它们"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:934
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:933
 #, kde-format
 msgid "Kernel-based Virtual Machine Access"
 msgstr "基于内核的虚拟机访问"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:935
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:934
 #, kde-format
 msgid "Allows running other operating systems as guests in virtual machines"
 msgstr "允许在虚拟机中以访客身份运行其他操作系统"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:962
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:974
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:961
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:973
 #, kde-format
 msgid "%1 (read-only)"
 msgstr "%1 (只读)"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:965
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:977
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:964
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:976
 #, kde-format
 msgid "%1 (can create files)"
 msgstr "%1 (可创建文件)"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:968
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:986
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:967
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:985
 #, kde-format
 msgid "%1 (read & write) "
 msgstr "%1 (读取和写入) "
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:995
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:994
 #, kde-format
 msgid "Home Folder Access"
 msgstr "主文件夹访问"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:998
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:997
 #, kde-format
 msgid ""
 "Can read, write, and create files in the following locations in your home "
 "folder without asking permission first: %1"
 msgstr "允许在您的主文件夹中读取、写入和创建文件，而无需先请求权限：%1"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:1000
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:999
 #, kde-format
 msgid ""
 "Can read and write files in the following locations in your home folder "
 "without asking permission first: %1"
 msgstr "允许在您的主文件夹中读取和写入以下位置的文件，而无需先请求权限：%1"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:1002
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:1001
 #, kde-format
 msgid ""
 "Can read files in the following locations in your home folder without asking "
 "permission first: %1"
 msgstr "允许在您的主文件夹中读取以下位置的文件，而无需先请求权限：%1"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:1004
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:1003
 #, kde-format
 msgid ""
 "Can access files in the following locations in your home folder without "
 "asking permission first: %1"
 msgstr "允许在您的主文件夹中访问以下位置的文件，而无需先请求权限：%1"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:1010
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:1009
 #, kde-format
 msgid "System Folder Access"
 msgstr "系统文件夹访问"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:1012
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:1011
 #, kde-format
 msgid ""
 "Can read, write, and create system files in the following locations without "
 "asking permission first: %1"
 msgstr "允许在以下位置读取、写入和创建系统文件，而无需先请求权限：%1"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:1014
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:1013
 #, kde-format
 msgid ""
 "Can read and write system files in the following locations without asking "
 "permission first: %1"
 msgstr "允许在以下位置读取和写入系统文件，而无需先请求权限：%1"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:1016
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:1015
 #, kde-format
 msgid ""
 "Can read system files in the following locations without asking permission "
 "first: %1"
 msgstr "允许在以下位置读取系统文件，而无需先请求权限：%1"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:1018
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:1017
 #, kde-format
 msgid ""
 "Can access system files in the following locations without asking permission "
 "first: %1"
 msgstr "允许在以下位置访问系统文件，而无需先请求权限：%1"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:1029
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:1028
 #, kde-format
 msgid ""
 "Can communicate with other applications and processes in the same desktop "
 "session using the following communication protocols: %1"
 msgstr "允许使用以下通信协议在同一桌面会话中与其他应用程序和进程进行通信：%1"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:1041
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:1040
 #, kde-format
 msgid ""
 "Can communicate with all applications and system services using the "
 "following communication protocols: %1"
 msgstr "允许使用以下通信协议与所有应用程序和系统服务进行通信：%1"
 
-#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:1139
+#: libdiscover/backends/FlatpakBackend/FlatpakResource.cpp:1138
 #, kde-format
 msgid "App Verified on %1 as shipped by its author %2"
 msgstr "应用在 %1 上被验证为由其作者 %2 发布"
@@ -1071,7 +1080,13 @@ msgstr "权限"
 msgid "Configure permissions…"
 msgstr "配置权限…"
 
-#: libdiscover/backends/FwupdBackend/FwupdBackend.cpp:493
+#: libdiscover/backends/FwupdBackend/FwupdBackend.cpp:145
+#, fuzzy, kde-format
+#| msgid "Permissions for %1"
+msgid "Version %1"
+msgstr "%1 的权限"
+
+#: libdiscover/backends/FwupdBackend/FwupdBackend.cpp:489
 #: libdiscover/backends/FwupdBackend/FwupdResource.cpp:116
 #, kde-format
 msgid "Firmware Updates"
@@ -1091,7 +1106,7 @@ msgstr ""
 msgid "Review EULA"
 msgstr "查看最终用户许可协议"
 
-#: libdiscover/backends/FwupdBackend/FwupdSourcesBackend.cpp:137
+#: libdiscover/backends/FwupdBackend/FwupdSourcesBackend.cpp:139
 #, kde-format
 msgid "Could not enable remote %1: %2"
 msgstr "无法启用远程 %1：%2"
@@ -1198,7 +1213,7 @@ msgstr "KDE 商店"
 msgid "Log in information for %1"
 msgstr "%1 的登录信息"
 
-#: libdiscover/backends/PackageKitBackend/AppPackageKitResource.cpp:256
+#: libdiscover/backends/PackageKitBackend/AppPackageKitResource.cpp:263
 #, kde-format
 msgid "Cannot launch %1"
 msgstr "无法启动 %1"
@@ -1260,8 +1275,10 @@ msgstr ""
 "如需升级到此新版本，请先安装所有可用更新，然后重新启动您的系统。"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitBackend.cpp:1051
-#, kde-format
-msgctxt "@action: button"
+#, fuzzy, kde-format
+#| msgctxt "@action: button"
+#| msgid "Upgrade Now"
+msgctxt "@action:button Upgrade to new distro release"
 msgid "Upgrade Now"
 msgstr "立即升级"
 
@@ -2016,37 +2033,37 @@ msgstr "已信任"
 msgid "Unavailable"
 msgstr "不可用"
 
-#: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:380
+#: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:378
 #, kde-format
 msgid "Critical"
 msgstr "紧急"
 
-#: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:382
+#: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:380
 #, kde-format
 msgid "Install"
 msgstr "安装"
 
-#: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:384
+#: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:382
 #, kde-format
 msgid "Remove"
 msgstr "移除"
 
-#: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:386
+#: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:384
 #, kde-format
 msgid "Obsolete"
 msgstr "已过期"
 
-#: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:388
+#: libdiscover/backends/PackageKitBackend/PackageKitMessages.cpp:386
 #, kde-format
 msgid "Downgrade"
 msgstr "降级"
 
-#: libdiscover/backends/PackageKitBackend/PackageKitNotifier.cpp:133
+#: libdiscover/backends/PackageKitBackend/PackageKitNotifier.cpp:108
 #, kde-format
 msgid "Failed Offline Update"
 msgstr "离线更新失败"
 
-#: libdiscover/backends/PackageKitBackend/PackageKitNotifier.cpp:134
+#: libdiscover/backends/PackageKitBackend/PackageKitNotifier.cpp:109
 #, kde-format
 msgid ""
 "Failed to update %1 package\n"
@@ -2058,47 +2075,47 @@ msgstr[0] ""
 "%1 个软件包更新失败\n"
 "%2"
 
-#: libdiscover/backends/PackageKitBackend/PackageKitNotifier.cpp:137
-#: libdiscover/backends/PackageKitBackend/PackageKitNotifier.cpp:188
+#: libdiscover/backends/PackageKitBackend/PackageKitNotifier.cpp:112
+#: libdiscover/backends/PackageKitBackend/PackageKitNotifier.cpp:163
 #, kde-format
 msgctxt "@action:button"
 msgid "Open Discover"
 msgstr "打开 Discover"
 
-#: libdiscover/backends/PackageKitBackend/PackageKitNotifier.cpp:142
+#: libdiscover/backends/PackageKitBackend/PackageKitNotifier.cpp:117
 #, kde-format
 msgctxt "@action:button"
 msgid "Repair System"
 msgstr "修复系统"
 
-#: libdiscover/backends/PackageKitBackend/PackageKitNotifier.cpp:147
+#: libdiscover/backends/PackageKitBackend/PackageKitNotifier.cpp:122
 #, kde-format
 msgid "Repairing failed offline update"
 msgstr "正在修复失败的离线更新"
 
-#: libdiscover/backends/PackageKitBackend/PackageKitNotifier.cpp:154
+#: libdiscover/backends/PackageKitBackend/PackageKitNotifier.cpp:129
 #, kde-format
 msgid "Repair Failed"
 msgstr "修复失败"
 
-#: libdiscover/backends/PackageKitBackend/PackageKitNotifier.cpp:156
+#: libdiscover/backends/PackageKitBackend/PackageKitNotifier.cpp:131
 #, kde-kuit-format
 msgctxt ""
 "@info %1 is an error message and %3 is the name of the operating system"
 msgid "%1<nl/>Please <link url='%2'>report this error to %3</link>."
 msgstr "%1<nl/>请将此错误 <link url='%2'>报告给 %3</link>。"
 
-#: libdiscover/backends/PackageKitBackend/PackageKitNotifier.cpp:169
+#: libdiscover/backends/PackageKitBackend/PackageKitNotifier.cpp:144
 #, kde-format
 msgid "Repaired Successfully"
 msgstr "修复成功"
 
-#: libdiscover/backends/PackageKitBackend/PackageKitNotifier.cpp:184
+#: libdiscover/backends/PackageKitBackend/PackageKitNotifier.cpp:159
 #, kde-format
 msgid "Offline Updates"
 msgstr "离线更新"
 
-#: libdiscover/backends/PackageKitBackend/PackageKitNotifier.cpp:185
+#: libdiscover/backends/PackageKitBackend/PackageKitNotifier.cpp:160
 #, kde-format
 msgid "Successfully updated %1 package"
 msgid_plural "Successfully updated %1 packages"
@@ -2109,44 +2126,44 @@ msgstr[0] "成功更新了 %1 个软件包"
 msgid "Unknown Source"
 msgstr "未知来源"
 
-#: libdiscover/backends/PackageKitBackend/PackageKitResource.cpp:340
+#: libdiscover/backends/PackageKitBackend/PackageKitResource.cpp:339
 #, kde-format
 msgctxt "package-name (version)"
 msgid "%1 (%2)"
 msgstr "%1 (%2)"
 
-#: libdiscover/backends/PackageKitBackend/PackageKitResource.cpp:343
+#: libdiscover/backends/PackageKitBackend/PackageKitResource.cpp:342
 #, kde-format
 msgctxt "comma separating package names"
 msgid ", "
 msgstr "，"
 
-#: libdiscover/backends/PackageKitBackend/PackageKitResource.cpp:358
+#: libdiscover/backends/PackageKitBackend/PackageKitResource.cpp:357
 #, kde-format
 msgid "Software verified by %1"
 msgstr "由 %1 验证的软件"
 
-#: libdiscover/backends/PackageKitBackend/PackageKitResource.cpp:413
+#: libdiscover/backends/PackageKitBackend/PackageKitResource.cpp:385
 #, kde-format
 msgid "Obsoletes:"
 msgstr "已废弃："
 
-#: libdiscover/backends/PackageKitBackend/PackageKitResource.cpp:414
+#: libdiscover/backends/PackageKitBackend/PackageKitResource.cpp:386
 #, kde-format
 msgid "Release Notes:"
 msgstr "发行说明："
 
-#: libdiscover/backends/PackageKitBackend/PackageKitResource.cpp:415
+#: libdiscover/backends/PackageKitBackend/PackageKitResource.cpp:387
 #, kde-format
 msgid "Update State:"
 msgstr "更新状态："
 
-#: libdiscover/backends/PackageKitBackend/PackageKitResource.cpp:416
+#: libdiscover/backends/PackageKitBackend/PackageKitResource.cpp:388
 #, kde-format
 msgid "Restart:"
 msgstr "重新启动："
 
-#: libdiscover/backends/PackageKitBackend/PackageKitResource.cpp:419
+#: libdiscover/backends/PackageKitBackend/PackageKitResource.cpp:391
 #, kde-format
 msgid "Vendor:"
 msgstr "发行者："
@@ -2156,18 +2173,20 @@ msgstr "发行者："
 msgid "Repository URL:"
 msgstr "仓库 URL："
 
-#: libdiscover/backends/PackageKitBackend/PackageKitUpdater.cpp:98
+#: libdiscover/backends/PackageKitBackend/PackageKitUpdater.cpp:95
 #, kde-format
 msgctxt "distro upgrade: name version"
 msgid "%1 %2"
 msgstr "%1 %2"
 
-#: libdiscover/backends/PackageKitBackend/PackageKitUpdater.cpp:100
-#, kde-format
+#: libdiscover/backends/PackageKitBackend/PackageKitUpdater.cpp:97
+#, fuzzy, kde-format
+#| msgid "System upgrade"
+msgctxt "Major system upgrade upgrade, not a smaller security update"
 msgid "System upgrade"
 msgstr "系统升级"
 
-#: libdiscover/backends/PackageKitBackend/PackageKitUpdater.cpp:191
+#: libdiscover/backends/PackageKitBackend/PackageKitUpdater.cpp:188
 #, kde-format
 msgid "1 package will be upgraded"
 msgid_plural "%1 packages will be upgraded"
@@ -2175,33 +2194,34 @@ msgstr[0] "将要升级 %1 个软件包"
 
 #: libdiscover/backends/PackageKitBackend/PackageKitUpdater.cpp:203
 #, kde-format
-msgid "<h3>%1</h3>Upgrade to new version %2<br/>No release notes provided"
-msgstr "<h3>%1</h3>升级到新版本 %2<br/>没有提供发行说明"
+msgid "<h3>%1</h3>%2"
+msgstr ""
 
 #: libdiscover/backends/PackageKitBackend/PackageKitUpdater.cpp:205
-#, kde-format
-msgid ""
-"<h3>%1</h3>Upgrade to new version %2<br/>Release notes:<blockquote>%3</"
-"blockquote>"
+#, fuzzy, kde-format
+#| msgid ""
+#| "<h3>%1</h3>Upgrade to new version %2<br/>Release notes:<blockquote>%3</"
+#| "blockquote>"
+msgid "<h3>%1</h3>%2<br/>Release notes:<blockquote>%3</blockquote>"
 msgstr "<h3>%1</h3>升级到新版本 %2<br/>发行说明：<blockquote>%3</blockquote>"
 
-#: libdiscover/backends/PackageKitBackend/PackageKitUpdater.cpp:231
+#: libdiscover/backends/PackageKitBackend/PackageKitUpdater.cpp:228
 #, kde-format
 msgid "Present"
 msgstr "当前"
 
-#: libdiscover/backends/PackageKitBackend/PackageKitUpdater.cpp:235
+#: libdiscover/backends/PackageKitBackend/PackageKitUpdater.cpp:232
 #, kde-format
 msgid "Future"
 msgstr "今后"
 
-#: libdiscover/backends/PackageKitBackend/PackageKitUpdater.cpp:380
+#: libdiscover/backends/PackageKitBackend/PackageKitUpdater.cpp:373
 #, kde-format
 msgctxt "@info:status %1 is a formatted disk space string e.g. '240 MiB'"
 msgid "Not enough space to perform the update; only %1 of space are available."
 msgstr "没有足够的空间进行更新；只有 %1 可用空间。"
 
-#: libdiscover/backends/PackageKitBackend/PackageKitUpdater.cpp:602
+#: libdiscover/backends/PackageKitBackend/PackageKitUpdater.cpp:587
 #, kde-format
 msgid ""
 "This update cannot be completed as it would remove the following software "
@@ -2213,12 +2233,12 @@ msgstr ""
 "li></ul><nl/>如果您认为这是一个错误，请将它作为一个程序缺陷报告给发行版的打包"
 "人员。"
 
-#: libdiscover/backends/PackageKitBackend/PackageKitUpdater.cpp:609
+#: libdiscover/backends/PackageKitBackend/PackageKitUpdater.cpp:594
 #, kde-format
 msgid "Confirm Changes"
 msgstr "确认更改"
 
-#: libdiscover/backends/PackageKitBackend/PackageKitUpdater.cpp:610
+#: libdiscover/backends/PackageKitBackend/PackageKitUpdater.cpp:595
 #, kde-format
 msgid ""
 "The following packages will be removed by the update:<ul><li>%1</li></ul><br/"
@@ -2226,13 +2246,13 @@ msgid ""
 msgstr ""
 "更新将删除以下软件包：<ul><li>%1</li></ul><br/>以安装：<ul><li>%2</li></ul>"
 
-#: libdiscover/backends/PackageKitBackend/PackageKitUpdater.cpp:736
+#: libdiscover/backends/PackageKitBackend/PackageKitUpdater.cpp:721
 #, kde-kuit-format
 msgctxt "@info"
 msgid "%1:<nl/><nl/>%2"
 msgstr "%1:<nl/><nl/>%2"
 
-#: libdiscover/backends/PackageKitBackend/PackageKitUpdater.cpp:744
+#: libdiscover/backends/PackageKitBackend/PackageKitUpdater.cpp:729
 #: libdiscover/backends/PackageKitBackend/PKTransaction.cpp:327
 #, kde-format
 msgid ""
@@ -2242,13 +2262,13 @@ msgstr ""
 "需要更换类型“%1”的安装介质。\n"
 "%2"
 
-#: libdiscover/backends/PackageKitBackend/PackageKitUpdater.cpp:777
+#: libdiscover/backends/PackageKitBackend/PackageKitUpdater.cpp:762
 #: libdiscover/backends/PackageKitBackend/PKTransaction.cpp:304
 #, kde-format
 msgid "Accept EULA"
 msgstr "接受最终用户许可协议"
 
-#: libdiscover/backends/PackageKitBackend/PackageKitUpdater.cpp:778
+#: libdiscover/backends/PackageKitBackend/PackageKitUpdater.cpp:763
 #: libdiscover/backends/PackageKitBackend/PKTransaction.cpp:305
 #, kde-format
 msgid ""
@@ -2258,13 +2278,13 @@ msgstr ""
 "软件包 %1 和它的发行者 %2 要求您必须接受他们的许可证：\n"
 " %3"
 
-#: libdiscover/backends/PackageKitBackend/PackageKitUpdater.cpp:928
+#: libdiscover/backends/PackageKitBackend/PackageKitUpdater.cpp:913
 #: libdiscover/backends/PackageKitBackend/PKTransaction.cpp:344
 #, kde-format
 msgid "Missing signature for %1 in %2"
 msgstr "缺少 %2 中 %1 的签名"
 
-#: libdiscover/backends/PackageKitBackend/PackageKitUpdater.cpp:929
+#: libdiscover/backends/PackageKitBackend/PackageKitUpdater.cpp:914
 #: libdiscover/backends/PackageKitBackend/PKTransaction.cpp:345
 #, kde-format
 msgid ""
@@ -2351,8 +2371,10 @@ msgid "rpm-ostree backend: No booted deployment found. Please file a bug."
 msgstr "rpm-ostree 后端程序：没有发现已启动的部署。请报告此程序缺陷。"
 
 #: libdiscover/backends/RpmOstreeBackend/RpmOstreeBackend.cpp:373
-#, kde-format
-msgctxt "@action: button"
+#, fuzzy, kde-format
+#| msgctxt "@action: button"
+#| msgid "Begin Upgrade…"
+msgctxt "@action:button Perform a distro upgrade, not just a package update"
 msgid "Begin Upgrade…"
 msgstr "开始升级…"
 
@@ -2446,13 +2468,13 @@ msgstr "备用版本 (已固定)"
 msgid "Fallback version"
 msgstr "备用版本"
 
-#: libdiscover/backends/RpmOstreeBackend/RpmOstreeTransaction.cpp:40
+#: libdiscover/backends/RpmOstreeBackend/RpmOstreeTransaction.cpp:36
 #, kde-format
 msgid ""
 "rpm-ostree backend: Error: No DBus interface provided. Please file a bug."
 msgstr "rpm-ostree 后端程序：错误：没有提供 DBus 接口。请报告此程序缺陷。"
 
-#: libdiscover/backends/RpmOstreeBackend/RpmOstreeTransaction.cpp:60
+#: libdiscover/backends/RpmOstreeBackend/RpmOstreeTransaction.cpp:56
 #, kde-format
 msgid ""
 "rpm-ostree backend: Error: Can not start a transaction for resource with an "
@@ -2461,21 +2483,21 @@ msgstr ""
 "rpm-ostree 后端程序：错误：无法为格式无效的资源启动软件部署。请报告此程序缺"
 "陷。"
 
-#: libdiscover/backends/RpmOstreeBackend/RpmOstreeTransaction.cpp:80
+#: libdiscover/backends/RpmOstreeBackend/RpmOstreeTransaction.cpp:76
 #, kde-format
 msgid ""
 "rpm-ostree backend: Error: Can not rebase to an empty ref. Please file a bug."
 msgstr ""
 "rpm-ostree 后端程序：错误：无法基于空引用进行 rebase。请报告此程序缺陷。"
 
-#: libdiscover/backends/RpmOstreeBackend/RpmOstreeTransaction.cpp:98
+#: libdiscover/backends/RpmOstreeBackend/RpmOstreeTransaction.cpp:94
 #, kde-format
 msgid ""
 "rpm-ostree backend: Error: Unknown operation requested. Please file a bug."
 msgstr "rpm-ostree 后端程序：错误：请求的操作未知。请报告此程序缺陷。"
 
-#: libdiscover/backends/RpmOstreeBackend/RpmOstreeTransaction.cpp:160
-#: libdiscover/backends/RpmOstreeBackend/RpmOstreeTransaction.cpp:183
+#: libdiscover/backends/RpmOstreeBackend/RpmOstreeTransaction.cpp:156
+#: libdiscover/backends/RpmOstreeBackend/RpmOstreeTransaction.cpp:179
 #, kde-format
 msgid ""
 "rpm-ostree transaction failed with:\n"
@@ -2484,35 +2506,35 @@ msgstr ""
 "rpm-ostree 软件管理事务失败：\n"
 "%1"
 
-#: libdiscover/backends/RpmOstreeBackend/RpmOstreeTransaction.cpp:244
+#: libdiscover/backends/RpmOstreeBackend/RpmOstreeTransaction.cpp:240
 #, kde-format
 msgid "rpm-ostree backend: Error: Unknown resource format. Please file a bug."
 msgstr "rpm-ostree 后端程序：错误：未知资源格式。请报告此程序缺陷。"
 
-#: libdiscover/backends/RpmOstreeBackend/RpmOstreeTransaction.cpp:366
+#: libdiscover/backends/RpmOstreeBackend/RpmOstreeTransaction.cpp:362
 #, fuzzy, kde-format
 #| msgid ""
 #| "Cancelling rpm-ostree transaction. This may take some time. Please wait."
 msgid "Canceling rpm-ostree transaction. This may take some time. Please wait."
 msgstr "正在取消 rpm-ostree 的软件管理事务。这可能需要一些时间。请稍候。"
 
-#: libdiscover/backends/RpmOstreeBackend/RpmOstreeTransaction.cpp:395
+#: libdiscover/backends/RpmOstreeBackend/RpmOstreeTransaction.cpp:391
 #, kde-format
 msgid "Checking for a system update"
 msgstr "正在检查系统更新"
 
-#: libdiscover/backends/RpmOstreeBackend/RpmOstreeTransaction.cpp:398
+#: libdiscover/backends/RpmOstreeBackend/RpmOstreeTransaction.cpp:394
 #, kde-format
 msgid ""
 "Downloading system update. Please be patient as progress is not reported."
 msgstr "正在下载系统更新。请耐心等待，因为系统不会报告更新的进度。"
 
-#: libdiscover/backends/RpmOstreeBackend/RpmOstreeTransaction.cpp:401
+#: libdiscover/backends/RpmOstreeBackend/RpmOstreeTransaction.cpp:397
 #, kde-format
 msgid "Updating the system. Please be patient as progress is not reported."
 msgstr "正在更新系统。请耐心等待，因为系统不会报告更新的进度。"
 
-#: libdiscover/backends/RpmOstreeBackend/RpmOstreeTransaction.cpp:404
+#: libdiscover/backends/RpmOstreeBackend/RpmOstreeTransaction.cpp:400
 #, kde-format
 msgid ""
 "Updating to the next major version. Please be patient as progress is not "
@@ -2520,12 +2542,12 @@ msgid ""
 msgstr ""
 "正在升级到系统的下一个主要版本。请耐心等待，因为系统不会报告更新的进度。"
 
-#: libdiscover/backends/RpmOstreeBackend/RpmOstreeTransaction.cpp:407
+#: libdiscover/backends/RpmOstreeBackend/RpmOstreeTransaction.cpp:403
 #, kde-format
 msgid "Operation in progress (started outside of Discover)"
 msgstr "操作正在进行中 (在 Discover 外部启动)"
 
-#: libdiscover/backends/RpmOstreeBackend/RpmOstreeTransaction.cpp:413
+#: libdiscover/backends/RpmOstreeBackend/RpmOstreeTransaction.cpp:409
 #, kde-format
 msgid "Unknown transaction type"
 msgstr "未知的软件管理事务类型"
@@ -2580,19 +2602,19 @@ msgstr ""
 "此 Snap 应用程序不兼容安全沙箱，它将获取此系统的完整访问权限。仍然要安装它"
 "吗？"
 
-#: libdiscover/backends/SystemdSysupdateBackend/SystemdSysupdateBackend.cpp:149
+#: libdiscover/backends/SystemdSysupdateBackend/SystemdSysupdateBackend.cpp:151
 #, kde-kuit-format
 msgctxt "@info:status"
 msgid "Failed to get appstream data for “%1”.<nl/><nl/>Error message: %2"
 msgstr "获取“%1”的 appstream 数据失败。<nl/><nl/>错误消息：%2"
 
-#: libdiscover/backends/SystemdSysupdateBackend/SystemdSysupdateBackend.cpp:154
+#: libdiscover/backends/SystemdSysupdateBackend/SystemdSysupdateBackend.cpp:156
 #, kde-format
 msgctxt "@info:status"
 msgid "No appstream URLs found for target “%1”"
 msgstr "没有找到目标“%1”的 appstream URL"
 
-#: libdiscover/backends/SystemdSysupdateBackend/SystemdSysupdateBackend.cpp:165
+#: libdiscover/backends/SystemdSysupdateBackend/SystemdSysupdateBackend.cpp:168
 #, kde-kuit-format
 msgctxt "@info:status"
 msgid ""
@@ -2600,17 +2622,23 @@ msgid ""
 "message: %2"
 msgstr "获取来自 <a href='%1'>%1</a> 的更新失败。<nl/><nl/>错误消息：%2"
 
-#: libdiscover/backends/SystemdSysupdateBackend/SystemdSysupdateBackend.cpp:178
+#: libdiscover/backends/SystemdSysupdateBackend/SystemdSysupdateBackend.cpp:181
 #, kde-kuit-format
 msgctxt "@info:status"
 msgid "Failed to parse update metadata.<nl/><nl/>Error message: %1"
 msgstr "解析更新元数据失败。<nl/><nl/>错误消息：%1"
 
-#: libdiscover/backends/SystemdSysupdateBackend/SystemdSysupdateBackend.cpp:187
+#: libdiscover/backends/SystemdSysupdateBackend/SystemdSysupdateBackend.cpp:190
 #, kde-format
 msgctxt "@info:status"
 msgid "No components found in appstream metadata for target “%1”"
 msgstr "没有在“%1”的 appstream 元数据中找到组件"
+
+#: libdiscover/backends/SystemdSysupdateBackend/SystemdSysupdateResource.cpp:148
+#, kde-format
+msgctxt "Upgrade status: A system update that has to be downloaded again"
+msgid "Previous installation was incomplete, trying again"
+msgstr ""
 
 #: libdiscover/DiscoverBackendsFactory.cpp:128
 #, kde-format
@@ -2758,29 +2786,32 @@ msgctxt "@info:status"
 msgid "Canceled"
 msgstr "已取消"
 
-#: libdiscover/UpdateModel/UpdateModel.cpp:137
+#: libdiscover/UpdateModel/UpdateModel.cpp:138
 #, kde-format
 msgctxt "@item:inlistbox"
 msgid "Applications"
 msgstr "应用程序"
 
-#: libdiscover/UpdateModel/UpdateModel.cpp:138
+#: libdiscover/UpdateModel/UpdateModel.cpp:139
 #, kde-format
 msgctxt "@item:inlistbox"
 msgid "Application Support"
 msgstr "应用程序支持"
 
-#: libdiscover/UpdateModel/UpdateModel.cpp:139
+#: libdiscover/UpdateModel/UpdateModel.cpp:140
 #, kde-format
 msgctxt "@item:inlistbox"
 msgid "System Software"
 msgstr "系统软件"
 
-#: libdiscover/UpdateModel/UpdateModel.cpp:140
+#: libdiscover/UpdateModel/UpdateModel.cpp:141
 #, kde-format
 msgctxt "@item:inlistbox"
 msgid "Addons"
 msgstr "插件"
+
+#~ msgid "<h3>%1</h3>Upgrade to new version %2<br/>No release notes provided"
+#~ msgstr "<h3>%1</h3>升级到新版本 %2<br/>没有提供发行说明"
 
 #~ msgctxt "@info:status"
 #~ msgid "Cancelled"

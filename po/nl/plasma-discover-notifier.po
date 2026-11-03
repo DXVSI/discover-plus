@@ -1,14 +1,14 @@
 # Copyright (C) YEAR This_file_is_part_of_KDE
 # This file is distributed under the same license as the PACKAGE package.
 #
-# SPDX-FileCopyrightText: 2015, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026 Freek de Kruijf <freekdekruijf@kde.nl>
+# SPDX-FileCopyrightText: 2015, 2018-2026 Freek de Kruijf <freekdekruijf@kde.nl>
 # SPDX-FileCopyrightText: 2024 pieter <pieterkristensen@gmail.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-04-23 00:45+0000\n"
-"PO-Revision-Date: 2026-04-02 14:08+0200\n"
+"POT-Creation-Date: 2026-09-22 00:46+0000\n"
+"PO-Revision-Date: 2026-09-22 11:01+0200\n"
 "Last-Translator: Freek de Kruijf <freekdekruijf@kde.nl>\n"
 "Language-Team: \n"
 "Language: nl\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 25.12.3\n"
+"X-Generator: Lokalize 26.08.1\n"
 
 #: notifier/DiscoverNotifier.cpp:218
 #, kde-format
@@ -77,8 +77,9 @@ msgstr "Bijwerken en systeem afsluiten"
 
 #: notifier/DiscoverNotifier.cpp:449
 #, kde-format
+msgctxt "A new distro release is available for upgrade"
 msgid "Upgrade available"
-msgstr "Upgrade beschikbaar"
+msgstr "Opwaardering beschikbaar"
 
 #: notifier/DiscoverNotifier.cpp:450
 #, kde-format
@@ -88,7 +89,7 @@ msgstr "%1 is nu beschikbaar."
 
 #: notifier/DiscoverNotifier.cpp:453
 #, kde-format
-msgctxt "@action:button"
+msgctxt "@action:button Upgrade to new distro release"
 msgid "Upgrade"
 msgstr "Opwaarderen"
 

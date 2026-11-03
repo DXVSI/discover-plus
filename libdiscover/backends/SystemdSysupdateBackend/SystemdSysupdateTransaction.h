@@ -11,6 +11,7 @@
 #include <sysupdate1.h>
 
 constexpr auto SYSUPDATE1_SERVICE = QLatin1String("org.freedesktop.sysupdate1");
+using SystemdSysupdateVacuumReply = QDBusPendingReply<uint, uint>;
 using SystemdSysupdateUpdateReply = QDBusPendingReply<QString, qulonglong, QDBusObjectPath>;
 
 class SystemdSysupdateTransaction : public Transaction
@@ -27,7 +28,11 @@ private Q_SLOTS:
     void installDone(qulonglong jobId, const QDBusObjectPath &jobPath, int status);
 
 private:
+    void acquire();
+
     const AbstractResource *m_resource;
     org::freedesktop::sysupdate1::Target *m_target;
     org::freedesktop::sysupdate1::Job *m_job;
+    bool m_reportErrorFromDone = false;
+    bool m_vacuumed = false;
 };

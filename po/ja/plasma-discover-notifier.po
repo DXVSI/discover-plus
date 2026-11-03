@@ -1,14 +1,15 @@
-# SPDX-FileCopyrightText: 2023 Ryuichi Yamada <ryuichi_ya220@outlook.jp>
 # Tomohiro Hyakutake <tomhioo@outlook.jp>, 2019, 2020.
+# SPDX-FileCopyrightText: 2023 Ryuichi Yamada <ryuichi_ya220@outlook.jp>
 # Fumiaki Okushi <fumiaki.okushi@gmail.com>, 2019, 2023.
 # SPDX-FileCopyrightText: 2025 Yuma Kakei <yumasansansan@gmail.com>
+# SPDX-FileCopyrightText: 2026 Mint <5602mint@gmail.com>
 msgid ""
 msgstr ""
 "Project-Id-Version: kdeorg\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-04-23 00:45+0000\n"
-"PO-Revision-Date: 2025-09-21 13:07+0900\n"
-"Last-Translator: Yuma Kakei <yumasansansan@gmail.com>\n"
+"POT-Creation-Date: 2026-09-22 00:46+0000\n"
+"PO-Revision-Date: 2026-09-22 19:09+0900\n"
+"Last-Translator: Mint <5602mint@gmail.com>\n"
 "Language-Team: Japanese <kde-jp@kde.org>\n"
 "Language: ja\n"
 "MIME-Version: 1.0\n"
@@ -17,7 +18,7 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Accelerator-Marker: &\n"
 "X-Text-Markup: kde4\n"
-"X-Generator: Lokalize 25.08.1\n"
+"X-Generator: Lokalize 26.08.1\n"
 
 #: notifier/DiscoverNotifier.cpp:218
 #, kde-format
@@ -40,10 +41,9 @@ msgid "System up to date"
 msgstr "システムは最新です"
 
 #: notifier/DiscoverNotifier.cpp:369
-#, fuzzy, kde-format
-#| msgid "Install Updates and Restart…"
+#, kde-format
 msgid "System will install updates when restarted"
-msgstr "更新をインストールして再起動…"
+msgstr "再起動後に更新をインストールします"
 
 #: notifier/DiscoverNotifier.cpp:371
 #, kde-format
@@ -78,7 +78,9 @@ msgid "Update and Shut Down"
 msgstr "更新してシャットダウン"
 
 #: notifier/DiscoverNotifier.cpp:449
-#, kde-format
+#, fuzzy, kde-format
+#| msgid "Upgrade available"
+msgctxt "A new distro release is available for upgrade"
 msgid "Upgrade available"
 msgstr "アップグレード可能"
 
@@ -89,8 +91,10 @@ msgid "%1 is now available."
 msgstr "%1 が利用可能になりました。"
 
 #: notifier/DiscoverNotifier.cpp:453
-#, kde-format
-msgctxt "@action:button"
+#, fuzzy, kde-format
+#| msgctxt "@action:button"
+#| msgid "Upgrade"
+msgctxt "@action:button Upgrade to new distro release"
 msgid "Upgrade"
 msgstr "アップグレード"
 
@@ -174,10 +178,6 @@ msgid "Restart to apply installed updates"
 msgstr "再起動してインストールされた更新を適用"
 
 #: notifier/NotifierItem.cpp:65
-#, fuzzy, kde-format
-#| msgid "Click to restart the device"
+#, kde-format
 msgid "Click to restart the system"
-msgstr "クリックしてデバイスを再起動"
-
-#~ msgid "Computer needs to restart"
-#~ msgstr "コンピュータを再起動する必要があります。"
+msgstr "クリックしてシステムを再起動"

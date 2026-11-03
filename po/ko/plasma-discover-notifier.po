@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-04-23 00:45+0000\n"
-"PO-Revision-Date: 2026-04-26 23:03+0200\n"
+"POT-Creation-Date: 2026-09-22 00:46+0000\n"
+"PO-Revision-Date: 2026-10-03 22:34+0200\n"
 "Last-Translator: Shinjo Park <kde@peremen.name>\n"
 "Language-Team: Korean <kde-kr@kde.org>\n"
 "Language: ko\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Lokalize 25.08.1\n"
+"X-Generator: Lokalize 25.12.3\n"
 
 #: notifier/DiscoverNotifier.cpp:218
 #, kde-format
@@ -76,6 +76,7 @@ msgstr "업데이트 후 끄기"
 
 #: notifier/DiscoverNotifier.cpp:449
 #, kde-format
+msgctxt "A new distro release is available for upgrade"
 msgid "Upgrade available"
 msgstr "업그레이드 사용 가능"
 
@@ -87,7 +88,7 @@ msgstr "%1을(를) 사용할 수 있습니다."
 
 #: notifier/DiscoverNotifier.cpp:453
 #, kde-format
-msgctxt "@action:button"
+msgctxt "@action:button Upgrade to new distro release"
 msgid "Upgrade"
 msgstr "업그레이드"
 

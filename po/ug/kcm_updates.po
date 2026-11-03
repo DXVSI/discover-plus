@@ -1,27 +1,27 @@
 # Uyghur translation for kcm_updates.
 # Copyright (C) YEAR This file is copyright:
 # This file is distributed under the same license as the discover package.
-# Abduqadir Abliz <sahranbay@gmail.com>, 2026., YEAR.
+# Abduqadir Abliz <sahranbay@gmail.com>, 2026.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: discover\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
 "POT-Creation-Date: 2026-08-05 00:48+0000\n"
-"PO-Revision-Date: 2026-05-29 17:22-0400\n"
+"PO-Revision-Date: 2026-09-24 19:27-0400\n"
 "Last-Translator: Abduqadir Abliz <sahranbay@gmail.com>\n"
 "Language-Team: Uyghur <kde-i18n-doc@kde.org>\n"
 "Language: ug\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.9\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Poedit 3.9\n"
 
 #: kcm/ui/main.qml:40
 #, kde-format
 msgid "Update software:"
-msgstr ""
+msgstr "يۇمشاق دېتال يېڭىلاش:"
 
 #: kcm/ui/main.qml:41
 #, kde-format
@@ -31,7 +31,7 @@ msgstr "قولدا"
 #: kcm/ui/main.qml:56
 #, kde-format
 msgid "Automatically"
-msgstr ""
+msgstr "ئۆزلۈكىدىن"
 
 #: kcm/ui/main.qml:68
 #, kde-kuit-format
@@ -41,18 +41,21 @@ msgid ""
 "available. Updates for applications will be installed immediately, while "
 "updates for the system will be installed the next time it’s restarted."
 msgstr ""
+"يۇمشاق دېتال يېڭىلانمىسىنى ئىشلەتكىلى بولسا ئۇلارنى ئۆزلۈكىدىن چۈشۈرىدۇ. "
+"يۇمشاق دېتال يېڭىلانمىسى دەرھال ئورنىتىلىدۇ، سىستېما يېڭىلانمىسى كېيىنكى "
+"قېتىم قايتا قوزغىتىلغاندا ئورنىتىلىدۇ."
 
 #: kcm/ui/main.qml:74
 #, kde-format
 msgctxt "@title:group"
 msgid "Update frequency:"
-msgstr "يېڭىلاش چاستوتىسى:"
+msgstr "يېڭىلاش قەرەلى:"
 
 #: kcm/ui/main.qml:74
 #, kde-format
 msgctxt "@title:group"
 msgid "Notification frequency:"
-msgstr ""
+msgstr "ئۇقتۇرۇش قەرەلى:"
 
 #: kcm/ui/main.qml:79
 #, kde-format
@@ -81,7 +84,7 @@ msgstr "ھەرگىز"
 #: kcm/ui/main.qml:120
 #, kde-format
 msgid "Apply system updates:"
-msgstr ""
+msgstr "سىستېما يېڭىلاشنى قوللىنىش:"
 
 #: kcm/ui/main.qml:127
 #, kde-format
@@ -89,7 +92,7 @@ msgctxt ""
 "@option:radio part of the logical sentence 'Apply system updates after "
 "rebooting'"
 msgid "After rebooting"
-msgstr ""
+msgstr "قايتا قوزغىتىلغاندىن كېيىن"
 
 #: kcm/ui/main.qml:139
 #, kde-format
@@ -97,7 +100,7 @@ msgctxt ""
 "@label The thing being recommended is to use the 'apply updates when "
 "rebooting' setting"
 msgid "Recommended to maximize system stability"
-msgstr ""
+msgstr "سىستېما مۇقىملىقىنى ئاشۇرۇش ئۈچۈن تەۋسىيە قىلىنىدۇ"
 
 #: kcm/ui/main.qml:145
 #, kde-format

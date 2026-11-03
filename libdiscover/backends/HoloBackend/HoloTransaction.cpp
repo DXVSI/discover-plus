@@ -16,7 +16,7 @@
 #include "libdiscover_holo_debug.h"
 
 HoloTransaction::HoloTransaction(HoloResource *app, Transaction::Role role, ComSteampoweredAtomupd1Interface *interface)
-    : Transaction(app->backend(), app, role, {})
+    : Transaction(app, role, {})
     , m_app(app)
     , m_interface(interface)
 {

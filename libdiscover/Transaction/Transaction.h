@@ -70,7 +70,7 @@ public:
     };
     Q_ENUM(Role)
 
-    Transaction(QObject *parent, AbstractResource *resource, Transaction::Role role, const AddonList &addons = {}, bool visible = true);
+    Transaction(AbstractResource *resource, Transaction::Role role, const AddonList &addons = {}, bool visible = true);
 
     ~Transaction() override;
 

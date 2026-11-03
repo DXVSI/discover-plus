@@ -240,7 +240,9 @@ jobs:
           mkdir -p dist
           for package_file in \
             "$rpm_topdir/RPMS/x86_64/discover-plus-$nvr.x86_64.rpm" \
+            "$rpm_topdir/RPMS/x86_64/discover-plus-snap-$nvr.x86_64.rpm" \
             "$rpm_topdir/RPMS/x86_64/discover-plus-debuginfo-$nvr.x86_64.rpm" \
+            "$rpm_topdir/RPMS/x86_64/discover-plus-snap-debuginfo-$nvr.x86_64.rpm" \
             "$rpm_topdir/RPMS/x86_64/discover-plus-debugsource-$nvr.x86_64.rpm" \
             "$rpm_topdir/SRPMS/discover-plus-$nvr.src.rpm" \
             "$rpm_topdir/SOURCES/discover-plus-$version.tar.xz"
@@ -248,15 +250,18 @@ jobs:
             test -f "$package_file"
             install -m 0644 "$package_file" "dist/$(basename "$package_file")"
           done
-          test "$(find "$rpm_topdir/RPMS" "$rpm_topdir/SRPMS" -type f -name '*.rpm' | wc -l)" -eq 4
+          test "$(find "$rpm_topdir/RPMS" "$rpm_topdir/SRPMS" -type f -name '*.rpm' | wc -l)" -eq 6
           rpm_file="dist/discover-plus-$nvr.x86_64.rpm"
+          snap_rpm_file="dist/discover-plus-snap-$nvr.x86_64.rpm"
 
           rpmlint \
             --rpmlintrc packaging/rpm/discover-plus.rpmlintrc \
             packaging/rpm/discover-plus.spec \
             "dist/discover-plus-$nvr.src.rpm" \
             "$rpm_file" \
+            "$snap_rpm_file" \
             "dist/discover-plus-debuginfo-$nvr.x86_64.rpm" \
+            "dist/discover-plus-snap-debuginfo-$nvr.x86_64.rpm" \
             "dist/discover-plus-debugsource-$nvr.x86_64.rpm"
 
           rpm -qpl "$rpm_file"
@@ -296,21 +301,30 @@ jobs:
           for required_package in polkit dnf5 dnf5-plugins rpm flatpak PackageKit; do
             grep -Fxq "$required_package" "$RUNNER_TEMP/requires.txt"
           done
+          # The Snap backend lives in its own subpackage: the main package must
+          # not pull snapd in, the subpackage must.
           if grep -Ei 'snapd|rpm-?ostree' "$RUNNER_TEMP/requires.txt"; then
             echo "disabled backends leaked into the dependencies" >&2
             exit 1
           fi
+          rpm -qp --requires "$snap_rpm_file" > "$RUNNER_TEMP/snap-requires.txt"
+          grep -Fxq snapd "$RUNNER_TEMP/snap-requires.txt"
+          grep -Eq '^discover-plus\(x86-64\) = ' "$RUNNER_TEMP/snap-requires.txt"
 
           # Staged root: the script sets the library and plugin search paths
           # itself because the RUNPATH of the binaries is absolute.
+          # Both packages into one root: the script expects the full file set
+          # of the build, like the staged root of %check.
           package_root="$RUNNER_TEMP/rpm-root"
-          package_cpio="$RUNNER_TEMP/discover-plus.cpio"
           mkdir -p "$package_root"
-          rpm2cpio "$rpm_file" > "$package_cpio"
-          (
-            cd "$package_root"
-            cpio -idm --quiet < "$package_cpio"
-          )
+          for package_file in "$rpm_file" "$snap_rpm_file"; do
+            package_cpio="$RUNNER_TEMP/$(basename "$package_file").cpio"
+            rpm2cpio "$package_file" > "$package_cpio"
+            (
+              cd "$package_root"
+              cpio -idm --quiet < "$package_cpio"
+            )
+          done
           chown -R builder:builder "$package_root"
           runuser -u builder -- \
             packaging/scripts/verify-package-contents.sh \
@@ -320,7 +334,10 @@ jobs:
             "$RUNNER_TEMP/build-environment.txt"
           install -m 0644 "$RUNNER_TEMP/build-environment.txt" \
             "dist/discover-plus-$nvr.build-environment.txt"
-          echo "file=$rpm_file" >> "$GITHUB_OUTPUT"
+          {
+            echo "file=$rpm_file"
+            echo "snap-file=$snap_rpm_file"
+          } >> "$GITHUB_OUTPUT"
           echo "kde-base-version=$kde_base_version" >> "$GITHUB_OUTPUT"
 
       # Installed package: no search path overrides. Discover, the notifier
@@ -329,12 +346,15 @@ jobs:
       - name: Install RPM and load every plugin
         env:
           RPM_FILE: ${{ steps.package.outputs.file }}
+          SNAP_RPM_FILE: ${{ steps.package.outputs.snap-file }}
           KDE_BASE_VERSION: ${{ steps.package.outputs.kde-base-version }}
         run: |
           set -euo pipefail
+          # Both packages: the Snap plugin must load like the others. snapd is
+          # only a dependency here, nothing talks to it.
           installed=false
           for attempt in 1 2 3; do
-            if dnf install -y "$RPM_FILE"; then
+            if dnf install -y "$RPM_FILE" "$SNAP_RPM_FILE"; then
               installed=true
               break
             fi
@@ -396,8 +416,11 @@ jobs:
             "$RUNNER_TEMP/source/packaging/rpm/discover-plus.spec")
           rpm_release=${rpm_release%'%{?dist}'}
           rpm_file="dist/discover-plus-$version-$rpm_release.fc$FEDORA_VERSION.x86_64.rpm"
+          snap_rpm_file="dist/discover-plus-snap-$version-$rpm_release.fc$FEDORA_VERSION.x86_64.rpm"
           test -f "$rpm_file"
+          test -f "$snap_rpm_file"
           echo "RPM_FILE=$rpm_file" >> "$GITHUB_ENV"
+          echo "SNAP_RPM_FILE=$snap_rpm_file" >> "$GITHUB_ENV"
 
       - name: Install the stock Fedora Discover without the updates repository
         run: |

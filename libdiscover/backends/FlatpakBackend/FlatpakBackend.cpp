@@ -702,7 +702,7 @@ void FlatpakBackend::addAppFromFlatpakBundle(const QUrl &url, ResultsStream *str
 
     if (m_localSource) {
         const auto it = std::ranges::find_if(m_localSource->m_resources, [url](auto resource) {
-            return resource->url() == url;
+            return resource->resourceFile() == url;
         });
         if (it != m_localSource->m_resources.end()) {
             Q_EMIT stream->resourcesFound({it.value()});
@@ -758,7 +758,10 @@ void FlatpakBackend::addAppFromFlatpakBundle(const QUrl &url, ResultsStream *str
         QSettings setting(tempFile.fileName(), QSettings::NativeFormat);
         setting.beginGroup(QLatin1String("Application"));
 
-        asComponent.setName(setting.value(QLatin1String("name")).toString());
+        // The "name" key in Flatpak's metadata is actually the app ID, not a display name
+        const QString appId = setting.value(QLatin1String("name")).toString();
+        asComponent.setId(appId);
+        asComponent.setName(appId);
 
         tempFile.remove();
     }
@@ -808,7 +811,8 @@ void FlatpakBackend::addAppFromFlatpakBundle(const QUrl &url, ResultsStream *str
     resource->setPropertyState(FlatpakResource::DownloadSize, FlatpakResource::AlreadyKnown);
     resource->setPropertyState(FlatpakResource::InstalledSize, FlatpakResource::AlreadyKnown);
     resource->setFlatpakFileType(FlatpakResource::FileFlatpak);
-    resource->setOrigin(origin.isEmpty() ? i18n("Local bundle") : origin);
+    resource->setOrigin(origin);
+    resource->setDisplayOrigin(origin.isEmpty() ? i18n("Local bundle") : origin);
     resource->setResourceFile(url);
     resource->setState(FlatpakResource::None);
 
@@ -1741,7 +1745,7 @@ ResultsStream *FlatpakBackend::search(const AbstractResourcesBackend::Filters &f
                             if (parentRef) {
                                 if (auto resource = self->getAppForInstalledRef(installation, parentRef)) {
                                     resource->addRefToUpdate(flatpak_ref_format_ref_cached(FLATPAK_REF(parentRef)));
-                                    if (!kContains(refs, [&parentId](auto ref) {
+                                    if (!std::ranges::any_of(refs, [&parentId](auto ref) {
                                             return parentId == flatpak_ref_get_name(FLATPAK_REF(ref));
                                         })) {
                                         resources.append(resource);

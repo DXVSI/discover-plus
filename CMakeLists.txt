@@ -36,8 +36,8 @@ find_package(PkgConfig REQUIRED)
 find_package(KF6 ${KF6_MIN_VERSION} REQUIRED Kirigami CoreAddons Config Crash DBusAddons I18n Archive XmlGui KIO KCMUtils IdleTime Notifications Purpose StatusNotifierItem IconThemes)
 find_package(KF6 ${KF6_MIN_VERSION} OPTIONAL_COMPONENTS UserFeedback)
 
-find_package(packagekitqt6 1.0.1 CONFIG)
-find_package(AppStreamQt 1.0.4 CONFIG REQUIRED)
+find_package(packagekitqt6 1.1.4 CONFIG)
+find_package(AppStreamQt 1.0.5 CONFIG REQUIRED)
 find_package(KF6Attica ${KF6_MIN_VERSION} CONFIG)
 find_package(KF6NewStuff ${KF6_MIN_VERSION} CONFIG)
 
@@ -49,10 +49,6 @@ set_package_properties(KF6KirigamiAddons PROPERTIES
 
 pkg_check_modules(Flatpak IMPORTED_TARGET flatpak>=0.11.8)
 pkg_check_modules(Fwupd IMPORTED_TARGET fwupd>=2.1.1)
-pkg_check_modules(Markdown IMPORTED_TARGET libmarkdown)
-if(Markdown_FOUND AND Markdown_VERSION VERSION_GREATER_EQUAL 3)
-    add_definitions(-DMARKDOWN3)
-endif()
 pkg_check_modules(Ostree IMPORTED_TARGET ostree-1)
 pkg_check_modules(RpmOstree IMPORTED_TARGET rpm-ostree-1)
 
