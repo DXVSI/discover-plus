@@ -286,6 +286,10 @@ done
 %dir %{_kf6_datadir}/libdiscover
 %dir %{_kf6_datadir}/libdiscover/categories
 %{_kf6_datadir}/libdiscover/categories/flatpak-backend-categories.xml
+%{_kf6_datadir}/libdiscover/categories/packagekit-backend-categories.xml
+# Unlike Fedora this is a config file: a package update must not undo a local
+# decision to turn offline updates off.
+%config(noreplace) %{_kf6_sysconfdir}/xdg/discoverrc
 
 %files snap
 %{_kf6_qtplugindir}/discover/snap-backend.so
@@ -298,10 +302,6 @@ done
 %{_datadir}/dbus-1/system.d/org.kde.discover.libsnapclient.conf
 %{_datadir}/dbus-1/system-services/org.kde.discover.libsnapclient.service
 %{_datadir}/polkit-1/actions/org.kde.discover.libsnapclient.policy
-%{_kf6_datadir}/libdiscover/categories/packagekit-backend-categories.xml
-# Unlike Fedora this is a config file: a package update must not undo a local
-# decision to turn offline updates off.
-%config(noreplace) %{_kf6_sysconfdir}/xdg/discoverrc
 
 
 %changelog
