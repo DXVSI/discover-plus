@@ -313,14 +313,18 @@ jobs:
 
           # Staged root: the script sets the library and plugin search paths
           # itself because the RUNPATH of the binaries is absolute.
+          # Both packages into one root: the script expects the full file set
+          # of the build, like the staged root of %check.
           package_root="$RUNNER_TEMP/rpm-root"
-          package_cpio="$RUNNER_TEMP/discover-plus.cpio"
           mkdir -p "$package_root"
-          rpm2cpio "$rpm_file" > "$package_cpio"
-          (
-            cd "$package_root"
-            cpio -idm --quiet < "$package_cpio"
-          )
+          for package_file in "$rpm_file" "$snap_rpm_file"; do
+            package_cpio="$RUNNER_TEMP/$(basename "$package_file").cpio"
+            rpm2cpio "$package_file" > "$package_cpio"
+            (
+              cd "$package_root"
+              cpio -idm --quiet < "$package_cpio"
+            )
+          done
           chown -R builder:builder "$package_root"
           runuser -u builder -- \
             packaging/scripts/verify-package-contents.sh \
