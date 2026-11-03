@@ -58,6 +58,7 @@ BuildRequires:  cmake(QCoro6)
 BuildRequires:  appstream-qt-devel >= 1.0.4
 BuildRequires:  flatpak-devel >= 0.11.8
 BuildRequires:  pkgconfig(fwupd) >= 2.1.1
+BuildRequires:  cmake(Snapd) >= 1.66
 BuildRequires:  pkgconfig(packagekitqt6)
 
 BuildRequires:  pkgconfig(Qt6Concurrent)
@@ -153,6 +154,19 @@ Recommends:     fedora-appstream-metadata
 # Exec= of kcm_updates.desktop
 Recommends:     plasma-systemsettings
 
+%package snap
+Summary:        Snap support for Discover Plus
+Requires:       %{name}%{?_isa} = %{version}-%{release}
+Requires:       snapd-qt%{?_isa} >= 1.66
+Requires:       snapd
+# Discover offers to install this package when a Snap URL is opened and the
+# backend is missing, so its name must be the one the stock Discover asks for.
+Supplements:    (%{name} and snapd)
+
+%description snap
+The Snap backend of Discover Plus: browse, install and remove snaps.
+It needs snapd to be installed and running.
+
 %description
 Discover Plus is a fork of KDE Discover for Fedora KDE. It keeps the regular
 Discover user interface and adds Fedora package workflows: first-run
@@ -180,7 +194,7 @@ exit 1
   -DBUILD_FlatpakBackend:BOOL=ON \
   -DBUILD_FwupdBackend:BOOL=ON \
   -DBUILD_AppStreamPreviewBackend:BOOL=ON \
-  -DBUILD_SnapBackend:BOOL=OFF \
+  -DBUILD_SnapBackend:BOOL=ON \
   -DBUILD_RpmOstreeBackend:BOOL=OFF \
   -DBUILD_AlpineApkBackend:BOOL=OFF \
   -DBUILD_DummyBackend:BOOL=OFF \
@@ -197,9 +211,6 @@ install -d -m 0755 %{buildroot}%{_kf6_sysconfdir}/xdg
 printf '[Software]\nUseOfflineUpdates=true\n' > %{buildroot}%{_kf6_sysconfdir}/xdg/discoverrc
 chmod 0644 %{buildroot}%{_kf6_sysconfdir}/xdg/discoverrc
 
-# Installed unconditionally by upstream although the Snap backend is disabled.
-rm -fv %{buildroot}%{_kf6_datadir}/applications/org.kde.discover.snap.desktop
-
 %find_lang libdiscover
 %find_lang kcm_updates
 %find_lang plasma-discover --with-html
@@ -215,6 +226,7 @@ for desktop_file in \
     org.kde.discover.flatpak.desktop \
     org.kde.discover.appstreampreview.desktop \
     org.kde.discover.notifier.desktop \
+    org.kde.discover.snap.desktop \
     kcm_updates.desktop
 do
     desktop-file-validate %{buildroot}%{_kf6_datadir}/applications/$desktop_file
@@ -223,6 +235,7 @@ for metainfo_file in \
     org.kde.discover.appdata.xml \
     org.kde.discover.flatpak.appdata.xml \
     org.kde.discover.packagekit.appdata.xml \
+    org.kde.discover.snap.appdata.xml \
     org.kde.discover.appstreampreview.metainfo.xml
 do
     appstreamcli validate --no-net %{buildroot}%{_kf6_metainfodir}/$metainfo_file
@@ -273,6 +286,18 @@ done
 %dir %{_kf6_datadir}/libdiscover
 %dir %{_kf6_datadir}/libdiscover/categories
 %{_kf6_datadir}/libdiscover/categories/flatpak-backend-categories.xml
+
+%files snap
+%{_kf6_qtplugindir}/discover/snap-backend.so
+%dir %{_libexecdir}/discover
+%{_libexecdir}/discover/SnapMacaroonDialog
+%{_kf6_libexecdir}/kauth/libsnap_helper
+%{_kf6_datadir}/applications/org.kde.discover.snap.desktop
+%{_kf6_metainfodir}/org.kde.discover.snap.appdata.xml
+%{_kf6_datadir}/icons/hicolor/*/apps/snapdiscover.*
+%{_datadir}/dbus-1/system.d/org.kde.discover.libsnapclient.conf
+%{_datadir}/dbus-1/system-services/org.kde.discover.libsnapclient.service
+%{_datadir}/polkit-1/actions/org.kde.discover.libsnapclient.policy
 %{_kf6_datadir}/libdiscover/categories/packagekit-backend-categories.xml
 # Unlike Fedora this is a config file: a package update must not undo a local
 # decision to turn offline updates off.

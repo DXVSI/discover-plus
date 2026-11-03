@@ -165,6 +165,7 @@ jobs:
           nvr="$RELEASE_VERSION-$RPM_RELEASE.fc$FEDORA_VERSION"
           for asset in \
             "discover-plus-$nvr.x86_64.rpm" \
+            "discover-plus-snap-$nvr.x86_64.rpm" \
             "discover-plus-debuginfo-$nvr.x86_64.rpm" \
             "discover-plus-debugsource-$nvr.x86_64.rpm" \
             "discover-plus-$nvr.src.rpm" \
@@ -173,7 +174,7 @@ jobs:
           do
             test -f "release-assets/$asset"
           done
-          test "$(find release-assets -mindepth 1 | wc -l)" -eq 6
+          test "$(find release-assets -mindepth 1 | wc -l)" -eq 7
           # The record of the build must describe this very source.
           grep -Fxq "# source: $EXPECTED_SHA" \
             "release-assets/discover-plus-$nvr.build-environment.txt"
@@ -185,7 +186,7 @@ jobs:
               LC_ALL=C sort -z |
               xargs -0 sha256sum > "$checksum_file"
           )
-          test "$(wc -l < "$checksum_file")" -eq 6
+          test "$(wc -l < "$checksum_file")" -eq 7
           mv "$checksum_file" release-assets/SHA256SUMS
           (
             cd release-assets
@@ -236,6 +237,7 @@ jobs:
             printf 'RPM package for Fedora %s (x86_64). It replaces the stock `plasma-discover` packages.\n\n' "$FEDORA_VERSION"
             printf 'Update the system first, then install the package:\n\n'
             printf '```bash\nsudo dnf upgrade --refresh\nsudo dnf install ./%s\n```\n\n' "$rpm_name"
+            printf 'Snap support is the separate `%s` package next to it: it pulls `snapd` in, so install it only if you use snaps.\n\n' "discover-plus-snap-$RELEASE_VERSION-$RPM_RELEASE.fc$FEDORA_VERSION.x86_64.rpm"
             printf 'There is no package repository yet: new versions are installed the same way from the next release.\n\n'
             printf 'Verify the download:\n\n'
             printf '```bash\nsha256sum --check --ignore-missing SHA256SUMS\ngh attestation verify %s -R %s\n```\n\n' "$rpm_name" "$GH_REPO"
