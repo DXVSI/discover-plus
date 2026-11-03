@@ -25,7 +25,7 @@ AlpineApkTransaction::AlpineApkTransaction(AlpineApkResource *res, Role role)
 }
 
 AlpineApkTransaction::AlpineApkTransaction(AlpineApkResource *res, const AddonList &addons, Transaction::Role role)
-    : Transaction(res->backend(), res, role, addons)
+    : Transaction(res, role, addons)
     , m_resource(res)
     , m_backend(static_cast<AlpineApkBackend *>(res->backend()))
 {

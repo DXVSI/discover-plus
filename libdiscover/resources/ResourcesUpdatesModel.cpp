@@ -26,7 +26,7 @@ class UpdateTransaction : public Transaction
     Q_OBJECT
 public:
     UpdateTransaction(ResourcesUpdatesModel * /*parent*/, const QVector<AbstractBackendUpdater *> &updaters)
-        : Transaction(nullptr, nullptr, Transaction::InstallRole, {}, false /*not visible*/)
+        : Transaction(nullptr, Transaction::InstallRole, {}, false /*not visible*/)
         , m_allUpdaters(updaters)
     {
         bool cancelable = false;
@@ -37,7 +37,7 @@ public:
             connect(updater, &AbstractBackendUpdater::proceedRequest, this, &UpdateTransaction::processProceedRequest);
             connect(updater, &AbstractBackendUpdater::distroErrorMessage, this, &UpdateTransaction::distroErrorMessage);
             connect(updater, &AbstractBackendUpdater::cancelableChanged, this, [this](bool) {
-                setCancellable(kContains(m_allUpdaters, [](AbstractBackendUpdater *updater) {
+                setCancellable(std::ranges::any_of(m_allUpdaters, [](AbstractBackendUpdater *updater) {
                     return updater->isCancelable() && updater->isProgressing();
                 }));
             });
@@ -367,7 +367,7 @@ bool ResourcesUpdatesModel::isFetching() const
 
 bool ResourcesUpdatesModel::readyToReboot() const
 {
-    return kContains(m_updaters, [](AbstractBackendUpdater *updater) {
+    return std::ranges::any_of(m_updaters, [](AbstractBackendUpdater *updater) {
         return !updater->needsReboot() || updater->isReadyToReboot();
     });
 }

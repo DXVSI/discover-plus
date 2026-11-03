@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-04-23 00:45+0000\n"
-"PO-Revision-Date: 2026-04-03 20:17+0200\n"
+"POT-Creation-Date: 2026-09-22 00:46+0000\n"
+"PO-Revision-Date: 2026-09-22 21:55+0200\n"
 "Last-Translator: Alexander Yavorskiy <kekcuha@gmail.com>\n"
 "Language-Team: Russian <kde-russian@lists.kde.ru>\n"
 "Language: ru\n"
@@ -53,7 +53,7 @@ msgstr "Не в сети"
 #: notifier/DiscoverNotifier.cpp:373
 #, kde-format
 msgid "Applying unattended updates…"
-msgstr "Выполняется не требующее подтверждения обновление..."
+msgstr "Выполняется автоматическое обновление…"
 
 #: notifier/DiscoverNotifier.cpp:398
 #, kde-format
@@ -79,8 +79,9 @@ msgstr "Обновить и выключить"
 
 #: notifier/DiscoverNotifier.cpp:449
 #, kde-format
+msgctxt "A new distro release is available for upgrade"
 msgid "Upgrade available"
-msgstr "Доступны обновления"
+msgstr "Доступно обновление системы"
 
 #: notifier/DiscoverNotifier.cpp:450
 #, kde-format
@@ -90,14 +91,14 @@ msgstr "Доступна версия %1."
 
 #: notifier/DiscoverNotifier.cpp:453
 #, kde-format
-msgctxt "@action:button"
+msgctxt "@action:button Upgrade to new distro release"
 msgid "Upgrade"
-msgstr "Обновить"
+msgstr "Обновить систему"
 
 #: notifier/main.cpp:39
 #, kde-format
 msgid "Discover Notifier"
-msgstr "Уведомления центра программ Discover"
+msgstr "Уведомления центра приложений Discover"
 
 #: notifier/main.cpp:41
 #, kde-format
@@ -145,7 +146,7 @@ msgstr "Обновления"
 #, kde-format
 msgctxt "@action:button Opens Discover's main UI to analyze the updates"
 msgid "Open Discover…"
-msgstr "Открыть центр программ Discover…"
+msgstr "Открыть центр приложений Discover…"
 
 #: notifier/NotifierItem.cpp:47
 #, kde-format
@@ -156,7 +157,7 @@ msgstr "Начать обновление"
 #: notifier/NotifierItem.cpp:50
 #, kde-format
 msgid "Refresh…"
-msgstr "Обновить..."
+msgstr "Обновить…"
 
 #: notifier/NotifierItem.cpp:56
 #, kde-format

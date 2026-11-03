@@ -142,6 +142,7 @@ DiscoverPage {
             return;
         }
         if (updateAction.enabled) {
+            resourcesUpdatesModel.prepare();
             updateAction.trigger()
             app.quitWhenIdle();
             startHeadlessUpdate = false;
@@ -342,6 +343,7 @@ DiscoverPage {
             id: statusLabel
 
             width: parent.width - Kirigami.Units.gridUnit * 2
+            anchors.horizontalCenter: parent.horizontalCenter
             // Fixed Y location so it doesn't jump around as backends load
             y: (parent.height / 2) - (Kirigami.Units.gridUnit * 3)
 
@@ -594,7 +596,7 @@ DiscoverPage {
                 QQC2.Frame {
                     Layout.fillWidth: true
                     Layout.leftMargin: delegateLayout.extraContentLeadingMargin
-                    implicitHeight: view.implicitHeight
+                    implicitHeight: view.implicitHeight + topPadding + bottomPadding
                     visible: listItem.model.extended
                     QQC2.Label {
                         id: view
@@ -603,11 +605,10 @@ DiscoverPage {
                             left: parent.left
                         }
                         text: listItem.model.changelog.length > 0 ? listItem.model.changelog : listItem.fallbackUpdateDetailsText()
-                        textFormat: Text.StyledText
+                        textFormat: Text.MarkdownText
                         wrapMode: Text.WordWrap
                         color: listItem.down ? Kirigami.Theme.highlightedTextColor : Kirigami.Theme.textColor
                         onLinkActivated: link => Qt.openUrlExternally(link)
-
                     }
                 }
 

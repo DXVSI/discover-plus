@@ -7,15 +7,12 @@
 
 #include "PackageKitNotifier.h"
 
-#include <KConfigGroup>
-#include <KDesktopFile>
 #include <KLocalizedString>
 #include <KNotification>
 #include <PackageKit/Daemon>
 #include <PackageKit/Offline>
 #include <QDBusInterface>
 #include <QDebug>
-#include <QFile>
 #include <QFileSystemWatcher>
 #include <QProcess>
 #include <QRegularExpression>
@@ -31,10 +28,6 @@
 
 #ifdef HAVE_MALLOC_TRIM
 #include <malloc.h>
-#endif
-
-#if !QPK_CHECK_VERSION(1, 1, 4)
-#include "pk-offline-private.h"
 #endif
 
 using namespace std::chrono_literals;
@@ -95,7 +88,6 @@ void PackageKitNotifier::checkOfflineUpdates()
     auto offline = PackageKit::Daemon::global()->offline();
 
     const bool isMobile = QByteArrayList{"1", "true"}.contains(qgetenv("QT_QUICK_CONTROLS_MOBILE"));
-#if QPK_CHECK_VERSION(1, 1, 4)
     auto results = offline->getResults();
     results.waitForFinished();
     if (results.isError()) {
@@ -110,23 +102,6 @@ void PackageKitNotifier::checkOfflineUpdates()
         PackageKit::Transaction::ErrorAllPackagesAlreadyInstalled,
     };
     const QString errorDetails = results.errorDescription();
-#else
-    if (!QFile::exists(QStringLiteral(PK_OFFLINE_RESULTS_FILENAME))) {
-        return;
-    }
-    KDesktopFile file(QStringLiteral(PK_OFFLINE_RESULTS_FILENAME));
-    KConfigGroup group(&file, QStringLiteral(PK_OFFLINE_RESULTS_GROUP));
-
-    const bool success = group.readEntry("Success", false);
-    const QString packagesJoined = group.readEntry("Packages");
-    const auto packages = QStringView(packagesJoined).split(QLatin1Char(','));
-    const QString errorCode = group.readEntry("ErrorCode");
-    static const QSet<QString> allowedAlreadyInstalled = {
-        QStringLiteral("package-already-installed"),
-        QStringLiteral("all-packages-already-installed"),
-    };
-    const QString errorDetails = group.readEntry("ErrorDetails");
-#endif
     if (!success && !allowedAlreadyInstalled.contains(errorCode)) {
         auto *notification = new KNotification(QStringLiteral("OfflineUpdateFailed"), KNotification::Persistent);
         notification->setIconName(QStringLiteral("dialog-error"));

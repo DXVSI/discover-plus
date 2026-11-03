@@ -9,6 +9,7 @@
 
 #include "FwupdBackend.h"
 #include "FwupdResource.h"
+#include "glibholder.h"
 #include <Transaction/Transaction.h>
 
 class FwupdResource;
@@ -31,5 +32,5 @@ private:
 
     FwupdResource *const m_app;
     FwupdBackend *const m_backend;
-    GCancellable *const m_cancellable;
+    GLibHolder<GCancellable> m_cancellable;
 };

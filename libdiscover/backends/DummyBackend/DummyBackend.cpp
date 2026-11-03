@@ -95,6 +95,22 @@ void DummyBackend::populate(const QString &n)
         m_resources.insert(name, res);
         connect(res, &DummyResource::stateChanged, this, &DummyBackend::updatesCountChanged);
     }
+
+#ifdef DUMMY_REMOVALS
+    QTimer *t = new QTimer(this);
+    t->setInterval(500);
+    t->setSingleShot(false);
+    t->start();
+    connect(t, &QTimer::timeout, this, [this] {
+        if (m_resources.isEmpty()) {
+            return;
+        }
+        auto r = m_resources.begin();
+        auto x = m_resources.take(r.key());
+        Q_EMIT resourceRemoved(x);
+        x->deleteLater();
+    });
+#endif
 }
 
 void DummyBackend::toggleFetching()

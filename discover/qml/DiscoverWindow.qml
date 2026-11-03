@@ -370,19 +370,20 @@ Kirigami.ApplicationWindow {
             ColumnLayout {
                 spacing: Kirigami.Units.largeSpacing
 
-                QQC2.Label {
+                // Selectable so that the message can be copied into a bug report
+                Kirigami.SelectableLabel {
                     id: messageLabel
 
                     Layout.fillWidth: true
                     Layout.maximumWidth: Kirigami.Units.gridUnit * 20
 
-                    textFormat: Text.StyledText
-                    wrapMode: Text.WordWrap
+                    textFormat: TextEdit.RichText
+                    wrapMode: TextEdit.WordWrap
                 }
 
                 Kirigami.UrlButton {
                     Layout.fillWidth: true
-                    text: i18nc("@info %1 is the name of the operating system", "Report this issue to %1", Discover.ResourcesModel.distroName())
+                    text: i18nc("@info %1 is the name of the operating system", "Report this issue to %1", Discover.ResourcesModel.distroName)
                     url: Discover.ResourcesModel.distroBugReportUrl()
                 }
             }

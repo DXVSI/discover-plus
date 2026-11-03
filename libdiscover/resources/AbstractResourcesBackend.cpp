@@ -47,7 +47,7 @@ QDebug operator<<(QDebug debug, const StreamResult &sss)
 ResultsStream::ResultsStream(const QString &objectName, const QVector<StreamResult> &resources)
     : ResultsStream(objectName)
 {
-    Q_ASSERT(!kContains(resources, [](const StreamResult &result) {
+    Q_ASSERT(!std::ranges::any_of(resources, [](const StreamResult &result) {
         return result.resource == nullptr;
     }));
     QTimer::singleShot(0, this, [resources, this]() {

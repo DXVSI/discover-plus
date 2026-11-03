@@ -17,7 +17,6 @@ MouseArea {
     property alias interactive: indicator.interactive
     property alias currentIndex: indicator.currentIndex
     property alias count: indicator.count
-    property alias focusPolicy: indicator.focusPolicy
 
     property alias topPadding: indicator.topPadding
     property alias bottomPadding: indicator.bottomPadding
@@ -42,6 +41,7 @@ MouseArea {
     QQC2.PageIndicator {
         id: indicator
 
+        focusPolicy: root.focusPolicy
         LayoutMirroring.enabled: root.LayoutMirroring.enabled
 
         anchors.top: parent.top

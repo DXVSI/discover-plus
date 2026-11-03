@@ -30,6 +30,7 @@ UpdateModel::UpdateModel(QObject *parent)
 {
     connect(ResourcesModel::global(), &ResourcesModel::fetchingChanged, this, &UpdateModel::activityChanged);
     connect(ResourcesModel::global(), &ResourcesModel::updatesCountChanged, this, &UpdateModel::activityChanged);
+    connect(ResourcesModel::global(), &ResourcesModel::resourceRemoved, this, &UpdateModel::removeResource);
     connect(this, &UpdateModel::toUpdateChanged, this, &UpdateModel::updateSizeChanged);
 
     m_updateSizeTimer->setInterval(100);
@@ -249,7 +250,7 @@ void UpdateModel::setResources(const QList<AbstractResource *> &resources)
     }
     m_resources = resources;
     for (auto resource : std::as_const(resources)) {
-        connect(resource, &QObject::destroyed, this, &UpdateModel::resourceDestroyed, Qt::UniqueConnection);
+        connect(resource, &QObject::destroyed, this, &UpdateModel::removeResource, Qt::UniqueConnection);
     }
 
     beginResetModel();
@@ -304,9 +305,31 @@ void UpdateModel::setResources(const QList<AbstractResource *> &resources)
     Q_EMIT toUpdateChanged();
 }
 
-void UpdateModel::resourceDestroyed(QObject *resource)
+void UpdateModel::removeResource(QObject *resource)
 {
-    m_resources.removeAll(resource);
+    if (m_resources.removeAll(resource) == 0) {
+        return;
+    }
+    disconnect(resource, &QObject::destroyed, this, &UpdateModel::removeResource);
+
+    UpdateItem *item = nullptr;
+    for (UpdateItem *it : std::as_const(m_updateItems)) {
+        if (it->app() == resource) {
+            item = it;
+            break;
+        }
+    }
+
+    if (item) {
+        const int row = m_updateItems.indexOf(item);
+        beginRemoveRows({}, row, row);
+        m_updateItems.removeAt(row);
+        delete item;
+        endRemoveRows();
+    }
+
+    Q_EMIT hasUpdatesChanged(!m_resources.isEmpty());
+    Q_EMIT toUpdateChanged();
 }
 
 bool UpdateModel::hasUpdates() const

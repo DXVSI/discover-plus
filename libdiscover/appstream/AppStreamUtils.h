@@ -25,6 +25,8 @@ DISCOVERCOMMON_EXPORT AppStream::Image imageOfKind(const QList<AppStream::Image>
 
 DISCOVERCOMMON_EXPORT QString changelogToHtml(const AppStream::Component &appdata);
 
+DISCOVERCOMMON_EXPORT QString changelogToMarkdown(const AppStream::Component &appdata);
+
 DISCOVERCOMMON_EXPORT Screenshots fetchScreenshots(const AppStream::Component &appdata);
 
 DISCOVERCOMMON_EXPORT QJsonArray licenses(const AppStream::Component &appdata);

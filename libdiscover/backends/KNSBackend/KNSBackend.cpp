@@ -470,13 +470,13 @@ void KNSBackend::slotEntryEvent(const KNSCore::Entry &entry, KNSCore::Entry::Ent
 Transaction *KNSBackend::removeApplication(AbstractResource *app)
 {
     auto res = qobject_cast<KNSResource *>(app);
-    return new KNSTransaction(this, res, Transaction::RemoveRole);
+    return new KNSTransaction(res, Transaction::RemoveRole);
 }
 
 Transaction *KNSBackend::installApplication(AbstractResource *app)
 {
     auto res = qobject_cast<KNSResource *>(app);
-    return new KNSTransaction(this, res, Transaction::InstallRole);
+    return new KNSTransaction(res, Transaction::InstallRole);
 }
 
 Transaction *KNSBackend::installApplication(AbstractResource *app, const AddonList & /*addons*/)
@@ -535,7 +535,7 @@ ResultsStream *KNSBackend::search(const AbstractResourcesBackend::Filters &filte
         deferredResultStream(stream, start);
         return stream;
         // Make sure we actually are one of the requested categories before searching
-    } else if ((filter.category && kContains(m_categories, [&filter](const QString &cat) {
+    } else if ((filter.category && std::ranges::any_of(m_categories, [&filter](const QString &cat) {
                     return filter.category->matchesCategoryName(cat);
                 }))) {
         return searchStream(filter.search);

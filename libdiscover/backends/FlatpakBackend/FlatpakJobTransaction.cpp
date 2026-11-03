@@ -117,7 +117,7 @@ private:
 };
 
 FlatpakJobTransaction::FlatpakJobTransaction(FlatpakResource *app, Role role)
-    : Transaction(app->backend(), app, role, {})
+    : Transaction(app, role, {})
     , m_app(app)
 {
     setCancellable(true);

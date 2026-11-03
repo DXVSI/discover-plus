@@ -56,7 +56,7 @@ msgstr "Частота обновления:"
 #, kde-format
 msgctxt "@title:group"
 msgid "Notification frequency:"
-msgstr "Частота уведомления:"
+msgstr "Частота уведомлений:"
 
 #: kcm/ui/main.qml:79
 #, kde-format

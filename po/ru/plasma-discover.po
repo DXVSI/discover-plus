@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-09-17 00:45+0000\n"
+"POT-Creation-Date: 2026-10-09 00:48+0000\n"
 "PO-Revision-Date: 2026-09-06 18:05+0200\n"
 "Last-Translator: Alexander Yavorskiy <kekcuha@gmail.com>\n"
 "Language-Team: Russian <kde-russian@lists.kde.ru>\n"
@@ -33,9 +33,8 @@ msgctxt "@title %1 is the name"
 msgid ""
 "%1 is not configured for installing apps through Discover—only app add-ons"
 msgstr ""
-"Используемый дистрибутив %1 не настроен для установки приложений с "
-"использованием центра программ Discover. Возможно устанавливать только "
-"дополнения и расширения приложений."
+"Используемый дистрибутив %1 не настроен для установки приложений через "
+"Discover. Можно устанавливать только дополнения и расширения приложений."
 
 #: discover/DiscoverObject.cpp:199
 #, kde-kuit-format
@@ -45,10 +44,10 @@ msgid ""
 "<interface>Settings</interface> page, under <interface>Missing Backends</"
 "interface>.<nl/><nl/>Please <link url='%1'>report this issue to %2.</link>"
 msgstr ""
-"Чтобы использовать центр программ Discover для установки приложений, "
-"установите модуль поддержки на странице <interface>Настройка</interface> в "
-"разделе <interface>Неустановленные модули</interface>.<nl/><nl/><link "
-"url='%1'>Сообщите  %2 об этой ситуации</link>."
+"Чтобы устанавливать приложения с помощью Discover, установите модуль "
+"поддержки на странице <interface>Настройка</interface> в разделе "
+"<interface>Неустановленные модули</interface>.<nl/><nl/><link "
+"url='%1'>Сообщите %2 об этой ситуации</link>."
 
 #: discover/DiscoverObject.cpp:206
 #, kde-kuit-format
@@ -61,12 +60,11 @@ msgid ""
 "command> package manager.<nl/><nl/> Review <link url='https://archlinux.org/"
 "packages/extra/x86_64/discover/'>%1's packaging for Discover</link>"
 msgstr ""
-"Чтобы использовать центр программ Discover для установки приложений, сначала "
-"воспользуйтесь диспетчером пакетов <command>pacman</command> для установки "
-"<link url='https://wiki.archlinux.org/title/Flatpak#Installation'>Flatpak</"
-"link>.<nl/><nl/> Ознакомьтесь с дополнительной информацией о <link "
-"url='https://archlinux.org/packages/extra/x86_64/discover/'>пакете %1 для "
-"Discover</link>."
+"Чтобы устанавливать приложения с помощью Discover, сначала воспользуйтесь "
+"диспетчером пакетов <command>pacman</command> для установки <link "
+"url='https://wiki.archlinux.org/title/Flatpak#Installation'>Flatpak</link>."
+"<nl/><nl/> Ознакомьтесь с дополнительной информацией о <link url='https://"
+"archlinux.org/packages/extra/x86_64/discover/'>пакете %1 для Discover</link>."
 
 #: discover/DiscoverObject.cpp:216
 #, kde-kuit-format
@@ -79,14 +77,13 @@ msgid ""
 "instead using the <command>pacman</command> command-line tool to manage "
 "packages.</para>"
 msgstr ""
-"Дистрибутив %1 не предоставляет достаточно информации для поддержки своих "
-"пакетов, что может привести к возникновению различных ошибок. Разработчики "
-"KDE не будут рассматривать такие сообщения об ошибках. Настоятельно "
-"рекомендуется удалить пакет <resource>packagekit-qt6</resource> и "
-"использовать центр программ Discover только для управления дополнениями и "
-"самодостаточными пакетами в форматах Flatpak и Snap. <para>Сопровождающие "
-"дистрибутива %1 для управления пакетами рекомендуют использовать приложение "
-"<command>pacman</command>, работающее в командной строке.</para>"
+"Поддержка управления пакетами %1 неполная, возможны самые разные проблемы. "
+"Не сообщайте о них в KDE. Настоятельно рекомендуется удалить пакет "
+"<resource>packagekit-qt6</resource> и использовать центр приложений Discover "
+"только для управления дополнениями и самодостаточными пакетами в форматах "
+"Flatpak и Snap. <para>Сопровождающие дистрибутива %1 для управления пакетами "
+"рекомендуют использовать программу <command>pacman</command>, работающую в "
+"командной строке.</para>"
 
 #: discover/DiscoverObject.cpp:305
 #, kde-format
@@ -104,8 +101,8 @@ msgid ""
 "Cannot interact with flatpak resources without the flatpak backend %1. "
 "Please install it first."
 msgstr ""
-"Для использования формат flatpak требуется установка модуля для работы с "
-"этим форматом (%1)."
+"Для работы с ресурсами Flatpak требуется модуль поддержки Flatpak (%1). "
+"Сначала установите его."
 
 #: discover/DiscoverObject.cpp:353
 #, kde-format
@@ -133,14 +130,14 @@ msgid ""
 "(No entry for %1)<nl/><nl/>Please <link url='%2'>report this issue to %3.</"
 "link>"
 msgstr ""
-"(Нет ни одной записи о %1)<nl/><nl/> <link url='%2'>Сообщите %3 об этой "
+"(Нет ни одной записи о %1)<nl/><nl/><link url='%2'>Сообщите %3 об этой "
 "ситуации</link>."
 
 #: discover/DiscoverObject.cpp:514 discover/DiscoverObject.cpp:516
 #: discover/main.cpp:120
 #, kde-format
 msgid "Discover"
-msgstr "Центр программ Discover"
+msgstr "Центр приложений Discover"
 
 #: discover/DiscoverObject.cpp:517
 #, kde-format
@@ -153,19 +150,18 @@ msgstr ""
 #: discover/main.cpp:34
 #, kde-format
 msgid "Directly open the specified application by its appstream:// URI."
-msgstr "Открыть программу по её адресу (appstream:// URI)."
+msgstr "Открыть приложение по его адресу (appstream:// URI)."
 
 #: discover/main.cpp:35
 #, kde-format
 msgid "Open with a search for programs that can deal with the given mimetype."
 msgstr ""
-"Открыть поиск программы, которая способна обрабатывать данные этого типа "
-"MIME."
+"Открыть поиск приложений, способных обрабатывать данные этого типа MIME."
 
 #: discover/main.cpp:36
 #, kde-format
 msgid "Display a list of entries with a category."
-msgstr "Отображение списка записей с категорией."
+msgstr "Показать список записей категории."
 
 #: discover/main.cpp:37
 #, kde-format
@@ -197,7 +193,7 @@ msgstr "Строка поиска"
 #: discover/main.cpp:42
 #, kde-format
 msgid "Lists the available options for user feedback"
-msgstr "Показать список данных обратной связи."
+msgstr "Показать доступные параметры обратной связи."
 
 #: discover/main.cpp:43
 #, kde-format
@@ -301,7 +297,7 @@ msgstr "Добавить"
 #: discover/qml/AddSourceDialog.qml:50 discover/qml/DiscoverWindow.qml:289
 #: discover/qml/InstallApplicationButton.qml:51
 #: discover/qml/ProgressView.qml:163 discover/qml/SourcesPage.qml:207
-#: discover/qml/UpdatesPage.qml:316 discover/qml/WebflowDialog.qml:41
+#: discover/qml/UpdatesPage.qml:317 discover/qml/WebflowDialog.qml:41
 #, kde-format
 msgid "Cancel"
 msgstr "Отмена"
@@ -368,7 +364,8 @@ msgstr ""
 "их без получения явного разрешения автора.<nl/><nl/>Приложение может быть "
 "как полностью безопасным для использования, так и наоборот: может собирать "
 "личные данные, отслеживать местоположение и передавать ваши файлы третьим "
-"лицам. Более подробная информация представлена на странице <link url='%2'>"
+"лицам. Используйте его только в том случае, если полностью доверяете его "
+"авторам. Более подробная информация представлена на странице <link url='%2'>"
 "%2</link>."
 
 #: discover/qml/ApplicationPage.qml:79
@@ -488,7 +485,7 @@ msgstr "Отправка ссылки на приложение"
 #, kde-format
 msgctxt "The subject line for an email. %1 is the name of an application"
 msgid "Check out the %1 app!"
-msgstr "Познакомьтесь с %1!"
+msgstr "Попробуйте приложение %1"
 
 #: discover/qml/ApplicationPage.qml:292
 #, kde-format
@@ -755,7 +752,7 @@ msgstr "Поиск"
 #: discover/qml/ApplicationsListPage.qml:102 discover/qml/ReviewsPage.qml:141
 #, kde-format
 msgid "Sort: %1"
-msgstr "Сортировать: %1"
+msgstr "Сортировка: %1"
 
 #: discover/qml/ApplicationsListPage.qml:107
 #, kde-format
@@ -771,7 +768,7 @@ msgstr "По названию"
 #: discover/qml/ApplicationsListPage.qml:129
 #, kde-format
 msgid "Number of reviews"
-msgstr "Количество отзывов"
+msgstr "По количеству отзывов"
 
 #: discover/qml/ApplicationsListPage.qml:140
 #, kde-format
@@ -787,7 +784,7 @@ msgstr "По размеру"
 #: discover/qml/ApplicationsListPage.qml:162
 #, kde-format
 msgid "Release date"
-msgstr "Дата выпуска"
+msgstr "По дате выпуска"
 
 #: discover/qml/ApplicationsListPage.qml:178
 #, kde-format
@@ -810,7 +807,7 @@ msgstr "Искать во всех категориях"
 #, kde-format
 msgctxt "@action:button %1 is the name of an application"
 msgid "Search the Web for \"%1\""
-msgstr "Искать «%1» в интернете"
+msgstr "Искать «%1» в Интернете"
 
 #: discover/qml/ApplicationsListPage.qml:281
 #, kde-format
@@ -834,14 +831,15 @@ msgid ""
 "been reviewed by your distributor for functionality or stability. Use with "
 "caution."
 msgstr ""
-"Приложение «%1» может быть доступно в интернете. Приложения, опубликованные "
-"в интернете, не проверялись на работоспособность и стабильность. Будьте "
-"внимательны при использовании приложений, полученных из этого источника."
+"Приложение «%1» может быть доступно в Интернете. Приложения из Интернета не "
+"проверялись поставщиком дистрибутива на работоспособность и стабильность. "
+"Будьте внимательны при использовании приложений, полученных из этого "
+"источника."
 
 #: discover/qml/ApplicationsListPage.qml:317
 #, kde-format
 msgid "Still looking…"
-msgstr "Выполняется поиск..."
+msgstr "Поиск продолжается…"
 
 #: discover/qml/BrowsingPage.qml:20
 #, kde-format
@@ -986,8 +984,8 @@ msgstr "О &программе"
 msgid "S&ettings"
 msgstr "&Настройка"
 
-#: discover/qml/DiscoverWindow.qml:174 discover/qml/DiscoverWindow.qml:368
-#: discover/qml/DiscoverWindow.qml:480
+#: discover/qml/DiscoverWindow.qml:174 discover/qml/DiscoverWindow.qml:369
+#: discover/qml/DiscoverWindow.qml:481
 #, kde-format
 msgid "Error"
 msgstr "Ошибка"
@@ -1002,36 +1000,36 @@ msgstr "Не удалось найти ресурс: «%1»"
 msgid "Proceed"
 msgstr "Продолжить"
 
-#: discover/qml/DiscoverWindow.qml:334
+#: discover/qml/DiscoverWindow.qml:335
 #, kde-format
 msgctxt "@info %1 is the name of the operating system"
 msgid "Report this issue to %1"
 msgstr "Сообщить %1 об ошибке"
 
-#: discover/qml/DiscoverWindow.qml:350
+#: discover/qml/DiscoverWindow.qml:351
 #, kde-format
 msgctxt "@title:dialog"
 msgid "Discover is Offline"
 msgstr "Discover в автономном режиме"
 
-#: discover/qml/DiscoverWindow.qml:351
+#: discover/qml/DiscoverWindow.qml:352
 #, kde-format
 msgctxt "@info"
 msgid ""
 "Please connect to a network to install applications and update the system."
 msgstr "Чтобы установить приложения и обновить систему, подключитесь к сети."
 
-#: discover/qml/DiscoverWindow.qml:368
+#: discover/qml/DiscoverWindow.qml:369
 #, kde-format
 msgid "Error %1 of %2"
 msgstr "Ошибка %1 из %2"
 
-#: discover/qml/DiscoverWindow.qml:368 discover/qml/UpdatesPage.qml:47
+#: discover/qml/DiscoverWindow.qml:369 discover/qml/UpdatesPage.qml:47
 #, kde-format
 msgid "Update Issue"
 msgstr "Ошибка обновления"
 
-#: discover/qml/DiscoverWindow.qml:379
+#: discover/qml/DiscoverWindow.qml:380
 #, kde-format
 msgid ""
 "There was an issue during the update or installation process. Please try "
@@ -1039,24 +1037,24 @@ msgid ""
 msgstr ""
 "Во время установки или обновления произошла ошибка. Повторите попытку позже."
 
-#: discover/qml/DiscoverWindow.qml:415
+#: discover/qml/DiscoverWindow.qml:416
 #, kde-format
 msgctxt "@action:button"
 msgid "Show Previous"
 msgstr "Предыдущее"
 
-#: discover/qml/DiscoverWindow.qml:426
+#: discover/qml/DiscoverWindow.qml:427
 #, kde-format
 msgctxt "@action:button"
 msgid "Show Next"
 msgstr "Следующее"
 
-#: discover/qml/DiscoverWindow.qml:438 discover/qml/UpdatesPage.qml:69
+#: discover/qml/DiscoverWindow.qml:439 discover/qml/UpdatesPage.qml:69
 #, kde-format
 msgid "See Technical Details"
 msgstr "Технические подробности"
 
-#: discover/qml/DiscoverWindow.qml:446
+#: discover/qml/DiscoverWindow.qml:447
 #, kde-format
 msgid "Copy to Clipboard"
 msgstr "Копировать в буфер обмена"
@@ -1079,7 +1077,7 @@ msgstr ""
 #: discover/qml/Feedback.qml:20
 #, kde-format
 msgid "Submitting usage information…"
-msgstr "Передача статистики использования..."
+msgstr "Передача статистики использования…"
 
 #: discover/qml/Feedback.qml:20
 #, kde-format
@@ -1089,7 +1087,7 @@ msgstr "Настройка"
 #: discover/qml/Feedback.qml:24
 #, kde-format
 msgid "Configure Feedback…"
-msgstr "Настроить параметры обратной связи..."
+msgstr "Настроить параметры обратной связи…"
 
 #: discover/qml/Feedback.qml:31 discover/qml/SourcesPage.qml:23
 #, kde-format
@@ -1107,23 +1105,23 @@ msgstr ""
 #: discover/qml/Feedback.qml:60
 #, kde-format
 msgid "Contribute…"
-msgstr "Содействовать..."
+msgstr "Содействовать…"
 
 #: discover/qml/Feedback.qml:65
 #, kde-format
 msgid "We are looking for your feedback!"
-msgstr "Нам нужна обратная связь!"
+msgstr "Нам нужна ваша обратная связь"
 
 #: discover/qml/Feedback.qml:65
 #, kde-format
 msgid "Participate…"
-msgstr "Участвовать..."
+msgstr "Участвовать…"
 
 #: discover/qml/InstallApplicationButton.qml:29
 #, kde-format
 msgctxt "State being fetched"
 msgid "Loading…"
-msgstr "Загрузка..."
+msgstr "Загрузка…"
 
 #: discover/qml/InstallApplicationButton.qml:33
 #, kde-format
@@ -1166,7 +1164,7 @@ msgstr "Задачи"
 #, kde-format
 msgctxt "TransactioName - TransactionStatus: speed, remaining time"
 msgid "%1: %2, %3 remaining"
-msgstr "%1 - %2: осталось %3"
+msgstr "%1: %2, осталось %3"
 
 #: discover/qml/ProgressView.qml:152
 #, kde-format
@@ -1267,9 +1265,9 @@ msgid ""
 "url='%2'>%2</link> instead, as it may be an easily fixable packaging issue "
 "rather than a flaw in the app itself."
 msgstr ""
-"Если %1 не удаётся запустить, сообщите об этом разработчикам по адресу "
-"<link  url='%2'>%2</link>, поскольку дело может быть в простой ошибке при "
-"создании  пакета, а не в ошибке в самом приложении."
+"Если %1 не удаётся запустить, сообщите об этом разработчикам по адресу <link "
+"url='%2'>%2</link>, поскольку дело может быть в простой ошибке при создании "
+"пакета, а не в ошибке в самом приложении."
 
 #: discover/qml/ReviewDialog.qml:82
 #, kde-kuit-format
@@ -1358,18 +1356,18 @@ msgstr "Напишите отзыв"
 #: discover/qml/ReviewDialog.qml:202
 #, kde-format
 msgid "Keep writing…"
-msgstr "Продолжайте писать..."
+msgstr "Продолжайте писать…"
 
 #: discover/qml/ReviewDialog.qml:205
 #, kde-format
 msgid "Too long!"
-msgstr "Слишком длинный отзыв!"
+msgstr "Слишком длинный отзыв"
 
 #: discover/qml/ReviewDialog.qml:208
 #, kde-format
 msgctxt "@info:usagetip"
 msgid "Insert a name"
-msgstr "Введите название"
+msgstr "Введите имя"
 
 #: discover/qml/ReviewsPage.qml:43
 #, kde-format
@@ -1379,7 +1377,7 @@ msgstr "Отзывы о %1"
 #: discover/qml/ReviewsPage.qml:105
 #, kde-format
 msgid "Write a Review…"
-msgstr "Оставить отзыв..."
+msgstr "Оставить отзыв…"
 
 #: discover/qml/ReviewsPage.qml:118
 #, kde-format
@@ -1390,7 +1388,7 @@ msgstr "Чтобы оставить отзыв, нужно установить 
 #, kde-format
 msgctxt "@label:listbox Most relevant reviews"
 msgid "Most Relevant"
-msgstr "Самые соответствующие"
+msgstr "Наиболее подходящие"
 
 #: discover/qml/ReviewsPage.qml:152
 #, kde-format
@@ -1456,7 +1454,7 @@ msgstr "Источник по умолчанию"
 #: discover/qml/SourcesPage.qml:124
 #, kde-format
 msgid "Add Source…"
-msgstr "Добавить источник..."
+msgstr "Добавить источник…"
 
 #: discover/qml/SourcesPage.qml:151
 #, kde-format
@@ -1540,7 +1538,8 @@ msgstr "Копировать текст"
 msgctxt "@info %1 is the name of the user's distro/OS"
 msgid "Error message copied. Remember to report it to %1, not KDE!"
 msgstr ""
-"Не удалось скопировать текст. Сообщите об этом разработчикам %1, а не KDE!"
+"Сообщение об ошибке скопировано. Не забудьте сообщить о ней разработчикам "
+"%1, а не в KDE."
 
 #: discover/qml/UpdatesPage.qml:115
 #, kde-format
@@ -1548,92 +1547,92 @@ msgctxt "@action:button %1 is the name of the user's distro/OS"
 msgid "Report Issue to %1"
 msgstr "Сообщить об ошибке разработчикам %1"
 
-#: discover/qml/UpdatesPage.qml:162
+#: discover/qml/UpdatesPage.qml:163
 #, kde-format
 msgctxt "@action:button as in, 'update the selected items' "
 msgid "Update Selected"
 msgstr "Установить выбранные обновления"
 
-#: discover/qml/UpdatesPage.qml:162
+#: discover/qml/UpdatesPage.qml:163
 #, kde-format
 msgctxt "@action:button as in, 'update all items'"
 msgid "Update All"
 msgstr "Установить обновления"
 
-#: discover/qml/UpdatesPage.qml:189
+#: discover/qml/UpdatesPage.qml:190
 #, kde-format
 msgctxt "@info"
 msgid "A pending update will be installed when restarting the system."
-msgstr "Обновления будут установлены после перезапуска системы"
+msgstr "Ожидающее обновление будет установлено при перезагрузке системы."
 
-#: discover/qml/UpdatesPage.qml:210
+#: discover/qml/UpdatesPage.qml:211
 #, kde-format
 msgid "Ignore"
 msgstr "Игнорировать"
 
-#: discover/qml/UpdatesPage.qml:260
+#: discover/qml/UpdatesPage.qml:261
 #, kde-format
 msgid "Select All"
 msgstr "Выделить все"
 
-#: discover/qml/UpdatesPage.qml:268
+#: discover/qml/UpdatesPage.qml:269
 #, kde-format
 msgid "Select None"
 msgstr "Снять выделение"
 
-#: discover/qml/UpdatesPage.qml:287
+#: discover/qml/UpdatesPage.qml:288
 #, kde-format
 msgctxt "@info After updates complete, shut down/restart/quit"
 msgid "After updates complete:"
 msgstr "После завершения обновлений:"
 
-#: discover/qml/UpdatesPage.qml:293
+#: discover/qml/UpdatesPage.qml:294
 #, kde-format
 msgctxt "@item:inlistbox after updates complete, do nothing"
 msgid "Do nothing"
 msgstr "Ничего не делать"
 
-#: discover/qml/UpdatesPage.qml:294
+#: discover/qml/UpdatesPage.qml:295
 #, kde-format
 msgctxt "@item:inlistbox after updates complete, restart"
 msgid "Restart"
 msgstr "Перезагрузить"
 
-#: discover/qml/UpdatesPage.qml:295
+#: discover/qml/UpdatesPage.qml:296
 #, kde-format
 msgctxt "@item:inlistbox after updates complete, shut down"
 msgid "Shut down"
 msgstr "Выключить"
 
-#: discover/qml/UpdatesPage.qml:296
+#: discover/qml/UpdatesPage.qml:297
 #, kde-format
 msgctxt "@item:inlistbox after updates complete, quit Discover"
 msgid "Quit Discover"
 msgstr "Выйти из Discover"
 
-#: discover/qml/UpdatesPage.qml:306
+#: discover/qml/UpdatesPage.qml:307
 #, kde-format
 msgid "Total size: %1"
 msgstr "Общий размер: %1"
 
-#: discover/qml/UpdatesPage.qml:336
+#: discover/qml/UpdatesPage.qml:337
 #, kde-format
 msgctxt "@action:button"
 msgid "Restart and Install Updates"
 msgstr "Перезагрузить для установки обновлений"
 
-#: discover/qml/UpdatesPage.qml:527
+#: discover/qml/UpdatesPage.qml:529
 #, kde-format
 msgid "Installing"
 msgstr "Установка"
 
-#: discover/qml/UpdatesPage.qml:543
+#: discover/qml/UpdatesPage.qml:545
 #, kde-format
 msgctxt "@info This update is from the following source"
 msgid "From:"
 msgstr "Источник:"
 
-#: discover/qml/UpdatesPage.qml:560
+#: discover/qml/UpdatesPage.qml:562
 #, kde-format
 msgctxt ""
 "%1 is the backend that provides this app, %2 is the specific repository or "
@@ -1641,51 +1640,51 @@ msgctxt ""
 msgid "%1 (%2)"
 msgstr "%1 (%2)"
 
-#: discover/qml/UpdatesPage.qml:572
+#: discover/qml/UpdatesPage.qml:574
 #, kde-format
 msgctxt "@action:button minimize the length of this label"
 msgid "More Info…"
 msgstr "Дополнительная информация…"
 
-#: discover/qml/UpdatesPage.qml:645
+#: discover/qml/UpdatesPage.qml:646
 #, kde-format
 msgctxt "@info"
 msgid "Fetching updates…"
 msgstr "Проверка наличия обновлений…"
 
-#: discover/qml/UpdatesPage.qml:660
+#: discover/qml/UpdatesPage.qml:661
 #, kde-format
 msgctxt "@info"
 msgid "Updates"
 msgstr "Обновления"
 
-#: discover/qml/UpdatesPage.qml:670
+#: discover/qml/UpdatesPage.qml:671
 #, kde-format
 msgctxt "@info"
 msgid "Updates will be installed after the system is restarted"
-msgstr "Обновления будут установлены после перезапуска системы"
+msgstr "Обновления будут установлены после перезагрузки системы"
 
-#: discover/qml/UpdatesPage.qml:672
+#: discover/qml/UpdatesPage.qml:673
 #, kde-format
 msgctxt "@info"
 msgid "You can keep using the system if you’re not ready to restart yet."
 msgstr ""
 "Можно продолжить работу в системе, если пока рано выполнять перезагрузку."
 
-#: discover/qml/UpdatesPage.qml:677 discover/qml/UpdatesPage.qml:684
-#: discover/qml/UpdatesPage.qml:691
+#: discover/qml/UpdatesPage.qml:678 discover/qml/UpdatesPage.qml:685
+#: discover/qml/UpdatesPage.qml:692
 #, kde-format
 msgctxt "@info"
 msgid "Up to date"
 msgstr "Обновления отсутствуют"
 
-#: discover/qml/UpdatesPage.qml:698
+#: discover/qml/UpdatesPage.qml:699
 #, kde-format
 msgctxt "@info"
 msgid "Should check for updates"
 msgstr "Требуется проверка наличия обновлений"
 
-#: discover/qml/UpdatesPage.qml:705
+#: discover/qml/UpdatesPage.qml:706
 #, kde-format
 msgctxt "@info"
 msgid "Time of last update unknown"

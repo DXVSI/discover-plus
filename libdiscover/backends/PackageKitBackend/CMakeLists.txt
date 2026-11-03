@@ -56,11 +56,6 @@ target_link_libraries(packagekit-backend
         libdiscover-backend-packagekit-logging-category
 )
 
-if (TARGET PkgConfig::Markdown)
-    target_compile_definitions(packagekit-backend PRIVATE -DWITH_MARKDOWN)
-    target_link_libraries(packagekit-backend PRIVATE PkgConfig::Markdown)
-endif()
-
 #notifier
 set(DiscoverPackageKitNotifier_SRCS
     PackageKitNotifier.cpp

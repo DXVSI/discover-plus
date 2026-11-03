@@ -1,12 +1,13 @@
 # Translation of muon-notifier.po into Serbian.
 # Chusslove Illich <caslav.ilic@gmx.net>, 2015.
+# Nemanja Hiršl <nemhirsl@gmail.com>, 2026.
 msgid ""
 msgstr ""
 "Project-Id-Version: muon-notifier\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2026-04-23 00:45+0000\n"
-"PO-Revision-Date: 2015-11-14 16:11+0100\n"
-"Last-Translator: Chusslove Illich <caslav.ilic@gmx.net>\n"
+"POT-Creation-Date: 2026-09-22 00:46+0000\n"
+"PO-Revision-Date: 2026-10-06 10:30+0200\n"
+"Last-Translator: Nemanja Hiršl <nemhirsl@gmail.com>\n"
 "Language-Team: Serbian <kde-i18n-sr@kde.org>\n"
 "Language: sr@ijekavian\n"
 "MIME-Version: 1.0\n"
@@ -21,7 +22,7 @@ msgstr ""
 #: notifier/DiscoverNotifier.cpp:218
 #, kde-format
 msgid "View Updates"
-msgstr ""
+msgstr "Прикажи допуне"
 
 #: notifier/DiscoverNotifier.cpp:363
 #, kde-format
@@ -41,139 +42,138 @@ msgstr "Систем је ажуран"
 #: notifier/DiscoverNotifier.cpp:369
 #, kde-format
 msgid "System will install updates when restarted"
-msgstr ""
+msgstr "Систем ће инсталирати допуне при поновном покретању"
 
 #: notifier/DiscoverNotifier.cpp:371
 #, kde-format
 msgid "Offline"
-msgstr ""
+msgstr "Ван везе"
 
 #: notifier/DiscoverNotifier.cpp:373
 #, kde-format
 msgid "Applying unattended updates…"
-msgstr ""
+msgstr "Примјењујем ненадзиране допуне…"
 
 #: notifier/DiscoverNotifier.cpp:398
 #, kde-format
 msgid "Restart is required"
-msgstr ""
+msgstr "Потребно је поновно покретање"
 
 #: notifier/DiscoverNotifier.cpp:399
 #, kde-format
 msgid "The system needs to be restarted for the updates to take effect."
-msgstr ""
+msgstr "Систем мора да се поново покрене да би допуне ступиле на снагу."
 
 #: notifier/DiscoverNotifier.cpp:404
 #, kde-format
 msgctxt "@action:button"
 msgid "Update and Restart"
-msgstr ""
+msgstr "Ажурирај и поново покрени"
 
 #: notifier/DiscoverNotifier.cpp:405
 #, kde-format
 msgctxt "@action:button"
 msgid "Update and Shut Down"
-msgstr ""
+msgstr "Ажурирај и угаси"
 
 #: notifier/DiscoverNotifier.cpp:449
-#, fuzzy, kde-format
-#| msgid "Updates available"
+#, kde-format
+msgctxt "A new distro release is available for upgrade"
 msgid "Upgrade available"
-msgstr "Доступне су допуне"
+msgstr "Доступна надоградња"
 
 #: notifier/DiscoverNotifier.cpp:450
 #, kde-format
 msgctxt "A new distro release (name and version) is available for upgrade"
 msgid "%1 is now available."
-msgstr ""
+msgstr "Доступно је ново издање: %1."
 
 #: notifier/DiscoverNotifier.cpp:453
 #, kde-format
-msgctxt "@action:button"
+msgctxt "@action:button Upgrade to new distro release"
 msgid "Upgrade"
-msgstr ""
+msgstr "Надогради"
 
 #: notifier/main.cpp:39
 #, kde-format
 msgid "Discover Notifier"
-msgstr ""
+msgstr "Извјештавач Oткривача"
 
 #: notifier/main.cpp:41
-#, fuzzy, kde-format
-#| msgid "System up to date"
+#, kde-format
 msgid "System update status notifier"
-msgstr "Систем је ажуран"
+msgstr "Извјештавач о стању допуна система"
 
 #: notifier/main.cpp:43
 #, kde-format
 msgid "© 2010-2025 Plasma Development Team"
-msgstr ""
+msgstr "© 2010–2025, развојни тим Плазме"
 
 #: notifier/main.cpp:47
 #, kde-format
 msgctxt "NAME OF TRANSLATORS"
 msgid "Your names"
-msgstr ""
+msgstr "Часлав Илић,Немања Хиршл"
 
 #: notifier/main.cpp:47
 #, kde-format
 msgctxt "EMAIL OF TRANSLATORS"
 msgid "Your emails"
-msgstr ""
+msgstr "caslav.ilic@gmx.net,nemhirsl@gmail.com"
 
 #: notifier/main.cpp:54
 #, kde-format
 msgid "Replace an existing instance"
-msgstr ""
+msgstr "Замијени постојећи примјерак"
 
 #: notifier/main.cpp:58
 #, kde-format
 msgid "Do not show the notifier"
-msgstr ""
+msgstr "Не приказуј извјештавач"
 
 #: notifier/main.cpp:58
 #, kde-format
 msgid "hidden"
-msgstr ""
+msgstr "скривено"
 
 #: notifier/NotifierItem.cpp:22 notifier/NotifierItem.cpp:23
 #, kde-format
 msgid "Updates"
-msgstr ""
+msgstr "Допуне"
 
 #: notifier/NotifierItem.cpp:36
 #, kde-format
 msgctxt "@action:button Opens Discover's main UI to analyze the updates"
 msgid "Open Discover…"
-msgstr ""
+msgstr "Отвори Oткривач…"
 
 #: notifier/NotifierItem.cpp:47
 #, kde-format
 msgctxt "@action:button Starts an update in the background"
 msgid "Start Update"
-msgstr ""
+msgstr "Покрени ажурирање"
 
 #: notifier/NotifierItem.cpp:50
 #, kde-format
 msgid "Refresh…"
-msgstr ""
+msgstr "Освјежи…"
 
 #: notifier/NotifierItem.cpp:56
 #, kde-format
 msgid "Install Updates and Restart…"
-msgstr ""
+msgstr "Инсталирај допуне и поново покрени…"
 
 #: notifier/NotifierItem.cpp:59
 #, kde-format
 msgid "Install Updates and Shut Down…"
-msgstr ""
+msgstr "Инсталирај допуне и угаси…"
 
 #: notifier/NotifierItem.cpp:64
 #, kde-format
 msgid "Restart to apply installed updates"
-msgstr ""
+msgstr "Поново покрените да бисте примијенили инсталиране допуне"
 
 #: notifier/NotifierItem.cpp:65
 #, kde-format
 msgid "Click to restart the system"
-msgstr ""
+msgstr "Кликните да поново покренете систем"

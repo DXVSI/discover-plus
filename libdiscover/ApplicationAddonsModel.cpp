@@ -23,7 +23,7 @@ ApplicationAddonsModel::ApplicationAddonsModel(QObject *parent)
         }
 
         const QString appstreamId = resource->appstreamId();
-        if (kContains(m_initial, [&appstreamId](const PackageState &state) {
+        if (std::ranges::any_of(m_initial, [&appstreamId](const PackageState &state) {
                 return appstreamId == state.packageName();
             })) {
             resetState();

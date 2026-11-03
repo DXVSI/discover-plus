@@ -181,7 +181,7 @@ QString KNSResource::section()
 static bool isAnimated(const QString &path)
 {
     static const QVector<QLatin1String> s_extensions = {QLatin1String(".gif"), QLatin1String(".apng"), QLatin1String(".webp"), QLatin1String(".avif")};
-    return kContains(s_extensions, [path](const QLatin1String &postfix) {
+    return std::ranges::any_of(s_extensions, [path](const QLatin1String &postfix) {
         return path.endsWith(postfix);
     });
 }

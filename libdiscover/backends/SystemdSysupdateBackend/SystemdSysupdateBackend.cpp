@@ -13,6 +13,8 @@
 #include <KLocalizedString>
 #include <QCoro/QCoroDBusPendingReply>
 #include <QCoro/QCoroNetworkReply>
+#include <QJsonDocument>
+#include <QJsonObject>
 #include <QList>
 #include <QNetworkReply>
 #include <QtPreprocessorSupport>
@@ -159,6 +161,7 @@ QCoro::Task<> SystemdSysupdateBackend::checkForUpdatesAsync()
         AppStream::Metadata metadata;
         for (const auto &url : appStreamUrls) {
             const auto reply = co_await m_nam->get(QNetworkRequest(QUrl(url)));
+            reply->deleteLater();
             if (reply->error() != QNetworkReply::NoError) {
                 qCWarning(SYSTEMDSYSUPDATE_LOG) << "Failed to fetch appstream:" << reply->errorString();
                 Q_EMIT passiveMessage(xi18nc("@info:status",
@@ -196,20 +199,37 @@ QCoro::Task<> SystemdSysupdateBackend::checkForUpdatesAsync()
         qCDebug(SYSTEMDSYSUPDATE_LOG) << "Component:" << component.name() << component.summary() << component.description();
 
         QString installedVersion = co_await target->GetVersion();
-        QString availableVersion = co_await target->CheckNew();
-        qCDebug(SYSTEMDSYSUPDATE_LOG) << "Installed version:" << installedVersion << "Available version:" << availableVersion;
-
         if (installedVersion.isEmpty()) {
             qCWarning(SYSTEMDSYSUPDATE_LOG) << "Failed to get installed version for target:" << name;
             continue;
         }
+
+        QString availableVersion = co_await target->CheckNew();
+        qCDebug(SYSTEMDSYSUPDATE_LOG) << "Installed version:" << installedVersion << "Available version:" << availableVersion;
 
         if (availableVersion.isEmpty()) {
             qCInfo(SYSTEMDSYSUPDATE_LOG) << "No new version available for target:" << name;
             continue;
         }
 
-        m_resources << new SystemdSysupdateResource(this, component, {installedVersion, availableVersion}, target);
+        bool partial = false;
+
+        // Check whether the new available version might be only partially downloaded and needs to be vacuumed.
+        const QString describeString = co_await target->Describe(availableVersion, 0 /*flags*/);
+        if (!describeString.isEmpty()) {
+            QJsonParseError error;
+            const QJsonObject describeJson = QJsonDocument::fromJson(describeString.toUtf8(), &error).object();
+            if (error.error != QJsonParseError::NoError) {
+                qCWarning(SYSTEMDSYSUPDATE_LOG) << "Failed to parse Describe string to json" << error.errorString();
+            } else {
+                if (describeJson.value(QLatin1StringView{"partial"}).toBool()) {
+                    qCInfo(SYSTEMDSYSUPDATE_LOG) << "New version only partially downloaded, have to download again";
+                    partial = true;
+                }
+            }
+        }
+
+        m_resources << new SystemdSysupdateResource(this, component, {installedVersion, availableVersion, partial}, target);
     }
 
     endFetch();

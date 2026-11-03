@@ -205,7 +205,7 @@ void RpmOstreeBackend::transactionStatusChanged(Transaction::Status status)
 
 void RpmOstreeBackend::setupTransaction(RpmOstreeTransaction::Operation op, QString arg)
 {
-    m_transaction = new RpmOstreeTransaction(this, m_currentlyBootedDeployment, m_interface, op, arg);
+    m_transaction = new RpmOstreeTransaction(m_currentlyBootedDeployment, m_interface, op, arg);
     connect(m_transaction, &RpmOstreeTransaction::progressChanged, this, &RpmOstreeBackend::fetchingUpdatesProgressChanged);
     connect(m_transaction, &RpmOstreeTransaction::statusChanged, this, &RpmOstreeBackend::transactionStatusChanged);
     connect(m_transaction, &RpmOstreeTransaction::deploymentsUpdated, this, &RpmOstreeBackend::refreshDeployments);
@@ -370,7 +370,9 @@ void RpmOstreeBackend::foundNewMajorVersion(const AppStream::Release &release)
     // Message to display when:
     // - A new major version is available
     // - No update to the current version are available or pending a reboot
-    DiscoverAction *majorUpgrade = new DiscoverAction(QStringLiteral("system-upgrade-symbolic"), i18nc("@action: button", "Begin Upgrade…"), this);
+    DiscoverAction *majorUpgrade = new DiscoverAction(QStringLiteral("system-upgrade-symbolic"),
+                                                      i18nc("@action:button Perform a distro upgrade, not just a package update", "Begin Upgrade…"),
+                                                      this);
     connect(majorUpgrade, &DiscoverAction::triggered, this, &RpmOstreeBackend::rebaseToNewVersion);
     info = i18nc("@info:status %1 is a new major version of the user's distro", "%1 is now available.", newDistroVersionText);
     m_rebaseAvailableMessage = QSharedPointer<InlineMessage>::create(InlineMessage::Positive, QStringLiteral("system-software-update"), info, majorUpgrade);

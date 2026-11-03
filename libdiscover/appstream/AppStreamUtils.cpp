@@ -14,6 +14,7 @@
 #include <AppStreamQt/release.h>
 #include <AppStreamQt/screenshot.h>
 #include <AppStreamQt/spdx.h>
+#include <AppStreamQt/utils.h>
 #include <AppStreamQt/version.h>
 #include <Category/Category.h>
 #include <KIconLoader>
@@ -29,6 +30,7 @@
 #include <QtConcurrentRun>
 
 using namespace std::chrono_literals;
+using namespace Qt::StringLiterals;
 using namespace AppStreamUtils;
 
 AppStream::Image AppStreamUtils::imageOfKind(const QList<AppStream::Image> &images, AppStream::Image::Kind kind)
@@ -54,6 +56,24 @@ QString AppStreamUtils::changelogToHtml(const AppStream::Component &appdata)
 
     QString changelog =
         QLatin1String("<h3>") + release.version() + QLatin1String("</h3>") + QStringLiteral("<p>") + release.description() + QStringLiteral("</p>");
+    return changelog;
+}
+
+QString AppStreamUtils::changelogToMarkdown(const AppStream::Component &appdata)
+{
+    const auto releases = appdata.releasesPlain();
+    if (releases.isEmpty()) {
+        return {};
+    }
+
+    const auto release = releases.indexSafe(0).value();
+    if (release.description().isEmpty()) {
+        return {};
+    }
+
+    const auto description = AppStream::Utils::markupConvert(release.description(), AppStream::Utils::MarkupMarkdown);
+
+    const QString changelog = u"### %1\n\n%2"_s.arg(release.version(), description.value_or(QString()));
     return changelog;
 }
 

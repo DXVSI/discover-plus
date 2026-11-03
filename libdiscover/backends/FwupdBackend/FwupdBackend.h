@@ -31,6 +31,7 @@ extern "C" {
 #ifdef FWUPD_EXTERNC_REQUIRED
 }
 #endif
+#include "glibholder.h"
 #include <glib-2.0/glib-object.h>
 
 class DiscoverAction;
@@ -64,7 +65,7 @@ public:
     void checkForUpdates() override;
     QString displayName() const override;
     bool hasApplications() const override;
-    FwupdClient *client;
+    GLibHolder<FwupdClient> m_client;
     void handleError(GError *perror);
 
     static QString cacheFile(const QString &kind, const QString &baseName);
@@ -99,6 +100,6 @@ private:
     bool m_fetching = false;
     int m_startElements;
     QList<AbstractResource *> m_toUpdate;
-    GCancellable *m_cancellable;
+    GLibHolder<GCancellable> m_cancellable;
     bool m_isValid = true;
 };

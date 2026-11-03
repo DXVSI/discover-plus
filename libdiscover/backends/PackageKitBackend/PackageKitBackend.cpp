@@ -1625,7 +1625,8 @@ void PackageKitBackend::foundNewMajorVersion(const AppStream::Release &release)
     // Message to display when:
     // - A new major version is available
     // - No update to the current version are available or pending a reboot
-    DiscoverAction *majorUpgrade = new DiscoverAction(QStringLiteral("system-upgrade-symbolic"), i18nc("@action: button", "Upgrade Now"), this);
+    DiscoverAction *majorUpgrade =
+        new DiscoverAction(QStringLiteral("system-upgrade-symbolic"), i18nc("@action:button Upgrade to new distro release", "Upgrade Now"), this);
     connect(majorUpgrade, &DiscoverAction::triggered, this, [this, release, upgradeVersion] {
         if (m_updater->isProgressing()) {
             return;
